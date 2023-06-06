@@ -4,7 +4,7 @@ from django.conf import settings
 from django.conf.urls.static import static
 
 urlpatterns = [
-    #path('', views.login_view, name='login'),
+    path('confirmTicket', views.confirm_ticket_view, name='confirmTicket'),
     
    
 ]

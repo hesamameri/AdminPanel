@@ -1,0 +1,567 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="fa">
+
+    <!-- begin::Head -->
+    {% include "partials/head.html" %}
+
+    <!-- end::Head -->
+
+    <!-- begin::Body -->
+
+    <body dir="rtl"
+        class="kt-quick-panel--right kt-demo-panel--right kt-offcanvas-panel--right kt-header--fixed kt-header-mobile--fixed kt-subheader--enabled kt-subheader--transparent kt-aside--enabled kt-aside--fixed kt-page--loading">
+
+        <!-- begin:: Header Mobile -->
+        {% include "partials/MobileHeader.html" %}
+
+        <!-- end:: Header Mobile -->
+
+        <!-- begin:: Root -->
+        <div class="kt-grid kt-grid--hor kt-grid--root">
+
+            <!-- begin:: Page -->
+            <div class="kt-grid__item kt-grid__item--fluid kt-grid kt-grid--ver kt-page">
+
+                <!-- begin:: Aside -->
+
+                <!-- end:: Aside Brand -->
+
+                <!-- begin:: Aside Menu -->
+                {% include "partials/sidebar.html" %}
+
+                <!-- end:: Aside Menu -->
+
+                <!-- begin:: Aside Footer -->
+
+
+                <!-- end:: Aside -->
+
+                <!-- begin:: Wrapper -->
+                <div class="kt-grid__item kt-grid__item--fluid kt-grid kt-grid--hor kt-wrapper" id="kt_wrapper">
+
+                    <!-- begin:: Header -->
+                    {% include "partials/header.html" %}
+                    <!-- end:: Header -->
+                    <div class="kt-grid__item kt-grid__item--fluid kt-grid kt-grid--hor">
+
+                        <!-- begin:: Subheader -->
+                        {% include "partials/subheader.html" %}
+                        <!-- end:: Subheader -->
+
+                        <!-- begin:: Content -->
+                        <div class="kt-content  kt-grid__item kt-grid__item--fluid" id="kt_content">
+
+                            <!--begin::Dashboard 1-->
+
+                            <!-- -----------------------------------------------Start Primary Content----------------------------------------------- -->
+
+                            <!-- Modal For Person -->
+
+
+                            <div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+								<div class="modal-dialog modal-lg">
+									<div class="modal-content">
+										<div class="modal-header">
+											<h5 class="modal-title">لیست مشتریان فروشگاه</h5>
+											<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+												<span aria-hidden="true">&times;</span>
+											</button>
+										</div>
+										<div class="modal-body">
+											
+                                        
+                                        <div class="kt-portlet__body">
+
+                                        <!--begin: Search Form -->
+                                        <div class="kt-form kt-fork--label-right kt-margin-t-20 kt-margin-b-10">
+                                            <div class="row align-items-center">
+                                                <div class="col-xl-12 order-2 order-xl-1">
+                                                    <div class="row align-items-center">
+                                                        <div class="col-md-12 kt-margin-b-20-tablet-and-mobile">
+                                                            <div class="kt-input-icon kt-input-icon--left">
+                                                                <input type="text" class="form-control"
+                                                                 placeholder="...جستجو" id="generalSearch">
+                                                                <span class="kt-input-icon__icon kt-input-icon__icon--left">
+                                                                    <span><i class="la la-search"></i></span>
+                                                                </span>
+                                                            </div>
+                                                        </div>
+                
+
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                        </div>
+
+                                            <!--end: Search Form -->
+                                    </div>
+                                <div class="kt-portlet__body kt-portlet__body--fit">
+
+<!--begin: Datatable -->
+                                        <table class="table table-striped m-table">
+														<thead>
+															<tr>
+																<th>نام کامل </th>
+																<th>موبایل</th>
+																<th>آدرس</th>
+																<th>انتخاب</th>
+															</tr>
+														</thead>
+														<tbody>
+															<tr>
+																<th scope="row">سجاد فرهود</th>
+																<td>09300702421</td>
+																<td>شهریار - بلوار رسول اکرم، خیابان شهید طوقانی، کوچه نیلوفر، پلاک 5، طبقه اول	</td>
+																<td>
+                                                                <a class="badge badge-success text-white">انتخاب مشتری 
+                                                                                                              </td>
+															</tr>
+                                                            <tr>
+																<th scope="row">سجاد فرهود</th>
+																<td>09300702421</td>
+																<td>شهریار - بلوار رسول اکرم، خیابان شهید طوقانی، کوچه نیلوفر، پلاک 5، طبقه اول	</td>
+																<td>
+                                                                <a class="badge badge-success text-white">انتخاب مشتری 
+                                                                                                              </td>
+															</tr>
+                                                            <tr>
+																<th scope="row">سجاد فرهود</th>
+																<td>09300702421</td>
+																<td>شهریار - بلوار رسول اکرم، خیابان شهید طوقانی، کوچه نیلوفر، پلاک 5، طبقه اول	</td>
+																<td>
+                                                                <a class="badge badge-success text-white">انتخاب مشتری 
+                                                                                                              </td>
+															</tr>
+                                                            <tr>
+																<th scope="row">سجاد فرهود</th>
+																<td>09300702421</td>
+																<td>شهریار - بلوار رسول اکرم، خیابان شهید طوقانی، کوچه نیلوفر، پلاک 5، طبقه اول	</td>
+																<td>
+                                                                <a class="badge badge-success text-white">انتخاب مشتری 
+                                                                                                              </td>
+															</tr>
+                                                            <tr>
+																<th scope="row">سجاد فرهود</th>
+																<td>09300702421</td>
+																<td>شهریار - بلوار رسول اکرم، خیابان شهید طوقانی، کوچه نیلوفر، پلاک 5، طبقه اول	</td>
+																<td>
+                                                                <a class="badge badge-success text-white">انتخاب مشتری 
+                                                                                                              </td>
+															</tr>
+                                                            <tr>
+																<th scope="row">سجاد فرهود</th>
+																<td>09300702421</td>
+																<td>شهریار - بلوار رسول اکرم، خیابان شهید طوقانی، کوچه نیلوفر، پلاک 5، طبقه اول	</td>
+																<td>
+                                                                <a class="badge badge-success text-white">انتخاب مشتری 
+                                                                                                              </td>
+															</tr>
+                                                            <tr>
+																<th scope="row">سجاد فرهود</th>
+																<td>09300702421</td>
+																<td>شهریار - بلوار رسول اکرم، خیابان شهید طوقانی، کوچه نیلوفر، پلاک 5، طبقه اول	</td>
+																<td>
+                                                                <a class="badge badge-success text-white">انتخاب مشتری 
+                                                                                                              </td>
+															</tr>
+                                                            <tr>
+																<th scope="row">سجاد فرهود</th>
+																<td>09300702421</td>
+																<td>شهریار - بلوار رسول اکرم، خیابان شهید طوقانی، کوچه نیلوفر، پلاک 5، طبقه اول	</td>
+																<td>
+                                                                <a class="badge badge-success text-white">انتخاب مشتری 
+                                                                                                              </td>
+															</tr>
+                                                           
+															
+														</tbody>
+													</table>
+
+<!--end: Datatable -->
+</div>
+
+
+
+										</div>
+										<div class="modal-footer">
+											<button type="button" class="btn btn-outline-danger" data-dismiss="modal">بستن</button>
+											<button type="button" class="btn btn-outline-brand">انتخاب</button>
+																</div>
+															</div>
+								</div>
+							</div>
+
+                            <!-- End Modal For Person -->
+
+                            <!--begin::Row-->
+                            <div class="row">
+
+                                <div class="col-lg-12 col-xl-12 order-lg-2 order-xl-1">
+
+                                    <!--begin::Portlet-->
+                                    <div class="kt-portlet">
+
+                                        <!--begin::Form-->
+                                        <form class="kt-form kt-form--label-right">
+                                            <div class="kt-portlet__body">
+                                                <div class="form-group row">
+                                                    <div class="col-lg-4">
+                                                    <label class="kt-font-dark kt-font-boldest">درخواست کننده</label>
+													<div class="input-group">
+                                                    <select class="form-control shadow-sm" id="exampleSelect1">
+                                                            <option> تماس گیرنده</option>
+                                                            <option value="1">مشتری </option>
+                                                            <option value="1">پرسنل</option>
+                                                            <option value="1">سایر</option>
+                                                        </select>
+														<div class="input-group-append">
+															<a type="button" class="btn btn-secondary shadow-sm" data-toggle="modal" data-target=".bd-example-modal-lg">
+																<i class="fa fa-user  pl-2 shake_icon"> <small>انتخاب کنید</small> </i>
+                                                            </a>
+															
+														</div>
+													</div>
+                                                    </div>
+                                                    <div class="col-lg-4">
+                                                            <label class="kt-font-dark kt-font-boldest">واحد گیرنده تیکت</label>
+													        <div class="input-group">
+                                                                <select class="form-control shadow-sm" id="exampleSelect1">
+                                                                    <option>انتخاب واحد</option>
+                                                                    <option value="1"> خدمات مشتریان سبزوار</option>
+                                                                    <option value="1">خدمات مشتریان تهران</option>
+                                                                    <option value="1">خدمات فنی</option>
+                                                                </select>
+														        <div class="input-group-append">
+															        <button type="button" class="btn btn-secondary shadow-sm"  aria-haspopup="true" aria-expanded="false">
+																     <i class="fa fa-user-tag text-success pl-2"></i>
+                                                                    </button>
+														        </div>
+													        </div>
+                                                    </div>
+
+                                                    <div class="col-lg-4">
+                                                        <label class="kt-font-dark kt-font-boldest">نوع پیام دریافتی</label>
+													        <div class="input-group">
+                                                                <select class="form-control shadow-sm" id="exampleSelect1">
+                                                                    <option>پیام دریافتی</option>
+                                                                    <option value="1">پرسش</option>
+                                                                    <option value="1">رفع ایراد</option>
+                                                                    <option value="1">انجام امور </option>
+                                                                </select>
+														        <div class="input-group-append">
+															        <button type="button" class="btn btn-secondary shadow-sm"  aria-haspopup="true" aria-expanded="false">
+																     <i class="fa fa-envelope text-warning pl-2"></i>
+                                                                    </button>
+														        </div>
+													        </div>
+                                                    </div>
+
+                                                </div>
+
+
+                                                <!-- ------------- -->
+
+                                                <div class="form-group row">
+                                                    <div class="col-lg-3">
+                                                    <label class="kt-font-dark kt-font-boldest">نوع تماس</label>
+													        <div class="input-group">
+                                                                <select class="form-control shadow-sm" id="exampleSelect1">
+                                                                    <option>انتخاب </option>
+                                                                    <option value="1">حضوری</option>
+                                                                    <option value="1">تماس تلفنی</option>
+                                                                </select>
+														        <div class="input-group-append">
+															        <button type="button" class="btn btn-secondary shadow-sm"  aria-haspopup="true" aria-expanded="false">
+																     <i class="fa fa-handshake text-danger pl-2"></i>
+                                                                    </button>
+														        </div>
+													        </div>
+                                                        <span class="form-text kt-font-danger kt-font-bolder">تیکت از
+                                                            چه منبعی دریافت شده است</span>
+                                                    </div>
+
+                                                    <div class="col-lg-3">
+                                                        <label class="kt-font-dark kt-font-boldest">
+                                                            نام کامل</label>
+                                                        <div class="kt-input-icon">
+                                                            <input type="text" class="form-control shadow-sm">
+                                                            <span
+                                                                class="kt-input-icon__icon kt-input-icon__icon--right"><span><i
+                                                                        class="fa fa-user text-info"></i></span></span>
+                                                        </div>
+
+                                                    </div>
+
+                                                    <div class="col-lg-6">
+                                                        <label class="kt-font-dark kt-font-boldest">
+                                                            آدرس</label>
+                                                        <div class="kt-input-icon">
+                                                            <input type="text" class="form-control shadow-sm">
+                                                            <span
+                                                                class="kt-input-icon__icon kt-input-icon__icon--right"><span><i
+                                                                        class="fa fa-home text-warning"></i></span></span>
+                                                        </div>
+
+                                                    </div>
+                                                </div>
+
+                                                <!-- ---------------- -->
+
+                                                <div class="form-group row">
+                                                    <div class="col-lg-3">
+                                                        <label class="kt-font-dark kt-font-boldest">
+                                                            شماره موبایل</label>
+                                                        <div class="kt-input-icon">
+                                                            <input type="text" class="form-control shadow-sm">
+                                                            <span
+                                                                class="kt-input-icon__icon kt-input-icon__icon--right"><span><i
+                                                                        class="fa fa-mobile text-success"></i></span></span>
+                                                        </div>
+
+                                                    </div>
+                                                    <div class="col-lg-9">
+                                                        <label class="kt-font-dark kt-font-boldest">خلاصه
+                                                            درخواست</label>
+                                                        <div class="kt-input-icon">
+                                                            <input type="text" class="form-control shadow-sm">
+                                                            <span
+                                                                class="kt-input-icon__icon kt-input-icon__icon--right"><span><i
+                                                                        class="fa fa-envelope-open-text text-warning"></i></span></span>
+                                                        </div>
+                                                        <span class="form-text kt-font-danger kt-font-bolder">خلاصه
+                                                            تیکت درخواستی را وارد نمایید</span>
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-group row">
+                                                    <div class="col-lg-12">
+                                                        <label for="exampleTextarea"
+                                                            class="kt-font-dark kt-font-boldest">شرح کامل
+                                                            درخواست</label>
+                                                        <textarea class="form-control shadow-sm" id="exampleTextarea"
+                                                            rows="3"></textarea>
+                                                        <span class="form-text kt-font-danger kt-font-bolder">لطفا شرح
+                                                            درخواست را وارد نمایید</span>
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-group row">
+                                                    <div class="col-lg-3">
+                                                        
+                                                        <div class="kt-repeater">
+															<div data-repeater-list="demo1">
+																<div data-repeater-item class="kt-repeater__item">
+                                                                    <div class="custom-file">
+                                                                        <input type="file" class="custom-file-input" id="customFile">
+                                                                       
+                                                                        <label class="custom-file-label" style="text-align: right;" for="customFile">ضمیمه های دیگر  </label>                                                          
+                                                                    </div>
+                                                        
+																	<div class="kt-separator kt-separator--space-sm"></div>
+																</div>
+                                                                
+															</div>
+                                                            
+															<div class="kt-repeater__add-data">
+																<span data-repeater-create="" class="btn btn-info btn-sm">
+																	<i class="la la-plus"></i> اضافه کردن
+																</span>
+															</div>
+														</div>
+                                                        
+                                                    </div>
+                                                    <div class="col-lg-9">
+
+                                                        <button type="button" class="btn btn-outline-brand blockui"
+                                                            data-toggle="modal" data-target="#exampleModalCenter">
+                                                            ضمیمه فایل صوتی
+                                                        </button>
+
+                                                        <!-- Modal -->
+                                                        <div class="modal fade" id="exampleModalCenter" tabindex="-1"
+                                                            role="dialog" aria-labelledby="exampleModalCenterTitle"
+                                                            aria-hidden="true">
+                                                            <div class="modal-dialog modal-dialog-centered"
+                                                                role="document">
+                                                                <div class="modal-content">
+                                                                    <div class="modal-header">
+                                                                        <h5 class="modal-title"
+                                                                            id="exampleModalCenterTitle">فایل صوتی خود
+                                                                            را انتخاب کنید</h5>
+                                                                        <button type="button" class="close"
+                                                                            data-dismiss="modal" aria-label="Close">
+                                                                            <span aria-hidden="true">&times;</span>
+                                                                        </button>
+                                                                    </div>
+                                                                    <div class="modal-body">
+                                                                        <div class="kt-section">
+                                                                            <div class="kt-section__content">
+                                                                                <table
+                                                                                    class="table table-striped m-table">
+                                                                                    <thead>
+                                                                                        <tr>
+                                                                                            <th>تاریخ</th>
+                                                                                            <th>از
+
+                                                                                            </th>
+                                                                                            <th>به</th>
+                                                                                            <th>فایل</th>
+                                                                                            <th>انتخاب</th>
+                                                                                        </tr>
+                                                                                    </thead>
+                                                                                    <tbody>
+                                                                                        <tr>
+                                                                                            <th scope="row">
+                                                                                                <span
+                                                                                                    class="badge badge-success badge-sm">
+                                                                                                    2023-05-04
+                                                                                                </span>
+                                                                                                10:47:31
+                                                                                            </th>
+                                                                                            <td>509</td>
+                                                                                            <td>508</td>
+                                                                                            <td>
+                                                                                                <button
+                                                                                                    class="badge badge-sm badge-pill badge-danger">
+                                                                                                    <i
+                                                                                                        class="fa fa-play">
+                                                                                                    </i>
+                                                                                                </button>
+                                                                                            </td>
+                                                                                            <td>
+                                                                                                <button
+                                                                                                    class="badge badge-sm btn-primary">
+                                                                                                    انتخاب
+                                                                                                </button>
+                                                                                            </td>
+                                                                                        </tr>
+                                                                                        <tr>
+                                                                                            <th scope="row"><span
+                                                                                                    class="badge badge-success badge-sm">
+                                                                                                    2023-05-04
+                                                                                                </span>
+                                                                                                10:47:31</th>
+                                                                                            <td>509</td>
+                                                                                            <td>508</td>
+                                                                                            <td>
+                                                                                                <button
+                                                                                                    class="badge badge-sm badge-pill badge-danger">
+                                                                                                    <i
+                                                                                                        class="fa fa-play">
+                                                                                                    </i>
+                                                                                                </button>
+                                                                                            </td>
+                                                                                            <td>
+                                                                                                <button
+                                                                                                    class="badge badge-sm btn-primary">
+                                                                                                    انتخاب
+                                                                                                </button>
+                                                                                            </td>
+                                                                                        </tr>
+                                                                                        <tr>
+                                                                                            <th scope="row"><span
+                                                                                                    class="badge badge-success badge-sm">
+                                                                                                    2023-05-04
+                                                                                                </span>
+                                                                                                10:47:31</th>
+                                                                                            <td>509</td>
+                                                                                            <td>508</td>
+                                                                                            <td>
+                                                                                                <button
+                                                                                                    class="badge badge-sm badge-pill badge-danger">
+                                                                                                    <i
+                                                                                                        class="fa fa-play">
+                                                                                                    </i>
+                                                                                                </button>
+                                                                                            </td>
+                                                                                            <td>
+                                                                                                <button
+                                                                                                    class="badge badge-sm btn-primary">
+                                                                                                    انتخاب
+                                                                                                </button>
+                                                                                            </td>
+                                                                                        </tr>
+                                                                                    </tbody>
+                                                                                </table>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="modal-footer kt-align-right">
+                                                                        <button type="button"
+                                                                            class="btn btn-danger btn-sm"
+                                                                            data-dismiss="modal">بستن</button>
+                                                                        <button type="button"
+                                                                            class="btn btn-success btn-sm">انتخاب
+                                                                            فایل</button>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="kt-portlet__foot">
+                                                <div class="kt-form__actions">
+                                                    <div class="row">
+                                                        <div class="col-lg-6">
+                                                            <button type="reset" class="btn btn-success">ارسال
+                                                                تیکت</button>
+                                                            <button type="reset" class="btn btn-danger">پاک کردن
+                                                                اطلاعات</button>
+                                                        </div>
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </form>
+
+                                        <!--end::Form-->
+                                    </div>
+
+                                    <!--end::Portlet-->
+                                </div>
+
+
+
+                            </div>
+
+                            <!--end::Row-->
+
+                            <!-- -----------------------------------------------End Primary Content----------------------------------------------- -->
+
+
+                            <!--end::Dashboard 1-->
+                        </div>
+
+                        <!-- end:: Content -->
+                    </div>
+
+                    <!-- begin:: Footer -->
+                    {% include "partials/footer.html" %}
+                    <!-- end:: Footer -->
+                </div>
+
+                <!-- end:: Wrapper -->
+            </div>
+
+            <!-- end:: Page -->
+        </div>
+
+        <!-- end:: Root -->
+
+
+
+
+
+
+        <!-- begin::Global Config(global config for global JS sciprts) -->
+        {% include "partials/script.html" %}
+        <!--end::Page Scripts -->
+    </body>
+
+    <!-- end::Body -->
+
+</html>

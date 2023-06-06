@@ -1,0 +1,611 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="fa">
+
+    <!-- begin::Head -->
+    {% include "partials/head.html" %}
+
+    <!-- end::Head -->
+
+    <!-- begin::Body -->
+
+    <body dir="rtl"
+        class="kt-quick-panel--right kt-demo-panel--right kt-offcanvas-panel--right kt-header--fixed kt-header-mobile--fixed kt-subheader--enabled kt-subheader--transparent kt-aside--enabled kt-aside--fixed kt-page--loading">
+
+        <!-- begin:: Header Mobile -->
+        {% include "partials/MobileHeader.html" %}
+
+        <!-- end:: Header Mobile -->
+
+        <!-- begin:: Root -->
+        <div class="kt-grid kt-grid--hor kt-grid--root">
+
+            <!-- begin:: Page -->
+            <div class="kt-grid__item kt-grid__item--fluid kt-grid kt-grid--ver kt-page">
+
+                <!-- begin:: Aside -->
+
+                <!-- end:: Aside Brand -->
+
+                <!-- begin:: Aside Menu -->
+                {% include "partials/sidebar.html" %}
+
+                <!-- end:: Aside Menu -->
+
+                <!-- begin:: Aside Footer -->
+
+
+                <!-- end:: Aside -->
+
+                <!-- begin:: Wrapper -->
+                <div class="kt-grid__item kt-grid__item--fluid kt-grid kt-grid--hor kt-wrapper" id="kt_wrapper">
+
+                    <!-- begin:: Header -->
+                    {% include "partials/header.html" %}
+                    <!-- end:: Header -->
+                    <div class="kt-grid__item kt-grid__item--fluid kt-grid kt-grid--hor">
+
+                        <!-- begin:: Subheader -->
+                        {% include "partials/subheader.html" %}
+                        <!-- end:: Subheader -->
+
+                        <!-- begin:: Content -->
+                        <div class="kt-content  kt-grid__item kt-grid__item--fluid" id="kt_content">
+
+                            <!--begin::Dashboard 1-->
+
+                            <!-- -----------------------------------------------Start Primary Content----------------------------------------------- -->
+
+
+
+
+                            <!--begin::Row-->
+                            <div class="row">
+                                <div class="col-xl-3 col-lg-3">
+
+                                    <!--begin::Portlet-->
+                                    <div class="kt-portlet kt-align-center">
+
+                                        <div class="kt-widget-15__body kt-margin-t-20 kt-margin-b-20">
+                                            <div class="kt-widget-15__author">
+                                                <div class="kt-widget-15__photo">
+                                                    <a href="#"><img src="{% static '/media/users/100_14.jpg' %}" alt=""
+                                                            title="" /></a>
+                                                </div>
+                                                <div class="kt-widget-15__detail kt-margin-t-20">
+                                                    <h4 class="kt-widget-15__name">انجام دهنده</h4>
+                                                    <div class="kt-widget-15__desc">
+                                                        سجاد فرهود
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!--end::Portlet-->
+                                    <hr class=" kt-separator kt-margin-t-10 kt-margin-b-20">
+
+                                    <div class="kt-portlet kt-align-center">
+
+                                        <div class="kt-widget-15__body kt-margin-t-20 kt-margin-b-20">
+
+                                            <button type="button" class="btn btn-outline-success kt-font-boldest" data-toggle="modal"
+                                                data-target="#exampleModal">
+                                                انجام دهنده جدید
+                                            </button>
+
+                                            <!-- Modal -->
+                                            <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog"
+                                                aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                                <div class="modal-dialog" role="document">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h5 class="modal-title" id="exampleModalLabel">انتخاب انجام
+                                                                دهنده جدید
+                                                            </h5>
+                                                            <button type="button" class="close" data-dismiss="modal"
+                                                                aria-label="Close">
+                                                                <span aria-hidden="true">&times;</span>
+                                                            </button>
+                                                        </div>
+                                                        <div class="modal-body">
+
+                                                            <div class="form-group">
+
+                                                                <select class="form-control" id="exampleSelect1">
+                                                                    <option>عباس دولت ابادی</option>
+                                                                    <option value="1">محسن شهابی</option>
+                                                                    <option value="1">زارعی</option>
+                                                                    <option value="1">کلاته</option>
+                                                                    <option value="1">صاحبی</option>
+                                                                    <option value="1">ریوندی</option>
+                                                                </select>
+                                                            </div>
+
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn btn-outline-brand"
+                                                                data-dismiss="modal">بستن</button>
+                                                            <button type="button" class="btn btn-brand">انتخاب</button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+
+                                            </div>
+                                            <div class="kt-margin-t-10">
+                                                <span class="badge badge-info">عباس دولت آبادی</span>
+                                            </div>
+                                            <div class="kt-margin-t-10">
+                                                <span class="badge badge-info">عباس دولت آبادی</span>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!--end::Portlet-->
+                                </div>
+                                <div class="col-xl-9 col-lg-9">
+
+                                    <!--begin::Portlet-->
+                                    <div class="kt-portlet">
+
+                                        <div class="kt-portlet__body">
+
+                                            <div class="d-flex">
+                                                <div class="dropdown mr-1">
+                                                    <button type="button" class="btn btn-info btn-sm dropdown-toggle kt-font-boldest"
+                                                        id="dropdownMenuOffset" data-toggle="dropdown"
+                                                        aria-haspopup="true" aria-expanded="false" data-offset="10,20">
+                                                        وضعیت : درحال انجام
+                                                    </button>
+                                                    <div class="dropdown-menu dropdown-menu-right"
+                                                        aria-labelledby="dropdownMenuOffset">
+                                                        <a class="dropdown-item" href="#">
+                                                            <i class="fa fa-list-alt text-warning"></i>جدید
+                                                        </a>
+                                                        <a class="dropdown-item " href="#"><i
+                                                                class="fa fa-briefcase text-success"></i>در حال
+                                                            انجام</a>
+                                                        <a class="dropdown-item" href="#"><i
+                                                                class="fa fa-award text-primary"></i>انجام
+                                                            شده</a>
+                                                        <a class="dropdown-item" href="#"><i
+                                                                class="fa fa-window-close text-danger"></i>بسته
+                                                            شده</a>
+                                                        <a class="dropdown-item" href="#"><i
+                                                                class="fa fa-headphones text-warning"></i>پاسخ
+                                                            مشتری</a>
+                                                        <a class="dropdown-item" href="#"><i
+                                                                class="fa fa-users-cog text-primary"></i>منتر شخص
+                                                            ثالث</a>
+                                                        <a class="dropdown-item" href="#"><i
+                                                                class="fa fa-user-secret text-danger"></i>تکراری</a>
+                                                    </div>
+                                                </div>
+                                                <div class="dropdown mr-1">
+                                                    <button type="button"
+                                                        class="btn btn-secondary btn-sm dropdown-toggle"
+                                                        id="dropdownMenuOffset" data-toggle="dropdown"
+                                                        aria-haspopup="true" aria-expanded="false" data-offset="10,20">
+                                                        اولویت : زیاد
+                                                    </button>
+                                                    <div class="dropdown-menu dropdown-menu-right"
+                                                        aria-labelledby="dropdownMenuOffset">
+                                                        <a class="dropdown-item" href="#">Action</a>
+                                                        <a class="dropdown-item" href="#">Another action</a>
+                                                        <a class="dropdown-item" href="#">Something else here</a>
+                                                    </div>
+                                                </div>
+                                                <div class="dropdown mr-1">
+                                                    <button type="button"
+                                                        class="btn btn-secondary btn-sm dropdown-toggle"
+                                                        id="dropdownMenuOffset" data-toggle="dropdown"
+                                                        aria-haspopup="true" aria-expanded="false" data-offset="10,20">
+                                                        نوع : انجام امور
+                                                    </button>
+                                                    <div class="dropdown-menu dropdown-menu-right"
+                                                        aria-labelledby="dropdownMenuOffset">
+                                                        <a class="dropdown-item" href="#">Action</a>
+                                                        <a class="dropdown-item" href="#">Another action</a>
+                                                        <a class="dropdown-item" href="#">Something else here</a>
+                                                    </div>
+                                                </div>
+                                                <div class="dropdown mr-1">
+                                                    <button type="button"
+                                                        class="btn btn-secondary btn-sm dropdown-toggle"
+                                                        id="dropdownMenuOffset" data-toggle="dropdown"
+                                                        aria-haspopup="true" aria-expanded="false" data-offset="10,20">
+                                                        منبع حضوری
+                                                    </button>
+                                                    <div class="dropdown-menu dropdown-menu-right"
+                                                        aria-labelledby="dropdownMenuOffset">
+                                                        <a class="dropdown-item" href="#">Action</a>
+                                                        <a class="dropdown-item" href="#">Another action</a>
+                                                        <a class="dropdown-item" href="#">Something else here</a>
+                                                    </div>
+                                                </div>
+                                                <div class="dropdown mr-1">
+                                                    <button type="button" class="btn btn-success kt-font-boldest btn-sm dropdown-toggle"
+                                                        id="dropdownMenuOffset" data-toggle="dropdown"
+                                                        aria-haspopup="true" aria-expanded="false" data-offset="10,20">
+                                                        واحد : خدمات مشتریان
+                                                    </button>
+                                                    <div class="dropdown-menu dropdown-menu-right"
+                                                        aria-labelledby="dropdownMenuOffset">
+                                                        <a class="dropdown-item" href="#">Action</a>
+                                                        <a class="dropdown-item" href="#">Another action</a>
+                                                        <a class="dropdown-item" href="#">Something else here</a>
+                                                    </div>
+                                                </div>
+
+
+
+
+                                            </div>
+
+                                        </div>
+                                    </div>
+
+                                    <!--end::Portlet-->
+
+                                    <!--begin::Portlet-->
+                                    <div class="kt-portlet">
+
+                                        <div class="kt-portlet__body">
+                                            <div>
+                                                <ul class="nav nav-pills" role="tablist">
+                                                    <li class="nav-item ">
+                                                        <a class="nav-link active kt-font-boldest" data-toggle="tab"
+                                                            href="#kt_tabs_6_1"><i class="la la-gear"></i>گزارشات</a>
+                                                    </li>
+
+                                                    <li class="nav-item">
+                                                        <a class="nav-link kt-font-boldest" data-toggle="tab" href="#kt_tabs_6_3"><i
+                                                                class="la la-map-marker"></i>یادداشت شخصی</a>
+                                                    </li>
+                                                    <li class="nav-item">
+                                                        <a class="nav-link kt-font-boldest" data-toggle="tab" href="#kt_tabs_6_4"><i
+                                                                class="la la-question-circle"></i>وقایع</a>
+                                                    </li>
+                                                </ul>
+                                                <div class="tab-content">
+                                                    <div class="tab-pane active kt-font-boldest" id="kt_tabs_6_1" role="tabpanel">
+
+
+                                                        <!--Begin::Timeline -->
+                                                        <div class="kt-timeline">
+
+                                                            <form class="kt-form kt-form--label-right">
+                                                                <div class="kt-portlet__body">
+                                                                    <div class="form-group row">
+                                                                        <div
+                                                                            class="col-lg-12 col-md-12 col-sm-12 is-valid validate">
+                                                                            <textarea name="content"
+                                                                                class="form-control"
+                                                                                data-provide="markdown"
+                                                                                rows="10"></textarea>
+                                                                        </div>
+
+                                                                    </div>
+                                                                    <div>
+                                                                        <button type="submit"
+                                                                            class="btn btn-primary">ثبت رویداد</button>
+                                                                        <button type="reset"
+                                                                            class="btn btn-secondary">پاک کردن
+                                                                            متن</button>
+                                                                    </div>
+                                                                </div>
+
+                                                            </form>
+
+                                                            <!--Begin::Item -->
+                                                            <div class="kt-timeline__item kt-timeline__item--success">
+                                                                <div class="kt-timeline__item-section">
+                                                                    <div class="kt-timeline__item-section-border">
+                                                                        <div class="kt-timeline__item-section-icon">
+                                                                            <i
+                                                                                class="flaticon-psd  kt-font-success"></i>
+                                                                        </div>
+                                                                    </div>
+                                                                    <span class="kt-timeline__item-datetime">13:45 عصر
+                                                                        <span
+                                                                            class="badge badge-warning">12/02/1402</span></span>
+                                                                </div>
+                                                                <p href="" class="kt-timeline__item-text kt-font-bold">
+                                                                    کولر موجود 8000 بوده و تحویل داده شده است
+                                                                </p>
+                                                                <div class="kt-timeline__item-info">
+                                                                    سجاد فرهود
+                                                                </div>
+                                                            </div>
+
+                                                            <!--End::Item -->
+
+                                                            <!--Begin::Item -->
+                                                            <div class="kt-timeline__item kt-timeline__item--danger">
+                                                                <div class="kt-timeline__item-section">
+                                                                    <div class="kt-timeline__item-section-border">
+                                                                        <div class="kt-timeline__item-section-icon">
+                                                                            <i
+                                                                                class="flaticon-safe-shield-protection kt-font-danger"></i>
+                                                                        </div>
+                                                                    </div>
+                                                                    <span class="kt-timeline__item-datetime">13:45 عصر
+                                                                        <span
+                                                                            class="badge badge-warning">12/02/1402</span></span>
+
+                                                                </div>
+                                                                <p href="" class="kt-timeline__item-text kt-font-bold">
+                                                                    کولر موجود 8000 بوده و تحویل داده شده است
+                                                                </p>
+                                                                <div class="kt-timeline__item-info">
+                                                                    عباس دولت
+                                                                </div>
+                                                            </div>
+                                                            <!--End::Item -->
+
+
+
+                                                            <!--Begin::Item -->
+                                                            <div class="kt-timeline__item kt-timeline__item--info">
+                                                                <div class="kt-timeline__item-section">
+                                                                    <div class="kt-timeline__item-section-border">
+                                                                        <div class="kt-timeline__item-section-icon">
+                                                                            <i class="flaticon-bell kt-font-info"></i>
+                                                                        </div>
+                                                                    </div>
+                                                                    <span class="kt-timeline__item-datetime">13:45 عصر
+                                                                        <span
+                                                                            class="badge badge-warning">12/02/1402</span></span>
+                                                                </div>
+                                                                <p href="" class="kt-timeline__item-text kt-font-bold">
+                                                                    کولر موجود 8000 بوده و تحویل داده شده است
+                                                                </p>
+                                                                <div class="kt-timeline__item-info">
+                                                                    سجاد فرهود
+                                                                </div>
+                                                            </div>
+
+                                                            <!--End::Item -->
+
+
+                                                        </div>
+
+                                                        <!--End::Timeline -->
+
+
+
+                                                    </div>
+
+                                                    <div class="tab-pane" id="kt_tabs_6_3" role="tabpanel">
+                                                        <div class="kt-timeline">
+                                                            <div class="alert alert-secondary" role="alert">
+                                                                <div class="alert-text">یادداشت‌های این بخش فقط برای شما
+                                                                    قابل نمایش است
+                                                                </div>
+                                                            </div>
+
+                                                            <form class="kt-form kt-form--label-right">
+                                                                <div class="kt-portlet__body">
+                                                                    <div class="form-group row">
+                                                                        <div
+                                                                            class="col-lg-12 col-md-12 col-sm-12 is-valid validate">
+                                                                            <textarea name="content"
+                                                                                class="form-control"
+                                                                                data-provide="markdown"
+                                                                                rows="10"></textarea>
+                                                                        </div>
+
+                                                                    </div>
+                                                                    <div>
+                                                                        <button type="submit"
+                                                                            class="btn btn-primary">ثبت رویداد</button>
+                                                                        <button type="reset"
+                                                                            class="btn btn-secondary">پاک کردن
+                                                                            متن</button>
+                                                                    </div>
+                                                                </div>
+
+                                                            </form>
+
+                                                            <!--Begin::Item -->
+                                                            <div class="kt-timeline__item kt-timeline__item--success">
+                                                                <div class="kt-timeline__item-section">
+                                                                    <div class="kt-timeline__item-section-border">
+                                                                        <div class="kt-timeline__item-section-icon">
+                                                                            <i
+                                                                                class="flaticon-psd  kt-font-success"></i>
+                                                                        </div>
+                                                                    </div>
+                                                                    <span class="kt-timeline__item-datetime">13:45 عصر
+                                                                        <span
+                                                                            class="badge badge-warning">12/02/1402</span></span>
+                                                                </div>
+                                                                <a href="" class="kt-timeline__item-text">
+                                                                    کولر موجود 8000 بوده و تحویل داده شده است
+                                                                </a>
+                                                                <div class="kt-timeline__item-info">
+                                                                    سجاد فرهود
+                                                                </div>
+                                                            </div>
+
+                                                            <!--End::Item -->
+
+                                                            <!--Begin::Item -->
+                                                            <div class="kt-timeline__item kt-timeline__item--danger">
+                                                                <div class="kt-timeline__item-section">
+                                                                    <div class="kt-timeline__item-section-border">
+                                                                        <div class="kt-timeline__item-section-icon">
+                                                                            <i
+                                                                                class="flaticon-safe-shield-protection kt-font-danger"></i>
+                                                                        </div>
+                                                                    </div>
+                                                                    <span class="kt-timeline__item-datetime">13:45 عصر
+                                                                        <span
+                                                                            class="badge badge-warning">12/02/1402</span></span>
+
+                                                                </div>
+                                                                <a href="" class="kt-timeline__item-text">
+                                                                    کولر خریداری شد و تحویل مشتری شد
+                                                                </a>
+                                                                <div class="kt-timeline__item-info">
+                                                                    عباس دولت
+                                                                </div>
+                                                            </div>
+                                                            <!--End::Item -->
+
+
+
+                                                            <!--Begin::Item -->
+                                                            <div class="kt-timeline__item kt-timeline__item--info">
+                                                                <div class="kt-timeline__item-section">
+                                                                    <div class="kt-timeline__item-section-border">
+                                                                        <div class="kt-timeline__item-section-icon">
+                                                                            <i class="flaticon-bell kt-font-info"></i>
+                                                                        </div>
+                                                                    </div>
+                                                                    <span class="kt-timeline__item-datetime">13:45 عصر
+                                                                        <span
+                                                                            class="badge badge-warning">12/02/1402</span></span>
+                                                                </div>
+                                                                <a href="" class="kt-timeline__item-text">
+                                                                    کولر خریداری شد و تحویل مشتری شد
+                                                                </a>
+                                                                <div class="kt-timeline__item-info">
+                                                                    سجاد فرهود
+                                                                </div>
+                                                            </div>
+
+                                                            <!--End::Item -->
+
+
+                                                        </div>
+
+                                                        <!--End::Timeline -->
+
+                                                    </div>
+                                                    <div class="tab-pane" id="kt_tabs_6_4" role="tabpanel">
+                                                    <div class="kt-timeline">
+                                                            
+
+                                                             
+
+                                                            <!--Begin::Item -->
+                                                            <div class="kt-timeline__item kt-timeline__item--success">
+                                                                <div class="kt-timeline__item-section">
+                                                                    <div class="kt-timeline__item-section-border">
+                                                                        <div class="kt-timeline__item-section-icon">
+                                                                            <i
+                                                                                class="flaticon-psd  kt-font-success"></i>
+                                                                        </div>
+                                                                    </div>
+                                                                    <span class="kt-timeline__item-datetime kt-font-boldest">13:45 عصر
+                                                                        <span
+                                                                            class="badge badge-warning kt-font-boldest">12/02/1402</span></span>
+                                                                </div>
+                                                                <a href="" class="kt-timeline__item-text kt-font-boldest">
+                                                                    کولر موجود 8000 بوده و تحویل داده شده است
+                                                                </a>
+                                                                <div class="kt-timeline__item-info kt-font-boldest">
+                                                                    سجاد فرهود
+                                                                </div>
+                                                            </div>
+
+                                                            <!--End::Item -->
+
+                                                            <!--Begin::Item -->
+                                                            <div class="kt-timeline__item kt-timeline__item--danger">
+                                                                <div class="kt-timeline__item-section">
+                                                                    <div class="kt-timeline__item-section-border">
+                                                                        <div class="kt-timeline__item-section-icon">
+                                                                            <i
+                                                                                class="flaticon-safe-shield-protection kt-font-danger"></i>
+                                                                        </div>
+                                                                    </div>
+                                                                    <span class="kt-timeline__item-datetime">13:45 عصر
+                                                                        <span
+                                                                            class="badge badge-warning">12/02/1402</span></span>
+
+                                                                </div>
+                                                                <a href="" class="kt-timeline__item-text">
+                                                                    کولر خریداری شد و تحویل مشتری شد
+                                                                </a>
+                                                                <div class="kt-timeline__item-info">
+                                                                    عباس دولت
+                                                                </div>
+                                                            </div>
+                                                            <!--End::Item -->
+
+
+
+                                                            <!--Begin::Item -->
+                                                            <div class="kt-timeline__item kt-timeline__item--info">
+                                                                <div class="kt-timeline__item-section">
+                                                                    <div class="kt-timeline__item-section-border">
+                                                                        <div class="kt-timeline__item-section-icon">
+                                                                            <i class="flaticon-bell kt-font-info"></i>
+                                                                        </div>
+                                                                    </div>
+                                                                    <span class="kt-timeline__item-datetime">13:45 عصر
+                                                                        <span
+                                                                            class="badge badge-warning">12/02/1402</span></span>
+                                                                </div>
+                                                                <a href="" class="kt-timeline__item-text">
+                                                                    کولر خریداری شد و تحویل مشتری شد
+                                                                </a>
+                                                                <div class="kt-timeline__item-info">
+                                                                    سجاد فرهود
+                                                                </div>
+                                                            </div>
+
+                                                            <!--End::Item -->
+
+
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+                                </div>
+                            </div>
+
+                            <!--end::Row-->
+
+                            <!-- -----------------------------------------------End Primary Content----------------------------------------------- -->
+
+
+                            <!--end::Dashboard 1-->
+                        </div>
+
+                        <!-- end:: Content -->
+                    </div>
+
+                    <!-- begin:: Footer -->
+                    {% include "partials/footer.html" %}
+                    <!-- end:: Footer -->
+                </div>
+
+                <!-- end:: Wrapper -->
+            </div>
+
+            <!-- end:: Page -->
+        </div>
+
+        <!-- end:: Root -->
+
+
+
+
+
+
+        <!-- begin::Global Config(global config for global JS sciprts) -->
+        {% include "partials/script.html" %}
+        <!--end::Page Scripts -->
+    </body>
+
+    <!-- end::Body -->
+
+</html>
