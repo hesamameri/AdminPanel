@@ -2,9 +2,16 @@ from django.urls import path
 from . import views
 from django.conf import settings
 from django.conf.urls.static import static
-
+app_name = 'ticket'
 urlpatterns = [
-    path('confirmTicket', views.confirm_ticket_view, name='confirmTicket'),
+    path('confirmticket', views.confirm_ticket_view, name='confirmTicket'),
+    path('inboxticket', views.inbox_ticket_view, name='inboxTicket'),
+    path('newticket', views.new_ticket_view, name='newTicket'),
+    path('organticket', views.organ_ticket_view, name='organTicket'),
+    path('qualityticket', views.quality_ticket_view, name='qualityTicket'),
+    path('sentticket', views.sent_ticket_view, name='sentTicket'),
+    path('viewticket', views.view_ticket_view, name='viewTicket'),
+    path('viewticketQuality', views.viewQuality_ticket_view, name='viewTicketQuality'),
     
    
 ]
