@@ -114,7 +114,7 @@
 																<th scope="row">سجاد فرهود</th>
 																<td>09300702421</td>
 																<td>شهریار - بلوار رسول اکرم، خیابان شهید طوقانی، کوچه نیلوفر، پلاک 5، طبقه اول	</td>
-																<td>
+																<td> 
                                                                 <a class="badge badge-success text-white">انتخاب مشتری 
                                                                                                               </td>
 															</tr>
@@ -180,7 +180,7 @@
 													</table>
 
 <!--end: Datatable -->
-</div>
+    </div>
 
 
 
@@ -188,7 +188,7 @@
 										<div class="modal-footer">
 											<button type="button" class="btn btn-outline-danger" data-dismiss="modal">بستن</button>
 											<button type="button" class="btn btn-outline-brand">انتخاب</button>
-																</div>
+										</div>
 															</div>
 								</div>
 							</div>
@@ -211,11 +211,10 @@
                                                     <label class="kt-font-dark kt-font-boldest">درخواست کننده</label>
 													<div class="input-group">
                                                     <select class="form-control shadow-sm" id="exampleSelect1">
-                                                            <option> تماس گیرنده</option>
-                                                            <option value="1">مشتری </option>
-                                                            <option value="1">پرسنل</option>
-                                                            <option value="1">سایر</option>
-                                                        </select>
+                                                        {% for item in data.source_type %}
+                                                            <option>{{ item.name }}</option>
+                                                        {% endfor %}
+                                                    </select>
 														<div class="input-group-append">
 															<a type="button" class="btn btn-secondary shadow-sm" data-toggle="modal" data-target=".bd-example-modal-lg">
 																<i class="fa fa-user  pl-2 shake_icon"> <small>انتخاب کنید</small> </i>
@@ -228,10 +227,9 @@
                                                             <label class="kt-font-dark kt-font-boldest">واحد گیرنده تیکت</label>
 													        <div class="input-group">
                                                                 <select class="form-control shadow-sm" id="exampleSelect1">
-                                                                    <option>انتخاب واحد</option>
-                                                                    <option value="1"> خدمات مشتریان سبزوار</option>
-                                                                    <option value="1">خدمات مشتریان تهران</option>
-                                                                    <option value="1">خدمات فنی</option>
+                                                                    {% for item in data.category %}
+                                                                    <option value="{{item.id}}">{{ item.name }}</option>
+                                                                    {% endfor %}
                                                                 </select>
 														        <div class="input-group-append">
 															        <button type="button" class="btn btn-secondary shadow-sm"  aria-haspopup="true" aria-expanded="false">
@@ -245,10 +243,9 @@
                                                         <label class="kt-font-dark kt-font-boldest">نوع پیام دریافتی</label>
 													        <div class="input-group">
                                                                 <select class="form-control shadow-sm" id="exampleSelect1">
-                                                                    <option>پیام دریافتی</option>
-                                                                    <option value="1">پرسش</option>
-                                                                    <option value="1">رفع ایراد</option>
-                                                                    <option value="1">انجام امور </option>
+                                                                    {% for item in data.type %}
+                                                                    <option value="{{item.id}}">{{ item.name }}</option>
+                                                                    {% endfor %}
                                                                 </select>
 														        <div class="input-group-append">
 															        <button type="button" class="btn btn-secondary shadow-sm"  aria-haspopup="true" aria-expanded="false">
@@ -268,9 +265,9 @@
                                                     <label class="kt-font-dark kt-font-boldest">نوع تماس</label>
 													        <div class="input-group">
                                                                 <select class="form-control shadow-sm" id="exampleSelect1">
-                                                                    <option>انتخاب </option>
-                                                                    <option value="1">حضوری</option>
-                                                                    <option value="1">تماس تلفنی</option>
+                                                                    {% for item in data.source %}
+                                                                    <option value="{{item.id}}">{{ item.name }}</option>
+                                                                    {% endfor %}
                                                                 </select>
 														        <div class="input-group-append">
 															        <button type="button" class="btn btn-secondary shadow-sm"  aria-haspopup="true" aria-expanded="false">

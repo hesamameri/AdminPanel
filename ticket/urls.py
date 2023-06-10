@@ -4,6 +4,7 @@ from django.conf import settings
 from django.conf.urls.static import static
 app_name = 'ticket'
 urlpatterns = [
+    path('indexticket', views.index_ticket_view, name='indexTicket'),
     path('confirmticket', views.confirm_ticket_view, name='confirmTicket'),
     path('inboxticket', views.inbox_ticket_view, name='inboxTicket'),
     path('newticket', views.new_ticket_view, name='newTicket'),
