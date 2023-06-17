@@ -204,15 +204,16 @@
                                     <div class="kt-portlet">
 
                                         <!--begin::Form-->
-                                        <form class="kt-form kt-form--label-right">
+                                        <form class="kt-form kt-form--label-right " method="POST" action="{% url 'ticket:newTicket' %}">
+                                            {% csrf_token %}
                                             <div class="kt-portlet__body">
                                                 <div class="form-group row">
                                                     <div class="col-lg-4">
                                                     <label class="kt-font-dark kt-font-boldest">درخواست کننده</label>
 													<div class="input-group">
-                                                    <select class="form-control shadow-sm" id="exampleSelect1">
+                                                    <select class="form-control shadow-sm" id="exampleSelect1" name="source_type">
                                                         {% for item in data.source_type %}
-                                                            <option>{{ item.name }}</option>
+                                                            <option value="{{ item.id }}" >{{ item.name }}</option>
                                                         {% endfor %}
                                                     </select>
 														<div class="input-group-append">
@@ -226,9 +227,9 @@
                                                     <div class="col-lg-4">
                                                             <label class="kt-font-dark kt-font-boldest">واحد گیرنده تیکت</label>
 													        <div class="input-group">
-                                                                <select class="form-control shadow-sm" id="exampleSelect1">
+                                                                <select class="form-control shadow-sm" id="exampleSelect2" name="category">
                                                                     {% for item in data.category %}
-                                                                    <option value="{{item.id}}">{{ item.name }}</option>
+                                                                    <option value="{{ item.ticket_system_category_id }}">{{ item.name }}</option>
                                                                     {% endfor %}
                                                                 </select>
 														        <div class="input-group-append">
@@ -242,9 +243,9 @@
                                                     <div class="col-lg-4">
                                                         <label class="kt-font-dark kt-font-boldest">نوع پیام دریافتی</label>
 													        <div class="input-group">
-                                                                <select class="form-control shadow-sm" id="exampleSelect1">
+                                                                <select class="form-control shadow-sm" id="exampleSelect3" name="type">
                                                                     {% for item in data.type %}
-                                                                    <option value="{{item.id}}">{{ item.name }}</option>
+                                                                    <option value="{{item.ticket_system_type_id}}">{{ item.name }}</option>
                                                                     {% endfor %}
                                                                 </select>
 														        <div class="input-group-append">
@@ -264,9 +265,9 @@
                                                     <div class="col-lg-3">
                                                     <label class="kt-font-dark kt-font-boldest">نوع تماس</label>
 													        <div class="input-group">
-                                                                <select class="form-control shadow-sm" id="exampleSelect1">
+                                                                <select class="form-control shadow-sm" id="exampleSelect4" name="source">
                                                                     {% for item in data.source %}
-                                                                    <option value="{{item.id}}">{{ item.name }}</option>
+                                                                    <option value="{{item.ticket_system_source_id}}">{{ item.name }}</option>
                                                                     {% endfor %}
                                                                 </select>
 														        <div class="input-group-append">
@@ -283,7 +284,7 @@
                                                         <label class="kt-font-dark kt-font-boldest">
                                                             نام کامل</label>
                                                         <div class="kt-input-icon">
-                                                            <input type="text" class="form-control shadow-sm">
+                                                            <input type="text" class="form-control shadow-sm" name="family">
                                                             <span
                                                                 class="kt-input-icon__icon kt-input-icon__icon--right"><span><i
                                                                         class="fa fa-user text-info"></i></span></span>
@@ -295,7 +296,7 @@
                                                         <label class="kt-font-dark kt-font-boldest">
                                                             آدرس</label>
                                                         <div class="kt-input-icon">
-                                                            <input type="text" class="form-control shadow-sm">
+                                                            <input type="text" class="form-control shadow-sm" name="address">
                                                             <span
                                                                 class="kt-input-icon__icon kt-input-icon__icon--right"><span><i
                                                                         class="fa fa-home text-warning"></i></span></span>
@@ -311,7 +312,7 @@
                                                         <label class="kt-font-dark kt-font-boldest">
                                                             شماره موبایل</label>
                                                         <div class="kt-input-icon">
-                                                            <input type="text" class="form-control shadow-sm">
+                                                            <input type="text" class="form-control shadow-sm" name="mobile">
                                                             <span
                                                                 class="kt-input-icon__icon kt-input-icon__icon--right"><span><i
                                                                         class="fa fa-mobile text-success"></i></span></span>
@@ -322,7 +323,7 @@
                                                         <label class="kt-font-dark kt-font-boldest">خلاصه
                                                             درخواست</label>
                                                         <div class="kt-input-icon">
-                                                            <input type="text" class="form-control shadow-sm">
+                                                            <input type="text" class="form-control shadow-sm" name="summary">
                                                             <span
                                                                 class="kt-input-icon__icon kt-input-icon__icon--right"><span><i
                                                                         class="fa fa-envelope-open-text text-warning"></i></span></span>
@@ -338,7 +339,7 @@
                                                             class="kt-font-dark kt-font-boldest">شرح کامل
                                                             درخواست</label>
                                                         <textarea class="form-control shadow-sm" id="exampleTextarea"
-                                                            rows="3"></textarea>
+                                                            rows="3" name="body"></textarea>
                                                         <span class="form-text kt-font-danger kt-font-bolder">لطفا شرح
                                                             درخواست را وارد نمایید</span>
                                                     </div>
@@ -351,7 +352,7 @@
 															<div data-repeater-list="demo1">
 																<div data-repeater-item class="kt-repeater__item">
                                                                     <div class="custom-file">
-                                                                        <input type="file" class="custom-file-input" id="customFile">
+                                                                        <input type="file" class="custom-file-input" id="customFile" name="attachment">
                                                                        
                                                                         <label class="custom-file-label" style="text-align: right;" for="customFile">ضمیمه های دیگر  </label>                                                          
                                                                     </div>
@@ -385,7 +386,7 @@
                                                                 <div class="modal-content">
                                                                     <div class="modal-header">
                                                                         <h5 class="modal-title"
-                                                                            id="exampleModalCenterTitle">فایل صوتی خود
+                                                                            id="exampleModalCenterTitle" name="files">فایل صوتی خود
                                                                             را انتخاب کنید</h5>
                                                                         <button type="button" class="close"
                                                                             data-dismiss="modal" aria-label="Close">
@@ -504,9 +505,9 @@
                                                 <div class="kt-form__actions">
                                                     <div class="row">
                                                         <div class="col-lg-6">
-                                                            <button type="reset" class="btn btn-success">ارسال
+                                                            <button type="submit" class="btn btn-success">ارسال
                                                                 تیکت</button>
-                                                            <button type="reset" class="btn btn-danger">پاک کردن
+                                                            <button type="Submit" class="btn btn-danger">پاک کردن
                                                                 اطلاعات</button>
                                                         </div>
 
