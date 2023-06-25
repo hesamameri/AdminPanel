@@ -40,7 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'Admin',
+    'Administrator',
     'ticket',
     'home',
     'dotenv',
@@ -70,6 +70,12 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
             ],
+            'libraries':{
+            'converter_tags': 'ticket.templatetags.converter_tags',
+            'connections_tag': 'ticket.templatetags.converter_tags',
+            'filter_tag': 'ticket.templatetags.filter_tags'
+            
+            }
         },
     },
 ]
@@ -77,6 +83,16 @@ TEMPLATES = [
 WSGI_APPLICATION = 'panel.wsgi.application'
 
 
+
+PASSWORD_HASHERS = [
+    'django.contrib.auth.hashers.PBKDF2PasswordHasher',
+    'django.contrib.auth.hashers.PBKDF2SHA1PasswordHasher',
+    'django.contrib.auth.hashers.BCryptSHA256PasswordHasher',
+    'django.contrib.auth.hashers.BCryptPasswordHasher',
+    'django.contrib.auth.hashers.SHA1PasswordHasher',
+    'django.contrib.auth.hashers.MD5PasswordHasher',
+    'django.contrib.auth.hashers.CryptPasswordHasher',
+]
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
@@ -94,7 +110,11 @@ DATABASES = {
         'PASSWORD': f'{DB_PASSWORD}',
         'HOST': f'{DB_HOST}',
         'PORT': f'{DB_PORT}',
-    }
+    # 'OPTIONS': {
+    #         'sql_mode': 'STRICT_TRANS_TABLES',
+    #     },
+   
+}
 }
 
 

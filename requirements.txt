@@ -5,3 +5,4 @@ python-dotenv==1.0.0
 sqlparse==0.4.4
 tzdata==2023.3
 pipdeptree==2.9.0
+jalali==1.2

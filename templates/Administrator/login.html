@@ -131,7 +131,7 @@
                                 </div>
 
                                 <!--begin::Form-->
-                                <form class="kt-login-v2__form kt-form" method="post" action="{% url 'login_post' %}" autocomplete="off">
+                                <form class="kt-login-v2__form kt-form" method="POST" action="{% url 'Administrator:login_view' %}" autocomplete="off">
                                     {% csrf_token %}
                                     <div class="form-group">
                                         <input class="form-control" type="text" placeholder="نام کاربری" name="username"

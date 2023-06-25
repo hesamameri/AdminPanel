@@ -1,6 +1,8 @@
 from django.shortcuts import render,redirect
-from ticket.models import Ticket, TicketSystemSource, TicketSystemType, TicketSystemStatus, TicketSystemCategory, TicketSystemPriority, TicketSystemCity
+from Administrator.models import Chart,UserChart
+from ticket.models import Ticket, TicketSystemSource, TicketSystemType, TicketSystemStatus, TicketSystemCategory, TicketSystemPriority, TicketSystemCity,TicketSystemUser
 import home
+from Administrator.models import User
 from .forms import TicketForm
 def index_ticket_view(request):
     return render(request,'./Ticket/indexTicket.html',{})
@@ -13,15 +15,17 @@ def inbox_ticket_view(request):
     return render(request,'./Ticket/inboxTicket.html',{})
 
 def new_ticket_view(request):
+    
     if request.method =='POST':
         form = TicketForm(request.POST)
         if form.is_valid():
             data = form.cleaned_data
             new_ticket = Ticket.objects.create(system_id= 1, category=data['category'],type=data['type'],obj_source_type=data['obj_source_type'],
                                                family = data['family'],summary = data['summary'],body = data['body'],
-                                               files = data['files'],address = data['address'],source = data['source'])
+                                               files = data['files'],address = data['address'],source = data['source'],status= TicketSystemStatus.objects.get(ticket_system_status_id=1),
+                                                 priority=TicketSystemPriority.objects.get(ticket_system_priority_id= 2),flag = 1)
             new_ticket.save()
-            print(new_ticket)
+            # print(new_ticket)
             return redirect('home:index')
         
     else:
@@ -55,7 +59,40 @@ def new_ticket_view(request):
         return render(request,'./Ticket/newTicket.html',{'data': data} )
 
 def organ_ticket_view(request):
-    return render(request,'./Ticket/organTicket.html',{})
+    user_id = request.session.get('user_id')
+    
+    # Get the charts associated with the user
+    user_chart = UserChart.objects.filter(user_id=user_id)[0]
+    users_chart_id = user_chart.chart_id
+    # Get the categories associated with the charts
+    categories = TicketSystemCategory.objects.filter(chart_id = users_chart_id)[0]
+    
+    # Get the tickets associated with the categories
+    tickets = Ticket.objects.filter(category_id=categories)
+    # ticket_system_type
+    # ticket_system_status
+    # ticket_system_priority
+    ticket_system_source = Ticket.objects.filter(category_id=categories).values('source_id')
+    ticket_system_type = Ticket.objects.filter(category_id=categories).values('type_id')
+    ticket_system_priority = Ticket.objects.filter(category_id=categories).values('priority_id')
+    ticket_system_status = Ticket.objects.filter(category_id=categories).values('status_id')
+    
+    source = TicketSystemSource.objects.filter(ticket_system_source_id__in = ticket_system_source)
+    type = TicketSystemType.objects.filter(ticket_system_type_id__in = ticket_system_type)
+    priority = TicketSystemPriority.objects.filter(ticket_system_priority_id__in = ticket_system_priority)
+    status = TicketSystemStatus.objects.filter(ticket_system_status_id__in = ticket_system_status)
+    
+    # Build the context for rendering the template
+    context = {
+        'tickets': tickets,
+        'categories': categories,
+        'source': source,
+        'type':type,
+        'priority':priority,
+        'status': status,
+    }
+    
+    return render(request, 'Ticket/organTicket.html', context = context)
 
 def quality_ticket_view(request):
     return render(request,'./Ticket/qualityTicket.html',{})
@@ -63,7 +100,7 @@ def quality_ticket_view(request):
 def sent_ticket_view(request):
     return render(request,'./Ticket/sentTicket.html',{})
 
-def view_ticket_view(request):
+def view_ticket_view(request,arg):
     return render(request,'./Ticket/viewTicket.html',{})
 
 def viewQuality_ticket_view(request):

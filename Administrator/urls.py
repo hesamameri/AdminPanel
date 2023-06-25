@@ -2,9 +2,11 @@ from django.urls import path
 from . import views
 from django.conf import settings
 from django.conf.urls.static import static
+from django.contrib.auth.views import LoginView
+app_name = 'Administrator'
+
 urlpatterns = [
-    path('', views.login_view, name='login'),
-    path('post/', views.login_post, name='login_post'),
+    path('', views.login_view, name='login_view'),
     path('otp/', views.otp, name='otp'),
     # path('otp/post', views.otp_post, name='otp_post'),
 

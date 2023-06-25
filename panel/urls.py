@@ -18,11 +18,11 @@ from django.contrib import admin
 from django.urls import path,include
 from django.conf import settings
 from django.conf.urls.static import static
-import Admin
+import Administrator
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('',include('Admin.urls')),
+    path('',include('Administrator.urls')),
     path('',include('home.urls')),
     path('',include('ticket.urls')),
 ]

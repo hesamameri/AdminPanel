@@ -1,4 +1,5 @@
 from django.db import models
+from Administrator.models import User
 # Here are the models for the tickets section in the panel project
 # In order to prevent confusion we will explain the purpose of each form before its code.
 # Also the models that it interacts with
@@ -11,7 +12,7 @@ class Ticket(models.Model):
     ticket_id = models.AutoField(primary_key=True)
     system = models.ForeignKey('TicketSystem', models.DO_NOTHING)
     category = models.ForeignKey('TicketSystemCategory', models.DO_NOTHING)
-    status = models.ForeignKey('TicketSystemStatus', models.DO_NOTHING,null=True, blank=True)
+    status = models.ForeignKey('TicketSystemStatus', models.DO_NOTHING, blank=True)
     type = models.ForeignKey('TicketSystemType', models.DO_NOTHING)
     source = models.ForeignKey('TicketSystemSource', models.DO_NOTHING)
     priority = models.ForeignKey('TicketSystemPriority', models.DO_NOTHING,null=True, blank=True)
@@ -176,6 +177,7 @@ class TicketSystemCategory(models.Model):
     name = models.CharField(max_length=100)
     chart_id = models.IntegerField(blank=True, null=True)
     assign_to = models.IntegerField(blank=True, null=True)
+    # assign_to = models.ForeignKey(User, models.DO_NOTHING)
     approver = models.IntegerField(blank=True, null=True)
     parent_id = models.IntegerField(blank=True, null=True)
     send_sms = models.IntegerField()
