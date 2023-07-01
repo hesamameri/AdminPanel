@@ -1,6 +1,6 @@
 from django import template
 from Administrator.models import User
-from ..models import TicketSystemCategory
+from ..models import TicketSystemCategory,TicketComment,TicketComentRead
 
 
 register = template.Library()
@@ -28,4 +28,18 @@ def publisher(ticket):
         
     else:
         return ""
+    
 
+@register.filter    
+def ticket_comment_register(register):
+    user = User.objects.get(user_id = register)
+    return user.name
+
+@register.filter    
+def ticket_doer_register(register):
+    user = User.objects.get(user_id = register)
+    return user.name
+
+# @register.simple_tag
+# def remove_duplicates(queryset):
+#     return queryset.distinct()

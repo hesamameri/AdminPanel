@@ -1,9 +1,12 @@
-from django.shortcuts import render,redirect
+from django.shortcuts import render,redirect,get_object_or_404
 from Administrator.models import Chart,UserChart
-from ticket.models import Ticket, TicketSystemSource, TicketSystemType, TicketSystemStatus, TicketSystemCategory, TicketSystemPriority, TicketSystemCity,TicketSystemUser
+from ticket.models import *
 import home
+from django.http import HttpResponse
 from Administrator.models import User
-from .forms import TicketForm
+from .forms import TicketForm,TicketUpdateForm
+from django.urls import reverse
+
 def index_ticket_view(request):
     return render(request,'./Ticket/indexTicket.html',{})
 
@@ -41,11 +44,9 @@ def new_ticket_view(request):
             {'id': 'TOHI', 'name': ''},
             {'id': 'CUSTOMER', 'name': 'مشتری'},
             {'id': 'PERSONEL', 'name': 'پرسنل'},
-            # {'id': 'BUYSELL', 'name': 'تامین کنندگان'},
-            # {'id': 'USERS', 'name': 'کاربران سیستم'},
             {'id': 'TICKETCUSTOMER', 'name': 'متفرقه'},
         ]
-        
+
         data = {
             'source': source,
             'type': type,
@@ -101,7 +102,82 @@ def sent_ticket_view(request):
     return render(request,'./Ticket/sentTicket.html',{})
 
 def view_ticket_view(request,arg):
-    return render(request,'./Ticket/viewTicket.html',{})
+    system_id = 1
+    source = TicketSystemSource.objects.filter(system_id=system_id).order_by('orderby').values('ticket_system_source_id', 'name')
+    type = TicketSystemType.objects.filter(system_id=system_id).order_by('orderby').values('ticket_system_type_id', 'name')
+    status = TicketSystemStatus.objects.filter(system_id=system_id).order_by('orderby').values('ticket_system_status_id', 'name')
+    category = TicketSystemCategory.objects.filter(system_id=system_id).order_by('orderby').values('ticket_system_category_id', 'name')
+    priority = TicketSystemPriority.objects.filter(system_id=system_id).order_by('orderby').values('ticket_system_priority_id', 'name')
+    doers = User.objects.all()
+    ticket_item = get_object_or_404(Ticket, ticket_id=arg)
+    
+    if request.method == 'POST':
+        
+        # print("Ticket item")
+        
+        form = TicketUpdateForm(request.POST)
+        print(form.is_valid())
+        # print(form.errors)
+        if form.is_valid():
+            # error_message = "Form is not valid."
+            # return HttpResponse(error_message)
+            data = form.cleaned_data
+
+            for field in data:
+                if field in form.changed_data:  # Update only the modified fields
+                    setattr(ticket_item, field, data[field])
+
+            ticket_item.save()
+
+            # Redirect to the ticket view page
+            url = reverse('ticket:viewTicket', args=[ticket_item.ticket_id])
+            return redirect(url)
+        else:
+            # ... code for handling an invalid form ...
+            error_message = "Form is not valid."
+            print(form.errors)
+            return HttpResponse(error_message)
+        
+    else:
+        
+        ticket_item = get_object_or_404(Ticket, ticket_id=arg)
+        ticket_comments = TicketComment.objects.filter(ticket_id = arg)
+        ticket_doers = TicketDoer.objects.filter(ticket_id = arg).values('doer').distinct()
+        print(ticket_doers)
+        context = {
+            'ticket':  ticket_item,
+            'source' : source,
+            'type' : type,
+            'status': status,
+            'category': category,
+            'priority': priority,
+            'comments':ticket_comments,
+            'doers' : doers,
+            'ticket_doers' : ticket_doers,
+            
+        }
+       
+        
+        return render(request,'./Ticket/viewTicket.html',context=context)
+    
+# def change_view_item(request,ticket_id,element):
+
+#     ticket_item = get_object_or_404(Ticket, ticket_id=ticket_id)
+#     form = TicketUpdateForm(request.POST, instance=ticket_item)
+
+#     if form.is_valid():
+#         # Update only the modified fields
+#         for field_name, field_value in form.cleaned_data.items():
+#             setattr(ticket_item, field_name, field_value)
+#         ticket_item.save()
+#         # Redirect to a success page or do any other necessary actions
+#         url  = reverse('ticket:viewTicket', args=ticket_item.ticket_id)
+#         return redirect(url)
+
+    
+
+
+
 
 def viewQuality_ticket_view(request):
     return render(request,'./Ticket/viewTicketQuality.html',{})

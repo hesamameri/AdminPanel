@@ -1,4 +1,7 @@
 {% load static %}
+{% load converter_tags %}
+{% load connection_tags %}
+{% load filter_tags %}
 <!DOCTYPE html>
 <html lang="fa">
 
@@ -58,7 +61,8 @@
 
 
 
-
+                        <form class="kt-form kt-form--label-right" method="POST" action="{% url 'ticket:viewTicket' ticket.ticket_id %}">
+                            {% csrf_token %}
                             <!--begin::Row-->
                             <div class="row">
                                 <div class="col-xl-3 col-lg-3">
@@ -69,13 +73,13 @@
                                         <div class="kt-widget-15__body kt-margin-t-20 kt-margin-b-20">
                                             <div class="kt-widget-15__author">
                                                 <div class="kt-widget-15__photo">
-                                                    <a href="#"><img src="{% static '/media/users/100_14.jpg' %}" alt=""
+                                                    <a href="#"><img src="{% static '/media/blog/1.png' %}" alt="" height="100" width="100"
                                                             title="" /></a>
                                                 </div>
                                                 <div class="kt-widget-15__detail kt-margin-t-20">
                                                     <h4 class="kt-widget-15__name">انجام دهنده</h4>
                                                     <div class="kt-widget-15__desc">
-                                                        سجاد فرهود
+                                                        {{ticket|data_extraction_Ticket_assign}}
                                                     </div>
                                                 </div>
                                             </div>
@@ -93,7 +97,7 @@
                                                 data-target="#exampleModal">
                                                 انجام دهنده جدید
                                             </button>
-
+                                            
                                             <!-- Modal -->
                                             <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog"
                                                 aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -112,13 +116,10 @@
 
                                                             <div class="form-group">
 
-                                                                <select class="form-control" id="exampleSelect1">
-                                                                    <option>عباس دولت ابادی</option>
-                                                                    <option value="1">محسن شهابی</option>
-                                                                    <option value="1">زارعی</option>
-                                                                    <option value="1">کلاته</option>
-                                                                    <option value="1">صاحبی</option>
-                                                                    <option value="1">ریوندی</option>
+                                                                <select class="form-control" id="exampleSelect1" name="doer">
+                                                                    {% for doer in doers %}
+                                                                    <option value="{{doer.user_id}}">{{doer.name}}</option>
+                                                                    {% endfor %}
                                                                 </select>
                                                             </div>
 
@@ -126,19 +127,20 @@
                                                         <div class="modal-footer">
                                                             <button type="button" class="btn btn-outline-brand"
                                                                 data-dismiss="modal">بستن</button>
-                                                            <button type="button" class="btn btn-brand">انتخاب</button>
+                                                            <button type="submit" class="btn btn-brand">انتخاب</button>
                                                         </div>
                                                     </div>
                                                 </div>
 
 
                                             </div>
+                                            
+                                            {% for item in ticket_doers%}
                                             <div class="kt-margin-t-10">
-                                                <span class="badge badge-info">عباس دولت آبادی</span>
+                                                <span class="badge badge-info">{{item.doer|ticket_doer_register}}</span>
                                             </div>
-                                            <div class="kt-margin-t-10">
-                                                <span class="badge badge-info">عباس دولت آبادی</span>
-                                            </div>
+                                            {% endfor %}
+                                            
                                         </div>
                                     </div>
 
@@ -152,91 +154,74 @@
                                         <div class="kt-portlet__body">
 
                                             <div class="d-flex">
+                                                
                                                 <div class="dropdown mr-1">
-                                                    <button type="button" class="btn btn-info btn-sm dropdown-toggle kt-font-boldest"
-                                                        id="dropdownMenuOffset" data-toggle="dropdown"
-                                                        aria-haspopup="true" aria-expanded="false" data-offset="10,20">
-                                                        وضعیت : درحال انجام
-                                                    </button>
-                                                    <div class="dropdown-menu dropdown-menu-right"
-                                                        aria-labelledby="dropdownMenuOffset">
-                                                        <a class="dropdown-item" href="#">
-                                                            <i class="fa fa-list-alt text-warning"></i>جدید
-                                                        </a>
-                                                        <a class="dropdown-item " href="#"><i
-                                                                class="fa fa-briefcase text-success"></i>در حال
-                                                            انجام</a>
-                                                        <a class="dropdown-item" href="#"><i
-                                                                class="fa fa-award text-primary"></i>انجام
-                                                            شده</a>
-                                                        <a class="dropdown-item" href="#"><i
-                                                                class="fa fa-window-close text-danger"></i>بسته
-                                                            شده</a>
-                                                        <a class="dropdown-item" href="#"><i
-                                                                class="fa fa-headphones text-warning"></i>پاسخ
-                                                            مشتری</a>
-                                                        <a class="dropdown-item" href="#"><i
-                                                                class="fa fa-users-cog text-primary"></i>منتر شخص
-                                                            ثالث</a>
-                                                        <a class="dropdown-item" href="#"><i
-                                                                class="fa fa-user-secret text-danger"></i>تکراری</a>
-                                                    </div>
+                                                    <select class="btn btn-success btn-sm kt-font-boldest" id="dropdownMenuOffset1" name="status">
+                                                        <option value="{{ticket.status.ticket_system_status_id}}">  وضعیت : {{ticket.status.name}} </option>
+                                                        {% for item in status %}
+                                                            {% if item.name != ticket.status.name %}
+                                                                <!-- Render the item -->
+                                                                <option value="{{item.ticket_system_status_id}}">{{item.name}}</option>
+                                                            {% endif %}
+                                                        
+                                                        {% endfor %}
+                                                    </select>
                                                 </div>
+                                                
                                                 <div class="dropdown mr-1">
-                                                    <button type="button"
-                                                        class="btn btn-secondary btn-sm dropdown-toggle"
-                                                        id="dropdownMenuOffset" data-toggle="dropdown"
-                                                        aria-haspopup="true" aria-expanded="false" data-offset="10,20">
-                                                        اولویت : زیاد
-                                                    </button>
-                                                    <div class="dropdown-menu dropdown-menu-right"
-                                                        aria-labelledby="dropdownMenuOffset">
-                                                        <a class="dropdown-item" href="#">Action</a>
-                                                        <a class="dropdown-item" href="#">Another action</a>
-                                                        <a class="dropdown-item" href="#">Something else here</a>
-                                                    </div>
+                                                    <select class="btn btn-success btn-sm dropdown-toggle kt-font-boldest" id="dropdownMenuOffset2"
+                                                        data-toggle="dropdown" name="priority" aria-haspopup="false" aria-expanded="false" data-offset="10,20">
+                                                        <option value="{{ticket.priority.ticket_system_priority_id}}">اولویت : {{ticket.priority.name}}</option>
+                                                        {% for item in priority %}
+                                                            {% if item.name != ticket.priority.name %}
+                                                                <!-- Render the item -->
+                                                                <option value="{{item.ticket_system_priority_id}}">{{item.name}}</option>
+                                                            {% endif %}
+                                                        
+                                                        {% endfor %}
+                                                    </select>
                                                 </div>
+                                                
                                                 <div class="dropdown mr-1">
-                                                    <button type="button"
-                                                        class="btn btn-secondary btn-sm dropdown-toggle"
-                                                        id="dropdownMenuOffset" data-toggle="dropdown"
-                                                        aria-haspopup="true" aria-expanded="false" data-offset="10,20">
-                                                        نوع : انجام امور
-                                                    </button>
-                                                    <div class="dropdown-menu dropdown-menu-right"
-                                                        aria-labelledby="dropdownMenuOffset">
-                                                        <a class="dropdown-item" href="#">Action</a>
-                                                        <a class="dropdown-item" href="#">Another action</a>
-                                                        <a class="dropdown-item" href="#">Something else here</a>
-                                                    </div>
+                                                    <select class="btn btn-success btn-sm kt-font-boldest" id="dropdownMenuOffset3" name="type">
+                                                        <option value="{{ticket.type.ticket_system_type_id}}">نوع : {{ticket.type.name}} </option>
+                                                        {% for item in type %}
+                                                            {% if item.name != ticket.type.name %}
+                                                                <!-- Render the item -->
+                                                                <option value="{{item.ticket_system_type_id}}">{{item.name}}</option>
+                                                            {% endif %}
+                                                        
+                                                        {% endfor %}
+                                                    </select>
                                                 </div>
+                                                
                                                 <div class="dropdown mr-1">
-                                                    <button type="button"
-                                                        class="btn btn-secondary btn-sm dropdown-toggle"
-                                                        id="dropdownMenuOffset" data-toggle="dropdown"
-                                                        aria-haspopup="true" aria-expanded="false" data-offset="10,20">
-                                                        منبع حضوری
-                                                    </button>
-                                                    <div class="dropdown-menu dropdown-menu-right"
-                                                        aria-labelledby="dropdownMenuOffset">
-                                                        <a class="dropdown-item" href="#">Action</a>
-                                                        <a class="dropdown-item" href="#">Another action</a>
-                                                        <a class="dropdown-item" href="#">Something else here</a>
-                                                    </div>
+                                                    <select class="btn btn-success btn-sm kt-font-boldest" id="dropdownMenuOffset4" name="source">
+                                                        <option value="{{ticket.source.ticket_system_source_id}}">منبع: {{ticket.source.name}}</option>
+                                                        {% for item in source %}
+                                                            {% if item.name != ticket.source.name %}
+                                                                <!-- Render the item -->
+                                                                <option value="{{item.ticket_system_source_id}}">{{item.name}}</option>
+                                                            {% endif %}
+                                                        
+                                                        {% endfor %}
+                                                    </select>
                                                 </div>
+                                                
                                                 <div class="dropdown mr-1">
-                                                    <button type="button" class="btn btn-success kt-font-boldest btn-sm dropdown-toggle"
-                                                        id="dropdownMenuOffset" data-toggle="dropdown"
-                                                        aria-haspopup="true" aria-expanded="false" data-offset="10,20">
-                                                        واحد : خدمات مشتریان
-                                                    </button>
-                                                    <div class="dropdown-menu dropdown-menu-right"
-                                                        aria-labelledby="dropdownMenuOffset">
-                                                        <a class="dropdown-item" href="#">Action</a>
-                                                        <a class="dropdown-item" href="#">Another action</a>
-                                                        <a class="dropdown-item" href="#">Something else here</a>
-                                                    </div>
+                                                    <select class="btn btn-success btn-sm kt-font-boldest" id="dropdownMenuOffset5" name="category">
+                                                        <option value="{{ticket.category.ticket_system_category_id}}">واحد : {{ticket.category.name}}</option>
+                                                        {% for item in category %}
+                                                            {% if item.name != ticket.category.name %}
+                                                                <!-- Render the item -->
+                                                                <option value="{{item.ticket_system_category_id}}">{{item.name}}</option>
+                                                            {% endif %}
+                                                        
+                                                        {% endfor %}
+                                                    </select>
                                                 </div>
+                                                
+                                                
 
 
 
@@ -276,28 +261,35 @@
                                                         <div class="kt-timeline">
 
                                                             <form class="kt-form kt-form--label-right">
+                                                                <input type="text" name="summary" class="custom-input" value="{{ ticket.summary }}"/>/
+                                                                <input type="text" name="family" class="custom-input" value="{{ ticket.family }}"/>
                                                                 <div class="kt-portlet__body">
                                                                     <div class="form-group row">
                                                                         <div
                                                                             class="col-lg-12 col-md-12 col-sm-12 is-valid validate">
-                                                                            <textarea name="content"
+                                                                            <textarea name="body"
                                                                                 class="form-control"
                                                                                 data-provide="markdown"
-                                                                                rows="10"></textarea>
+                                                                                rows="5">{{ticket.body}}</textarea>
+                                                                                
                                                                         </div>
 
                                                                     </div>
-                                                                    <div>
-                                                                        <button type="submit"
-                                                                            class="btn btn-primary">ثبت رویداد</button>
-                                                                        <button type="reset"
-                                                                            class="btn btn-secondary">پاک کردن
-                                                                            متن</button>
-                                                                    </div>
+                                                                    
                                                                 </div>
 
                                                             </form>
-
+                                                            <div>
+                                                                <button type="submit"
+                                                                    class="btn btn-primary">ثبت رویداد</button>
+                                                                <button type="reset"
+                                                                    class="btn btn-secondary">پاک کردن
+                                                                    متن</button>
+                                                            </div>
+                                                            {% if comments == None %}
+                                                                No comment available
+                                                            {% else %}
+                                                            {% for comment in comments %}
                                                             <!--Begin::Item -->
                                                             <div class="kt-timeline__item kt-timeline__item--success">
                                                                 <div class="kt-timeline__item-section">
@@ -307,66 +299,22 @@
                                                                                 class="flaticon-psd  kt-font-success"></i>
                                                                         </div>
                                                                     </div>
-                                                                    <span class="kt-timeline__item-datetime">13:45 عصر
+                                                                    <span class="kt-timeline__item-datetime">
                                                                         <span
-                                                                            class="badge badge-warning">12/02/1402</span></span>
+                                                                            class="badge badge-warning">{{comment.reg_dt|to_jalali}}</span></span>
                                                                 </div>
                                                                 <p href="" class="kt-timeline__item-text kt-font-bold">
-                                                                    کولر موجود 8000 بوده و تحویل داده شده است
+                                                                    {{comment|html_fix|default:"No comment available"}}
                                                                 </p>
                                                                 <div class="kt-timeline__item-info">
-                                                                    سجاد فرهود
+                                                                {{comment.register|ticket_comment_register}}
                                                                 </div>
                                                             </div>
-
+                                                            {% endfor %}
+                                                            {% endif %}
                                                             <!--End::Item -->
 
-                                                            <!--Begin::Item -->
-                                                            <div class="kt-timeline__item kt-timeline__item--danger">
-                                                                <div class="kt-timeline__item-section">
-                                                                    <div class="kt-timeline__item-section-border">
-                                                                        <div class="kt-timeline__item-section-icon">
-                                                                            <i
-                                                                                class="flaticon-safe-shield-protection kt-font-danger"></i>
-                                                                        </div>
-                                                                    </div>
-                                                                    <span class="kt-timeline__item-datetime">13:45 عصر
-                                                                        <span
-                                                                            class="badge badge-warning">12/02/1402</span></span>
-
-                                                                </div>
-                                                                <p href="" class="kt-timeline__item-text kt-font-bold">
-                                                                    کولر موجود 8000 بوده و تحویل داده شده است
-                                                                </p>
-                                                                <div class="kt-timeline__item-info">
-                                                                    عباس دولت
-                                                                </div>
-                                                            </div>
-                                                            <!--End::Item -->
-
-
-
-                                                            <!--Begin::Item -->
-                                                            <div class="kt-timeline__item kt-timeline__item--info">
-                                                                <div class="kt-timeline__item-section">
-                                                                    <div class="kt-timeline__item-section-border">
-                                                                        <div class="kt-timeline__item-section-icon">
-                                                                            <i class="flaticon-bell kt-font-info"></i>
-                                                                        </div>
-                                                                    </div>
-                                                                    <span class="kt-timeline__item-datetime">13:45 عصر
-                                                                        <span
-                                                                            class="badge badge-warning">12/02/1402</span></span>
-                                                                </div>
-                                                                <p href="" class="kt-timeline__item-text kt-font-bold">
-                                                                    کولر موجود 8000 بوده و تحویل داده شده است
-                                                                </p>
-                                                                <div class="kt-timeline__item-info">
-                                                                    سجاد فرهود
-                                                                </div>
-                                                            </div>
-
-                                                            <!--End::Item -->
+                                                            
 
 
                                                         </div>
@@ -390,7 +338,7 @@
                                                                     <div class="form-group row">
                                                                         <div
                                                                             class="col-lg-12 col-md-12 col-sm-12 is-valid validate">
-                                                                            <textarea name="content"
+                                                                            <textarea 
                                                                                 class="form-control"
                                                                                 data-provide="markdown"
                                                                                 rows="10"></textarea>
@@ -571,7 +519,7 @@
 
                                 </div>
                             </div>
-
+                        
                             <!--end::Row-->
 
                             <!-- -----------------------------------------------End Primary Content----------------------------------------------- -->
@@ -603,6 +551,8 @@
 
         <!-- begin::Global Config(global config for global JS sciprts) -->
         {% include "partials/script.html" %}
+        <!-- <script src="{% static 'js/ajax.js' %}"></script> -->
+
         <!--end::Page Scripts -->
     </body>
 

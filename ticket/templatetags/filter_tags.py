@@ -1,7 +1,7 @@
 from django import template
 from Administrator.models import User
 from ..models import TicketSystemCategory
-
+import re
 
 register = template.Library()
 
@@ -11,6 +11,16 @@ def None_fix(ticket_item):
         return ' '
     else:
         return ticket_item
-
-
+    
+@register.filter
+def html_fix(todo):
+    if todo != None:
+        body = todo.body
+        if body != None:
+            clean_body =  re.sub('<.*?>', '', body)
+            clean_text = re.sub('&\w+;', '', clean_body)
+            return clean_text
+        
+    else:
+        return "ok"
     
