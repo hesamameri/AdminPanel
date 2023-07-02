@@ -7,15 +7,23 @@ from Administrator.models import User
 from .forms import TicketForm,TicketUpdateForm
 from django.urls import reverse
 
-def index_ticket_view(request):
+def index_ticket_view(request):                             
     return render(request,'./Ticket/indexTicket.html',{})
 
 def confirm_ticket_view(request):
     return render(request,'./Ticket/confirmTicket.html',{})
 
-def inbox_ticket_view(request):
-    
-    return render(request,'./Ticket/inboxTicket.html',{})
+def inbox_ticket_view(request):                         
+    # we want to have all the tickets that belong to the user here? its about the doer!
+    # we assign the doer after the ticket has appeared in organ template and changed by the department head. the department head
+    # assigns the doer for the task and in the inbox the user which has a user_id will see all the ticekts that has the doer with the number
+    # corresponding to the user_id
+    user_id = request.session.get('user_id')
+    tickets = Ticket.objects.filter(doer = user_id)
+    context = {
+        'tickets' : tickets,
+    }
+    return render(request,'./Ticket/inboxTicket.html',context=context)
 
 def new_ticket_view(request):
     
@@ -99,7 +107,12 @@ def quality_ticket_view(request):
     return render(request,'./Ticket/qualityTicket.html',{})
 
 def sent_ticket_view(request):
-    return render(request,'./Ticket/sentTicket.html',{})
+    user_id = request.session.get('user_id')
+    tickets = Ticket.objects.filter(register = user_id)
+    context = {
+        'tickets' : tickets,
+    }
+    return render(request,'./Ticket/sentTicket.html',context=context)
 
 def view_ticket_view(request,arg):
     system_id = 1

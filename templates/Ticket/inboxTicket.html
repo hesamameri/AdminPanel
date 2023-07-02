@@ -1,4 +1,7 @@
 {% load static %}
+{% load converter_tags %}
+{% load connection_tags %}
+{% load filter_tags %}
 <!DOCTYPE html>
 <html lang="fa">
 
@@ -68,31 +71,33 @@
 										<div class="kt-portlet__body">
 
 										
+											
 												
-
-
+													{% for ticket in tickets %}
 													<div class="kt-margin-b-20">
 														<div class="kt-widget-14__body">
 															<div class="kt-widget-14__product">
 																<div class="kt-widget-14__thumb">
 																	<a href="#"><img src="{% static '/media/blog/1.png' %}" class="kt-widget-14__image--landscape" alt="" title="" /></a>
 																</div>
+					
 																<div class="kt-widget-14__content">
 																	<a href="#">
-																		<h3 class="kt-widget-14__title kt-font-boldest">بازدید جهت خرید /هادی موذن</h3>
+																		<h3 class="kt-widget-14__title kt-font-boldest">{{ ticket.summary|None_fix }} /{{ ticket.family|None_fix}}</h3>
 																	</a>
 																	<div class="kt-widget-14__desc kt-font-boldest kt-font-info">
-																	محمدحسن مقدم-پردیس نیکان صدرا - - 09128200824
+																	{{ ticket.address|None_fix }} - {{ticket.mobile|None_fix}}
 																	</div>
 																</div>
 															</div>
 															<div class="kt-widget-14__data">
 																<div class="kt-widget-14__info">
-																	<div class="kt-widget-14__info-title kt-font-brand">30</div>
-																	<div class="kt-widget-14__desc">فروردین</div>
+																	<div class="kt-widget-14__info-title kt-font-brand">{{ ticket.reg_dt|to_jalali}}</div>
+																	<div class="kt-widget-14__desc"></div>
+																	
 																</div>
 																<div class="kt-widget-14__info">
-																	<div class="kt-widget-14__info-title">SUP878454</div>
+																	<div class="kt-widget-14__info-title">{{ticket|ticket_index}}</div>
 																	<div class="kt-widget-14__desc">شماره تیکت</div>
 																</div>
 															</div>
@@ -100,114 +105,26 @@
 														<div class="kt-widget-14__foot">
 															<div class="kt-widget-14__foot-info">
 																<div class="kt-widget-14__foot-label btn btn-sm btn-label-brand btn-bold">
-																	ثبت کننده : مریم زارعی
+																	ثبت کننده : {{ticket|publisher}}
 																</div>
-																
+																<div class="kt-widget-14__foot-label btn btn-sm btn-label-brand btn-bold">
+																	انجام دهنده :{{ticket|data_extraction_Ticket_assign}}
+																</div>
 																<div class="kt-widget-14__foot-label btn btn-sm btn-success btn-bold">
-																	در حال انجام
+																	{{ticket.status.name}}
 																</div>
 																
 															</div>
 															<div class="kt-widget-14__foot-toolbar">
-																<a href="#" class="btn btn-success btn-sm btn-bold btn-upper">مشاهده</a>
-															
+																<a href="{% url 'ticket:viewTicket' ticket.ticket_id %}" class="btn btn-success btn-sm btn-bold btn-upper">مشاهده</a>
+																<a href="#" class="btn btn-warning btn-sm btn-bold btn-upper">دسته بندی :{{ categories.name }}</a>
 															</div>
 														</div>
 													</div>
-
-
 													<hr class="kt-separator">
-													<div class="kt-margin-t-20 kt-margin-b-20">
-														<div class="kt-widget-14__body">
-															<div class="kt-widget-14__product">
-																<div class="kt-widget-14__thumb">
-																	<a href="#"><img src="{% static '/media/blog/1.png' %}" class="kt-widget-14__image--landscape" alt="" title="" /></a>
-																</div>
-																<div class="kt-widget-14__content">
-																	<a href="#">
-																		<h3 class="kt-widget-14__title kt-font-boldest">بازدید جهت خرید /مرتضی رضایی</h3>
-																	</a>
-																	<div class="kt-widget-14__desc kt-font-boldest kt-font-info">
-																	محمدحسن مقدم-پردیس نیکان صدرا - - 09128200824
-																	</div>
-																</div>
-															</div>
-															<div class="kt-widget-14__data">
-																<div class="kt-widget-14__info">
-																	<div class="kt-widget-14__info-title kt-font-brand">29</div>
-																	<div class="kt-widget-14__desc">فروردین</div>
-																</div>
-																<div class="kt-widget-14__info">
-																	<div class="kt-widget-14__info-title">SUP878454</div>
-																	<div class="kt-widget-14__desc">شماره تیکت</div>
-																</div>
-															</div>
-														</div>
-														<div class="kt-widget-14__foot">
-															<div class="kt-widget-14__foot-info">
-																<div class="kt-widget-14__foot-label btn btn-sm btn-label-brand btn-bold">
-																	ثبت کننده : مریم زارعی
-																</div>
-																
-																<div class="kt-widget-14__foot-label btn btn-sm btn-warning btn-bold">
-																	تیکت جدید
-																</div>
-																
-															</div>
-															<div class="kt-widget-14__foot-toolbar">
-																<a href="#" class="btn btn-success btn-sm btn-bold btn-upper">مشاهده</a>
-																
-															</div>
-														</div>
-													</div>
+													{% endfor %}
 
-
-													<hr class="kt-separator">
-													<div class="kt-margin-t-20 kt-margin-b-20">
-														<div class="kt-widget-14__body">
-															<div class="kt-widget-14__product">
-																<div class="kt-widget-14__thumb">
-																	<a href="#"><img src="{% static '/media/blog/1.png' %}" class="kt-widget-14__image--landscape" alt="" title="" /></a>
-																</div>
-																<div class="kt-widget-14__content">
-																	<a href="#">
-																		<h3 class="kt-widget-14__title kt-font-boldest">بازدید جهت خرید /هادی موذن</h3>
-																	</a>
-																	<div class="kt-widget-14__desc kt-font-boldest kt-font-info">
-																	محمدحسن مقدم-پردیس نیکان صدرا - - 09128200824
-																	</div>
-																</div>
-															</div>
-															<div class="kt-widget-14__data">
-																<div class="kt-widget-14__info">
-																	<div class="kt-widget-14__info-title kt-font-brand">25</div>
-																	<div class="kt-widget-14__desc">فروردین</div>
-																</div>
-																<div class="kt-widget-14__info">
-																	<div class="kt-widget-14__info-title">SUP878454</div>
-																	<div class="kt-widget-14__desc">شماره تیکت</div>
-																</div>
-															</div>
-														</div>
-														<div class="kt-widget-14__foot">
-															<div class="kt-widget-14__foot-info">
-																<div class="kt-widget-14__foot-label btn btn-sm btn-label-brand btn-bold">
-																	ثبت کننده : مریم زارعی
-																</div>
-																
-																<div class="kt-widget-14__foot-label btn btn-sm btn-danger btn-bold">
-																	منتظر شخص ثالث
-																</div>
-																
-															</div>
-															<div class="kt-widget-14__foot-toolbar">
-																<a href="#" class="btn btn-success btn-sm btn-bold btn-upper">مشاهده</a>
-																
-														</div>
-													</div>
-
-
-													<hr class="kt-separator">
+													
 
 													
 
@@ -228,14 +145,6 @@
 								
 							
 							</div>
-
-							<!--end::Row-->
-
-<!-- -----------------------------------------------End Primary Content----------------------------------------------- -->
-
-
-							<!--end::Dashboard 1-->
-						</div>
 
 						<!-- end:: Content -->
 					</div>
