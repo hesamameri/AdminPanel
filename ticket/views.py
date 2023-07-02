@@ -78,6 +78,14 @@ def organ_ticket_view(request):
     
     # Get the tickets associated with the categories
     tickets = Ticket.objects.filter(category_id=categories)
+    excluded_values = [4,5,8,9]
+
+    # Apply exclusion to the queryset based on values in one field
+    tickets = tickets.exclude(status_id__in=excluded_values)
+    new_tickets = tickets.filter(status_id=1).order_by('-reg_dt')
+    ongoing_tickets = tickets.filter(status_id=3).order_by('-reg_dt')
+    customer_response_tickets = tickets.filter(status_id=6).order_by('-reg_dt')
+    tickets = new_tickets|ongoing_tickets|customer_response_tickets
     # ticket_system_type
     # ticket_system_status
     # ticket_system_priority
@@ -173,19 +181,7 @@ def view_ticket_view(request,arg):
         
         return render(request,'./Ticket/viewTicket.html',context=context)
     
-# def change_view_item(request,ticket_id,element):
 
-#     ticket_item = get_object_or_404(Ticket, ticket_id=ticket_id)
-#     form = TicketUpdateForm(request.POST, instance=ticket_item)
-
-#     if form.is_valid():
-#         # Update only the modified fields
-#         for field_name, field_value in form.cleaned_data.items():
-#             setattr(ticket_item, field_name, field_value)
-#         ticket_item.save()
-#         # Redirect to a success page or do any other necessary actions
-#         url  = reverse('ticket:viewTicket', args=ticket_item.ticket_id)
-#         return redirect(url)
 
     
 
