@@ -12,7 +12,6 @@ urlpatterns = [
     path('qualityticket', views.quality_ticket_view, name='qualityTicket'),
     path('sentticket', views.sent_ticket_view, name='sentTicket'),
     path('viewticket/<int:arg>/', views.view_ticket_view, name='viewTicket'),
-    # path('viewticket/update/<int:ticket_id>/<int:item_id>', views.change_view_item, name='viewTicketUpdate'),
     path('viewticketQuality', views.viewQuality_ticket_view, name='viewTicketQuality'),
     
    

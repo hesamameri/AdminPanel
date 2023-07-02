@@ -11,7 +11,20 @@ def index_ticket_view(request):
     return render(request,'./Ticket/indexTicket.html',{})
 
 def confirm_ticket_view(request):
-    return render(request,'./Ticket/confirmTicket.html',{})
+    user_id = request.session.get('user_id')
+    
+    # Get the charts associated with the user
+    user_chart = UserChart.objects.filter(user_id=user_id)[0]
+    users_chart_id = user_chart.chart_id
+    # Get the categories associated with the charts
+    categories = TicketSystemCategory.objects.filter(chart_id = users_chart_id)[0]
+    
+    # Get the tickets associated with the categories
+    tickets = Ticket.objects.filter(category_id=categories).filter(status_id = 4)
+    context = {
+        'tickets': tickets,
+    }
+    return render(request,'./Ticket/confirmTicket.html',context=context)
 
 def inbox_ticket_view(request):                         
     # we want to have all the tickets that belong to the user here? its about the doer!
@@ -19,7 +32,7 @@ def inbox_ticket_view(request):
     # assigns the doer for the task and in the inbox the user which has a user_id will see all the ticekts that has the doer with the number
     # corresponding to the user_id
     user_id = request.session.get('user_id')
-    tickets = Ticket.objects.filter(doer = user_id)
+    tickets = Ticket.objects.filter(doer = user_id).order_by('-reg_dt')
     context = {
         'tickets' : tickets,
     }
@@ -82,10 +95,14 @@ def organ_ticket_view(request):
 
     # Apply exclusion to the queryset based on values in one field
     tickets = tickets.exclude(status_id__in=excluded_values)
-    new_tickets = tickets.filter(status_id=1).order_by('-reg_dt')
-    ongoing_tickets = tickets.filter(status_id=3).order_by('-reg_dt')
-    customer_response_tickets = tickets.filter(status_id=6).order_by('-reg_dt')
-    tickets = new_tickets|ongoing_tickets|customer_response_tickets
+    new_tickets = tickets.filter(status_id=1)
+    ongoing_tickets = tickets.filter(status_id=3)
+    customer_response_tickets = tickets.filter(status_id=6)
+    tickets = (new_tickets|ongoing_tickets|customer_response_tickets)
+    print(new_tickets)
+    print(ongoing_tickets)
+    print(customer_response_tickets)
+
     # ticket_system_type
     # ticket_system_status
     # ticket_system_priority
@@ -116,7 +133,7 @@ def quality_ticket_view(request):
 
 def sent_ticket_view(request):
     user_id = request.session.get('user_id')
-    tickets = Ticket.objects.filter(register = user_id)
+    tickets = Ticket.objects.filter(register = user_id).order_by('-reg_dt')
     context = {
         'tickets' : tickets,
     }

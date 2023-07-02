@@ -30,7 +30,7 @@ class Ticket(models.Model):
     flag = models.IntegerField(blank=True, null=True)
     files = models.CharField(max_length=255, blank=True, null=True)
     register = models.IntegerField(blank=True, null=True)
-    reg_dt = models.DateTimeField(blank=True, null=True)
+    reg_dt = models.DateTimeField(blank=True, null=True,auto_now_add=True)
     star = models.IntegerField(blank=True, null=True)
 
     class Meta:
