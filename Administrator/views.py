@@ -77,4 +77,8 @@ def otp(request):
 ##########################
 
 #write a log out view
-
+# def logout(request,user_id):
+    
+    
+#     # Redirect to login page
+#     return redirect('Administrator:login_view')

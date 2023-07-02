@@ -117,7 +117,7 @@
 															</div>
 															<div class="kt-widget-14__foot-toolbar">
 																<a href="{% url 'ticket:viewTicket' ticket.ticket_id %}" class="btn btn-success btn-sm btn-bold btn-upper">مشاهده</a>
-																<a href="#" class="btn btn-warning btn-sm btn-bold btn-upper">دسته بندی :{{ categories.name }}</a>
+																<a href="#" class="btn btn-warning btn-sm btn-bold btn-upper">دسته بندی :{{ ticket.category.name }}</a>
 															</div>
 														</div>
 													</div>

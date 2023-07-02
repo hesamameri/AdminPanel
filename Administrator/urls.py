@@ -7,6 +7,7 @@ app_name = 'Administrator'
 
 urlpatterns = [
     path('', views.login_view, name='login_view'),
+    # path('logout/<int:user_id>', views.logout, name='logout'),
     path('otp/', views.otp, name='otp'),
     # path('otp/post', views.otp_post, name='otp_post'),
 

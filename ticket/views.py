@@ -20,7 +20,7 @@ def confirm_ticket_view(request):
     categories = TicketSystemCategory.objects.filter(chart_id = users_chart_id)[0]
     
     # Get the tickets associated with the categories
-    tickets = Ticket.objects.filter(category_id=categories).filter(status_id = 4)
+    tickets = Ticket.objects.filter(category_id=categories).filter(status_id = 4).order_by('-reg_dt')
     context = {
         'tickets': tickets,
     }
@@ -99,9 +99,9 @@ def organ_ticket_view(request):
     ongoing_tickets = tickets.filter(status_id=3)
     customer_response_tickets = tickets.filter(status_id=6)
     tickets = (new_tickets|ongoing_tickets|customer_response_tickets)
-    print(new_tickets)
-    print(ongoing_tickets)
-    print(customer_response_tickets)
+    # print(new_tickets)
+    # print(ongoing_tickets)
+    # print(customer_response_tickets)
 
     # ticket_system_type
     # ticket_system_status
@@ -129,7 +129,26 @@ def organ_ticket_view(request):
     return render(request, 'Ticket/organTicket.html', context = context)
 
 def quality_ticket_view(request):
-    return render(request,'./Ticket/qualityTicket.html',{})
+    user_id = request.session.get('user_id')
+    
+    # Get the charts associated with the user
+    user_chart = UserChart.objects.filter(user_id=user_id)[0]
+    users_chart_id = user_chart.chart_id
+    # Get the categories associated with the charts
+    categories = TicketSystemCategory.objects.filter(chart_id = users_chart_id)[0]
+    
+    # Get the tickets associated with the categories
+    tickets = Ticket.objects.filter(category_id=categories)
+    
+
+    # Apply exclusion to the queryset based on values in one field
+    tickets = tickets.filter(status_id = 5).order_by('-reg_dt')
+    context = {
+        'tickets':tickets,
+        'categories':categories,
+    }
+
+    return render(request,'./Ticket/qualityTicket.html',context=context)
 
 def sent_ticket_view(request):
     user_id = request.session.get('user_id')

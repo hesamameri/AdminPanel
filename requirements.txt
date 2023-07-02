@@ -1,8 +1,11 @@
 asgiref==3.7.1
 Django==4.2.1
+jalali==1.2
+jdatetime==4.1.1
 mysqlclient==2.1.1
+persiantools==3.0.1
+pipdeptree==2.9.0
 python-dotenv==1.0.0
+pytz==2023.3
 sqlparse==0.4.4
 tzdata==2023.3
-pipdeptree==2.9.0
-jalali==1.2
