@@ -12,7 +12,7 @@ urlpatterns = [
     path('qualityticket', views.quality_ticket_view, name='qualityTicket'),
     path('sentticket', views.sent_ticket_view, name='sentTicket'),
     path('viewticket/<int:arg>/', views.view_ticket_view, name='viewTicket'),
-    path('viewticketQuality', views.viewQuality_ticket_view, name='viewTicketQuality'),
+    path('qualityticket/<int:ticket_id>', views.viewQuality_ticket_view, name='viewTicketQuality'),
     
    
 ]

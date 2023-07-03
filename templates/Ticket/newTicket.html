@@ -206,6 +206,7 @@
                                         <!--begin::Form-->
                                         <form class="kt-form kt-form--label-right " method="POST" action="{% url 'ticket:newTicket' %}">
                                             {% csrf_token %}
+                                            <input type="hidden" name="register" value="{{user.user_id}}">
                                             <div class="kt-portlet__body">
                                                 <div class="form-group row">
                                                     <div class="col-lg-4">

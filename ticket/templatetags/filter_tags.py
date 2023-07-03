@@ -23,4 +23,8 @@ def html_fix(todo):
         
     else:
         return "ok"
-    
+
+@register.filter
+def turn_service(star):
+    star_score = {1:'بد' ,2:'متوسط',3:'خوب',4:'عالی'}
+    return star_score[star]

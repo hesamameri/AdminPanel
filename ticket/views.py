@@ -47,7 +47,7 @@ def new_ticket_view(request):
             new_ticket = Ticket.objects.create(system_id= 1, category=data['category'],type=data['type'],obj_source_type=data['obj_source_type'],
                                                family = data['family'],summary = data['summary'],body = data['body'],
                                                files = data['files'],address = data['address'],source = data['source'],status= TicketSystemStatus.objects.get(ticket_system_status_id=1),
-                                                 priority=TicketSystemPriority.objects.get(ticket_system_priority_id= 2),flag = 1)
+                                                 priority=TicketSystemPriority.objects.get(ticket_system_priority_id= 2),flag = 1,register = data['register'])
             new_ticket.save()
             # print(new_ticket)
             return redirect('home:index')
@@ -85,6 +85,7 @@ def organ_ticket_view(request):
     
     # Get the charts associated with the user
     user_chart = UserChart.objects.filter(user_id=user_id)[0]
+    print(user_chart)
     users_chart_id = user_chart.chart_id
     # Get the categories associated with the charts
     categories = TicketSystemCategory.objects.filter(chart_id = users_chart_id)[0]
@@ -95,7 +96,7 @@ def organ_ticket_view(request):
 
     # Apply exclusion to the queryset based on values in one field
     tickets = tickets.exclude(status_id__in=excluded_values)
-    new_tickets = tickets.filter(status_id=1)
+    new_tickets = tickets.filter(status_id=1).order_by('-reg_dt')
     ongoing_tickets = tickets.filter(status_id=3)
     customer_response_tickets = tickets.filter(status_id=6)
     tickets = (new_tickets|ongoing_tickets|customer_response_tickets)
@@ -170,21 +171,23 @@ def view_ticket_view(request,arg):
     
     if request.method == 'POST':
         
-        # print("Ticket item")
         
         form = TicketUpdateForm(request.POST)
-        print(form.is_valid())
-        # print(form.errors)
+        
         if form.is_valid():
             # error_message = "Form is not valid."
             # return HttpResponse(error_message)
             data = form.cleaned_data
-
+            
             for field in data:
                 if field in form.changed_data:  # Update only the modified fields
                     setattr(ticket_item, field, data[field])
-
+            print()
+            if 'doer' in form.changed_data:
+                ticket_doer = TicketDoer.objects.create(ticket = ticket_item,doer = form.cleaned_data['doer'])
+                ticket_doer.save()
             ticket_item.save()
+            # print(ticket_item.doer)
 
             # Redirect to the ticket view page
             url = reverse('ticket:viewTicket', args=[ticket_item.ticket_id])
@@ -192,15 +195,15 @@ def view_ticket_view(request,arg):
         else:
             # ... code for handling an invalid form ...
             error_message = "Form is not valid."
-            print(form.errors)
+            # print(form.errors)
             return HttpResponse(error_message)
         
     else:
         
         ticket_item = get_object_or_404(Ticket, ticket_id=arg)
         ticket_comments = TicketComment.objects.filter(ticket_id = arg)
-        ticket_doers = TicketDoer.objects.filter(ticket_id = arg).values('doer').distinct()
-        print(ticket_doers)
+        ticket_doers = TicketDoer.objects.filter(ticket_id = arg).values('doer')
+        # print(ticket_doers)
         context = {
             'ticket':  ticket_item,
             'source' : source,
@@ -224,5 +227,24 @@ def view_ticket_view(request,arg):
 
 
 
-def viewQuality_ticket_view(request):
-    return render(request,'./Ticket/viewTicketQuality.html',{})
+def viewQuality_ticket_view(request,ticket_id):
+    if request.method == 'POST':
+        form_data = request.POST
+        ticket_item = Ticket.objects.get(ticket_id = ticket_id)
+        # Update the desired field
+        ticket_item.star = form_data.get('star')
+        ticket_item.save()
+        return redirect('ticket:qualityTicket')
+
+    else:
+
+        ticket_item = Ticket.objects.get(ticket_id = ticket_id)
+        ticket_doers = TicketDoer.objects.filter(ticket_id = ticket_id).values('doer').distinct()
+        ticket_comments = TicketComment.objects.filter(ticket_id = ticket_id)
+        context = {
+            'ticket': ticket_item,
+            'doers' : ticket_doers,
+            'comments':ticket_comments,
+        }
+        print(ticket_doers)
+        return render(request,'./Ticket/viewTicketQuality.html',context=context)

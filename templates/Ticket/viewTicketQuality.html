@@ -1,0 +1,365 @@
+{% load static %}
+{% load converter_tags %}
+{% load connection_tags %}
+{% load filter_tags %}
+<!DOCTYPE html>
+<html lang="fa">
+
+    <!-- begin::Head -->
+    {% include "partials/head.html" %}
+
+    <!-- end::Head -->
+
+    <!-- begin::Body -->
+
+    <body dir="rtl"
+        class="kt-quick-panel--right kt-demo-panel--right kt-offcanvas-panel--right kt-header--fixed kt-header-mobile--fixed kt-subheader--enabled kt-subheader--transparent kt-aside--enabled kt-aside--fixed kt-page--loading">
+
+        <!-- begin:: Header Mobile -->
+        {% include "partials/MobileHeader.html" %}
+
+        <!-- end:: Header Mobile -->
+
+        <!-- begin:: Root -->
+        <div class="kt-grid kt-grid--hor kt-grid--root">
+
+            <!-- begin:: Page -->
+            <div class="kt-grid__item kt-grid__item--fluid kt-grid kt-grid--ver kt-page">
+
+                <!-- begin:: Aside -->
+
+                <!-- end:: Aside Brand -->
+
+                <!-- begin:: Aside Menu -->
+                {% include "partials/sidebar.html" %}
+
+                <!-- end:: Aside Menu -->
+
+                <!-- begin:: Aside Footer -->
+
+
+                <!-- end:: Aside -->
+
+                <!-- begin:: Wrapper -->
+                <div class="kt-grid__item kt-grid__item--fluid kt-grid kt-grid--hor kt-wrapper" id="kt_wrapper">
+
+                    <!-- begin:: Header -->
+                    {% include "partials/header.html" %}
+                    <!-- end:: Header -->
+                    <div class="kt-grid__item kt-grid__item--fluid kt-grid kt-grid--hor">
+
+                        <!-- begin:: Subheader -->
+                        {% include "partials/subheader.html" %}
+                        <!-- end:: Subheader -->
+
+                        <!-- begin:: Content -->
+                        <div class="kt-content  kt-grid__item kt-grid__item--fluid" id="kt_content">
+
+                            <!--begin::Dashboard 1-->
+
+                            <!-- -----------------------------------------------Start Primary Content----------------------------------------------- -->
+
+
+
+                            <form class="kt-form kt-form--label-right" method="POST" action="{% url 'ticket:viewTicketQuality' ticket.ticket_id %}">
+                                {% csrf_token %}
+                            <!--begin::Row-->
+                            <div class="row">
+                                <div class="col-xl-3 col-lg-3">
+
+                                    <!--begin::Portlet-->
+                                    <div class="kt-portlet kt-align-center">
+
+                                        <div class="kt-widget-15__body kt-margin-t-20 kt-margin-b-20">
+                                            <div class="kt-widget-15__author">
+                                                <div class="kt-widget-15__photo">
+                                                    <a href="#"><img src="{% static '/media/blog/1.png' %}" alt="" height="100" width="100"
+                                                            title="" /></a>
+                                                </div>
+                                                <div class="kt-widget-15__detail kt-margin-t-20">
+                                                    <h4 class="kt-widget-15__name">انجام دهنده</h4>
+                                                    <div class="kt-widget-15__desc">
+                                                        {{ticket|data_extraction_Ticket_assign}}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!--end::Portlet-->
+                                    <hr class=" kt-separator kt-margin-t-10 kt-margin-b-20">
+
+                                    <div class="kt-portlet kt-align-center">
+
+                                        <div class="kt-widget-15__body kt-margin-t-20 kt-margin-b-20">
+
+                                            <div class="kt-margin-t-10">
+                                                <p>لیست انجام دهنده ها</p>
+                                            </div>
+                                            {% for doer in doers %}
+                                            <div class="kt-margin-t-10">
+                                               
+                                                <span class="badge badge-info">{{ doer.name }}</span>
+                                                
+                                            </div>
+                                            {% endfor %}
+                                            
+                                            
+                                        </div>
+                                    </div>
+
+                                    <!--end::Portlet-->
+                                </div>
+                                <div class="col-xl-9 col-lg-9">
+
+
+                                <!--begin::Portlet-->
+                                <div class="kt-portlet">
+                                
+                                    <div class="kt-portlet__body">
+                                    <form class="kt-form">
+											<div class="kt-portlet__body">
+												<div class="form-group form-group-marginless ">
+													<label class="kt-font-boldest">تایید کیفیت و کنترل خدمات :</label>
+                                                    <!-- <label class=" btn-primary"> سرویس رسانی {{ ticket.star|turn_service }}</label> -->
+													<div class="row">
+														<div class="col-lg-6">
+															<label class="kt-option shadow-sm">
+																<span class="kt-option__control">
+																	<span class="kt-radio kt-radio--check-bold">
+																		<input type="radio" name="star" value="1" >
+																		<span></span>
+																	</span>
+																</span>
+																<span class="kt-option__label">
+																	<span class="kt-option__head">
+																		<span class="kt-option__title text-danger kt-font-boldest">
+																			سرویس رسانی بد
+																		</span>
+																		
+																	</span>
+																	
+																</span>
+															</label>
+														</div>
+														<div class="col-lg-6">
+															<label class="kt-option shadow-sm">
+																<span class="kt-option__control">
+																	<span class="kt-radio kt-radio--check-bold">
+																		<input type="radio" name="star" value="2">
+																		<span></span>
+																	</span>
+																</span>
+																<span class="kt-option__label">
+																	<span class="kt-option__head">
+																		<span class="kt-option__title text-warning kt-font-boldest">
+																			سرویس رسانی متوسط
+																		</span>
+																		
+																	</span>
+																	
+																</span>
+															</label>
+														</div>
+													</div>
+												</div>
+												
+												<div class="form-group form-group-marginless">
+													
+													<div class="row">
+														<div class="col-lg-6">
+															<label class="kt-option shadow-sm">
+																<span class="kt-option__control">
+																	<span class="kt-radio kt-radio--check-bold">
+																		<input type="radio" name="star" value="3">
+																		<span></span>
+																	</span>
+																</span>
+																<span class="kt-option__label">
+																	<span class="kt-option__head">
+																		<span class="kt-option__title text-success kt-font-boldest">
+																			سرویس رسانی 
+                                                                            خوب
+																		</span>
+																		
+																	</span>
+																	
+																</span>
+															</label>
+														</div>
+														<div class="col-lg-6">
+															<label class="kt-option shadow-sm">
+																<span class="kt-option__control">
+																	<span class="kt-radio kt-radio--check-bold">
+																		<input type="radio" name="star" value="4">
+																		<span></span>
+																	</span>
+																</span>
+																<span class="kt-option__label">
+																	<span class="kt-option__head">
+																		<span class="kt-option__title text-primary kt-font-boldest">
+																			سرویس رسانی عالی
+																		</span>
+																		
+																	</span>
+																	
+																</span>
+															</label>
+														</div>
+													</div>
+												</div>
+                                                <div class="kt-form__actions">
+													<button type="submit" class="btn btn-success">تایید کیفیت</button>
+													<button type="reset" class="btn btn-danger">رد تیکت</button>
+												</div>
+											</div>
+											
+										</form>
+                                    </div>
+                                </div>
+
+<!--end::Portlet-->
+
+                                    
+                                    <!--begin::Portlet-->
+                                    
+                                    <div class="kt-portlet">
+
+                                        <div class="kt-portlet__body">
+                                            <div>
+                                                <ul class="nav nav-pills" role="tablist">
+                                                    <li class="nav-item ">
+                                                        <a class="nav-link active kt-font-boldest" data-toggle="tab"
+                                                            href="#kt_tabs_6_1"><i class="la la-gear"></i>گزارشات</a>
+                                                    </li>
+
+                                                    
+                                                </ul>
+                                                <div class="tab-content">
+                                                    <div class="tab-pane active kt-font-boldest" id="kt_tabs_6_1" role="tabpanel">
+
+
+                                                        <!--Begin::Timeline -->
+                                                        <div class="kt-timeline">
+
+                                                            <form class="kt-form kt-form--label-right">
+                                                                <input type="text" name="summary" class="custom-input" value="{{ ticket.summary }}"/>/
+                                                                <input type="text" name="family" class="custom-input" value="{{ ticket.family }}"/>
+                                                                <div class="kt-portlet__body">
+                                                                    <div class="form-group row">
+                                                                        <div
+                                                                            class="col-lg-12 col-md-12 col-sm-12 is-valid validate">
+                                                                            <textarea name="body"
+                                                                                class="form-control"
+                                                                                data-provide="markdown"
+                                                                                rows="5">{{ticket.body}}</textarea>
+                                                                                
+                                                                        </div>
+
+                                                                    </div>
+                                                                    
+                                                                </div>
+
+                                                            
+                                                            <div>
+                                                                <button type="submit"
+                                                                    class="btn btn-primary">ثبت رویداد</button>
+                                                                <button type="reset"
+                                                                    class="btn btn-secondary">پاک کردن
+                                                                    متن</button>
+                                                            </div>
+                                                            {% if comments == None %}
+                                                                No comment available
+                                                            {% else %}
+                                                            {% for comment in comments %}
+                                                            <!--Begin::Item -->
+                                                            <div class="kt-timeline__item kt-timeline__item--success">
+                                                                <div class="kt-timeline__item-section">
+                                                                    <div class="kt-timeline__item-section-border">
+                                                                        <div class="kt-timeline__item-section-icon">
+                                                                            <i
+                                                                                class="flaticon-psd  kt-font-success"></i>
+                                                                        </div>
+                                                                    </div>
+                                                                    <span class="kt-timeline__item-datetime">
+                                                                        <span
+                                                                            class="badge badge-warning">{{comment.reg_dt|to_jalali}}</span></span>
+                                                                </div>
+                                                                <p href="" class="kt-timeline__item-text kt-font-bold">
+                                                                    {{comment|html_fix|default:"No comment available"}}
+                                                                </p>
+                                                                <div class="kt-timeline__item-info">
+                                                                {{comment.register|ticket_comment_register}}
+                                                                </div>
+                                                            </div>
+                                                            {% endfor %}
+                                                            {% endif %}
+                                                            <!--End::Item -->
+
+                                                            
+
+
+                                                        </div>
+
+                                                        <!--End::Timeline -->
+
+
+
+                                                    </div>
+
+                                                    
+                                                    
+                                                    
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+                                </div>
+                            </div>
+                                                    
+                                                   
+                                                    
+                                                
+
+
+                            
+
+                            <!--end::Row-->
+
+                            <!-- -----------------------------------------------End Primary Content----------------------------------------------- -->
+
+
+                            <!--end::Dashboard 1-->
+                        </div>
+
+                        <!-- end:: Content -->
+                    </div>
+
+                    <!-- begin:: Footer -->
+                    {% include "partials/footer.html" %}
+                    <!-- end:: Footer -->
+                </div>
+
+                <!-- end:: Wrapper -->
+            </div>
+
+            <!-- end:: Page -->
+        </div>
+
+        <!-- end:: Root -->
+
+
+
+
+
+
+        <!-- begin::Global Config(global config for global JS sciprts) -->
+        {% include "partials/script.html" %}
+        <!--end::Page Scripts -->
+    </body>
+
+    <!-- end::Body -->
+
+</html>
