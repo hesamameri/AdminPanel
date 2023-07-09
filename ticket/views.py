@@ -6,10 +6,13 @@ from django.http import HttpResponse
 from Administrator.models import User
 from .forms import TicketForm,TicketUpdateForm
 from django.urls import reverse
+from django.contrib.auth.decorators import login_required
+
 
 def index_ticket_view(request):                             
     return render(request,'./Ticket/indexTicket.html',{})
 
+@login_required(login_url='Administrator:login_view')
 def confirm_ticket_view(request):
     user_id = request.session.get('user_id')
     
@@ -26,6 +29,8 @@ def confirm_ticket_view(request):
     }
     return render(request,'./Ticket/confirmTicket.html',context=context)
 
+
+@login_required(login_url='Administrator:login_view')
 def inbox_ticket_view(request):                         
     # we want to have all the tickets that belong to the user here? its about the doer!
     # we assign the doer after the ticket has appeared in organ template and changed by the department head. the department head
@@ -38,6 +43,7 @@ def inbox_ticket_view(request):
     }
     return render(request,'./Ticket/inboxTicket.html',context=context)
 
+@login_required(login_url='Administrator:login_view')
 def new_ticket_view(request):
     
     if request.method =='POST':
@@ -80,6 +86,7 @@ def new_ticket_view(request):
 
         return render(request,'./Ticket/newTicket.html',{'data': data} )
 
+@login_required(login_url='Administrator:login_view')
 def organ_ticket_view(request):
     user_id = request.session.get('user_id')
     
@@ -129,6 +136,8 @@ def organ_ticket_view(request):
     
     return render(request, 'Ticket/organTicket.html', context = context)
 
+
+@login_required(login_url='Administrator:login_view')
 def quality_ticket_view(request):
     user_id = request.session.get('user_id')
     
@@ -151,6 +160,7 @@ def quality_ticket_view(request):
 
     return render(request,'./Ticket/qualityTicket.html',context=context)
 
+@login_required(login_url='Administrator:login_view')
 def sent_ticket_view(request):
     user_id = request.session.get('user_id')
     tickets = Ticket.objects.filter(register = user_id).order_by('-reg_dt')
@@ -159,6 +169,7 @@ def sent_ticket_view(request):
     }
     return render(request,'./Ticket/sentTicket.html',context=context)
 
+@login_required(login_url='Administrator:login_view')
 def view_ticket_view(request,arg):
     system_id = 1
     source = TicketSystemSource.objects.filter(system_id=system_id).order_by('orderby').values('ticket_system_source_id', 'name')
@@ -226,7 +237,7 @@ def view_ticket_view(request,arg):
 
 
 
-
+@login_required(login_url='Administrator:login_view')
 def viewQuality_ticket_view(request,ticket_id):
     if request.method == 'POST':
         form_data = request.POST

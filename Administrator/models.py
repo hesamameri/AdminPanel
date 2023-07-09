@@ -1,45 +1,9 @@
 from django.db import models
-# from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
-# class UserManager(BaseUserManager):
-#     def create_user(self, username, password=None, **kwargs):
-#         user = self.model(username=username, **kwargs)
-#         user.set_password(password)
-#         user.save(using=self._db)
-#         return user
+from django.contrib.auth.models import AbstractBaseUser, BaseUserManager,AbstractUser
 
-#     def create_superuser(self, username, password=None, **kwargs):
-#         kwargs.setdefault('is_staff', True)
-#         kwargs.setdefault('is_superuser', True)
-#         return self.create_user(username, password, **kwargs)
-# class User(AbstractBaseUser):
-#     user_id = models.AutoField(primary_key=True)
-#     username = models.CharField(unique=True, max_length=255, blank=True, null=True)
-#     password = models.CharField(max_length=255, blank=True, null=True)
-#     is_otp = models.IntegerField(blank=True, null=True)
-#     otp = models.CharField(max_length=255, blank=True, null=True)
-#     vendor_code = models.CharField(max_length=255, blank=True, null=True)
-#     first_name = models.CharField(max_length=255, blank=True, null=True)
-#     last_name = models.CharField(max_length=255, blank=True, null=True)
-#     phone = models.CharField(max_length=255, blank=True, null=True)
-#     mobile = models.CharField(max_length=255, blank=True, null=True)
-#     address = models.CharField(max_length=100, blank=True, null=True)
-#     avatar = models.CharField(max_length=255, blank=True, null=True)
-#     status = models.IntegerField(blank=True, null=True)
-#     name = models.CharField(max_length=100, blank=True, null=True)
-#     branch_name = models.CharField(max_length=255, blank=True, null=True)
-#     branch_site = models.CharField(max_length=255, blank=True, null=True)
-#     internal_phone = models.CharField(max_length=100, blank=True, null=True)
-#     session_id = models.CharField(max_length=255, blank=True, null=True)
-#     is_active = models.BooleanField(default=True,blank=True)
-#     last_login = models.DateTimeField(auto_now=True)
-#     objects = UserManager()
+class User(AbstractUser):
 
-#     USERNAME_FIELD = 'username'
-
-#     class Meta:
-#         managed = True
-#         db_table = 'user'
-class User(models.Model):
+    email = is_staff = date_joined = None
     user_id = models.AutoField(primary_key=True)
     username = models.CharField(unique=True, max_length=255, blank=True, null=True)
     password = models.CharField(max_length=255, blank=True, null=True)
