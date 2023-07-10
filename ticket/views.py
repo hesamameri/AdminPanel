@@ -92,7 +92,7 @@ def organ_ticket_view(request):
     
     # Get the charts associated with the user
     user_chart = UserChart.objects.filter(user_id=user_id)[0]
-    print(user_chart)
+    
     users_chart_id = user_chart.chart_id
     # Get the categories associated with the charts
     categories = TicketSystemCategory.objects.filter(chart_id = users_chart_id)[0]
@@ -107,13 +107,7 @@ def organ_ticket_view(request):
     ongoing_tickets = tickets.filter(status_id=3)
     customer_response_tickets = tickets.filter(status_id=6)
     tickets = (new_tickets|ongoing_tickets|customer_response_tickets)
-    # print(new_tickets)
-    # print(ongoing_tickets)
-    # print(customer_response_tickets)
-
-    # ticket_system_type
-    # ticket_system_status
-    # ticket_system_priority
+    
     ticket_system_source = Ticket.objects.filter(category_id=categories).values('source_id')
     ticket_system_type = Ticket.objects.filter(category_id=categories).values('type_id')
     ticket_system_priority = Ticket.objects.filter(category_id=categories).values('priority_id')
@@ -257,5 +251,5 @@ def viewQuality_ticket_view(request,ticket_id):
             'doers' : ticket_doers,
             'comments':ticket_comments,
         }
-        print(ticket_doers)
+
         return render(request,'./Ticket/viewTicketQuality.html',context=context)
