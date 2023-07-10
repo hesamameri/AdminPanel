@@ -29,7 +29,9 @@
 											<li class="kt-menu__item " aria-haspopup="true"><a href="{% url 'ticket:inboxTicket'  %}" class="kt-menu__link "><i class="kt-menu__link-bullet kt-menu__link-bullet--dot"><span></span></i><span class="kt-menu__link-text">تیکت دریافتی</span></a></li>
 											<li class="kt-menu__item " aria-haspopup="true"><a href="{% url 'ticket:sentTicket'  %}" class="kt-menu__link "><i class="kt-menu__link-bullet kt-menu__link-bullet--dot"><span></span></i><span class="kt-menu__link-text">تیکت ارسالی</span></a></li>
 											<li class="kt-menu__item " aria-haspopup="true"><a href="{% url 'ticket:confirmTicket'  %}" class="kt-menu__link "><i class="kt-menu__link-bullet kt-menu__link-bullet--dot"><span></span></i><span class="kt-menu__link-text">بستن تیکت</span></a></li>
+											{% if 'ROLE_ADMIN' in user_permissions  %}
 											<li class="kt-menu__item " aria-haspopup="true"><a href="{% url 'ticket:qualityTicket'  %}" class="kt-menu__link "><i class="kt-menu__link-bullet kt-menu__link-bullet--dot"><span></span></i><span class="kt-menu__link-text">تایید کیفیت</span></a></li>
+											{% endif %}
 										</ul>
 									</div>
 								</li>

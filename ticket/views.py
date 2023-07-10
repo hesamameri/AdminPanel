@@ -3,7 +3,7 @@ from Administrator.models import Chart,UserChart
 from ticket.models import *
 import home
 from django.http import HttpResponse
-from Administrator.models import User
+from Administrator.models import User,UserRole
 from .forms import TicketForm,TicketUpdateForm
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required
@@ -14,8 +14,9 @@ def index_ticket_view(request):
 
 @login_required(login_url='Administrator:login_view')
 def confirm_ticket_view(request):
-    user_id = request.session.get('user_id')
-    
+    user_id = User.objects.get(username = request.user)
+    user_permissions = UserRole.objects.filter(user = user_id).values('field_role')
+    user_permissions = [item['field_role'] for item in user_permissions]
     # Get the charts associated with the user
     user_chart = UserChart.objects.filter(user_id=user_id)[0]
     users_chart_id = user_chart.chart_id
@@ -26,6 +27,7 @@ def confirm_ticket_view(request):
     tickets = Ticket.objects.filter(category_id=categories).filter(status_id = 4).order_by('-reg_dt')
     context = {
         'tickets': tickets,
+        'user_permissions': user_permissions,
     }
     return render(request,'./Ticket/confirmTicket.html',context=context)
 
@@ -37,10 +39,13 @@ def inbox_ticket_view(request):
     # we assign the doer after the ticket has appeared in organ template and changed by the department head. the department head
     # assigns the doer for the task and in the inbox the user which has a user_id will see all the ticekts that has the doer with the number
     # corresponding to the user_id
-    user_id = request.session.get('user_id')
+    user_id = User.objects.get(username = request.user).user_id
+    user_permissions = UserRole.objects.filter(user = user_id).values('field_role')
+    user_permissions = [item['field_role'] for item in user_permissions]
     tickets = Ticket.objects.filter(doer = user_id).order_by('-reg_dt')
     context = {
         'tickets' : tickets,
+        'user_permissions': user_permissions,
     }
     return render(request,'./Ticket/inboxTicket.html',context=context)
 
@@ -75,7 +80,9 @@ def new_ticket_view(request):
             {'id': 'PERSONEL', 'name': 'پرسنل'},
             {'id': 'TICKETCUSTOMER', 'name': 'متفرقه'},
         ]
-
+        user_id = User.objects.get(username = request.user)
+        user_permissions = UserRole.objects.filter(user = user_id).values('field_role')
+        user_permissions = [item['field_role'] for item in user_permissions]
         data = {
             'source': source,
             'type': type,
@@ -84,6 +91,7 @@ def new_ticket_view(request):
             'priority': priority,
             'city': city,
             'source_type': source_type,
+            'user_permissions': user_permissions,
         }
 
         return render(request,'./Ticket/newTicket.html',{'data': data} )
@@ -91,7 +99,9 @@ def new_ticket_view(request):
 @login_required(login_url='Administrator:login_view')
 @permission_required('ROLE_PERSONEL','ROLE_ADMIN')
 def organ_ticket_view(request):
-    user_id = request.session.get('user_id')
+    user_id = User.objects.get(username = request.user)
+    user_permissions = UserRole.objects.filter(user = user_id).values('field_role')
+    user_permissions = [item['field_role'] for item in user_permissions]
     
     # Get the charts associated with the user
     user_chart = UserChart.objects.filter(user_id=user_id)[0]
@@ -129,6 +139,7 @@ def organ_ticket_view(request):
         'type':type,
         'priority':priority,
         'status': status,
+        'user_permissions': user_permissions,
     }
     
     return render(request, 'Ticket/organTicket.html', context = context)
@@ -137,8 +148,9 @@ def organ_ticket_view(request):
 @login_required(login_url='Administrator:login_view')
 @permission_required('ROLE_ADMIN')
 def quality_ticket_view(request):
-    user_id = request.session.get('user_id')
-    
+    user_id = User.objects.get(username = request.user)
+    user_permissions = UserRole.objects.filter(user = user_id).values('field_role')
+    user_permissions = [item['field_role'] for item in user_permissions]
     # Get the charts associated with the user
     user_chart = UserChart.objects.filter(user_id=user_id)[0]
     users_chart_id = user_chart.chart_id
@@ -154,16 +166,21 @@ def quality_ticket_view(request):
     context = {
         'tickets':tickets,
         'categories':categories,
+        'user_permissions': user_permissions,
+        
     }
 
     return render(request,'./Ticket/qualityTicket.html',context=context)
 
 @login_required(login_url='Administrator:login_view')
 def sent_ticket_view(request):
-    user_id = request.session.get('user_id')
+    user_id = User.objects.get(username = request.user).user_id
+    user_permissions = UserRole.objects.filter(user = user_id).values('field_role')
+    user_permissions = [item['field_role'] for item in user_permissions]
     tickets = Ticket.objects.filter(register = user_id).order_by('-reg_dt')
     context = {
         'tickets' : tickets,
+        'user_permissions': user_permissions,
     }
     return render(request,'./Ticket/sentTicket.html',context=context)
 
@@ -212,6 +229,9 @@ def view_ticket_view(request,arg):
         ticket_item = get_object_or_404(Ticket, ticket_id=arg)
         ticket_comments = TicketComment.objects.filter(ticket_id = arg)
         ticket_doers = TicketDoer.objects.filter(ticket_id = arg).values('doer')
+        user_id = User.objects.get(username = request.user)
+        user_permissions = UserRole.objects.filter(user = user_id).values('field_role')
+        user_permissions = [item['field_role'] for item in user_permissions]
         # print(ticket_doers)
         context = {
             'ticket':  ticket_item,
@@ -223,6 +243,7 @@ def view_ticket_view(request,arg):
             'comments':ticket_comments,
             'doers' : doers,
             'ticket_doers' : ticket_doers,
+            'user_permissions': user_permissions,
             
         }
        
@@ -236,6 +257,7 @@ def view_ticket_view(request,arg):
 
 
 @login_required(login_url='Administrator:login_view')
+@permission_required('ROLE_ADMIN')
 def viewQuality_ticket_view(request,ticket_id):
     if request.method == 'POST':
         form_data = request.POST
@@ -250,10 +272,14 @@ def viewQuality_ticket_view(request,ticket_id):
         ticket_item = Ticket.objects.get(ticket_id = ticket_id)
         ticket_doers = TicketDoer.objects.filter(ticket_id = ticket_id).values('doer').distinct()
         ticket_comments = TicketComment.objects.filter(ticket_id = ticket_id)
+        user_id = User.objects.get(username = request.user)
+        user_permissions = UserRole.objects.filter(user = user_id).values('field_role')
+        user_permissions = [item['field_role'] for item in user_permissions]
         context = {
             'ticket': ticket_item,
             'doers' : ticket_doers,
             'comments':ticket_comments,
+            'user_permissions': user_permissions,
         }
 
         return render(request,'./Ticket/viewTicketQuality.html',context=context)
