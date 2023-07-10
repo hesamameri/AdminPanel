@@ -7,7 +7,7 @@ from Administrator.models import User
 from .forms import TicketForm,TicketUpdateForm
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required
-
+from Administrator.permissions import permission_required
 
 def index_ticket_view(request):                             
     return render(request,'./Ticket/indexTicket.html',{})
@@ -31,6 +31,7 @@ def confirm_ticket_view(request):
 
 
 @login_required(login_url='Administrator:login_view')
+@permission_required('ROLE_PERSONEL','ROLE_ADMIN')
 def inbox_ticket_view(request):                         
     # we want to have all the tickets that belong to the user here? its about the doer!
     # we assign the doer after the ticket has appeared in organ template and changed by the department head. the department head
@@ -44,6 +45,7 @@ def inbox_ticket_view(request):
     return render(request,'./Ticket/inboxTicket.html',context=context)
 
 @login_required(login_url='Administrator:login_view')
+@permission_required('ROLE_PERSONEL','ROLE_ADMIN')
 def new_ticket_view(request):
     
     if request.method =='POST':
@@ -87,6 +89,7 @@ def new_ticket_view(request):
         return render(request,'./Ticket/newTicket.html',{'data': data} )
 
 @login_required(login_url='Administrator:login_view')
+@permission_required('ROLE_PERSONEL','ROLE_ADMIN')
 def organ_ticket_view(request):
     user_id = request.session.get('user_id')
     
@@ -132,6 +135,7 @@ def organ_ticket_view(request):
 
 
 @login_required(login_url='Administrator:login_view')
+@permission_required('ROLE_ADMIN')
 def quality_ticket_view(request):
     user_id = request.session.get('user_id')
     

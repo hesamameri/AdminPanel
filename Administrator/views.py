@@ -25,7 +25,9 @@ def login_view(request):
         # Authenticate the user
         user = authenticate(request, username=username, password=password)
         # print(user)
+        # print(request.user)
         # print(user.is_otp)
+        # print(request.session.get('user_id'))
         if user is not None:
             if user.is_otp == 1:
                 # Generate and store OTP
@@ -37,9 +39,11 @@ def login_view(request):
                 user.otp = rand
                 user.save()
                 return redirect('/otp')
-
+            request.session['user_id'] = user.user_id
             # Log in the user
             login(request, user)
+            print(user)
+            
             print(request.session)
             # Redirect to home page
             return redirect('home:index')
