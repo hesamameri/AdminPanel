@@ -56,104 +56,120 @@
 
                             <!-- -----------------------------------------------Start Primary Content----------------------------------------------- -->
 
-
-                            <!--begin::Row-->
-                            <div class="row">
-
-                                <div class="col-lg-12 col-xl-12 order-lg-2 order-xl-1">
-
-                                    <!--begin::Portlet-->
-                                    <div class="kt-portlet">
-
-
-                                        <div class="kt-portlet kt-portlet--height-fluid-half kt-widget-14">
-                                            <div class="kt-portlet__body">
-
-
-
-
-
-                                                <div class="kt-margin-b-20">
-                                                    <div class="kt-widget-14__body">
-                                                        <div class="kt-widget-14__product">
-                                                            <div class="kt-widget-14__thumb">
-                                                                <a href="#"><img src="{% static '/media/blog/1.png' %}"
-                                                                        class="kt-widget-14__image--landscape" alt=""
-                                                                        title="" /></a>
-                                                            </div>
-                                                            <div class="kt-widget-14__content">
-                                                                <a href="#">
-                                                                    <h3 class="kt-widget-14__title kt-font-boldest">
-                                                                        بازدید جهت خرید /هادی موذن</h3>
-                                                                </a>
-                                                                <div class="kt-widget-14__desc kt-font-boldest kt-font-info">
-                                                                    محمدحسن مقدم-پردیس نیکان صدرا - - 09128200824
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        <div class="kt-widget-14__data">
-                                                            <div class="kt-widget-14__info">
-                                                                <div class="kt-widget-14__info-title kt-font-brand">30
-                                                                </div>
-                                                                <div class="kt-widget-14__desc">فروردین</div>
-                                                            </div>
-                                                            <div class="kt-widget-14__info">
-                                                                <div class="kt-widget-14__info-title">SUP878454</div>
-                                                                <div class="kt-widget-14__desc">شماره تیکت</div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="kt-widget-14__foot">
-                                                        <div class="kt-widget-14__foot-info">
-                                                            <div
-                                                                class="kt-widget-14__foot-label btn btn-sm btn-label-brand btn-bold">
-                                                                ثبت کننده : مریم زارعی
-                                                            </div>
-                                                            <div
-                                                                class="kt-widget-14__foot-label btn btn-sm btn-label-brand btn-bold">
-                                                                انجام دهنده عباس دولت آبادی
-                                                            </div>
-                                                            <div
-                                                                class="kt-widget-14__foot-label btn btn-sm btn-info btn-bold">
-                                                                انجام شد
-                                                            </div>
-
-                                                        </div>
-                                                        <div class="kt-widget-14__foot-toolbar">
-                                                            <a href="#"
-                                                                class="btn btn-success btn-sm btn-bold btn-upper">مشاهده</a>
-                                                            <a href="#"
-                                                                class="btn btn-warning btn-sm btn-bold btn-upper">دسته
-                                                                بندی : خدمات مشتریان</a>
-                                                        </div>
-                                                    </div>
+                            <div ng-controller="TicketCtrl">
+                                <div class="content-wrapper">
+                                    <div class="content-header">
+                                        <div class="container-fluid">
+                                            <div class="row mb-2">
+                                                <div class="col-sm-12">
                                                 </div>
-
-
-                                                <hr class="kt-separator">
-                                                
-
-
-
-
-
-
-
-
-
                                             </div>
                                         </div>
-
                                     </div>
-
-                                    <!--end::Portlet-->
+                                    
+                                    <div class="content">
+                                        <div class="container-fluid">
+                                            <div class="row rtl">
+                                                <div class="col-sm-12 col-md-12">
+                                                    <div class="card card-primary card-outline">
+                                                        <div class="card-header">
+                                                            تمام تیکت‌ها
+                                                        </div>
+                                                        <div class="card-body">
+                                                            <table class="table table-bordered" style="table-layout: fixed;">
+                                                                <thead>
+                                                                    <tr>
+                                                                        <th style="background-color: #1e1235; color: white;" class="text-center">آمار تیکت‌ها</th>
+                                                                        <!-- ticket statuses for loop is needed here -->
+                                                                        {% for item in statuses %}
+                                                                        <th style="text-align: center; border-left: solid grey 0.5px; font-weight: bold;" >
+                                                                        {{item.name}}
+                                                                        </th>
+                                                                        {% endfor %}
+                                                                        <!-- ticket statuses loop ends here -->
+                                                                    </tr>
+                                                                </thead>
+                                                                <tbody>
+                                                                    {% for category, status_counts in ticket_counts.items %}
+                                                                    <tr>
+                                                                        
+                                                                        <td style="font-weight: bold;" class="text-left">{{ category.name }}</td>
+                                                                        <!-- statuseses ticket number for category are defined as a loop here -->
+                                                                        {% for status, count in status_counts.items %}
+                                                                        <td style="text-align: center; border-left: solid grey 0.5px; font-size: larger;" class="text-center">
+                                                                            <a href="#">{{ count }}</a>        <!--also a conditional or a template tag needed to account for zeros-->
+                                                                        </td>
+                                                                        {% endfor %}
+                                                                        <!-- for loop for category statuses and data ends here -->
+                                                                    </tr>
+                                                                    {% endfor %}
+                                                                    <!-- category loop ends here -->
+                                                                </tbody>
+                                                            </table>
+                                                        </div>
+                                                    </div><!-- /card card-primary card-outline -->
+                                                    <div class="card card-primary card-outline">
+                                                        <div class="card-header">
+                                                            انجام دهندگان تیکت‌ها
+                                                        </div>
+                                                        <div class="card-body">
+                                                            <table class="table table-bordered" style="table-layout: fixed;">
+                                                                <thead>
+                                                                    <tr>
+                                                                        <th colspan="2" style="background-color: #1e1235; color: white;" class="text-center">آمار تیکت‌ها</th>
+                                                                        <!-- for loop for statuseses in general here  -->
+                                                                        {% for item in statuses %}
+                                                                        <th  style="text-align: center; border-left: solid grey 0.5px; font-weight: bold;" class="text-center">{{item.name}}</th> 
+                                                                        <!-- for loop for statuseses ends here -->
+                                                                        {% endfor %}
+                                                                    </tr>
+                                                                </thead>
+                                                                <tbody>
+                                                                    {% for user, status_counts in ticket_counts_users.items %}
+                                                                    <!-- a for loop for users is needed here -->
+                                                                    <tr>
+                                                                        <td rowspan="4" style="font-weight: bold;"  class="text-center">{{user.name}}</td><!--user name is inserted here-->
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td style="font-weight: bold;" class="text-center">انجام دهنده</td>
+                                                                        <!-- for loop for the number of tickets  regarding statuses the number of tickets that are assigned to this user -->
+                                                                        {% for status, count in status_counts.items %}
+                                                                        <td  style="text-align: center; border-left: solid grey 0.5px; font-size: larger;" class="text-center">    
+                                                                            <a href="#">{{ count }}</a>
+                                                                        </td>
+                                                                        {% endfor %}
+                                                                        <!-- end for loop for statuses on ticket doer -->
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td style="font-weight: bold;" class="text-center">همکار</td>
+                                                                        <!-- for loop needed here for statuses -->
+                                                                        <td colspan="7" style="text-align: center; border-left: solid grey 0.5px; font-size: larger;" class="text-center">
+                                                                            <a href="#"></a>
+                                                                        </td>
+                                                                        <!-- end for loop for statuses -->
+                                                                    </tr>
+                                                                    <tr style="border-bottom: 1px solid black;">
+                                                                        <td style="font-weight: bold;" class="text-center">مشاهده</td>
+                                                                        <!-- for loop for statuses on user ticket url -->
+                                                                        <td colspan="7" style="text-align: center; border-left: solid grey 0.5px; font-size: larger;" class="text-center">
+                                                                            <a href="#"></a>
+                                                                        </td>
+                                                                        <!-- end for loop for user ticket statuses url -->
+                                                                    </tr>
+                                                                    <!-- end for loop for user -->
+                                                                    {% endfor %}
+                                                                </tbody>
+                                                            </table>
+    
+                                                        </div>
+                                                    </div><!-- /card card-primary card-outline -->
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
-
-
-
                             </div>
-
-                            <!--end::Row-->
+                            
 
                             <!-- -----------------------------------------------End Primary Content----------------------------------------------- -->
 

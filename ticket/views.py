@@ -9,8 +9,42 @@ from django.urls import reverse
 from django.contrib.auth.decorators import login_required
 from Administrator.permissions import permission_required
 
-def index_ticket_view(request):                             
-    return render(request,'./Ticket/indexTicket.html',{})
+
+
+@login_required(login_url='Administrator:login_view')
+@permission_required('ROLE_ADMIN')
+def index_ticket_view(request):  
+    user_id = User.objects.get(username = request.user)
+    user_permissions = UserRole.objects.filter(user = user_id).values('field_role')
+    user_permissions = [item['field_role'] for item in user_permissions]
+    categories = TicketSystemCategory.objects.all()
+    statuses = TicketSystemStatus.objects.all()
+    users = User.objects.filter(status = 1)
+    ticket_counts = {}
+
+    for category in categories:
+        ticket_counts[category] = {}
+        for status in statuses:
+            count = Ticket.objects.filter(category=category.ticket_system_category_id, status=status.ticket_system_status_id).count()
+            ticket_counts[category][status] = count
+    ticket_counts_users = {}
+
+    for user in users:
+        user_ticket_counts = {}
+        for status in statuses:
+            count = Ticket.objects.filter(category__assign_to=user.user_id, status=status.ticket_system_status_id).count()
+            user_ticket_counts[status.name] = count
+        ticket_counts_users[user] = user_ticket_counts
+    context = {
+        'user_permissions': user_permissions,
+        'categories':categories,
+        'statuses': statuses,
+        'users': users,
+        'ticket_counts':ticket_counts,
+        'ticket_counts_users':ticket_counts_users,
+    }      
+                       
+    return render(request,'./Ticket/indexTicket.html',context=context)
 
 @login_required(login_url='Administrator:login_view')
 def confirm_ticket_view(request):
