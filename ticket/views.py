@@ -82,7 +82,7 @@ def new_ticket_view(request):
             new_ticket = Ticket.objects.create(system_id= 1, category=data['category'],type=data['type'],obj_source_type=data['obj_source_type'],
                                                family = data['family'],summary = data['summary'],body = data['body'],phone = data['phone'],phone2 = data['phone2'],
                                                files = data['files'],address = data['address'],source = data['source'],status= TicketSystemStatus.objects.get(ticket_system_status_id=1),
-                                                 priority=TicketSystemPriority.objects.get(ticket_system_priority_id= 2),flag = 1,register = data['register'])
+                                                 priority=data['priority'],flag = 1,register = data['register'])
             new_ticket.save()
             # print(new_ticket)
             return redirect('home:index')
