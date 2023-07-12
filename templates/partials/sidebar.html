@@ -25,11 +25,7 @@
 											<li class="kt-menu__item  kt-menu__item--parent" aria-haspopup="true"><span class="kt-menu__link"><span class="kt-menu__link-text">تیکت ها</span></span></li>
 											<li class="kt-menu__item  kt-menu__item--active" aria-haspopup="true"><a href="{% url 'ticket:newTicket'  %}" class="kt-menu__link "><i class="kt-menu__link-bullet kt-menu__link-bullet--dot"><span></span></i><span class="kt-menu__link-text">تیکت جدید</span></a></li>
 											
-											<!--create a dropdown for this one-->
-											<!-- <li class="kt-menu__item " aria-haspopup="true"><a href="{% url 'ticket:organTicket'  %}" class="kt-menu__link ">
-												<i class="kt-menu__link-bullet kt-menu__link-bullet--dot">
-												<span></span></i><span class="kt-menu__link-text">تیکت واحد سازمانی</span></a>
-											</li> -->
+									
 											<li class="kt-menu__item kt-menu__item--submenu" aria-haspopup="true" data-ktmenu-submenu-toggle="hover">
 												<a href="javascript:;" class="kt-menu__link kt-menu__toggle">
 												  <i class="kt-menu__link-bullet kt-menu__link-bullet--dot"><span></span></i>
@@ -39,23 +35,17 @@
 												<div class="kt-menu__submenu">
 												  <span class="kt-menu__arrow"></span>
 												  <ul class="kt-menu__subnav">
+													{% for organ in ticketsystem_categories %}
 													<li class="kt-menu__item" aria-haspopup="true">
-													  <a href="{% url 'ticket:organTicket'  %}" class="kt-menu__link">
+													  <a href="{% url 'ticket:organTicket' organ.ticket_system_category_id %}" class="kt-menu__link">
 														<i class="kt-menu__link-bullet kt-menu__link-bullet--dot">
 														  <span></span>
 														</i>
-														<span class="kt-menu__link-text">sub menu option 1</span>
+														<span class="kt-menu__link-text">{{organ.name}}</span>
 													  </a>
 													</li>
-													<!-- <li class="kt-menu__item" aria-haspopup="true">
-													  <a href="#" class="kt-menu__link">
-														<i class="kt-menu__link-bullet kt-menu__link-bullet--dot">
-														  <span></span>
-														</i>
-														<span class="kt-menu__link-text">Submenu Option 2</span>
-													  </a>
-													</li> -->
-													<!-- Add more submenu options as needed -->
+													{% endfor %}
+													
 												  </ul>
 												</div>
 											  </li>

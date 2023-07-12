@@ -48,20 +48,12 @@ def index_ticket_view(request):
 
 @login_required(login_url='Administrator:login_view')
 def confirm_ticket_view(request):
-    user_id = User.objects.get(username = request.user)
-    user_permissions = UserRole.objects.filter(user = user_id).values('field_role')
-    user_permissions = [item['field_role'] for item in user_permissions]
-    # Get the charts associated with the user
-    user_chart = UserChart.objects.filter(user_id=user_id)[0]
-    users_chart_id = user_chart.chart_id
-    # Get the categories associated with the charts
-    categories = TicketSystemCategory.objects.filter(chart_id = users_chart_id)[0]
-    
+    user_id = User.objects.get(username = request.user).user_id
     # Get the tickets associated with the categories
-    tickets = Ticket.objects.filter(category_id=categories).filter(status_id = 4).order_by('-reg_dt')
+    tickets = Ticket.objects.filter(register=user_id).filter(status_id = 4).order_by('-reg_dt')
     context = {
         'tickets': tickets,
-        'user_permissions': user_permissions,
+       
     }
     return render(request,'./Ticket/confirmTicket.html',context=context)
 
@@ -69,10 +61,6 @@ def confirm_ticket_view(request):
 @login_required(login_url='Administrator:login_view')
 @permission_required('ROLE_PERSONEL','ROLE_ADMIN')
 def inbox_ticket_view(request):                         
-    # we want to have all the tickets that belong to the user here? its about the doer!
-    # we assign the doer after the ticket has appeared in organ template and changed by the department head. the department head
-    # assigns the doer for the task and in the inbox the user which has a user_id will see all the ticekts that has the doer with the number
-    # corresponding to the user_id
     user_id = User.objects.get(username = request.user).user_id
     user_permissions = UserRole.objects.filter(user = user_id).values('field_role')
     user_permissions = [item['field_role'] for item in user_permissions]
@@ -132,22 +120,13 @@ def new_ticket_view(request):
 
 @login_required(login_url='Administrator:login_view')
 @permission_required('ROLE_PERSONEL','ROLE_ADMIN')
-def organ_ticket_view(request):
+def organ_ticket_view(request,organ_id):
     user_id = User.objects.get(username = request.user)
-    user_permissions = UserRole.objects.filter(user = user_id).values('field_role')
-    user_permissions = [item['field_role'] for item in user_permissions]
-    
-    # Get the charts associated with the user
-    user_chart = UserChart.objects.filter(user_id=user_id)[0]
-    print(user_chart)
-    users_chart_id = user_chart.chart_id
-    print(users_chart_id)
-    # print(users_chart_id)
-    # Get the categories associated with the charts
-    categories = TicketSystemCategory.objects.filter(chart_id = users_chart_id)[0]
     
     # Get the tickets associated with the categories
-    tickets = Ticket.objects.filter(category_id=categories)
+    
+
+    tickets = Ticket.objects.filter(category_id=organ_id)
     excluded_values = [4,5,8,9]
 
     # Apply exclusion to the queryset based on values in one field
@@ -157,25 +136,23 @@ def organ_ticket_view(request):
     customer_response_tickets = tickets.filter(status_id=6)
     tickets = (new_tickets|ongoing_tickets|customer_response_tickets)
     
-    ticket_system_source = Ticket.objects.filter(category_id=categories).values('source_id')
-    ticket_system_type = Ticket.objects.filter(category_id=categories).values('type_id')
-    ticket_system_priority = Ticket.objects.filter(category_id=categories).values('priority_id')
-    ticket_system_status = Ticket.objects.filter(category_id=categories).values('status_id')
+    ticket_system_source = Ticket.objects.filter(category_id=organ_id).values('source_id')
+    ticket_system_type = Ticket.objects.filter(category_id=organ_id).values('type_id')
+    ticket_system_priority = Ticket.objects.filter(category_id=organ_id).values('priority_id')
+    ticket_system_status = Ticket.objects.filter(category_id=organ_id).values('status_id')
     
     source = TicketSystemSource.objects.filter(ticket_system_source_id__in = ticket_system_source)
     type = TicketSystemType.objects.filter(ticket_system_type_id__in = ticket_system_type)
     priority = TicketSystemPriority.objects.filter(ticket_system_priority_id__in = ticket_system_priority)
     status = TicketSystemStatus.objects.filter(ticket_system_status_id__in = ticket_system_status)
-    
+    print(tickets)
     # Build the context for rendering the template
     context = {
         'tickets': tickets,
-        'categories': categories,
         'source': source,
         'type':type,
         'priority':priority,
         'status': status,
-        'user_permissions': user_permissions,
     }
     
     return render(request, 'Ticket/organTicket.html', context = context)
@@ -185,8 +162,6 @@ def organ_ticket_view(request):
 @permission_required('ROLE_ADMIN')
 def quality_ticket_view(request):
     user_id = User.objects.get(username = request.user)
-    user_permissions = UserRole.objects.filter(user = user_id).values('field_role')
-    user_permissions = [item['field_role'] for item in user_permissions]
     # Get the charts associated with the user
     user_chart = UserChart.objects.filter(user_id=user_id)[0]
     users_chart_id = user_chart.chart_id
@@ -202,7 +177,7 @@ def quality_ticket_view(request):
     context = {
         'tickets':tickets,
         'categories':categories,
-        'user_permissions': user_permissions,
+        
         
     }
 
@@ -210,13 +185,11 @@ def quality_ticket_view(request):
 
 @login_required(login_url='Administrator:login_view')
 def sent_ticket_view(request):
+
     user_id = User.objects.get(username = request.user).user_id
-    user_permissions = UserRole.objects.filter(user = user_id).values('field_role')
-    user_permissions = [item['field_role'] for item in user_permissions]
     tickets = Ticket.objects.filter(register = user_id).order_by('-reg_dt')
     context = {
         'tickets' : tickets,
-        'user_permissions': user_permissions,
     }
     return render(request,'./Ticket/sentTicket.html',context=context)
 
