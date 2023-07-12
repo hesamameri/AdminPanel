@@ -139,8 +139,10 @@ def organ_ticket_view(request):
     
     # Get the charts associated with the user
     user_chart = UserChart.objects.filter(user_id=user_id)[0]
-    
+    print(user_chart)
     users_chart_id = user_chart.chart_id
+    print(users_chart_id)
+    # print(users_chart_id)
     # Get the categories associated with the charts
     categories = TicketSystemCategory.objects.filter(chart_id = users_chart_id)[0]
     
