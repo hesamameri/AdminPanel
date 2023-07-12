@@ -122,92 +122,21 @@
 												<div class="form-group form-group-marginless ">
 													<label class="kt-font-boldest">تایید کیفیت و کنترل خدمات :</label>
                                                     <!-- <label class=" btn-primary"> سرویس رسانی {{ ticket.star|turn_service }}</label> -->
-													<div class="row">
-														<div class="col-lg-6">
-															<label class="kt-option shadow-sm">
-																<span class="kt-option__control">
-																	<span class="kt-radio kt-radio--check-bold">
-																		<input type="radio" name="star" value="1" >
-																		<span></span>
-																	</span>
-																</span>
-																<span class="kt-option__label">
-																	<span class="kt-option__head">
-																		<span class="kt-option__title text-danger kt-font-boldest">
-																			سرویس رسانی بد
-																		</span>
-																		
-																	</span>
-																	
-																</span>
-															</label>
-														</div>
-														<div class="col-lg-6">
-															<label class="kt-option shadow-sm">
-																<span class="kt-option__control">
-																	<span class="kt-radio kt-radio--check-bold">
-																		<input type="radio" name="star" value="2">
-																		<span></span>
-																	</span>
-																</span>
-																<span class="kt-option__label">
-																	<span class="kt-option__head">
-																		<span class="kt-option__title text-warning kt-font-boldest">
-																			سرویس رسانی متوسط
-																		</span>
-																		
-																	</span>
-																	
-																</span>
-															</label>
-														</div>
-													</div>
-												</div>
-												
-												<div class="form-group form-group-marginless">
 													
-													<div class="row">
-														<div class="col-lg-6">
-															<label class="kt-option shadow-sm">
-																<span class="kt-option__control">
-																	<span class="kt-radio kt-radio--check-bold">
-																		<input type="radio" name="star" value="3">
-																		<span></span>
-																	</span>
-																</span>
-																<span class="kt-option__label">
-																	<span class="kt-option__head">
-																		<span class="kt-option__title text-success kt-font-boldest">
-																			سرویس رسانی 
-                                                                            خوب
-																		</span>
-																		
-																	</span>
-																	
-																</span>
-															</label>
-														</div>
-														<div class="col-lg-6">
-															<label class="kt-option shadow-sm">
-																<span class="kt-option__control">
-																	<span class="kt-radio kt-radio--check-bold">
-																		<input type="radio" name="star" value="4">
-																		<span></span>
-																	</span>
-																</span>
-																<span class="kt-option__label">
-																	<span class="kt-option__head">
-																		<span class="kt-option__title text-primary kt-font-boldest">
-																			سرویس رسانی عالی
-																		</span>
-																		
-																	</span>
-																	
-																</span>
-															</label>
-														</div>
-													</div>
 												</div>
+												<div class="rate">
+                                                    <input type="radio" id="star5" name="star" value="5" />
+                                                    <label for="star5" title="text">5 stars</label>
+                                                    <input type="radio" id="star4" name="star" value="4" />
+                                                    <label for="star4" title="text">4 stars</label>
+                                                    <input type="radio" id="star3" name="star" value="3" />
+                                                    <label for="star3" title="text">3 stars</label>
+                                                    <input type="radio" id="star2" name="star" value="2" />
+                                                    <label for="star2" title="text">2 stars</label>
+                                                    <input type="radio" id="star1" name="star" value="1" />
+                                                    <label for="star1" title="text">1 star</label>
+                                                  </div>
+												
                                                 <div class="kt-form__actions">
 													<button type="submit" class="btn btn-success">تایید کیفیت</button>
 													<button type="reset" class="btn btn-danger">رد تیکت</button>
@@ -262,11 +191,11 @@
 
                                                             
                                                             <div>
-                                                                <button type="submit"
+                                                                <!-- <button type="submit"
                                                                     class="btn btn-primary">ثبت رویداد</button>
                                                                 <button type="reset"
                                                                     class="btn btn-secondary">پاک کردن
-                                                                    متن</button>
+                                                                    متن</button> -->
                                                             </div>
                                                             {% if comments == None %}
                                                                 No comment available
@@ -357,6 +286,9 @@
 
         <!-- begin::Global Config(global config for global JS sciprts) -->
         {% include "partials/script.html" %}
+        <script>
+            
+        </script>
         <!--end::Page Scripts -->
     </body>
 

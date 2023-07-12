@@ -23,6 +23,7 @@ class Ticket(models.Model):
     voip_id = models.CharField(max_length=255, blank=True, null=True)
     family = models.CharField(max_length=255, blank=True, null=True)
     phone = models.CharField(max_length=255, blank=True, null=True)
+    phone2 = models.CharField(max_length=255, blank=True, null=True)
     mobile = models.CharField(max_length=255, blank=True, null=True)
     address = models.CharField(max_length=255, blank=True, null=True)
     summary = models.CharField(max_length=255)
