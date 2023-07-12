@@ -256,6 +256,7 @@
 														        </div>
 													        </div>
                                                     </div>
+                                                   
 
                                                 </div>
 
@@ -309,7 +310,7 @@
                                                 <!-- ---------------- -->
 
                                                 <div class="form-group row">
-                                                    <div class="col-lg-3">
+                                                    <div class="col-lg-2">
                                                         <label class="kt-font-dark kt-font-boldest">
                                                             شماره موبایل</label>
                                                         <div class="kt-input-icon">
@@ -320,7 +321,7 @@
                                                         </div>
 
                                                     </div>
-                                                    <div class="col-lg-3">
+                                                    <div class="col-lg-2">
                                                         <label class="kt-font-dark kt-font-boldest">
                                                             شماره ثابت</label>
                                                         <div class="kt-input-icon">
@@ -331,6 +332,7 @@
                                                         </div>
 
                                                     </div>
+                                                    
                                                     <div class="col-lg-9">
                                                         <label class="kt-font-dark kt-font-boldest">خلاصه
                                                             درخواست</label>
@@ -512,6 +514,21 @@
 
                                                     </div>
                                                 </div>
+
+
+                                                <div class="col-lg-2">
+                                                    <label class="kt-font-dark kt-font-boldest">
+                                                        <input type="checkbox" name="priority" value="high" style="display: none;">
+                                                        <input type="checkbox" name="priority" id="uncheck-priority" value="urgent" onclick="uncheckPriority()">
+                                                        <span class="kt-input-icon__icon kt-input-icon__icon--right">
+                                                        <span><i class="fa fa-primary text-warning"></i></span>فوری
+                                                        </span>
+                                                    </label>
+                                                </div>
+
+
+
+
                                             </div>
                                             <div class="kt-portlet__foot">
                                                 <div class="kt-form__actions">
@@ -566,7 +583,17 @@
 
 
 
+        <script>
+        function uncheckPriority() {
+        const priorityCheckbox = document.getElementById('uncheck-priority');
 
+        if (!priorityCheckbox.checked) {
+        // Uncheck the high priority checkbox
+        const highPriorityCheckbox = document.querySelector('input[name="priority"][value="high"]');
+        highPriorityCheckbox.checked = false;
+        }
+    }
+        </script>
         <!-- begin::Global Config(global config for global JS sciprts) -->
         {% include "partials/script.html" %}
         <!--end::Page Scripts -->
