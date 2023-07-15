@@ -118,10 +118,13 @@
                                                             <div class="form-group">
 
                                                                 <select class="form-control" id="exampleSelect1" name="doer">
+
                                                                     {% for doer in doers %}
-                                                                    <option value="{{doer.user_id}}">{{doer.name}}</option>
+                                                                    <option value="{{doer}}">{{doer.name}}</option>
                                                                     {% endfor %}
+
                                                                 </select>
+
                                                             </div>
 
                                                         </div>
@@ -135,13 +138,17 @@
 
 
                                             </div>
-                                            
-                                            {% for item in ticket_doers%}
+                                            {% if ticket_doers == None %}
                                             <div class="kt-margin-t-10">
-                                                <span class="badge badge-info">{{item.doer|ticket_doer_register}}</span>
+                                                <span class="badge badge-info">in</span>
                                             </div>
-                                            {% endfor %}
-                                            
+                                            {% else %}
+                                                {% for item in ticket_doers%}
+                                                <div class="kt-margin-t-10">
+                                                    <span class="badge badge-info">{{item.doer|ticket_doer_register}}</span>
+                                                </div>
+                                                {% endfor %}
+                                            {% endif %}
                                         </div>
                                     </div>
 
@@ -259,12 +266,17 @@
                                                                 <input type="text" name="family" class="custom-input" value="{{ ticket.family }}"/>
                                                                 <div class="kt-portlet__body">
                                                                     <div class="form-group row">
+                                                                                <div style="padding-bottom: 2em;">
+                                                                                    {{ticket.body}}
+                                                                                </div>
+                                                                                
+                                                                                
                                                                         <div
                                                                             class="col-lg-12 col-md-12 col-sm-12 is-valid validate">
-                                                                            <textarea name="body"
+                                                                            <textarea name="ticket_comment"
                                                                                 class="form-control"
                                                                                 data-provide="markdown"
-                                                                                rows="5">{{ticket.body}}</textarea>
+                                                                                rows="5"> </textarea>
                                                                                 
                                                                         </div>
 
@@ -295,7 +307,7 @@
                                                                     </div>
                                                                     <span class="kt-timeline__item-datetime">
                                                                         <span
-                                                                            class="badge badge-warning">{{comment.reg_dt|to_jalali}}</span></span>
+                                                                            class="badge badge-warning" style="font-size: medium;">{{comment.reg_dt|to_jalali}}</span></span>
                                                                 </div>
                                                                 <p href="" class="kt-timeline__item-text kt-font-bold">
                                                                     {{comment|html_fix|default:"No comment available"}}

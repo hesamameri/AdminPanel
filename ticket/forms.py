@@ -10,8 +10,8 @@ class TicketForm(forms.ModelForm):
 class TicketUpdateForm(forms.ModelForm):   
     class Meta:
         model = Ticket
-        fields = ['obj_source_type', 'category', 'type','source','family','address','summary','body','files','status','priority','doer','register']
-        
+        fields = ['obj_source_type', 'category', 'type','source','family','address','summary','files','status','priority','doer','register']
+    ticket_comment = forms.CharField(widget=forms.Textarea)
 
 # class TicketDoerForm(forms.ModelForm):
 #     class Meta:

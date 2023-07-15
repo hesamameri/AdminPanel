@@ -33,6 +33,7 @@ class Ticket(models.Model):
     register = models.IntegerField(blank=True, null=True)
     reg_dt = models.DateTimeField(blank=True, null=True,auto_now_add=True)
     star = models.IntegerField(blank=True, null=True)
+    updated_at = models.DateTimeField(auto_now=True)
 
     class Meta:
         managed = False
@@ -79,7 +80,7 @@ class TicketComment(models.Model):
     subject = models.CharField(max_length=255, blank=True, null=True)
     body = models.TextField(blank=True, null=True)
     register = models.IntegerField(blank=True, null=True)
-    reg_dt = models.DateTimeField(blank=True, null=True)
+    reg_dt = models.DateTimeField(blank=True, null=True,auto_now_add=True)
 
     class Meta:
         managed = False

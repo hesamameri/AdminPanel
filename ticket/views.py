@@ -79,10 +79,14 @@ def new_ticket_view(request):
         form = TicketForm(request.POST)
         if form.is_valid():
             data = form.cleaned_data
+            if data['category'].assign_to == None:
+                doer = UserChart.objects.get(chart = data['category'].chart_id).first()
+            else:
+                doer = data['category'].assign_to
             new_ticket = Ticket.objects.create(system_id= 1, category=data['category'],type=data['type'],obj_source_type=data['obj_source_type'],
                                                family = data['family'],summary = data['summary'],body = data['body'],phone = data['phone'],phone2 = data['phone2'],
                                                files = data['files'],address = data['address'],source = data['source'],status= TicketSystemStatus.objects.get(ticket_system_status_id=1),
-                                                 priority=data['priority'],flag = 1,register = data['register'])
+                                                 priority=data['priority'],flag = 1,register = data['register'],doer = doer)
             new_ticket.save()
             # print(new_ticket)
             return redirect('home:index')
@@ -131,7 +135,7 @@ def organ_ticket_view(request,organ_id):
 
     # Apply exclusion to the queryset based on values in one field
     tickets = tickets.exclude(status_id__in=excluded_values)
-    new_tickets = tickets.filter(status_id=1).order_by('-reg_dt')
+    new_tickets = tickets.filter(status_id=1).order_by('updated_at')
     ongoing_tickets = tickets.filter(status_id=3)
     customer_response_tickets = tickets.filter(status_id=6)
     tickets = (new_tickets|ongoing_tickets|customer_response_tickets)
@@ -203,12 +207,12 @@ def view_ticket_view(request,arg):
     priority = TicketSystemPriority.objects.filter(system_id=system_id).order_by('orderby').values('ticket_system_priority_id', 'name')
     doers = User.objects.all()
     ticket_item = get_object_or_404(Ticket, ticket_id=arg)
-    
+    registering =  User.objects.get(username = request.user).user_id
     if request.method == 'POST':
         
-        
+      
         form = TicketUpdateForm(request.POST)
-        
+        # print(form.errors)
         if form.is_valid():
             # error_message = "Form is not valid."
             # return HttpResponse(error_message)
@@ -217,14 +221,23 @@ def view_ticket_view(request,arg):
             for field in data:
                 if field in form.changed_data:  # Update only the modified fields
                     setattr(ticket_item, field, data[field])
-            print()
+            
             if 'doer' in form.changed_data:
-                ticket_doer = TicketDoer.objects.create(ticket = ticket_item,doer = form.cleaned_data['doer'])
-                ticket_doer.save()
+                new_doer_id = form.cleaned_data['doer']
+                existing_ticket_doer = TicketDoer.objects.filter(ticket=ticket_item, register=new_doer_id).first()
+                
+                if existing_ticket_doer is None:
+                    # Create a new TicketDoer only if it doesn't already exist
+                    ticket_doer = TicketDoer.objects.create(ticket=ticket_item, register=new_doer_id)
+                    ticket_doer.save()
+                    # print("This is new")
+            # print(request.POST)
+            if 'ticket_comment' in request.POST:
+                ticket_comment = TicketComment.objects.create(ticket = ticket_item,body = form.cleaned_data['ticket_comment'],
+                                    register = registering )
+                ticket_comment.save()
             ticket_item.save()
-            # print(ticket_item.doer)
-
-            # Redirect to the ticket view page
+            
             url = reverse('ticket:viewTicket', args=[ticket_item.ticket_id])
             return redirect(url)
         else:
@@ -237,7 +250,11 @@ def view_ticket_view(request,arg):
         
         ticket_item = get_object_or_404(Ticket, ticket_id=arg)
         ticket_comments = TicketComment.objects.filter(ticket_id = arg)
-        ticket_doers = TicketDoer.objects.filter(ticket_id = arg).values('doer')
+        ticket_doers = TicketDoer.objects.filter(ticket = arg)
+        def is_not_null(item, field_name):
+            return getattr(item, field_name) is not None
+        ticket_doers = [item for item in ticket_doers if is_not_null(item, 'doer')]
+        
         user_id = User.objects.get(username = request.user)
         user_permissions = UserRole.objects.filter(user = user_id).values('field_role')
         user_permissions = [item['field_role'] for item in user_permissions]
