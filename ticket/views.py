@@ -212,6 +212,7 @@ def view_ticket_view(request,arg):
         
       
         form = TicketUpdateForm(request.POST)
+        print(ticket_item)
         # print(form.errors)
         if form.is_valid():
             # error_message = "Form is not valid."
@@ -221,18 +222,21 @@ def view_ticket_view(request,arg):
             for field in data:
                 if field in form.changed_data:  # Update only the modified fields
                     setattr(ticket_item, field, data[field])
-            
+            # print(data)
+            print(form.changed_data)
             if 'doer' in form.changed_data:
+               
                 new_doer_id = form.cleaned_data['doer']
                 existing_ticket_doer = TicketDoer.objects.filter(ticket=ticket_item, register=new_doer_id).first()
                 
                 if existing_ticket_doer is None:
                     # Create a new TicketDoer only if it doesn't already exist
-                    ticket_doer = TicketDoer.objects.create(ticket=ticket_item, register=new_doer_id)
+                    ticket_doer = TicketDoer.objects.create(ticket=ticket_item, register=registering,doer = new_doer_id)
+                 
                     ticket_doer.save()
                     # print("This is new")
             # print(request.POST)
-            if 'ticket_comment' in request.POST:
+            if 'ticket_comment' in form.changed_data:
                 ticket_comment = TicketComment.objects.create(ticket = ticket_item,body = form.cleaned_data['ticket_comment'],
                                     register = registering )
                 ticket_comment.save()
@@ -241,6 +245,7 @@ def view_ticket_view(request,arg):
             url = reverse('ticket:viewTicket', args=[ticket_item.ticket_id])
             return redirect(url)
         else:
+            print(form.errors)
             # ... code for handling an invalid form ...
             error_message = "Form is not valid."
             # print(form.errors)
@@ -251,6 +256,7 @@ def view_ticket_view(request,arg):
         ticket_item = get_object_or_404(Ticket, ticket_id=arg)
         ticket_comments = TicketComment.objects.filter(ticket_id = arg)
         ticket_doers = TicketDoer.objects.filter(ticket = arg)
+
         def is_not_null(item, field_name):
             return getattr(item, field_name) is not None
         ticket_doers = [item for item in ticket_doers if is_not_null(item, 'doer')]
@@ -258,7 +264,7 @@ def view_ticket_view(request,arg):
         user_id = User.objects.get(username = request.user)
         user_permissions = UserRole.objects.filter(user = user_id).values('field_role')
         user_permissions = [item['field_role'] for item in user_permissions]
-        # print(ticket_doers)
+        print(ticket_item)
         context = {
             'ticket':  ticket_item,
             'source' : source,
@@ -270,8 +276,8 @@ def view_ticket_view(request,arg):
             'doers' : doers,
             'ticket_doers' : ticket_doers,
             'user_permissions': user_permissions,
-            
         }
+
        
         
         return render(request,'./Ticket/viewTicket.html',context=context)

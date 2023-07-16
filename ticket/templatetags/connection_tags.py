@@ -37,10 +37,7 @@ def ticket_comment_register(register):
 
 @register.filter    
 def ticket_doer_register(register):
-    print("S")
-    print(register)
     user = User.objects.get(user_id = register)
-    print("S")
     return user.name
 
 # @register.simple_tag
