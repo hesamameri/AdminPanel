@@ -124,17 +124,17 @@
 													
 												</div>
 												<div class="rate">
-                                                    <input type="radio" id="star5" name="star" value="5" />
+                                                    <input type="radio" id="star5" name="star" value="5" {% if ticket.star == 5 %} checked {% endif %} />
                                                     <label for="star5" title="text">5 stars</label>
-                                                    <input type="radio" id="star4" name="star" value="4" />
+                                                    <input type="radio" id="star4" name="star" value="4" {% if ticket.star == 4 %} checked {% endif %} />
                                                     <label for="star4" title="text">4 stars</label>
-                                                    <input type="radio" id="star3" name="star" value="3" />
+                                                    <input type="radio" id="star3" name="star" value="3" {% if ticket.star == 3 %} checked {% endif %} />
                                                     <label for="star3" title="text">3 stars</label>
-                                                    <input type="radio" id="star2" name="star" value="2" />
+                                                    <input type="radio" id="star2" name="star" value="2" {% if ticket.star == 2 %} checked {% endif %} />
                                                     <label for="star2" title="text">2 stars</label>
-                                                    <input type="radio" id="star1" name="star" value="1" />
+                                                    <input type="radio" id="star1" name="star" value="1" {% if ticket.star == 1 %} checked {% endif %} />
                                                     <label for="star1" title="text">1 star</label>
-                                                  </div>
+                                                </div>
 												
                                                 <div class="kt-form__actions">
 													<button type="submit" class="btn btn-success">تایید کیفیت</button>

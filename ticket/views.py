@@ -223,7 +223,6 @@ def view_ticket_view(request,arg):
                 if field in form.changed_data:  # Update only the modified fields
                     setattr(ticket_item, field, data[field])
             # print(data)
-            print(form.changed_data)
             if 'doer' in form.changed_data:
                
                 new_doer_id = form.cleaned_data['doer']
