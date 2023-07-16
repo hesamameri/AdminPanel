@@ -46,20 +46,21 @@ def ticket_doer_register(register):
 
 @register.filter
 def ticket_doer_change_access(ticket,request):
-    ticket_assign_id = ticket.category.assign_to
-    user_category = User.objects.get(user_id = ticket_assign_id)
-    item = ticket.category.chart_id
-    access_ids = UserChart.objects.filter(chart = item)
-    
-    access_ids = [i.user.username for i in access_ids]
-    print(access_ids)
-    print(request.user)
-    # print(access_ids)
-    if request.user == user_category or request.user in access_ids :
-        print(True)
-        return True
+    if ticket.category.assign_to == None:
+        item = ticket.category.chart_id
+        access_ids = UserChart.objects.filter(chart = item)
+        access_ids = [i.user.username for i in access_ids]
+        if request.user in access_ids:
+            return True
+        else:
+            return False
     else:
-        print(False)
-        return False
+        ticket_assign_id = ticket.category.assign_to
+        user_category = User.objects.get(user_id = ticket_assign_id)
+        if request.user == user_category:
+            return True
+        else:
+            return False
+    
 
 
