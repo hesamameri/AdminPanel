@@ -95,7 +95,7 @@
 															<div class="kt-widget-14__data">
 																<div class="kt-widget-14__info">
 																	<div class="kt-widget-14__info-title kt-font-brand">{{ ticket.reg_dt|to_jalali}}</div>
-																	<div class="kt-widget-14__desc"></div>
+																	<div class="kt-widget-14__desc"> </div>
 																	
 																</div>
 																<div class="kt-widget-14__info">
@@ -118,6 +118,15 @@
 																
 															</div>
 															<div class="kt-widget-14__foot-toolbar">
+																{% if ticket.star != 0 %}
+																<div class="kt-widget-14__foot-label btn btn-sm btn-upper btn-bold">
+																	تایید شده
+																</div>
+																{% else %}
+																<div class="kt-widget-14__foot-label btn btn-sm btn-upper btn-bold">
+																
+																</div>
+																{% endif %}
 																<a href="{% url 'ticket:viewTicketQuality' ticket.ticket_id %}" class="btn btn-success btn-sm btn-bold btn-upper">مشاهده</a>
 																<a href="#" class="btn btn-warning btn-sm btn-bold btn-upper">دسته بندی :{{ categories.name }}</a>
 															</div>

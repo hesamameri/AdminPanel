@@ -149,7 +149,7 @@ def organ_ticket_view(request,organ_id):
     type = TicketSystemType.objects.filter(ticket_system_type_id__in = ticket_system_type)
     priority = TicketSystemPriority.objects.filter(ticket_system_priority_id__in = ticket_system_priority)
     status = TicketSystemStatus.objects.filter(ticket_system_status_id__in = ticket_system_status)
-    print(tickets)
+    # print(tickets)
     # Build the context for rendering the template
     context = {
         'tickets': tickets,
@@ -301,6 +301,7 @@ def viewQuality_ticket_view(request,ticket_id):
     else:
 
         ticket_item = Ticket.objects.get(ticket_id = ticket_id)
+        
         ticket_doers = TicketDoer.objects.filter(ticket_id = ticket_id).values('doer').distinct()
         ticket_comments = TicketComment.objects.filter(ticket_id = ticket_id)
         user_id = User.objects.get(username = request.user)
@@ -311,6 +312,7 @@ def viewQuality_ticket_view(request,ticket_id):
             'doers' : ticket_doers,
             'comments':ticket_comments,
             'user_permissions': user_permissions,
+            
         }
 
         return render(request,'./Ticket/viewTicketQuality.html',context=context)

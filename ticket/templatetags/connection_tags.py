@@ -1,5 +1,5 @@
 from django import template
-from Administrator.models import User
+from Administrator.models import User,UserChart
 from ..models import TicketSystemCategory,TicketComment,TicketComentRead
 
 
@@ -43,3 +43,23 @@ def ticket_doer_register(register):
 # @register.simple_tag
 # def remove_duplicates(queryset):
 #     return queryset.distinct()
+
+@register.filter
+def ticket_doer_change_access(ticket,request):
+    ticket_assign_id = ticket.category.assign_to
+    user_category = User.objects.get(user_id = ticket_assign_id)
+    item = ticket.category.chart_id
+    access_ids = UserChart.objects.filter(chart = item)
+    
+    access_ids = [i.user.username for i in access_ids]
+    print(access_ids)
+    print(request.user)
+    # print(access_ids)
+    if request.user == user_category or request.user in access_ids :
+        print(True)
+        return True
+    else:
+        print(False)
+        return False
+
+

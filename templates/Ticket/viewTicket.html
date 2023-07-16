@@ -91,18 +91,20 @@
                                     <hr class=" kt-separator kt-margin-t-10 kt-margin-b-20">
 
                                     <div class="kt-portlet kt-align-center">
-
+                                        
                                         <div class="kt-widget-15__body kt-margin-t-20 kt-margin-b-20">
-
+                                            {% if ticket|ticket_doer_change_access:request %}
                                             <button type="button" class="btn btn-outline-success kt-font-boldest" data-toggle="modal"
                                                 data-target="#exampleModal">
                                                 انجام دهنده جدید
-                                            </button>
-                                            
+                                            </button>                                            
+                                           
                                             <!-- Modal -->
                                             <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog"
                                                 aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                                
                                                 <div class="modal-dialog" role="form">
+                                                    
                                                     <div class="modal-content">
                                                         <div class="modal-header">
                                                             <h5 class="modal-title" id="exampleModalLabel">انتخاب انجام
@@ -113,8 +115,9 @@
                                                                 <span aria-hidden="true">&times;</span>
                                                             </button>
                                                         </div>
+                                                        
                                                         <div class="modal-body">
-
+                                                            
                                                             <div class="form-group">
 
                                                                 <select class="form-control"  name="doer">
@@ -128,16 +131,22 @@
                                                             </div>
 
                                                         </div>
+                                                        
                                                         <div class="modal-footer">
                                                             <button type="button" class="btn btn-outline-brand"
                                                                 data-dismiss="modal">بستن</button>
                                                             <button type="submit" class="btn btn-brand">انتخاب</button>
                                                         </div>
                                                     </div>
+                                                   
                                                 </div>
-
+                                                
+                                                
 
                                             </div>
+                                            {% else %}
+                                                انجام دهندگان
+                                            {% endif %}
                                             {% if ticket_doers == None %}
                                             <div class="kt-margin-t-10">
                                                 <span class="badge badge-info">in</span>
