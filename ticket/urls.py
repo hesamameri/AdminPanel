@@ -5,6 +5,7 @@ from django.conf.urls.static import static
 app_name = 'ticket'
 urlpatterns = [
     path('indexticket', views.index_ticket_view, name='indexTicket'),
+    path('indexticket/<int:user_id>/<str:status_name>/', views.index_admin_ticket_view, name='indexAdminTicket'),
     path('confirmticket', views.confirm_ticket_view, name='confirmTicket'),
     path('inboxticket', views.inbox_ticket_view, name='inboxTicket'),
     path('newticket', views.new_ticket_view, name='newTicket'),

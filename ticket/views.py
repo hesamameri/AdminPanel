@@ -46,11 +46,24 @@ def index_ticket_view(request):
                        
     return render(request,'./Ticket/indexTicket.html',context=context)
 
+
+@login_required(login_url='Administrator:login_view')
+@permission_required('ROLE_ADMIN')
+def index_admin_ticket_view(request,user_id,status_name):
+    status_id = TicketSystemStatus.objects.get(name = status_name)
+    tickets = Ticket.objects.filter(category__assign_to=user_id, status=status_id)
+    tickets = tickets.order_by('-updated_at','-reg_dt')
+    context = {
+        'tickets':tickets,
+    }  
+    return render(request,'./Ticket/indexAdmin.html',context=context)
+
+
 @login_required(login_url='Administrator:login_view')
 def confirm_ticket_view(request):
     user_id = User.objects.get(username = request.user).user_id
     # Get the tickets associated with the categories
-    tickets = Ticket.objects.filter(register=user_id).filter(status_id = 4).order_by('-reg_dt')
+    tickets = Ticket.objects.filter(register=user_id).filter(status_id = 4).order_by('-updated_at','-reg_dt')
     context = {
         'tickets': tickets,
        
@@ -65,6 +78,8 @@ def inbox_ticket_view(request):
     user_permissions = UserRole.objects.filter(user = user_id).values('field_role')
     user_permissions = [item['field_role'] for item in user_permissions]
     tickets = Ticket.objects.filter(doer = user_id).order_by('-reg_dt')
+    excluded_values = [5,8,4]
+    tickets = tickets.exclude(status_id__in=excluded_values).order_by('status_id','-updated_at')
     context = {
         'tickets' : tickets,
         'user_permissions': user_permissions,
@@ -135,11 +150,11 @@ def organ_ticket_view(request,organ_id):
 
     # Apply exclusion to the queryset based on values in one field
     tickets = tickets.exclude(status_id__in=excluded_values)
-    new_tickets = tickets.filter(status_id=1).order_by('updated_at')
+    new_tickets = tickets.filter(status_id=1)
     ongoing_tickets = tickets.filter(status_id=3)
     customer_response_tickets = tickets.filter(status_id=6)
     tickets = (new_tickets|ongoing_tickets|customer_response_tickets)
-    
+    tickets = tickets.order_by('status_id','-updated_at', )
     ticket_system_source = Ticket.objects.filter(category_id=organ_id).values('source_id')
     ticket_system_type = Ticket.objects.filter(category_id=organ_id).values('type_id')
     ticket_system_priority = Ticket.objects.filter(category_id=organ_id).values('priority_id')
@@ -177,7 +192,7 @@ def quality_ticket_view(request):
     
 
     # Apply exclusion to the queryset based on values in one field
-    tickets = tickets.filter(status_id = 5).order_by('-reg_dt')
+    tickets = tickets.filter(status_id = 5).order_by('-updated_at','-reg_dt')
     context = {
         'tickets':tickets,
         'categories':categories,
@@ -191,7 +206,9 @@ def quality_ticket_view(request):
 def sent_ticket_view(request):
 
     user_id = User.objects.get(username = request.user).user_id
-    tickets = Ticket.objects.filter(register = user_id).order_by('-reg_dt')
+    tickets = Ticket.objects.filter(register = user_id)
+    excluded_values = [5,8]
+    tickets = tickets.exclude(status_id__in=excluded_values).order_by('status_id','updated_at','-reg_dt')
     context = {
         'tickets' : tickets,
     }
@@ -200,6 +217,7 @@ def sent_ticket_view(request):
 @login_required(login_url='Administrator:login_view')
 def view_ticket_view(request,arg):
     system_id = 1
+    
     source = TicketSystemSource.objects.filter(system_id=system_id).order_by('orderby').values('ticket_system_source_id', 'name')
     type = TicketSystemType.objects.filter(system_id=system_id).order_by('orderby').values('ticket_system_type_id', 'name')
     status = TicketSystemStatus.objects.filter(system_id=system_id).order_by('orderby').values('ticket_system_status_id', 'name')
@@ -207,7 +225,12 @@ def view_ticket_view(request,arg):
     priority = TicketSystemPriority.objects.filter(system_id=system_id).order_by('orderby').values('ticket_system_priority_id', 'name')
     doers = User.objects.all()
     ticket_item = get_object_or_404(Ticket, ticket_id=arg)
+    excluded_status_ids = [5,1]
     registering =  User.objects.get(username = request.user).user_id
+    if ticket_item.register == registering:
+        status = TicketSystemStatus.objects.filter(system_id=system_id).order_by('orderby').values('ticket_system_status_id', 'name')
+    else:
+        status = TicketSystemStatus.objects.exclude(ticket_system_status_id__in = excluded_status_ids)
     if request.method == 'POST':
         
       
@@ -301,7 +324,6 @@ def viewQuality_ticket_view(request,ticket_id):
     else:
 
         ticket_item = Ticket.objects.get(ticket_id = ticket_id)
-        
         ticket_doers = TicketDoer.objects.filter(ticket_id = ticket_id).values('doer').distinct()
         ticket_comments = TicketComment.objects.filter(ticket_id = ticket_id)
         user_id = User.objects.get(username = request.user)

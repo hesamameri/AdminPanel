@@ -135,8 +135,9 @@
                                                                         <!-- for loop for the number of tickets  regarding statuses the number of tickets that are assigned to this user -->
                                                                         {% for status, count in status_counts.items %}
                                                                         <td  style="text-align: center; border-left: solid grey 0.5px; font-size: larger;" class="text-center">    
-                                                                            <a href="#">{{ count }}</a>
+                                                                            <a href="{% url 'ticket:indexAdminTicket' user.user_id status %}">{{ count }}</a>
                                                                         </td>
+                                                                        
                                                                         {% endfor %}
                                                                         <!-- end for loop for statuses on ticket doer -->
                                                                     </tr>
