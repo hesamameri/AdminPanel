@@ -25,6 +25,7 @@ urlpatterns = [
     path('',include('Administrator.urls')),
     path('',include('home.urls')),
     path('',include('ticket.urls')),
+    path('',include('customer.urls'))
 ]
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

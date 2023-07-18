@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'Administrator',
     'ticket',
     'home',
+    'customer',
     'dotenv',
 ]
 
