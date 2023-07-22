@@ -126,11 +126,13 @@
                                                                 </thead>
                                                                 <tbody>
                                                                     {% for user, status_counts in ticket_counts_users.items %}
+                                                                    {% with rowspan=user.statuses_count|default_if_none:1 %}
                                                                     <!-- a for loop for users is needed here -->
                                                                     <tr>
-                                                                        <td rowspan="4" style="font-weight: bold;"  class="text-center">{{user.name}}</td><!--user name is inserted here-->
-                                                                    </tr>
-                                                                    <tr>
+                                                                        <td rowspan="{{ rowspan  }}" style="font-weight: bold;"  class="text-center">{{user.name}}</td><!--user name is inserted here-->
+                                                                    
+                                                                    {% endwith %}
+                                                                    
                                                                         <td style="font-weight: bold;" class="text-center">انجام دهنده</td>
                                                                         <!-- for loop for the number of tickets  regarding statuses the number of tickets that are assigned to this user -->
                                                                         {% for status, count in status_counts.items %}
@@ -141,14 +143,9 @@
                                                                         {% endfor %}
                                                                         <!-- end for loop for statuses on ticket doer -->
                                                                     </tr>
-                                                                    <tr>
-                                                                        <td style="font-weight: bold;" class="text-center">همکار</td>
-                                                                        <!-- for loop needed here for statuses -->
-                                                                        <td colspan="7" style="text-align: center; border-left: solid grey 0.5px; font-size: larger;" class="text-center">
-                                                                            <a href="#"></a>
-                                                                        </td>
-                                                                        <!-- end for loop for statuses -->
-                                                                    </tr>
+                                                                   
+                                                                        
+                                                                    
                                                                     
                                                                     <!-- end for loop for user -->
                                                                     {% endfor %}
