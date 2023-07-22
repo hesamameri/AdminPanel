@@ -1,6 +1,25 @@
-# from django.db import models
+from django.db import models
 # from ticket.models import *
 # from Administrator.models import *
+class CustomerSubSVA(models.Model):
+    obj_item_id = models.IntegerField(primary_key=True)
+    name = models.CharField(max_length=100)
+    title = models.CharField(max_length=100)
+    status = models.CharField(max_length=50)
+    phone = models.CharField(max_length=20, null=True)
+    mobile = models.CharField(max_length=20, null=True)
+    reagent = models.CharField(max_length=100, null=True)
+    address = models.CharField(max_length=200, null=True)
+    idno = models.CharField(max_length=20, null=True)
+    codemeli = models.CharField(max_length=20, null=True)
+    province_id = models.IntegerField(null=True)
+    city_id = models.IntegerField(null=True)
+    seller_buyer_id = models.IntegerField(null=True)
+    sex_id = models.IntegerField(null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'customer_sub_sva'
 # class Contract(models.Model):
 #     contract_id = models.AutoField(primary_key=True)
 #     type = models.CharField(max_length=4, blank=True, null=True, db_comment='نوع قرارداد یا خرید است و یا قرار فروش')
@@ -390,16 +409,17 @@
 #     class Meta:
 #         managed = False
 #         db_table = 'inquiry'
-# class Obj(models.Model):
-#     obj_id = models.AutoField(primary_key=True)
-#     obj_type = models.ForeignKey('ObjType', models.DO_NOTHING)
-#     name = models.CharField(max_length=100, blank=True, null=True)
-#     title = models.CharField(max_length=255, blank=True, null=True)
-#     status = models.IntegerField(blank=True, null=True)
 
-#     class Meta:
-#         managed = False
-#         db_table = 'obj'
+class Obj(models.Model):
+    obj_id = models.AutoField(primary_key=True)
+    obj_type = models.ForeignKey('ObjType', models.DO_NOTHING)
+    name = models.CharField(max_length=100, blank=True, null=True)
+    title = models.CharField(max_length=255, blank=True, null=True)
+    status = models.IntegerField(blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'obj'
 
 
 # class ObjDocument(models.Model):
@@ -416,16 +436,16 @@
 #         db_table = 'obj_document'
 
 
-# class ObjItem(models.Model):
-#     obj_item_id = models.AutoField(primary_key=True)
-#     obj = models.ForeignKey('Obj', models.DO_NOTHING, blank=True, null=True)
-#     name = models.CharField(max_length=100, blank=True, null=True)
-#     title = models.CharField(max_length=255, blank=True, null=True)
-#     status = models.IntegerField(blank=True, null=True)
+class ObjItem(models.Model):
+    obj_item_id = models.AutoField(primary_key=True)
+    obj = models.ForeignKey(Obj, models.DO_NOTHING, blank=True, null=True)
+    name = models.CharField(max_length=100, blank=True, null=True)
+    title = models.CharField(max_length=255, blank=True, null=True)
+    status = models.IntegerField(blank=True, null=True)
 
-#     class Meta:
-#         managed = False
-#         db_table = 'obj_item'
+    class Meta:
+        managed = False
+        db_table = 'obj_item'
 
 
 # class ObjItemCity(models.Model):
@@ -454,16 +474,33 @@
 #         db_table = 'obj_item_confirmer'
 #         db_table_comment = 'انبارها\nثثبت کننده\nتایید کننده کیفیت\nشمارش کننده انبار\n\nلوازم مصرفی\nچه کسی صدور میزند اگر خالی بود همه میتوانند صدور بزنند\nچه کسی میتواند این کالا را تایید کند که خریداری شود و نمیتواند خالی باشد\nتصویب کننده اگر تصویب کننده کالا داشت باید تصویب شود وگرنه تایید کننده تصویب کننده هم خواهد بود'
 
+class ObjSpec(models.Model):
+    obj_spec_id = models.AutoField(primary_key=True)
+    obj = models.ForeignKey(Obj, models.DO_NOTHING, blank=True, null=True)
+    name = models.CharField(max_length=100, blank=True, null=True)
+    title = models.CharField(max_length=100, blank=True, null=True)
+    data_type = models.CharField(max_length=100, blank=True, null=True)
+    default_value = models.TextField(blank=True, null=True)
+    requirement = models.IntegerField(blank=True, null=True)
+    order_id = models.IntegerField(blank=True, null=True)
+    min_len = models.IntegerField(blank=True, null=True)
+    max_len = models.IntegerField(blank=True, null=True)
+    min_value = models.FloatField(blank=True, null=True)
+    max_value = models.FloatField(blank=True, null=True)
+    pattern = models.CharField(max_length=255, blank=True, null=True)
 
-# class ObjItemSpec(models.Model):
-#     obj_item_spec_id = models.AutoField(primary_key=True)
-#     obj_item = models.ForeignKey('ObjItem', models.DO_NOTHING, blank=True, null=True)
-#     obj_spec = models.ForeignKey('ObjSpec', models.DO_NOTHING, blank=True, null=True)
-#     val = models.TextField(blank=True, null=True)
+    class Meta:
+        managed = False
+        db_table = 'obj_spec'
+class ObjItemSpec(models.Model):
+    obj_item_spec_id = models.AutoField(primary_key=True)
+    obj_item = models.ForeignKey(ObjItem, models.DO_NOTHING, blank=True, null=True)
+    obj_spec = models.ForeignKey(ObjSpec, models.DO_NOTHING, blank=True, null=True)
+    val = models.TextField(blank=True, null=True)
 
-#     class Meta:
-#         managed = False
-#         db_table = 'obj_item_spec'
+    class Meta:
+        managed = False
+        db_table = 'obj_item_spec'
 
 
 # class ObjPayment(models.Model):
@@ -561,38 +598,21 @@
 #         db_table = 'obj_send_serial'
 
 
-# class ObjSpec(models.Model):
-#     obj_spec_id = models.AutoField(primary_key=True)
-#     obj = models.ForeignKey('Obj', models.DO_NOTHING, blank=True, null=True)
-#     name = models.CharField(max_length=100, blank=True, null=True)
-#     title = models.CharField(max_length=100, blank=True, null=True)
-#     data_type = models.CharField(max_length=100, blank=True, null=True)
-#     default_value = models.TextField(blank=True, null=True)
-#     requirement = models.IntegerField(blank=True, null=True)
-#     order_id = models.IntegerField(blank=True, null=True)
-#     min_len = models.IntegerField(blank=True, null=True)
-#     max_len = models.IntegerField(blank=True, null=True)
-#     min_value = models.FloatField(blank=True, null=True)
-#     max_value = models.FloatField(blank=True, null=True)
-#     pattern = models.CharField(max_length=255, blank=True, null=True)
-
-#     class Meta:
-#         managed = False
-#         db_table = 'obj_spec'
 
 
-# class ObjType(models.Model):
-#     obj_type_id = models.AutoField(primary_key=True)
-#     name = models.CharField(max_length=100, blank=True, null=True)
-#     title = models.CharField(max_length=100, blank=True, null=True)
-#     status = models.IntegerField(blank=True, null=True)
-#     has_bom = models.IntegerField(blank=True, null=True)
-#     child_length = models.IntegerField(blank=True, null=True)
-#     order_id = models.IntegerField(blank=True, null=True)
 
-#     class Meta:
-#         managed = False
-#         db_table = 'obj_type'
+class ObjType(models.Model):
+    obj_type_id = models.AutoField(primary_key=True)
+    name = models.CharField(max_length=100, blank=True, null=True)
+    title = models.CharField(max_length=100, blank=True, null=True)
+    status = models.IntegerField(blank=True, null=True)
+    has_bom = models.IntegerField(blank=True, null=True)
+    child_length = models.IntegerField(blank=True, null=True)
+    order_id = models.IntegerField(blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'obj_type'
 
 
 # class ObjTypeSpec(models.Model):

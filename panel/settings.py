@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'home',
     'customer',
     'dotenv',
+    'django_db_views',
 ]
 
 MIDDLEWARE = [
