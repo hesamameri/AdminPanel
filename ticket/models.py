@@ -34,6 +34,7 @@ class Ticket(models.Model):
     reg_dt = models.DateTimeField(blank=True, null=True,auto_now_add=True)
     star = models.IntegerField(blank=True, null=True)
     updated_at = models.DateTimeField(auto_now=True)
+    man_op = models.CharField(max_length=150)
 
     class Meta:
         managed = False

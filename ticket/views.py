@@ -317,8 +317,11 @@ def viewQuality_ticket_view(request,ticket_id):
         form_data = request.POST
         ticket_item = Ticket.objects.get(ticket_id = ticket_id)
         # Update the desired field
+        
         ticket_item.star = form_data.get('star')
+        ticket_item.man_op = form_data.get('man_op')
         ticket_item.save()
+        print(form_data)
         return redirect('ticket:qualityTicket')
 
     else:

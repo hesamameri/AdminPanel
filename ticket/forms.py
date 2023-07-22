@@ -1,12 +1,13 @@
 from django import forms
 from .models import Ticket,TicketSystemStatus,TicketDoer
+from django.core.exceptions import ValidationError
+
 
 class TicketForm(forms.ModelForm):   
     class Meta:
         model = Ticket
         fields = ['obj_source_type', 'category', 'type','source','family','address','summary','doer','body','files','status','priority','flag','register','phone2','phone']
-
-
+    
 class TicketUpdateForm(forms.ModelForm):   
     class Meta:
         model = Ticket

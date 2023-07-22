@@ -3,7 +3,11 @@ from django.db.models import F
 from .models import CustomerSubSVA
 from django.core.paginator import Paginator, EmptyPage
 from django.db.models import Q
+from django.contrib.auth.decorators import login_required
+from Administrator.permissions import permission_required
 
+@login_required(login_url='Administrator:login_view')
+@permission_required('ROLE_PERSONEL','ROLE_ADMIN')
 def customer_index(request):
     distinct_obj_item_ids = CustomerSubSVA.objects.values('obj_item_id').distinct()
 
