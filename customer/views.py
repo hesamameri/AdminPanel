@@ -80,141 +80,169 @@ def customer_index(request):
 
     return render(request, 'Customer/CustomerIndex.html', context=context)
 
+
+@login_required(login_url='Administrator:login_view')
+@permission_required('ROLE_PERSONEL','ROLE_ADMIN')
 def customer_index_all(request):
 
     return render(request,'Customer/CustomerIndexAll.html')
 
+@login_required(login_url='Administrator:login_view')
+@permission_required('ROLE_PERSONEL','ROLE_ADMIN')
 def factor(request):
     
     return render(request,'Customer/Factor.html')
 
+@login_required(login_url='Administrator:login_view')
+@permission_required('ROLE_PERSONEL','ROLE_ADMIN')
 def factor_index(request):
     
     return render(request,'Customer/FactorList.html')
 
+@login_required(login_url='Administrator:login_view')
+@permission_required('ROLE_PERSONEL','ROLE_ADMIN')
 def customer_confirm_accountlist(request):
     
     return render(request,'Customer/CustomerConfirmAccountList.html')
 
+@login_required(login_url='Administrator:login_view')
+@permission_required('ROLE_PERSONEL','ROLE_ADMIN')
 def customer_confirm_salelist(request):
     
     return render(request,'Customer/CustomerConfirmSaleList.html')
 
+@login_required(login_url='Administrator:login_view')
+@permission_required('ROLE_PERSONEL','ROLE_ADMIN')
 def customer_factor_assessment(request):
     
     return render(request,'Customer/CustomerFactorAssessment.html')
 
 
-
+@login_required(login_url='Administrator:login_view')
+@permission_required('ROLE_PERSONEL','ROLE_ADMIN')
 def factor_send_index(request):
     
     return render(request,'Customer/FactorSendIndex.html')
 
 
-
+@login_required(login_url='Administrator:login_view')
+@permission_required('ROLE_PERSONEL','ROLE_ADMIN')
 def customer_payment_confirm(request):
     
     return render(request,'Customer/CustomerPaymentConfirm.html')
 
 
 
-
+@login_required(login_url='Administrator:login_view')
+@permission_required('ROLE_PERSONEL','ROLE_ADMIN')
 def receipt_index(request):
     
     return render(request,'Customer/ReceiptIndex.html')
 
 
-
+@login_required(login_url='Administrator:login_view')
+@permission_required('ROLE_PERSONEL','ROLE_ADMIN')
 def receipt_list(request):
     
     return render(request,'Customer/ReceiptList.html')
 
-
+@login_required(login_url='Administrator:login_view')
+@permission_required('ROLE_PERSONEL','ROLE_ADMIN')
 def receipt_receive(request):
     
     return render(request,'Customer/ReceiptReceive.html')
 
-
+@login_required(login_url='Administrator:login_view')
+@permission_required('ROLE_PERSONEL','ROLE_ADMIN')
 def receipt_send(request):
     
     return render(request,'Customer/ReceiptSend.html')
 
 
-
+@login_required(login_url='Administrator:login_view')
+@permission_required('ROLE_PERSONEL','ROLE_ADMIN')
 def credit_index(request):
     
     return render(request,'Customer/CreditIndex.html')
 
 
-
-
-
+@login_required(login_url='Administrator:login_view')
+@permission_required('ROLE_PERSONEL','ROLE_ADMIN')
 def credit_list(request):
     
     return render(request,'Customer/CreditList.html')
 
-
-
-
+@login_required(login_url='Administrator:login_view')
+@permission_required('ROLE_PERSONEL','ROLE_ADMIN')
 def receipt_confirm(request):
     
     return render(request,'Customer/receiptconfirm.html')
 
 
-
+@login_required(login_url='Administrator:login_view')
+@permission_required('ROLE_PERSONEL','ROLE_ADMIN')
 def prefroma(request):
     
     return render(request,'Customer/Prefroma.html')
 
-
+@login_required(login_url='Administrator:login_view')
+@permission_required('ROLE_PERSONEL','ROLE_ADMIN')
 def customerfactor_sendassigndriver(request):
     
     return render(request,'Customer/CustomerFactorSendAssignDriver.html')
 
-
+@login_required(login_url='Administrator:login_view')
+@permission_required('ROLE_PERSONEL','ROLE_ADMIN')
 def customerfactor_sendstatus(request):
     
     return render(request,'Customer/CustomerFactorSendStatus.html')
 
 
-
-
+@login_required(login_url='Administrator:login_view')
+@permission_required('ROLE_PERSONEL','ROLE_ADMIN')
 def customerfactor_servicedoc(request):
     
     return render(request,'Customer/CustomerFactorServiceDoc.html')
 
-
+@login_required(login_url='Administrator:login_view')
+@permission_required('ROLE_PERSONEL','ROLE_ADMIN')
 def customer_payment_confirms(request):
     
     return render(request,'Customer/CustomerPaymentConfirms.html')
 
-
+@login_required(login_url='Administrator:login_view')
+@permission_required('ROLE_PERSONEL','ROLE_ADMIN')
 def index_inquiry_response(request):
     
     return render(request,'Customer/IndexInquiryResponse.html')
 
 
-
+@login_required(login_url='Administrator:login_view')
+@permission_required('ROLE_PERSONEL','ROLE_ADMIN')
 def index_inquiry(request):
     
     return render(request,'Customer/IndexInquiry.html')
 
+@login_required(login_url='Administrator:login_view')
+@permission_required('ROLE_PERSONEL','ROLE_ADMIN')
 def new_customer(request):
     
     return render(request,'Customer/NewCustomer.html')
 
-
+@login_required(login_url='Administrator:login_view')
+@permission_required('ROLE_PERSONEL','ROLE_ADMIN')
 def factorsend_installerprint(request):
     
     return render(request,'Customer/FactorSendInstallerPrint.html')
 
-
-
+@login_required(login_url='Administrator:login_view')
+@permission_required('ROLE_PERSONEL','ROLE_ADMIN')
 def factor_send_print(request):
     
     return render(request,'Customer/FactorSendPrint.html')
-#####################################################
 
+@login_required(login_url='Administrator:login_view')
+@permission_required('ROLE_PERSONEL','ROLE_ADMIN')
 def receipt_print(request):
     
     return render(request,'Customer/ReceiptPrint.html')
