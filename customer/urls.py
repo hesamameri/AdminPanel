@@ -34,9 +34,6 @@ urlpatterns = [
     path('factorsendprint', views.factor_send_print, name='FactorSendPrint'),
     path('receiptprint', views.receipt_print, name='ReceiptPrint'),
 
-
-
-
 ]
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
