@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+
+<html lang="fa">
+
+    <!-- begin::Head -->
+
+    {% include "partials/head.html" %}
+
+
+    <!-- end::Head -->
+
+    <!-- begin::Body -->
+
+    <body
+        class="kt-quick-panel--right kt-demo-panel--right kt-offcanvas-panel--right kt-header--fixed kt-header-mobile--fixed kt-subheader--enabled kt-subheader--transparent kt-aside--enabled kt-aside--fixed kt-page--loading">
+
+        <!-- begin:: Header Mobile -->
+
+        {% include "partials/MobileHeader.html" %}
+
+        <!-- end:: Header Mobile -->
+
+        <!-- begin:: Root -->
+        <div class="kt-grid kt-grid--hor kt-grid--root">
+
+            <!-- begin:: Page -->
+            <div class="kt-grid__item kt-grid__item--fluid kt-grid kt-grid--ver kt-page">
+
+                <!-- begin:: Aside -->
+                {% include "partials/sidebar.html" %}
+
+
+                <!-- end:: Aside -->
+
+                <!-- begin:: Wrapper -->
+                <div class="kt-grid__item kt-grid__item--fluid kt-grid kt-grid--hor kt-wrapper" id="kt_wrapper">
+
+                    <!-- begin:: Header -->
+
+                    {% include "partials/header.html" %}
+                    <!-- end:: Header -->
+                    <div class="kt-grid__item kt-grid__item--fluid kt-grid kt-grid--hor">
+
+                        <!-- begin:: Subheader -->
+                        {% include "partials/subheader.html" %}
+
+                        <!-- end:: Subheader -->
+
+                        <!-- begin:: Content -->
+                        <div class="kt-content  kt-grid__item kt-grid__item--fluid" id="kt_content">
+                            <div ng-controller="ReportCtrl">
+                                <div class="content-wrapper">
+                                    <div class="content-header">
+                                        <div class="container-fluid">
+                                            <div class="row mb-2">
+                                                <div class="col-sm-12">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="content ticket">
+                                        <div class="container-fluid">
+                                            <div class="row rtl">
+                                
+                                                <div class="col-sm-12 col-md-12">
+                                                    <h5>گزارش مانده ارسال کالا (<a href="#">CSV</a>)</h5>
+                                                    <div class="row">
+                                                        <div class="card text-center card-secondary card-outline rtl col-xs-12 col-md-12">
+                                                            <table class="table table-bordred table-hover table-striped rtl">
+                                                                <thead>
+                                                                    <tr class="strong">
+                                                                        <td>شماره فاکتور</td>
+                                                                        <td>فروشگاه</td>
+                                                                        <td>نام مشتری</td>
+                                                                        <td>موبایل</td>
+                                                                        <td>وضعیت فاکتور</td>
+                                                                    </tr>
+                                                                </thead>
+                                                                <tbody>
+                                                                <tr>
+                                                                    <td></td>
+                                                                    <td></td>
+                                                                    <td><span title="#"></span><br>
+                                                                            <span class="badge"></span>
+                                                                    </td>
+                                                                    <td></td>
+                                                                    <td>
+                                                                        
+                                                                        <div title="" style="width: 10px; height: 10px; background-color: white; border-radius: 50%; float: left; margin-right: 12px;"></div>
+                                
+                                                                        
+                                                                        <div title="#" style="width: 10px; height: 10px; background-color: white; border-radius: 50%; float: left; margin-right: 3px;"></div>
+                                
+                                                                        
+                                                                        <div title="#" style="width: 10px; height: 10px; background-color: white; border-radius: 50%; float: left; margin-right: 10px;"></div>
+                                
+                                                                        
+                                                                        <div title="#" style="width: 10px; height: 10px; background-color: white; border-radius: 50%; float: left; margin-right: 3px;"></div>
+                                                                        
+                                                                        <div title="#" style="width: 10px; height: 10px; background-color: white; border-radius: 50%; float: left; margin-right: 3px;"></div>
+                                                                        
+                                                                        <div title="#" style="width: 10px; height: 10px; background-color: white; border-radius: 50%; float: left; margin-right: 10px;"></div>
+                                
+                                                                        
+                                                                        <div title="#" style="width: 10px; height: 10px; background-color: white; border-radius: 50%; float: left; margin-right: 3px;"></div>
+                                                                        
+                                                                        <div title="#" style="width: 10px; height: 10px; background-color: white; border-radius: 50%; float: left; margin-right: 3px;"></div>
+                                                                        
+                                                                        <div title="#" style="width: 10px; height: 10px; background-color: white; border-radius: 50%; float: left; margin-right: 3px;"></div>
+                                                                    </td>
+                                                                </tr>
+                                                                </tbody>
+                                                            </table>
+                                                            <div class="text-center margin-bottom">
+                                                                
+                                                                    <a class="btn btn-primary col-md-1" href="#">اولین</a>
+                                                                    <a class="btn btn-primary col-md-1" href="#">قبلی</a>
+                                                                    <a class="btn btn-default disabled col-md-1" href="#">اولین</a>
+                                                                    <a class="btn btn-default disabled col-md-1" href="#">قبلی</a>
+                                                                
+                                                                <a class="btn btn-primary col-md-1" href="#">بعدی</a>
+                                                                <a class="btn btn-primary col-md-1" href="#">آخرین</a>
+                                                            </div>
+                                
+                                                        </div>
+                                                    </div>
+                                
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+                                    <!-- Background of PhotoSwipe. 
+                                         It's a separate element as animating opacity is faster than rgba(). -->
+                                    <div class="pswp__bg"></div>
+                                    <!-- Slides wrapper with overflow:hidden. -->
+                                    <div class="pswp__scroll-wrap">
+                                        <!-- Container that holds slides. 
+                                            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+                                            Don't modify these 3 pswp__item elements, data is added later on. -->
+                                        <div class="pswp__container">
+                                            <div class="pswp__item"></div>
+                                            <div class="pswp__item"></div>
+                                            <div class="pswp__item"></div>
+                                        </div>
+                                        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+                                        <div class="pswp__ui pswp__ui--hidden">
+                                            <div class="pswp__top-bar">
+                                                <!--  Controls are self-explanatory. Order can be changed. -->
+                                                <div class="pswp__counter"></div>
+                                                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+                                                <button class="pswp__button pswp__button--share" title="Share"></button>
+                                                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+                                                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+                                
+                                                <!-- Preloader demo https://codepen.io/dimsemenov/pen/yyBWoR -->
+                                                <!-- element will get class pswp__preloader--active when preloader is running -->
+                                                <div class="pswp__preloader">
+                                                    <div class="pswp__preloader__icn">
+                                                      <div class="pswp__preloader__cut">
+                                                        <div class="pswp__preloader__donut"></div>
+                                                      </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                
+                                            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                                                <div class="pswp__share-tooltip"></div> 
+                                            </div>
+                                
+                                            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+                                            </button>
+                                
+                                            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+                                            </button>
+                                
+                                            <div class="pswp__caption">
+                                                <div class="pswp__caption__center"></div>
+                                            </div>
+                                
+                                        </div>
+                                    </div>
+                                </div>
+                        </div>
+
+                        <!-- end:: Content -->
+                    </div>
+
+                    <!-- begin:: Footer -->
+                    {% include "partials/footer.html" %}
+
+                    <!-- end:: Footer -->
+                </div>
+
+                <!-- end:: Wrapper -->
+            </div>
+
+            <!-- end:: Page -->
+        </div>
+
+        <!-- end:: Root -->
+
+        <!-- begin:: Topbar Offcanvas Panels -->
+
+        <!-- begin::Offcanvas Toolbar Quick Actions -->
+        <!-- <div id="kt_offcanvas_toolbar_quick_actions" class="kt-offcanvas-panel">
+            <div class="kt-offcanvas-panel__head">
+                <h3 class="kt-offcanvas-panel__title">
+                    Quick Actions
+                </h3>
+                <a href="#" class="kt-offcanvas-panel__close" id="kt_offcanvas_toolbar_quick_actions_close"><i
+                        class="flaticon2-delete"></i></a>
+            </div>
+            <div class="kt-offcanvas-panel__body">
+                <div class="kt-grid-nav-v2">
+                    <a href="#" class="kt-grid-nav-v2__item">
+                        <div class="kt-grid-nav-v2__item-icon"><i class="flaticon2-box"></i></div>
+                        <div class="kt-grid-nav-v2__item-title">Orders</div>
+                    </a>
+                    <a href="#" class="kt-grid-nav-v2__item">
+                        <div class="kt-grid-nav-v2__item-icon"><i class="flaticon-download-1"></i></div>
+                        <div class="kt-grid-nav-v2__item-title">Uploades</div>
+                    </a>
+                    <a href="#" class="kt-grid-nav-v2__item">
+                        <div class="kt-grid-nav-v2__item-icon"><i class="flaticon2-supermarket"></i></div>
+                        <div class="kt-grid-nav-v2__item-title">Products</div>
+                    </a>
+                    <a href="#" class="kt-grid-nav-v2__item">
+                        <div class="kt-grid-nav-v2__item-icon"><i class="flaticon2-avatar"></i></div>
+                        <div class="kt-grid-nav-v2__item-title">Customers</div>
+                    </a>
+                    <a href="#" class="kt-grid-nav-v2__item">
+                        <div class="kt-grid-nav-v2__item-icon"><i class="flaticon2-list"></i></div>
+                        <div class="kt-grid-nav-v2__item-title">Blog Posts</div>
+                    </a>
+                    <a href="#" class="kt-grid-nav-v2__item">
+                        <div class="kt-grid-nav-v2__item-icon"><i class="flaticon2-settings"></i></div>
+                        <div class="kt-grid-nav-v2__item-title">Settings</div>
+                    </a>
+                </div>
+            </div>
+        </div> -->
+
+        <!-- end::Offcanvas Toolbar Quick Actions -->
+
+        <!-- end:: Topbar Offcanvas Panels -->
+
+        <!-- begin:: Quick Panel -->
+        
+        <!-- end:: Scrolltop -->
+
+        <!-- begin:: Demo Toolbar -->
+
+        <!-- end:: Demo Toolbar -->
+
+
+        <!-- begin::Global Config(global config for global JS sciprts) -->
+        {% include "partials/script.html" %}
+
+        <!--end::Page Scripts -->
+    </body>
+
+    <!-- end::Body -->
+
+</html>

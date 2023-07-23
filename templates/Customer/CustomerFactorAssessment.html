@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+
+<html lang="fa">
+
+    <!-- begin::Head -->
+
+    {% include "partials/head.html" %}
+
+
+    <!-- end::Head -->
+
+    <!-- begin::Body -->
+
+    <body
+        class="kt-quick-panel--right kt-demo-panel--right kt-offcanvas-panel--right kt-header--fixed kt-header-mobile--fixed kt-subheader--enabled kt-subheader--transparent kt-aside--enabled kt-aside--fixed kt-page--loading">
+
+        <!-- begin:: Header Mobile -->
+
+        {% include "partials/MobileHeader.html" %}
+
+        <!-- end:: Header Mobile -->
+
+        <!-- begin:: Root -->
+        <div class="kt-grid kt-grid--hor kt-grid--root">
+
+            <!-- begin:: Page -->
+            <div class="kt-grid__item kt-grid__item--fluid kt-grid kt-grid--ver kt-page">
+
+                <!-- begin:: Aside -->
+                {% include "partials/sidebar.html" %}
+
+
+                <!-- end:: Aside -->
+
+                <!-- begin:: Wrapper -->
+                <div class="kt-grid__item kt-grid__item--fluid kt-grid kt-grid--hor kt-wrapper" id="kt_wrapper">
+
+                    <!-- begin:: Header -->
+
+                    {% include "partials/header.html" %}
+                    <!-- end:: Header -->
+                    <div class="kt-grid__item kt-grid__item--fluid kt-grid kt-grid--hor">
+
+                        <!-- begin:: Subheader -->
+                        {% include "partials/subheader.html" %}
+
+                        <!-- end:: Subheader -->
+
+                        <!-- begin:: Content -->
+                        <div class="kt-content  kt-grid__item kt-grid__item--fluid" id="kt_content">
+
+                            <div class="content">
+                                <div class="container-fluid">
+                                    <div class="row">
+                                        <div class="col-lg-12">
+                                            <div class="card card-primary card-outline">
+                                                <div class="card-body">
+                                                        <div class="row {{ direction }}">
+                                                            <div class="col-lg-12">
+                                                                <table class="table table-bordered table-striped dataTable table-hover {{ direction }}">
+                                                                    <thead>
+                                                                        <tr>
+                                                                            <th>شهر</th>
+                                                                            <th>ش.فاکتور</th>
+                                                                            <th>نام مشتری</th>
+                                                                            <th>تلفن</th>
+                                                                            <th>موبایل</th>
+                                                                            <th>فروشگاه</th>
+                                                                            <th>حمل</th>
+                                                                            <th>نصب</th>
+                                                                        </tr>
+                                                                    </thead>
+                                                                    <tbody>
+                                                                            
+                                                                            <tr>
+                                                                                <td></td>
+                                                                                <td></td>
+                                                                                <td></td>
+                                                                                <td></td>
+                                                                                <td></td>
+                                                                                <td>
+                                                                                        <a class="btn btn-success btn-xs btn-assign-driver" data-factor-id="1" data-toggle="modal" data-target="#modal-assign-shop">فروشگاه</a>
+                                                                                </td>
+                                                                                <td>
+                                                                                            <a class="btn btn-success btn-xs btn-assign-driver" data-factor-id="1" data-toggle="modal" data-target="#modal-assign-driver">حمل</a>
+                                                                                      
+                                                                                        <a class="btn btn-secondary btn-xs " >حمل با مشتری</a>
+                                                                                </td>
+                                                                                <td>
+                                                                                    
+                                                                                            <a class="btn btn-success btn-xs btn-assign-driver" data-factor-id="2" data-toggle="modal" data-target="#modal-assign-installer">نصب</a>
+                                                                                     
+                                                                                        <a class="btn btn-secondary btn-xs " >بدون نصب</a>
+                                                                                </td>
+                                                                                <td>
+                                                                                    <a class="btn btn-xs btn-secondary btn-detail" data-id="4" href="javascript:;">...</a>
+                                                                                </td>
+                                                                            </tr>
+                                                                            <tr class="tbl-info" style="display: none;" id="2" >
+                                                                                <td colspan="3">
+                                                                                    <table>
+                                                                                        <tr>
+                                                                                            <td>کد کالا</td>
+                                                                                            <td>نام کالا</td>
+                                                                                            <td>تعداد</td>
+                                                                                        </tr>
+                                                                                                                                                          
+                                                                                        <tr>
+                                                                                            <td></td>
+                                                                                            <td></td>
+                                                                                            <td></td>
+                                                                                        </tr>
+                                                                                    </table>
+                                                                                </td>
+                                                                                <td colspan="2">
+                                                                                    <table class="table">
+                                                                                        <tr>
+                                                                                            <td>رویداد</td>
+                                                                                            <td>نام و نام خانوادگی</td>
+                                                                                        </tr>
+                                                                                                                                                          
+                                                                                        <tr>
+                                                                                            <td></td>
+                                                                                            <td></td>
+                                                                                        </tr>
+                                                                                    </table>
+                                                                                </td>
+                                                                            </tr>
+                                                                    </tbody>
+                                                                     <tbody>
+                                                                            <tr>
+                                                                                <td></td>
+                                                                                <td></td>
+                                                                                <td></td>
+                                                                                <td></td>
+                                                                                <td></td>
+                                                                                <td></td>
+                                                                                <td>
+                                                                                </td>
+                                                                            </tr>
+                                                                    <tbody> 
+                                                                </table>
+                        
+                                                                <script>
+                                                                    
+                                                                </script>
+                                                            </div>
+                                                        </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="modal fade" id="modal-assign-shop">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h4 class="modal-title">نظر سنجی فروشگاه</h4>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <form method="POST" action="">
+                                    <input type="hidden" name="factor_id" class="factor_id">
+                                    <div class="modal-body">
+                                                <div class="form-group form-group-sm row">
+                                                    <div class="col-sm-8">
+                                                        <select class="form-control rtl text-right" style="width: 100%;" name="assesment_seller" id="assesment_opinion">
+                                                            <option value="1">1</option>
+                                                            <option value="2">2</option>
+                                                            <option value="3">3</option>
+                                                            <option value="4">4</option>
+                                                            <option value="5">5</option>
+                                                            <option value="6">6</option>
+                                                            <option value="7">7</option>
+                                                            <option value="8">8</option>
+                                                            <option value="9">9</option>
+                                                            <option value="10">10</option>
+                                                        </select>
+                                                    </div>
+                                                    <label for="assesment_opinion" class="col-sm-4 col-form-label">برخورد فروشنده</label>
+                                                </div>
+                                                <div class="form-group form-group-sm row">
+                                                    <div class="col-sm-8">
+                                                        <select class="form-control rtl text-right" style="width: 100%;" name="assesment_shopper_desc" id="assesment_opinion">
+                                                            <option value="1">1</option>
+                                                            <option value="2">2</option>
+                                                            <option value="3">3</option>
+                                                            <option value="4">4</option>
+                                                            <option value="5">5</option>
+                                                            <option value="6">6</option>
+                                                            <option value="7">7</option>
+                                                            <option value="8">8</option>
+                                                            <option value="9">9</option>
+                                                            <option value="10">10</option>
+                                                        </select>
+                                                    </div>
+                                                    <label for="assesment_opinion" class="col-sm-4 col-form-label">تکمیل بودن توضیحات</label>
+                                                </div>
+                                                <div class="form-group form-group-sm row">
+                                                    <div class="col-sm-8">
+                                                        <select class="form-control rtl text-right" style="width: 100%;" name="assesment_shop" id="assesment_opinion">
+                                                            <option value="1">1</option>
+                                                            <option value="2">2</option>
+                                                            <option value="3">3</option>
+                                                            <option value="4">4</option>
+                                                            <option value="5">5</option>
+                                                            <option value="6">6</option>
+                                                            <option value="7">7</option>
+                                                            <option value="8">8</option>
+                                                            <option value="9">9</option>
+                                                            <option value="10">10</option>
+                                                        </select>
+                                                    </div>
+                                                    <label for="assesment_opinion" class="col-sm-4 col-form-label">رضایت از فروشگاه</label>
+                                                </div>
+                                                <div class="form-group form-group-sm row">
+                                                    <div class="col-sm-8">
+                                                        <input type="text" name="shop_desc" class="form-control rtl" id="drive_status_desc" placeholder="توضیحات">
+                                                    </div>
+                                                    <label for="drive_status_desc" class="col-sm-4 col-form-label">توضیحات</label>
+                                                </div>
+                                    </div>
+                                    <div class="modal-footer justify-content-between">
+                                        <button type="submit" name="btn_shop" class="btn btn-primary">اعلام وضعیت</button>
+                                        <button type="button" class="btn btn-default" data-dismiss="modal">بستن</button>
+                                    </div>
+                                    </form>
+                                </div>
+                                <!-- /.modal-content -->
+                            </div>
+                            <!-- /.modal-dialog -->
+                        </div>
+                        
+                        <div class="modal fade" id="modal-assign-driver">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h4 class="modal-title">نظر سنجی ارسال</h4>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <form method="POST" action="">
+                                    <input type="hidden" name="factor_id" class="factor_id">
+                                    <div class="modal-body">
+                                                <div class="form-group form-group-sm row">
+                                                    <div class="col-sm-8">
+                                                        <select class="form-control rtl text-right" style="width: 100%;" name="assesment_opinion" id="assesment_deriver">
+                                                            <option value="1">1</option>
+                                                            <option value="2">2</option>
+                                                            <option value="3">3</option>
+                                                            <option value="4">4</option>
+                                                            <option value="5">5</option>
+                                                            <option value="6">6</option>
+                                                            <option value="7">7</option>
+                                                            <option value="8">8</option>
+                                                            <option value="9">9</option>
+                                                            <option value="10">10</option>
+                                                        </select>
+                                                    </div>
+                                                    <label for="assesment_opinion" class="col-sm-4 col-form-label">برخورد راننده</label>
+                                                </div>
+                                                <div class="form-group form-group-sm row">
+                                                    <div class="col-sm-8">
+                                                        <select class="form-control rtl text-right" style="width: 100%;" name="assesment_drive_time" id="assesment_drive_time">
+                                                            <option value="1">1</option>
+                                                            <option value="2">2</option>
+                                                            <option value="3">3</option>
+                                                            <option value="4">4</option>
+                                                            <option value="5">5</option>
+                                                            <option value="6">6</option>
+                                                            <option value="7">7</option>
+                                                            <option value="8">8</option>
+                                                            <option value="9">9</option>
+                                                            <option value="10">10</option>
+                                                        </select>
+                                                    </div>
+                                                    <label for="assesment_opinion" class="col-sm-4 col-form-label">زمان ارسال</label>
+                                                </div>
+                                                <div class="form-group form-group-sm row">
+                                                    <div class="col-sm-8">
+                                                        <input type="text" name="drive_status_desc" class="form-control rtl" id="drive_status_desc" placeholder="توضیحات">
+                                                    </div>
+                                                    <label for="drive_status_desc" class="col-sm-4 col-form-label">توضیحات</label>
+                                                </div>
+                        
+                                    </div>
+                                    <div class="modal-footer justify-content-between">
+                                        <button type="submit" class="btn btn-primary">اعلام وضعیت</button>
+                                        <button type="button" class="btn btn-default" data-dismiss="modal">بستن</button>
+                                    </div>
+                                    </form>
+                                </div>
+                                <!-- /.modal-content -->
+                            </div>
+                            <!-- /.modal-dialog -->
+                        </div>
+                        
+                        <div class="modal fade" id="modal-assign-installer">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h4 class="modal-title">اعلام وضعیت نصب</h4>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <form method="POST" action="">
+                                    <input type="hidden" name="factor_id" class="factor_id">
+                                    <div class="modal-body">
+                                            <h6 style="line-height: 20px; padding: 5px;" class="rtl bg-gradient-primary">نظرسنجی نصاب</h6>
+                                                <div class="form-group form-group-sm row">
+                                                    <div class="col-sm-8">
+                                                        <select class="form-control rtl text-right" style="width: 100%;" name="assesment_servic_action" id="assesment_servic_action">
+                                                            <option value="1">1</option>
+                                                            <option value="2">2</option>
+                                                            <option value="3">3</option>
+                                                            <option value="4">4</option>
+                                                            <option value="5">5</option>
+                                                            <option value="6">6</option>
+                                                            <option value="7">7</option>
+                                                            <option value="8">8</option>
+                                                            <option value="9">9</option>
+                                                            <option value="10">10</option>
+                                                        </select>
+                                                    </div>
+                                                    <label for="assesment_opinion" class="col-sm-4 col-form-label">برخورد سرویس‌کار</label>
+                                                </div>
+                                                <div class="form-group form-group-sm row">
+                                                    <div class="col-sm-8">
+                                                        <select class="form-control rtl text-right" style="width: 100%;" name="assesment_service_dress" id="assesment_service_dress">
+                                                            <option value="1">1</option>
+                                                            <option value="2">2</option>
+                                                            <option value="3">3</option>
+                                                            <option value="4">4</option>
+                                                            <option value="5">5</option>
+                                                            <option value="6">6</option>
+                                                            <option value="7">7</option>
+                                                            <option value="8">8</option>
+                                                            <option value="9">9</option>
+                                                            <option value="10">10</option>
+                                                        </select>
+                                                    </div>
+                                                    <label for="assesment_opinion" class="col-sm-4 col-form-label">پوشش ظاهری</label>
+                                                </div>
+                                                <div class="form-group form-group-sm row">
+                                                    <div class="col-sm-8">
+                                                        <select class="form-control rtl text-right" style="width: 100%;" name="assesment_service_status" id="assesment_service_status">
+                                                            <option value="1">1</option>
+                                                            <option value="2">2</option>
+                                                            <option value="3">3</option>
+                                                            <option value="4">4</option>
+                                                            <option value="5">5</option>
+                                                            <option value="6">6</option>
+                                                            <option value="7">7</option>
+                                                            <option value="8">8</option>
+                                                            <option value="9">9</option>
+                                                            <option value="10">10</option>
+                                                        </select>
+                                                    </div>
+                                                    <label for="assesment_opinion" class="col-sm-4 col-form-label">رضایت از سرویس‌کار</label>
+                                                </div>
+                                                <div class="form-group form-group-sm row">
+                                                    <div class="col-sm-8">
+                                                        <input type="text" name="isntall_desc" class="form-control rtl" id="isntall_desc" placeholder="توضیحات">
+                                                    </div>
+                                                    <label for="isntall_desc" class="col-sm-4 col-form-label">توضیحات</label>
+                                                </div>
+                                    </div>
+                                    
+                                    <div class="modal-footer justify-content-between">
+                                        <button name="btn_servicer" type="submit" class="btn btn-primary">اعلام وضعیت</button>
+                                        <button type="button" class="btn btn-default" data-dismiss="modal">بستن</button>
+                                    </div>
+                                    </form>
+                                </div>
+                                <!-- /.modal-content -->
+                            </div>
+                            <!-- /.modal-dialog -->
+                        </div>
+                        </div>
+
+                        <!-- end:: Content -->
+                    </div>
+
+                    <!-- begin:: Footer -->
+                    {% include "partials/footer.html" %}
+
+                    <!-- end:: Footer -->
+                </div>
+
+                <!-- end:: Wrapper -->
+            </div>
+
+            <!-- end:: Page -->
+        </div>
+
+        <!-- end:: Root -->
+
+        <!-- begin:: Topbar Offcanvas Panels -->
+
+        <!-- begin::Offcanvas Toolbar Quick Actions -->
+        <!-- <div id="kt_offcanvas_toolbar_quick_actions" class="kt-offcanvas-panel">
+            <div class="kt-offcanvas-panel__head">
+                <h3 class="kt-offcanvas-panel__title">
+                    Quick Actions
+                </h3>
+                <a href="#" class="kt-offcanvas-panel__close" id="kt_offcanvas_toolbar_quick_actions_close"><i
+                        class="flaticon2-delete"></i></a>
+            </div>
+            <div class="kt-offcanvas-panel__body">
+                <div class="kt-grid-nav-v2">
+                    <a href="#" class="kt-grid-nav-v2__item">
+                        <div class="kt-grid-nav-v2__item-icon"><i class="flaticon2-box"></i></div>
+                        <div class="kt-grid-nav-v2__item-title">Orders</div>
+                    </a>
+                    <a href="#" class="kt-grid-nav-v2__item">
+                        <div class="kt-grid-nav-v2__item-icon"><i class="flaticon-download-1"></i></div>
+                        <div class="kt-grid-nav-v2__item-title">Uploades</div>
+                    </a>
+                    <a href="#" class="kt-grid-nav-v2__item">
+                        <div class="kt-grid-nav-v2__item-icon"><i class="flaticon2-supermarket"></i></div>
+                        <div class="kt-grid-nav-v2__item-title">Products</div>
+                    </a>
+                    <a href="#" class="kt-grid-nav-v2__item">
+                        <div class="kt-grid-nav-v2__item-icon"><i class="flaticon2-avatar"></i></div>
+                        <div class="kt-grid-nav-v2__item-title">Customers</div>
+                    </a>
+                    <a href="#" class="kt-grid-nav-v2__item">
+                        <div class="kt-grid-nav-v2__item-icon"><i class="flaticon2-list"></i></div>
+                        <div class="kt-grid-nav-v2__item-title">Blog Posts</div>
+                    </a>
+                    <a href="#" class="kt-grid-nav-v2__item">
+                        <div class="kt-grid-nav-v2__item-icon"><i class="flaticon2-settings"></i></div>
+                        <div class="kt-grid-nav-v2__item-title">Settings</div>
+                    </a>
+                </div>
+            </div>
+        </div> -->
+
+        <!-- end::Offcanvas Toolbar Quick Actions -->
+
+        <!-- end:: Topbar Offcanvas Panels -->
+
+        <!-- begin:: Quick Panel -->
+        
+        <!-- end:: Scrolltop -->
+
+        <!-- begin:: Demo Toolbar -->
+
+        <!-- end:: Demo Toolbar -->
+
+
+        <!-- begin::Global Config(global config for global JS sciprts) -->
+        {% include "partials/script.html" %}
+
+        <!--end::Page Scripts -->
+    </body>
+
+    <!-- end::Body -->
+
+</html>

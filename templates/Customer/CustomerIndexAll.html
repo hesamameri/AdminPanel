@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+
+<html lang="fa">
+
+    <!-- begin::Head -->
+
+    {% include "partials/head.html" %}
+
+
+    <!-- end::Head -->
+
+    <!-- begin::Body -->
+
+    <body
+        class="kt-quick-panel--right kt-demo-panel--right kt-offcanvas-panel--right kt-header--fixed kt-header-mobile--fixed kt-subheader--enabled kt-subheader--transparent kt-aside--enabled kt-aside--fixed kt-page--loading">
+
+        <!-- begin:: Header Mobile -->
+
+        {% include "partials/MobileHeader.html" %}
+
+        <!-- end:: Header Mobile -->
+
+        <!-- begin:: Root -->
+        <div class="kt-grid kt-grid--hor kt-grid--root">
+
+            <!-- begin:: Page -->
+            <div class="kt-grid__item kt-grid__item--fluid kt-grid kt-grid--ver kt-page">
+
+                <!-- begin:: Aside -->
+                {% include "partials/sidebar.html" %}
+
+
+                <!-- end:: Aside -->
+
+                <!-- begin:: Wrapper -->
+                <div class="kt-grid__item kt-grid__item--fluid kt-grid kt-grid--hor kt-wrapper" id="kt_wrapper">
+
+                    <!-- begin:: Header -->
+
+                    {% include "partials/header.html" %}
+                    <!-- end:: Header -->
+                    <div class="kt-grid__item kt-grid__item--fluid kt-grid kt-grid--hor">
+
+                        <!-- begin:: Subheader -->
+                        {% include "partials/subheader.html" %}
+
+                        <!-- end:: Subheader -->
+
+                        <!-- begin:: Content -->
+                        <div class="kt-content  kt-grid__item kt-grid__item--fluid" id="kt_content">
+
+                            <div class="content-wrapper">
+                                <div class="content-header">
+                                    <div class="container-fluid">
+                                        <div class="row mb-2">
+                                            <div class="col-sm-12">
+                                                <ol class="breadcrumb float-sm-right ">
+                                                    <li class="breadcrumb-item active">لیست مشتریان</li>
+                                                    <li class="breadcrumb-item">مشتریان</li>
+                                                </ol>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            
+                                
+                            
+                                <div class="content">
+                                    <div class="container-fluid">
+                                        <div class="row">
+                                            <div class="col-lg-12">
+                                                <div class="card card-primary card-outline">
+                                                    <div class="card-body">
+                                                        <div class="col-lg-12">
+                                                            <div class="row">
+                                                                <div class="col-lg-12 text-right">
+                                                                   
+                                                                        <a class="btn btn-danger" href="#">لغو جستجو</a>
+                                                                   
+                                                                    <a class="btn btn-success" data-toggle="modal" data-target="#modal-search">جستجو</a>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-lg-12 rtl">
+                                                            <div class="row">
+                                                                <div class="col-lg-12 text-right">
+                                                                    <h5>لیست فروشگاها</h5>
+                                                                     
+                                                                    <a class="btn-secondary" href="#">همه فروشگاه‌ها</a>
+                                                                    <!--  -->
+                                                                        <a class="btn" href="#"></a>
+                                                                    
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <hr>
+                                                        <form role="form">
+                                                            <div class="row">
+                                                                <div class="col-lg-12">
+                                                                    <table class="table table-bordered table-striped dataTables table-hover">
+                                                                        <thead>
+                                                                            <tr>
+                                                                                <th>کد مشتری</th>
+                                                                                <th>مشتری</th>
+                                                                                <th>کدملی</th>
+                                                                                <th>شهر</th>
+                                                                                <th>تلفن</th>
+                                                                                <th>موبایل</th>
+                                                                                <th></th>
+                                                                                <th></th>
+                                                                            </tr>
+                                                                        </thead>
+                                                                        <tbody>
+                                                                                <!--  -->
+                                                                                <tr>
+                                                                                    <td></td>
+                                                                                    <td>
+                                                                                        
+                                                                                            <br>
+                                                                                            
+                                                                                                                  <b></b><br>
+                                                                                                                
+                                                                                            
+                                                                                                <span class="right badge badge-success cursor-hand" data-html="true" data-container="body" data-toggle="popover" data-placement="bottom" data-content="">&nbsp;&nbsp;</span>
+                                                                                            
+                                                                                                <span class="right badge badge-danger cursor-hand" data-html="true" data-container="body" data-toggle="popover" data-placement="bottom" data-content="">&nbsp;&nbsp;</span>
+                                                                                            
+                                                                                                <span class="right badge badge-warning cursor-hand" data-html="true" data-container="body" data-toggle="popover" data-placement="bottom" data-content="">&nbsp;&nbsp;</span>
+                                                                                            
+                                                                                                <span class="right badge badge-secondary cursor-hand" data-html="true" data-container="body" data-toggle="popover" data-placement="bottom" data-content="">&nbsp;&nbsp;</span>
+                                                                                            
+                                                                                                <span class="right badge badge-secondary cursor-hand" data-html="true" data-container="body" data-toggle="popover" data-placement="bottom" data-content="">&nbsp;&nbsp;</span>
+                                                                                            
+                                                                                    </td>
+                                                                                    <td></td>
+                                                                                    <td></td>
+                                                                                    <td></td>
+                                                                                    <td></td>
+                                                                                    <td>
+                                                                                        <a class="btn btn-xs btn-default btn-customer" data-customer-id="" data-toggle="modal" data-target="#modal-inquiry">استعلام حساب</a>
+                                                                                        
+                                                                                        <div class="btn-group" role="group">
+                                                                                            <button id="btnGroupDropX" type="button" class="btn-xs btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                                                            گزارشات
+                                                                                            </button>
+                                                                                            <div class="dropdown-menu" aria-labelledby="btnGroupDropX">
+                                                                                                <!--  -->
+                                                                                                    <a href="#" class="dropdown-item text-right rtl">فاکتور </a>
+                                                                                                
+                                                                                                            <a href=""  class="dropdown-item text-right rtl">تیکت </a>
+                                                                                                        
+                                                                                                    <hr>
+                                                                                                    <a href="#" class="dropdown-item text-right rtl">پرداختی‌ها</a>
+                                                                                               
+                                                                                            </div>
+                                                                                        </div>
+                                                                                        
+                                                                                         <a class="btn btn-default btn-customer" data-customer-id="" data-toggle="modal" data-target="#modal-debit-return">برگشت بستانکاری</a> 
+                                                                                         <a class="btn btn-default btn-customer" data-customer-id="" data-toggle="modal" data-target="#modal-cheque-return">عودت چک</a> 
+                                                                                    </td>
+                                                                                    <td>
+                                                                                         <div class="btn-group">
+                                                                                                <a class="dropdown-item" href="#">دریافت از مشتری</a>
+                                                                                                <a class="dropdown-item" href="#">برگشت از فروش</a>
+                                                                                                <a class="dropdown-item" href="#">خدمات پس از فروش</a>
+                                                                                                <a class="dropdown-item" href="#">ویرایش مشخصات</a>
+                                                                                        </div> 
+                                                                                    </td>
+                                                                                </tr>
+                                                                             
+                                                                        <tbody>
+                                                                    </table>
+                                                                    
+                                                                    <div class="text-center">
+                                                                   
+                                                                        <a class="btn btn-default" href="#">اولین</a>
+                                                                   
+                                                                        <a class="btn btn-default" href="#">قبلی</a>
+                                                                        <span class=" btn-default">...</span>
+                                                                        
+                                                                                <a class="btn btn-default" href="#"></a>
+                                                                            
+                                                                        <a class="btn btn-default disabled"></a>
+                                                                    
+                                                                            <a class="btn btn-default" href="#"></a>
+                                                                        
+                                                                        <span class=" btn-default">...</span>
+                                                                        <a class="btn btn-default" href="#">بعدی</a>
+                                                                    
+                                                                        <a class="btn btn-default" href="#">آخرین</a>
+                                                                    </div>
+                            
+                                                                </div>
+                                                            </div>
+                                                        </form>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="modal fade" id="modal-inquiry">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                    <div class="modal-header rtl">
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                        <h4 class="modal-title">استعلام حساب</h4>
+                                    </div>
+                                    <form method="POST" action="">
+                                        <div class="modal-body">
+                                            <input type="hidden" name="buyer_id" class="customer_id">
+                                            <div class="form-group form-group-sm row">
+                                                <div class="col-sm-8">
+                                                <select class="form-control select2bs4" style="width: 100%;" name="bank_id" data-placeholder="بانک" data-allow-clear="true">
+                                                    
+                                                        <option value="" ></option>
+                                                   
+                                                </select>
+                                                </div>
+                                                <label for="bank_id" class="col-sm-4 col-form-label">بانک</label>
+                                            </div>
+                                            <div class="form-group form-group-sm row">
+                                                <div class="col-sm-8">
+                                                <input type="text" name="bank_code" id="bank_code" class="form-control rtl text-right" placeholder="کد شعبه" value="1">
+                                                </div>
+                                                <label for="bank_code" class="col-sm-4 col-form-label">* کد شعبه</label>
+                                            </div>
+                                            <div class="form-group form-group-sm row">
+                                                <div class="col-sm-8">
+                                                <input type="text" name="bank_branch" id="bank_branch" class="form-control rtl text-right" placeholder="نام شعبه" value="">
+                                                </div>
+                                                <label for="bank_branch" class="col-sm-4 col-form-label">* نام شعبه</label>
+                                            </div>
+                                            <div class="form-group form-group-sm row">
+                                                <div class="col-sm-8">
+                                                <input type="text" name="account_owner" class="form-control rtl text-right" id="account_owner" placeholder="نام صاحب حساب" value="1">
+                                                </div>
+                                                <label for="account_owner" class="col-sm-4 col-form-label">نام صاحب حساب</label>
+                                            </div>
+                                            <div class="form-group form-group-sm row">
+                                                <div class="col-sm-8">
+                                                <input type="text" name="account_owner_nat_code" class="form-control rtl text-right" id="account_owner_nat_code" placeholder="کد ملی صاحب حساب" value="">
+                                                </div>
+                                                <label for="account_owner_nat_code" class="col-sm-4 col-form-label">کد ملی صاحب حساب</label>
+                                            </div>
+                                            <div class="form-group form-group-sm row">
+                                                <div class="col-sm-8">
+                                                <input type="text" name="account_sayadi" class="form-control" id="account_sayadi" placeholder="شماره صیادی" value="">
+                                                </div>
+                                                <label for="account_sayadi" class="col-sm-4 col-form-label">* شماره صیادی</label>
+                                            </div>
+                                            <div class="form-group form-group-sm row">
+                                                <div class="col-sm-8">
+                                                <input type="text" name="account_no" class="form-control" id="account_no" placeholder="شماره حساب" value="5">
+                                                </div>
+                                                <label for="account_no" class="col-sm-4 col-form-label">* شماره حساب</label>
+                                            </div>
+                                            <div class="form-group form-group-sm row">
+                                                <div class="col-sm-8">
+                                                    <input type="text" name="cheque_price" id="cheque_price" class="form-control" placeholder="مبلغ چک‌ها" value="5">
+                                                </div>
+                                                <label for="cheque_price" class="col-sm-4 col-form-label">* مبلغ خرید</label>
+                                            </div>
+                                            <div class="form-group form-group-sm row">
+                                                <div class="col-sm-8">
+                                                    <input type="text" name="cheque_count" id="cheque_count" class="form-control" placeholder="تعداد چک‌ها" value="">
+                                                </div>
+                                                <label for="cheque_count" class="col-sm-4 col-form-label">* تعداد چک</label>
+                                            </div>
+                                            <div class="form-group form-group-sm row">
+                                                <div class="col-sm-8">
+                                                    <input type="text" name="description" class="form-control rtl" id="description" placeholder="توضیحات" value="">
+                                                </div>
+                                                <label for="description" class="col-sm-4 col-form-label">توضیحات</label>
+                                            </div>
+                                            <div class="form-group form-group-sm row">
+                                                <div class="col-sm-8">
+                                                    <div class="custom-file">
+                                                        <input type="file" name="cheque_image" id="cheque_image" class="rtl custom-file-input" placeholder="تصویر چک‌ها" value="">
+                                                        <label class="custom-file-label" for="exampleInputFile">تصویر چک</label>
+                                                    </div>
+                                                </div>
+                                                <label for="cheque_image" class="col-sm-4 col-form-label">تصویر چک‌ها</label>
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer justify-content-between">
+                                            <button type="submit" class="btn btn-primary">ثبت استعلام</button>
+                                            <button type="button" class="btn btn-default" data-dismiss="modal">بستن</button>
+                                        </div>
+                                    </form>
+                            
+                                    </div>
+                                    <!-- /.modal-content -->
+                                </div>
+                                <!-- /.modal-dialog -->
+                            </div>
+                            
+                            <div class="modal fade" id="modal-search">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h4 class="modal-title">جستجو</h4>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <form method="get" action="#">
+                                        <div class="modal-body">
+                                                <div class="input-group mb-3 rtl">
+                                                    <input type="text" name="search" class="form-control" placeholder="نام، شماره تلفن، موبایل، کد ملی، کد مشتری" aria-label="search" aria-describedby="search">
+                                                </div>
+                                        </div>
+                                        <div class="modal-footer justify-content-between">
+                                            <button type="submit" class="btn btn-primary">جستجو</button>
+                                            <button type="button" class="btn btn-default" data-dismiss="modal">بستن</button>
+                                        </div>
+                                        </form>
+                                    </div>
+                                    <!-- /.modal-content -->
+                                </div>
+                                <!-- /.modal-dialog -->
+                            </div>
+                        </div>
+
+                        <!-- end:: Content -->
+                    </div>
+
+                    <!-- begin:: Footer -->
+                    {% include "partials/footer.html" %}
+
+                    <!-- end:: Footer -->
+                </div>
+
+                <!-- end:: Wrapper -->
+            </div>
+
+            <!-- end:: Page -->
+        </div>
+
+        <!-- end:: Root -->
+
+        <!-- begin:: Topbar Offcanvas Panels -->
+
+        <!-- begin::Offcanvas Toolbar Quick Actions -->
+        <!-- <div id="kt_offcanvas_toolbar_quick_actions" class="kt-offcanvas-panel">
+            <div class="kt-offcanvas-panel__head">
+                <h3 class="kt-offcanvas-panel__title">
+                    Quick Actions
+                </h3>
+                <a href="#" class="kt-offcanvas-panel__close" id="kt_offcanvas_toolbar_quick_actions_close"><i
+                        class="flaticon2-delete"></i></a>
+            </div>
+            <div class="kt-offcanvas-panel__body">
+                <div class="kt-grid-nav-v2">
+                    <a href="#" class="kt-grid-nav-v2__item">
+                        <div class="kt-grid-nav-v2__item-icon"><i class="flaticon2-box"></i></div>
+                        <div class="kt-grid-nav-v2__item-title">Orders</div>
+                    </a>
+                    <a href="#" class="kt-grid-nav-v2__item">
+                        <div class="kt-grid-nav-v2__item-icon"><i class="flaticon-download-1"></i></div>
+                        <div class="kt-grid-nav-v2__item-title">Uploades</div>
+                    </a>
+                    <a href="#" class="kt-grid-nav-v2__item">
+                        <div class="kt-grid-nav-v2__item-icon"><i class="flaticon2-supermarket"></i></div>
+                        <div class="kt-grid-nav-v2__item-title">Products</div>
+                    </a>
+                    <a href="#" class="kt-grid-nav-v2__item">
+                        <div class="kt-grid-nav-v2__item-icon"><i class="flaticon2-avatar"></i></div>
+                        <div class="kt-grid-nav-v2__item-title">Customers</div>
+                    </a>
+                    <a href="#" class="kt-grid-nav-v2__item">
+                        <div class="kt-grid-nav-v2__item-icon"><i class="flaticon2-list"></i></div>
+                        <div class="kt-grid-nav-v2__item-title">Blog Posts</div>
+                    </a>
+                    <a href="#" class="kt-grid-nav-v2__item">
+                        <div class="kt-grid-nav-v2__item-icon"><i class="flaticon2-settings"></i></div>
+                        <div class="kt-grid-nav-v2__item-title">Settings</div>
+                    </a>
+                </div>
+            </div>
+        </div> -->
+
+        <!-- end::Offcanvas Toolbar Quick Actions -->
+
+        <!-- end:: Topbar Offcanvas Panels -->
+
+        <!-- begin:: Quick Panel -->
+        
+        <!-- end:: Scrolltop -->
+
+        <!-- begin:: Demo Toolbar -->
+
+        <!-- end:: Demo Toolbar -->
+
+
+        <!-- begin::Global Config(global config for global JS sciprts) -->
+        {% include "partials/script.html" %}
+
+        <!--end::Page Scripts -->
+    </body>
+
+    <!-- end::Body -->
+
+</html>

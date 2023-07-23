@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+
+<html lang="fa">
+
+    <!-- begin::Head -->
+
+    {% include "partials/head.html" %}
+
+
+    <!-- end::Head -->
+
+    <!-- begin::Body -->
+
+    <body
+        class="kt-quick-panel--right kt-demo-panel--right kt-offcanvas-panel--right kt-header--fixed kt-header-mobile--fixed kt-subheader--enabled kt-subheader--transparent kt-aside--enabled kt-aside--fixed kt-page--loading">
+
+        <!-- begin:: Header Mobile -->
+
+        {% include "partials/MobileHeader.html" %}
+
+        <!-- end:: Header Mobile -->
+
+        <!-- begin:: Root -->
+        <div class="kt-grid kt-grid--hor kt-grid--root">
+
+            <!-- begin:: Page -->
+            <div class="kt-grid__item kt-grid__item--fluid kt-grid kt-grid--ver kt-page">
+
+                <!-- begin:: Aside -->
+                {% include "partials/sidebar.html" %}
+
+
+                <!-- end:: Aside -->
+
+                <!-- begin:: Wrapper -->
+                <div class="kt-grid__item kt-grid__item--fluid kt-grid kt-grid--hor kt-wrapper" id="kt_wrapper">
+
+                    <!-- begin:: Header -->
+
+                    {% include "partials/header.html" %}
+                    <!-- end:: Header -->
+                    <div class="kt-grid__item kt-grid__item--fluid kt-grid kt-grid--hor">
+
+                        <!-- begin:: Subheader -->
+                        {% include "partials/subheader.html" %}
+
+                        <!-- end:: Subheader -->
+
+                        <!-- begin:: Content -->
+                        <div class="kt-content  kt-grid__item kt-grid__item--fluid" id="kt_content">
+
+                            <div class="content-wrapper">
+                                <div class="content-header">
+                                    <div class="container-fluid">
+                                    <div class="row mb-2">
+                                        <div class="col-sm-12">
+                                            <ol class="breadcrumb float-sm-right ">
+                                                <li class="breadcrumb-item active">پاسخ استعلام</li>
+                                                <li class="breadcrumb-item">مشتریان</li>
+                                            </ol>
+                                        </div>
+                                    </div>
+                                    </div>
+                                </div>
+                                <div class="content">
+                                    <div class="container-fluid">
+                                        <div class="row">
+                                            <div class="col-lg-12">
+                                                <div class="card card-primary card-outline">
+                                                    <div class="card-body">
+                                                        <form role="form">
+                                                            <div class="row {{ direction }}">
+                                                                <div class="col-lg-12">
+                                                                    <table class="table table-bordered table-striped dataTable table-hover {{ direction }}">
+                                                                        <thead>
+                                                                            <tr>
+                                                                                <th>کد استعلام</th>
+                                                                                <th>ثبت کننده</th>
+                                                                                <th>تاریخ ثبت</th>
+                                                                                <th>نام و نام خانوادگی</th>
+                                                                                <th>مالک حساب</th>
+                                                                                <th>بانک</th>
+                                                                                <th>شماره حساب</th>
+                                                                                <th>شماره شبا</th>
+                                                                                <th>بررسی</th>
+                                                                                <th>توضیحات</th>
+                                                                                <th></th>
+                                                                            </tr>
+                                                                        </thead>
+                                                                        <tbody>
+                                                                                
+                                                                                <tr>
+                                                                                    <td></td>
+                                                                                    <td></td>
+                                                                                    <td></td>
+                                                                                    <td></td>
+                                                                                    <td></td>
+                                                                                    <td></td>
+                                                                                    <td></td>
+                                                                                    <td></td>
+                                                                                    <td></td>
+                                                                                    <td></td>
+                                                                                    <td>
+                                                                                        <a class="btn btn-secondary btn-xs btn-customer inq cursor-hand" data-id="">جزئیات</a>
+                                                                                        <a class="btn btn-success btn-xs btn-customer" data-inquiry-id="" data-toggle="modal" data-target="#modal-inquiry">پاسخ استعلام</a>
+                                                                                    </td>
+                                                                                </tr>
+                                                                                <tr style="display: none" class="gray" id="" class="inq-data">
+                                                                                    <td colspan="20">
+                                                                                        <table style="width: 100%">
+                                                                                            <tr>
+                                                                                                <th>نام مشتری</th><td></td>
+                                                                                                <th>بانک</th><td></td>
+                                                                                                <th>مبلغ چک</th><td></td>
+                                                                                            </tr>
+                                                                                            <tr>
+                                                                                                <th>تلفن</th><td></td>
+                                                                                                <th>شعبه</th><td> - </td>
+                                                                                                <th>تعداد چک</th><td></td>
+                                                                                            </tr>
+                                                                                            <tr>
+                                                                                                <th>موبایل</th><td></td>
+                                                                                                <th>شماره حساب</th><td></td>
+                                                                                                <th>مالک</th><td></td>
+                                                                                            </tr>
+                                                                                            <tr>
+                                                                                                <th>شهر</th><td></td>
+                                                                                                <th>شبا</th><td></td>
+                                                                                                <th>کد ملی مالک</th><td></td>
+                                                                                            </tr>
+                                                                                            <tr>
+                                                                                                <th>فروشگاه</th><td></td>
+                                                                                                <th>صیادی</th><td></td>
+                                                                                            </tr>
+                                                                                            <tr>
+                                                                                                <th>آدرس</th><td colspan="20"></td>
+                                                                                            </tr>
+                                                                                        </table>
+                                                                                    </td>
+                                                                                </tr>
+                                                                        <tbody>
+                                                                    </table>
+                                                                </div>
+                                                            </div>
+                                                        </form>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="modal fade" id="modal-inquiry">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h4 class="modal-title">استعلام</h4>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                            
+                                    <form method="POST" action="">
+                                        <div class="modal-body">
+                                            <input type="hidden" name="inquiry_id" class="inquiry_id" >
+                            
+                                            <div class="form-group row">
+                                                <div class="col-sm-8">
+                                                <select class="form-control select2bs4 rtl text-right" style="width: 100%;" name="sms_inquiry" data-allow-clear="true">
+                                                    <option value="5">سبز</option>
+                                                    <option value="4">زرد</option>
+                                                    <option value="3">نارنجی</option>
+                                                    <option value="2">قرمز</option>
+                                                    <option value="1">قهوه‌ای</option>
+                                                </select>
+                                                </div>
+                                                <label for="sms_inquiry" class="col-sm-4 col-form-label">پاسخ استعلام پیامکی</label>
+                                            </div>
+                                            <div class="form-group row">
+                                                <div class="col-sm-8">
+                                                <select class="form-control select2bs4 rtl text-right" style="width: 100%;" name="direct_inquiry" data-allow-clear="true">
+                                                    <option value="1">تایید</option>
+                                                    <option value="0">رد</option>
+                                                </select>
+                                                </div>
+                                                <label for="direct_inquiry" class="col-sm-4 col-form-label">پاسخ استعلام تلفنی</label>
+                                            </div>
+                                            <div class="form-group row">
+                                                <div class="col-sm-8">
+                                                <input type="text" name="confirm_desc" class="form-control rtl text-right" id="confirm_desc" placeholder="توضحیات" {% if editable is defined %}value="{{val}}"{% endif %}>
+                                                </div>
+                                                <label for="direct_inquiry" class="col-sm-4 col-form-label">توضحیات</label>
+                                            </div>
+                                            <div class="form-group row">
+                                                <div class="col-sm-8">
+                                                <select class="form-control select2bs4 rtl text-right" style="width: 100%;" name="confirm_status" data-allow-clear="true">
+                                                    <option value="CONFIRM">تایید</option>
+                                                    <option value="COND_CONFIRM">تایید مشروط</option>
+                                                    <option value="REJECT">رد</option>
+                                                </select>
+                                                </div>
+                                                <label for="confirm_status" class="col-sm-4 col-form-label">وضعیت استعلام</label>
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer justify-content-between">
+                                            <button type="button" class="btn btn-default" data-dismiss="modal">بستن</button>
+                                            <button type="submit" class="btn btn-primary">ثبت استعلام</button>
+                                        </div>
+                                    </form>
+                            
+                                    </div>
+                                    <!-- /.modal-content -->
+                                </div>
+                                <!-- /.modal-dialog -->
+                            </div>
+                            
+                        </div>
+
+                        <!-- end:: Content -->
+                    </div>
+
+                    <!-- begin:: Footer -->
+                    {% include "partials/footer.html" %}
+
+                    <!-- end:: Footer -->
+                </div>
+
+                <!-- end:: Wrapper -->
+            </div>
+
+            <!-- end:: Page -->
+        </div>
+
+        <!-- end:: Root -->
+
+        <!-- begin:: Topbar Offcanvas Panels -->
+
+        <!-- begin::Offcanvas Toolbar Quick Actions -->
+        <!-- <div id="kt_offcanvas_toolbar_quick_actions" class="kt-offcanvas-panel">
+            <div class="kt-offcanvas-panel__head">
+                <h3 class="kt-offcanvas-panel__title">
+                    Quick Actions
+                </h3>
+                <a href="#" class="kt-offcanvas-panel__close" id="kt_offcanvas_toolbar_quick_actions_close"><i
+                        class="flaticon2-delete"></i></a>
+            </div>
+            <div class="kt-offcanvas-panel__body">
+                <div class="kt-grid-nav-v2">
+                    <a href="#" class="kt-grid-nav-v2__item">
+                        <div class="kt-grid-nav-v2__item-icon"><i class="flaticon2-box"></i></div>
+                        <div class="kt-grid-nav-v2__item-title">Orders</div>
+                    </a>
+                    <a href="#" class="kt-grid-nav-v2__item">
+                        <div class="kt-grid-nav-v2__item-icon"><i class="flaticon-download-1"></i></div>
+                        <div class="kt-grid-nav-v2__item-title">Uploades</div>
+                    </a>
+                    <a href="#" class="kt-grid-nav-v2__item">
+                        <div class="kt-grid-nav-v2__item-icon"><i class="flaticon2-supermarket"></i></div>
+                        <div class="kt-grid-nav-v2__item-title">Products</div>
+                    </a>
+                    <a href="#" class="kt-grid-nav-v2__item">
+                        <div class="kt-grid-nav-v2__item-icon"><i class="flaticon2-avatar"></i></div>
+                        <div class="kt-grid-nav-v2__item-title">Customers</div>
+                    </a>
+                    <a href="#" class="kt-grid-nav-v2__item">
+                        <div class="kt-grid-nav-v2__item-icon"><i class="flaticon2-list"></i></div>
+                        <div class="kt-grid-nav-v2__item-title">Blog Posts</div>
+                    </a>
+                    <a href="#" class="kt-grid-nav-v2__item">
+                        <div class="kt-grid-nav-v2__item-icon"><i class="flaticon2-settings"></i></div>
+                        <div class="kt-grid-nav-v2__item-title">Settings</div>
+                    </a>
+                </div>
+            </div>
+        </div> -->
+
+        <!-- end::Offcanvas Toolbar Quick Actions -->
+
+        <!-- end:: Topbar Offcanvas Panels -->
+
+        <!-- begin:: Quick Panel -->
+        
+        <!-- end:: Scrolltop -->
+
+        <!-- begin:: Demo Toolbar -->
+
+        <!-- end:: Demo Toolbar -->
+
+
+        <!-- begin::Global Config(global config for global JS sciprts) -->
+        {% include "partials/script.html" %}
+
+        <!--end::Page Scripts -->
+    </body>
+
+    <!-- end::Body -->
+
+</html>

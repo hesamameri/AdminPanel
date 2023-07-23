@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+
+<html lang="fa">
+
+    <!-- begin::Head -->
+
+    {% include "partials/head.html" %}
+
+
+    <!-- end::Head -->
+
+    <!-- begin::Body -->
+
+    <body
+        class="kt-quick-panel--right kt-demo-panel--right kt-offcanvas-panel--right kt-header--fixed kt-header-mobile--fixed kt-subheader--enabled kt-subheader--transparent kt-aside--enabled kt-aside--fixed kt-page--loading">
+
+        <!-- begin:: Header Mobile -->
+
+        {% include "partials/MobileHeader.html" %}
+
+        <!-- end:: Header Mobile -->
+
+        <!-- begin:: Root -->
+        <div class="kt-grid kt-grid--hor kt-grid--root">
+
+            <!-- begin:: Page -->
+            <div class="kt-grid__item kt-grid__item--fluid kt-grid kt-grid--ver kt-page">
+
+                <!-- begin:: Aside -->
+                {% include "partials/sidebar.html" %}
+
+
+                <!-- end:: Aside -->
+
+                <!-- begin:: Wrapper -->
+                <div class="kt-grid__item kt-grid__item--fluid kt-grid kt-grid--hor kt-wrapper" id="kt_wrapper">
+
+                    <!-- begin:: Header -->
+
+                    {% include "partials/header.html" %}
+                    <!-- end:: Header -->
+                    <div class="kt-grid__item kt-grid__item--fluid kt-grid kt-grid--hor">
+
+                        <!-- begin:: Subheader -->
+                        {% include "partials/subheader.html" %}
+
+                        <!-- end:: Subheader -->
+
+                        <!-- begin:: Content -->
+                        <div class="kt-content  kt-grid__item kt-grid__item--fluid" id="kt_content">
+
+                            <div class="">
+                                <div class="content">
+                                    <div class="container-fluid">
+                                        <div class="row ">
+                                            <div class="col-lg-12">
+                            
+                                                <div class="card card-secondary card-outlines">
+                                                    <div class="card-header rtl">
+                                                        <h3 class="card-title rtl block float-right">فروشنده</h3>
+                                                        <div class="card-fixed-left no-print">
+                                                            <button onclick="javascript:window.print();" class="btn btn-success" data-toggle="modal"><i class="fas fa-print"></i></button>
+                                                            <a href="#" class="btn btn-success btn-sm">برگشت</a>
+                                                        </div>
+                                                    </div>
+                                                    <div class="card-body">
+                                                                    <table class="table  {{ direction }}">
+                                                                        <tr>
+                                                                            <td class="bold text-left">فروشنده:</td>
+                                                                            <td colspan="20"> / / </td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td class="bold text-left">استان:</td>
+                                                                            <td></td>
+                                                                            <td class="bold text-left">شهر:</td>
+                                                                            <td></td>
+                                                                            <td class="bold text-left">آدرس:</td>
+                                                                            <td></td>
+                                                                            <td class="bold text-left">تلفن:</td>
+                                                                            <td> / </td>
+                                                                        </tr>
+                                                                    </table>
+                                                    </div>
+                                                </div><!-- end.card -->
+                                            </div>
+                                        </div>
+                            
+                                                <div class="card card-secondary card-outlines">
+                                                    <div class="card-header rtl">
+                                                        <h3 class="card-title rtl block float-right">مدارک</h3>
+                                                    </div>
+                                                    <div class="card-body">
+                                                            <form method="POST" action="">
+                                                            <table class="table table-bordered table-striped ">
+                                                                <thead>
+                                                                    <tr>
+                                                                        <th>
+                                                                            <a href="#" id="check_all">ALL</a>
+                                                                            <a href="#" id="check_reverse">+/-</a>
+                                                                        </th>
+                                                                        <th>#</th>
+                                                                        <th>فاکتور</th>
+                                                                        <th>خریدار</th>
+                                                                        <th>فاکتور</th>
+                                                                        <th>نوع مدرک</th>
+                                                                        <th>شماره</th>
+                                                                        <th>بانک</th>
+                                                                        <th>مبلغ</th>
+                                                                        <th>توضیحات</th>
+                                                                        <th>تایید دریافت</th>
+                                                                    </tr>
+                                                                </thead>
+                                                                <tbody>
+                                                                    
+                                                                    <tr>
+                                                                            <td><input type="checkbox" name="item[]" class="form-controller chkbx" value=""></td>
+                                                                            <td></td>
+                                                                            <td></td>
+                                                                            <td></td>
+                                                                            <td></td>
+                                                                            <td></td>
+                                                                            <td></td>
+                                                                            <td></td>
+                                                                            <td></td>
+                                                                            <td>/ </td>
+                                                                            <td></td>
+                                                                    </tr>
+                                                                   
+                            
+                                                                    <tr class="bold">
+                                                                            <td colspan="4" class="text-right">
+                                                                                <input type="submit" class="btn btn-block btn-success no-print" name="confirm" value="تایید دریافت مدارک" onclick="confirm('آیا تایید می‌کنید که مدارک انتخاب شده را دریافت کرده‌اید؟');">
+                                                                            </td>
+                                                                            <td colspan="4" class="text-left">چک‌ها</td>
+                                                                            <td></td>
+                                                                            <td>تعداد: </td>
+                                                                    </tr>
+                                                                    <tr class="bold">
+                                                                            <td colspan="7" class="text-left">کارت‌خوان‌ها</td>
+                                                                            <td></td>
+                                                                            <td>تعداد: </td>
+                                                                    </tr>
+                                                                    <tr class="bold">
+                                                                            <td colspan="7" class="text-left">وجوه نقد</td>
+                                                                            <td></td>
+                                                                            <td>تعداد: </td>
+                                                                    </tr>
+                                                                    <tr class="bold">
+                                                                            <td colspan="7" class="text-left">جمع کل</td>
+                                                                            <td></td>
+                                                                            <td></td>
+                                                                    </tr>
+                                                                </tbody>
+                                                            </table>
+                                                            </form>
+                                                    </div>
+                                                </div>
+                            
+                                                 <div class="card card-secondary card-outlines">
+                                                    <div class="card-header rtl">
+                                                        <h3 class="card-title rtl block float-right">تصویر مدارک</h3>
+                                                    </div>
+                                                    <div class="card-body">
+                                                                    <table class="table table-bordered table-striped ">
+                                                                        <tbody>
+                                                                            <tr>
+                                                                                <td>
+                                                                                    فاکتور: 
+                                                                                </td>
+                                                                            </tr>
+                                                                            <tr>
+                                                                                <td>
+                                                                                    <img class="img" style="width: 40%" src="">
+                                                                                </td>
+                                                                            </tr>
+                                                                        </tbody>
+                                                                    </table>
+                                                    </div>
+                                                </div><!-- end.card --> 
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- end:: Content -->
+                    </div>
+
+                    <!-- begin:: Footer -->
+                    {% include "partials/footer.html" %}
+
+                    <!-- end:: Footer -->
+                </div>
+
+                <!-- end:: Wrapper -->
+            </div>
+
+            <!-- end:: Page -->
+        </div>
+
+        <!-- end:: Root -->
+
+        <!-- begin:: Topbar Offcanvas Panels -->
+
+        <!-- begin::Offcanvas Toolbar Quick Actions -->
+        <!-- <div id="kt_offcanvas_toolbar_quick_actions" class="kt-offcanvas-panel">
+            <div class="kt-offcanvas-panel__head">
+                <h3 class="kt-offcanvas-panel__title">
+                    Quick Actions
+                </h3>
+                <a href="#" class="kt-offcanvas-panel__close" id="kt_offcanvas_toolbar_quick_actions_close"><i
+                        class="flaticon2-delete"></i></a>
+            </div>
+            <div class="kt-offcanvas-panel__body">
+                <div class="kt-grid-nav-v2">
+                    <a href="#" class="kt-grid-nav-v2__item">
+                        <div class="kt-grid-nav-v2__item-icon"><i class="flaticon2-box"></i></div>
+                        <div class="kt-grid-nav-v2__item-title">Orders</div>
+                    </a>
+                    <a href="#" class="kt-grid-nav-v2__item">
+                        <div class="kt-grid-nav-v2__item-icon"><i class="flaticon-download-1"></i></div>
+                        <div class="kt-grid-nav-v2__item-title">Uploades</div>
+                    </a>
+                    <a href="#" class="kt-grid-nav-v2__item">
+                        <div class="kt-grid-nav-v2__item-icon"><i class="flaticon2-supermarket"></i></div>
+                        <div class="kt-grid-nav-v2__item-title">Products</div>
+                    </a>
+                    <a href="#" class="kt-grid-nav-v2__item">
+                        <div class="kt-grid-nav-v2__item-icon"><i class="flaticon2-avatar"></i></div>
+                        <div class="kt-grid-nav-v2__item-title">Customers</div>
+                    </a>
+                    <a href="#" class="kt-grid-nav-v2__item">
+                        <div class="kt-grid-nav-v2__item-icon"><i class="flaticon2-list"></i></div>
+                        <div class="kt-grid-nav-v2__item-title">Blog Posts</div>
+                    </a>
+                    <a href="#" class="kt-grid-nav-v2__item">
+                        <div class="kt-grid-nav-v2__item-icon"><i class="flaticon2-settings"></i></div>
+                        <div class="kt-grid-nav-v2__item-title">Settings</div>
+                    </a>
+                </div>
+            </div>
+        </div> -->
+
+        <!-- end::Offcanvas Toolbar Quick Actions -->
+
+        <!-- end:: Topbar Offcanvas Panels -->
+
+        <!-- begin:: Quick Panel -->
+        
+        <!-- end:: Scrolltop -->
+
+        <!-- begin:: Demo Toolbar -->
+
+        <!-- end:: Demo Toolbar -->
+
+
+        <!-- begin::Global Config(global config for global JS sciprts) -->
+        {% include "partials/script.html" %}
+
+        <!--end::Page Scripts -->
+    </body>
+
+    <!-- end::Body -->
+
+</html>

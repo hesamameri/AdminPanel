@@ -1,0 +1,752 @@
+<!DOCTYPE html>
+
+<html lang="fa">
+
+    <!-- begin::Head -->
+
+    {% include "partials/head.html" %}
+
+
+    <!-- end::Head -->
+
+    <!-- begin::Body -->
+
+    <body
+        class="kt-quick-panel--right kt-demo-panel--right kt-offcanvas-panel--right kt-header--fixed kt-header-mobile--fixed kt-subheader--enabled kt-subheader--transparent kt-aside--enabled kt-aside--fixed kt-page--loading">
+
+        <!-- begin:: Header Mobile -->
+
+        {% include "partials/MobileHeader.html" %}
+
+        <!-- end:: Header Mobile -->
+
+        <!-- begin:: Root -->
+        <div class="kt-grid kt-grid--hor kt-grid--root">
+
+            <!-- begin:: Page -->
+            <div class="kt-grid__item kt-grid__item--fluid kt-grid kt-grid--ver kt-page">
+
+                <!-- begin:: Aside -->
+                {% include "partials/sidebar.html" %}
+
+
+                <!-- end:: Aside -->
+
+                <!-- begin:: Wrapper -->
+                <div class="kt-grid__item kt-grid__item--fluid kt-grid kt-grid--hor kt-wrapper" id="kt_wrapper">
+
+                    <!-- begin:: Header -->
+
+                    {% include "partials/header.html" %}
+                    <!-- end:: Header -->
+                    <div class="kt-grid__item kt-grid__item--fluid kt-grid kt-grid--hor">
+
+                        <!-- begin:: Subheader -->
+                        {% include "partials/subheader.html" %}
+
+                        <!-- end:: Subheader -->
+
+                        <!-- begin:: Content -->
+                        <div class="kt-content  kt-grid__item kt-grid__item--fluid" id="kt_content">
+
+                            <div class="content-wrapper">
+                                <div class="content-header">
+                                    <div class="container-fluid">
+                                    
+                                    <div class="row mb-2">
+                                        <div class="col-sm-12">
+                                                <ol class="breadcrumb float-sm-right ">
+                                                    <li class="breadcrumb-item active"></li>
+                                                    <li class="breadcrumb-item active">فاکتور فروش</li>
+                                                </ol>
+                                                <ol class="breadcrumb float-sm-right ">
+                                                    <li class="breadcrumb-item active">تایید مالی</li>
+                                                    <li class="breadcrumb-item active">فاکتور فروش</li>
+                                                </ol>
+                                                <ol class="breadcrumb float-sm-right ">
+                                                    <li class="breadcrumb-item active">فاکتور فروش</li>
+                                                    <li class="breadcrumb-item active">فاکتور فروش</li>
+                                                    <li class="breadcrumb-item">مشتریان</li>
+                                                </ol>
+                                        </div>
+                                    </div>
+                                    </div>
+                                </div>
+                                    <div class="alert alert-danger rtl" role="alert"></div>
+                                
+                                    <div class="alert alert-success rtl" role="alert"></div>
+                                
+                                    <div class="rtl alert alert-danger">فاکتور فوق دارای چک با استعلام نامشخص/تایید نشده می‌باشد</div>
+                            
+                                <div class="content">
+                                    <div class="container-fluid">
+                                        <div class="row">
+                            
+                                            <div class="col-lg-9">
+                                                
+                                                <div class="card card-secondary card-outlines">
+                                                    <div class="card-header rtl">
+                                                        <h3 class="card-title rtl block float-right">محصولات</h3>
+                                                        <button class="btn btn-sm btn-success card-fixed-left" data-toggle="modal" data-target="#modal-product-item"><i class="fas fa-plus nav-icon"></i></button>
+                                                      
+                                                                <form method="POST"  action="">
+                                                                    <button class="btn btn-sm btn-success card-fixed-left btn-account-confirm" style="display: none">تایید و برگشت</button>
+                                                                </form>
+                                                        
+                            
+                                                    </div>
+                                                    <div class="card-body">
+                                                        <table class="table table-bordered table-striped table-hover ">
+                                                            <thead>
+                                                                <tr>
+                                                                    <th>کد</th>
+                                                                    <th>عنوان</th>
+                                                                    <th>تعداد</th>
+                                                                    <th>فی<span class="small">(ریال)</span></th>
+                                                                    <th>مبلغ<span class="small">(ریال)</span></th>
+                                                                    <th>تخفیف<span class="small">(ریال)</span></th>
+                                                                    <th>مالیات<span class="small">(ریال)</span></th>
+                                                                    <th>مبلغ نهایی<span class="small">(ریال)</span></th>
+                                                                        <th>تعداد</th>
+                                                                        <th>ارسال شده</th>
+                                                                        <th>مانده</th>
+                                                             
+                                                                        <th></th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                                
+                                                                <tr class="row-small">
+                                                                    <td></td>
+                                                                    <td>
+                                                                        
+                                                                            <br>
+                                                                            
+                                                                    </td>
+                                                                    
+                                                                        <td></td>
+                                                                    <td></td>
+                                                                    <td></td>
+                                                                    <td>
+                                                                      
+                                                                    </td>
+                                                                    <td>
+                                                                    </td>
+                                                                    <td>
+                                                                    </td>
+                                                                   
+                            
+                                                                     <td></td> 
+                                                                    <td></td> 
+                                                                        <td>
+                                                                            <form method="POST" action="">
+                                                                                <button type="submit" class="btn btn-danger btn-xs" href=""><i class="fas fa-times"></i></button>
+                                                                            </form>
+                                                                        </td>
+                            
+                                                                        <td></td>
+                                                                        <td>
+                                                                            
+                                                                        </td>
+                                                                        <td>
+                                                                        </td>
+                                                                        <td>
+                                                                                <button class="btn btn-sm btn-success btn-asign-depo" 
+                                                                                        data-toggle="modal" 
+                                                                                        data-fid=""
+                                                                                        data-reminded=""
+                                                                                        data-target="#modal-assign-depo"><i class="fas fa-plus nav-icon"></i></button>
+                                                                        </td>
+                                                                        <td>
+                                                                        </td>
+                                                                </tr>
+                                                                <script>
+                                                                   
+                                                                </script>
+                                                                
+                                                                
+                                                                <tr class="row-small">
+                                                                    <td class="bold text-left" colspan="4">حمع مبلغ کالا/خدمات</td>
+                                                                    <td colspan="4"> <small>ریال</small> </td>
+                                                                </tr>
+                                                                <tr class="row-small">
+                                                                    <td class="bold text-left" colspan="4">حمع تخفیف</td>
+                                                                    <td colspan="4"> <small>ریال</small></td>
+                                                                </tr>
+                                                                <tr class="row-small">
+                                                                    <td class="bold text-left" colspan="4">حمع سهم سازمان‌ها</td>
+                                                                    <td colspan="4"> <small>ریال</small></td>
+                                                                </tr>
+                                                                <tr class="row-small">
+                                                                    <td class="bold text-left" colspan="4">جمع کل</td>
+                                                                    <td colspan="4"> <small>ریال</small></td>
+                                                                </tr>
+                                                            </tbody>
+                                                        </table>
+                                                            <div class="badge badge-warning col-sm-12 rtl text-right">
+                                                            </div>
+                                                    </div>
+                                                </div><!-- /card item -->
+                            
+                                                <div class="row">
+                                                    <div class="col-lg-12">
+                                                        <div class="card card-secondary card-outlines">
+                                                            <div class="card-header rtl">
+                                                                <h3 class="card-title rtl block float-right">پرداختی‌ها</h3>
+                                                                    <button class="btn btn-sm btn-success card-fixed-left" data-toggle="modal" data-target="#modal-payment"><i class="fas fa-plus nav-icon"></i></button>
+                                                                
+                                                            </div>
+                                                            <div class="card-body">
+                                                                <table class="table table-bordered table-striped table-hover font-sm ">
+                                                                    <thead>
+                                                                        <tr>
+                                                                            <th>مرحله</th>
+                                                                            <th>نحوه پرداخت</th>
+                                                                            <th>شناسه</th>
+                                                                            <th>مبلغ <span class="small">(ریال)</span></th>
+                                                                            <th>توضیحات</th>
+                                                                            <th>ثبت کنند</th>
+                                                                            <th>زمان ثبت</th>
+                                                                            <th></th>
+                                                                        </tr>
+                                                                    </thead>
+                                                                    <tbody>
+                                                                        
+                                                                        <tr 
+                                                                            <td>
+                                                                                    فاکتورهای تکراری: 
+                                                                            </td>
+                                                                            <td></td>
+                                                                            <td></td>
+                                                                            <td></td>
+                                                                            <td></td>
+                                                                            <td></td>
+                                                                            <td></td>
+                                                                            <td>
+                                                                                <form method="POST" action="">
+                                                                                    <button type="submit" class="btn btn-danger btn-xs" href=""><i class="fas fa-times"></i></button>
+                                                                                </form>
+                                                                            </td>
+                                                                            
+                                                                        </tr>
+                                                                      
+                                                                        <tr>
+                                                                            <td></td>
+                                                                            <td colspan="2">بدهکار</td>
+                                                                            <td colspan="2">بستانکار</td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td>مانده فاکتور: </td>
+                                                                            <td colspan="2"></td>
+                                                                            <td colspan="2">0</td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td>مانده حساب کل:</td>
+                                                                            
+                                                                            <td colspan="2">0</td>
+                                                                            <td colspan="2"></td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td>جمع:</td>
+                                                                            
+                                                                            <td colspan="2"></td>
+                                                                            <td colspan="2"></td>
+                                                                        </tr>
+                                                                       
+                                                                    </tbody>
+                                                                </table>
+                            
+                            
+                                                            </div>
+                                                        </div>
+                            
+                                                    </div>
+                                                    <div class="col-lg-12">
+                            
+                                                        <div class="card card-secondary card-outlines">
+                                                            <div class="card-header rtl">
+                                                                <h3 class="card-title rtl block float-right">مدارک</h3>
+                                                                    <button class="btn btn-sm btn-success card-fixed-left" data-toggle="modal" data-target="#modal-document"><i class="fas fa-plus nav-icon"></i></button>
+                                                                 <button class="btn btn-sm btn-success card-fixed-left" data-toggle="modal" data-target="#modal-document"><i class="fas fa-plus nav-icon"></i></button>
+                                                               
+                                                            </div>
+                                                            <div class="card-body">
+                                                                <table class="table table-bordered table-striped table-hover font-sm">
+                                                                    <thead>
+                                                                        <tr>
+                                                                            <th>تصویر</th>
+                                                                            <th>توضیحات</th>
+                                                                            <th>ثبت کنند</th>
+                                                                            <th>زمان ثبت</th>
+                                                                            <th></th>
+                                                                        </tr>
+                                                                    </thead>
+                                                                    <tbody>
+                                                                        <tr> 1 and >
+                                                                           
+                                                                            <td><img class="img img-rectangle img-popup-img-srces" height="60px" src="/upload/{{filename}}"></td>
+                            
+                                                                            <td>
+                                                                           
+                                                                                <hr>
+                                                                                تکراری در فاکتور: 
+                                                                    
+                                                                            </td>
+                                                                            <td></td>
+                                                                            <td></td>
+                            
+                                                                            
+                                                                            <td>
+                                                                                <form method="POST" action="">
+                                                                                    <button type="submit" class="btn btn-danger btn-xs" href=""><i class="fas fa-times"></i></button>
+                                                                                </form>
+                                                                            </td>
+                                                                            
+                                                                        </tr>
+                            
+                                                                    </tbody>
+                                                                </table>
+                                                            </div>
+                                                        </div>
+                            
+                                                    </div>
+                            
+                                                    <div class="col-lg-12">
+                                                        <div class="card card-secondary card-outlines">
+                                                            <div class="card-header rtl">
+                                                                <h3 class="card-title rtl block float-right">توضیحات فاکتور</h3>
+                                                            </div>
+                                                            <div class="card-body rtl">
+                                                                <b>توضیحات فاکتور: </b>
+                                                                <br>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    
+                                                    <div class="col-lg-12">
+                                                        <div class="card card-secondary card-outlines">
+                                                            <div class="card-header rtl">
+                                                                <h3 class="card-title rtl block float-right">تاییدیه امور مالی</h3>
+                                                            </div>
+                                                            <div class="card-body rtl">
+                                                                <b>وضعیت:</b> 
+                                                                
+                                                                <br>
+                                                                <b>تایید کننده مالی: </b> <b>تاریخ:</b>  <b>ساعت:</b> 
+                                                                <br>
+                                                                <b>توضیحات مالی: </b>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                            
+                                                    
+                                                    <div class="col-lg-12">
+                                                        <div class="card card-secondary card-outlines">
+                                                            <div class="card-header rtl">
+                                                                <h3 class="card-title rtl block float-right">اختصاص انبار</h3>
+                                                            </div>
+                                                            <div class="card-body rtl">
+                                                                <table class="table">
+                                                                    <thead>
+                                                                    <tr>
+                                                                        <th>کد کالا</th>
+                                                                        <th>شرح کالا</th>
+                                                                        <th>تعداد</th>
+                                                                        <th>انبار</th>
+                                                                        <th>ثبت کننده</th>
+                                                                        <th>تاریخ</th>
+                                                                        <th>ساعت</th>
+                                                                    </tr>
+                                                                    </thead>
+                                                                    <tbody>
+                                                                    <tr>
+                                                                        <td></td>
+                                                                        <td></td>
+                                                                        <td></td>
+                                                                        <td></td>
+                                                                        <td></td>
+                                                                        <td></td>
+                                                                        <td></td>
+                                                                    </tr>
+                                                                    </tbody>
+                                                                   
+                                                                </table>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    
+                            
+                                                    <div class="col-lg-12">
+                                                        
+                                                        <div class="card card-secondary card-outlines">
+                                                            <div class="card-header rtl">
+                                                                <h3 class="card-title rtl block float-right block">خدمت </h3>
+                                                                <br>
+                                                                    <h6 class="h6"></h6>
+                                                                <h6 class="h6"></h6>
+                                                                <h6 class="h6">هزینه: </h6>
+                                                            </div>
+                                                            <div class="card-body rtl">
+                                                                <table class="table">
+                                                                    <tbody>
+                                                                    <tr>
+                                                                        <th>ثبت کنند</th>
+                                                                        <td></td>
+                            
+                                                                        <th>سرویس دهنده</th>
+                                                                        <td></td>
+                            
+                                                                        <th>ثبت وضعیت</th>
+                                                                        <td></td>
+                            
+                                                                        <th>ثبت ارزیابی</th>
+                                                                        <td></td>
+                                                                    </tr>  
+                                                                    <tr>  
+                                                                        <th>ارسال کننده</th>
+                                                                        <td></td>
+                            
+                                                                        <th></th>
+                                                                        <td></td>
+                            
+                                                                        <th>وضعیت سرویس</th>
+                                                                        <td></td>
+                            
+                                                                        <th>ارزیابی</th>
+                                                                        <td></td>
+                            
+                                                                        <th>رسید</th>
+                                                                        <td></td>
+                                                                    </tr>  
+                                                                    <tr>  
+                                                                        <th>تاریخ سرویس</th>
+                                                                        <td></td>
+                            
+                                                                        <th>تاریخ اختصاص</th>
+                                                                        <td></td>
+                            
+                                                                        <th>تاریخ وضعیت</th>
+                                                                        <td></td>
+                            
+                                                                        <th>تاریخ ارزیابی</th>
+                                                                        <td></td>
+                            
+                                                                        <th>تاریخ رسید</th>
+                                                                        <td></td>
+                                                                    </tr>  
+                                                                    <tr>  
+                                                                        <th>توضیحات ارسال</th>
+                                                                        <td></td>
+                            
+                                                                        <th>توضیحات اختصاص</th>
+                                                                        <td></td>
+                            
+                                                                        <th>توضیحات وضعیت</th>
+                                                                        <td></td>
+                            
+                                                                        <th>توضیحات ارزیابی</th>
+                                                                        <td></td>
+                            
+                                                                        <th>توضیحات رسید</th>
+                                                                        <td></td>
+                                                                    </tr>
+                            
+                                                                    </tbody>
+                                                                </table>
+                                                            </div>
+                                                        </div><!-- /card -->
+                                                    </div>
+                            
+                                                </div>
+                            
+                                                <div class="row">
+                                                    <div class="col-lg-12">
+                                                        <div class="card  card-outline">
+                                                            <div class="card-body">
+                                                                <form method="POST"  action="" id="saveForm" name="saveForm">
+                                                                    <div class="form-group form-group-sm row" style="width: 100%;">
+                                                                        <div class="col-sm-10">
+                                                                            <input type="text" name="factore_desc" class="form-control rtl" id="factore_desc" placeholder="توضیحات" >
+                                                                        </div>
+                                                                        <label for="factore_desc" class="col-sm-2 col-form-label">توضیحات</label>
+                                                                    </div>
+                                                                    <button class="btn btn-primary" type="submit" form="saveForm">ثبت نهایی فاکتور</button>
+                                                                    <a href="" class="btn btn-danger" >حذف فاکتور</a>
+                                                                    <a href="" class="btn btn-secondary float-right" >برگشت</a>
+                                                                </form>
+                                                            </div>
+                                                        </div>
+                                                            <div class="card card- card-outline">
+                                                                <div class="card-header rtl">
+                                                                    <h3 class="card-title rtl block float-right bold">اعلام وضعیت مالی</h3>
+                                                                </div>
+                                                                <div class="card-body">
+                                                                    <form method="POST" action="">
+                                                                        <div class="form-group form-group-sm row" style="width: 100%;">
+                                                                            <div class="col-sm-8">
+                                                                                <input type="text" name="acc_description" class="form-control rtl" id="acc_description" placeholder="توضیحات" >
+                                                                            </div>
+                                                                            <label for="acc_description" class="col-sm-3 col-form-label">توضیحات</label>
+                                                                        </div>
+                                                                        <div class="form-group form-group-sm row" style="width: 100%;">
+                                                                            <div class="col-sm-8">
+                                                                                <select class="form-control select2bs4s rtl text-right float-right" style="width: 100%;" name="acc_status" id="acc_status">
+                                                                                    <option value="CONFIRM">تایید</option>
+                                                                                    <option value="REJECT">رد</option>
+                                                                                </select>
+                                                                            </div>
+                                                                            <label for="acc_status" class="col-sm-3 col-form-label">وضعیت</label>
+                                                                        </div>
+                                                                            <button class="btn btn-" type="submit">تایید مالی</button>
+                                                                            <button class="btn btn-secondary" disabled>تایید مالی</button>
+                                                                    </form>
+                                                                </div>
+                                                            </div>
+                            
+                                                             <div class="card card- card-outline">
+                                                                <div class="card-header rtl">
+                                                                    <h3 class="card-title rtl block float-right"></h3>
+                                                                </div>
+                                                                <div class="card-body">
+                                                                    <form method="POST"  action="">
+                                                                        <div class="form-group form-group-sm row" style="width: 100%;">
+                                                                            <div class="col-sm-8">
+                                                                                <input type="text" name="description" class="form-control rtl" id="description" placeholder="توضیحات" >
+                                                                            </div>
+                                                                            <label for="description" class="col-sm-3 col-form-label">توضیحات</label>
+                                                                        </div>
+                                                                        <button class="btn btn-primary" type="submit">ثبت فاکتور فروش</button>
+                                                                    </form>
+                                                                </div>
+                                                            </div> 
+                                                                  
+                                                    </div>
+                                                </div>
+                                            </div><!-- /col-8 -->
+                                            <div class="col-lg-3">
+                                                <div class="card card- card-outlines">
+                                                    <div class="card-header rtl">
+                                                        <h3 class="card-title rtl block float-right">فروشنده</h3>
+                                                    </div>
+                                                    <div class="card-body">
+                                                        <table class="table ">
+                                                            <tr>
+                                                                <th>فروشگاه:</th>
+                                                                <td></td>
+                                                            </tr>
+                                                            <tr>
+                                                                <th>اعتبار:</th>
+                                                                <td></td>
+                                                            </tr>
+                                                            <tr>
+                                                                <th>مانده اعتبار:</th>
+                                                                <td></td>
+                                                            </tr>
+                                                        </table>                            
+                                                    </div>
+                                                </div>
+                            
+                                                <div class="card card-secondary card-tabs">
+                                                            <div class="card-header p-0 pt-1">
+                                                                <ul class="nav nav-tabs" id="custom-tabs-one-tab" role="tablist">
+                                                                    <li class="nav-item">
+                                                                        <a class="nav-link active" id="custom-tabs-one-home-tab" data-toggle="pill" href="#custom-tabs-one-home" role="tab" aria-controls="custom-tabs-one-home" aria-selected="true">مشتری</a>
+                                                                    </li>
+                                                                    <li class="nav-item">
+                                                                        <a class="nav-link" id="custom-tabs-one-profile-tab" data-toggle="pill" href="#custom-tabs-one-profile" role="tab" aria-controls="custom-tabs-one-profile" aria-selected="false">آدرس جدید</a>
+                                                                    </li>
+                                                                </ul>
+                                                            </div>
+                                                            <div class="card-body">
+                                                                <div class="tab-content" id="custom-tabs-one-tabContent">
+                                                                    <div class="tab-pane fade active show" id="custom-tabs-one-home" role="tabpanel" aria-labelledby="custom-tabs-one-home-tab">
+                                                                        <table class="table">
+                                                                                <tr>
+                                                                                    <th>کد مشتری:</th>
+                                                                                    <td></td>
+                                                                                </tr>
+                                                                                <tr>
+                                                                                    <th>شماره فاکتور اصلی:</th>
+                                                                                    <td></td>
+                                                                                </tr>
+                                                                                <tr>
+                                                                                    <th>کد مشتری فروشنده:</th>
+                                                                                    <td></td>
+                                                                                </tr>
+                                                                                <tr>
+                                                                                    <th>شماره فاکتور فروشنده:</th>
+                                                                                    <td></td>
+                                                                                </tr>
+                                                                                <tr>
+                                                                                    <th>خریدار:</th>
+                                                                                    <td></td>
+                                                                                </tr>
+                                                                                <tr>
+                                                                                    <th>آدرس :</th>
+                                                                                    <td> -  / </td>
+                                                                                </tr>
+                                                                        </table>
+                                                                    </div>
+                                                                    <div class="tab-pane fade" id="custom-tabs-one-profile" role="tabpanel" aria-labelledby="custom-tabs-one-profile-tab">
+                                                                        <table class="table ">
+                                                                                <form method="POST"  action="" id="n-address">
+                                                                                    <tr>
+                                                                                        <td>شهر</td>
+                                                                                        <td colspan="20">
+                                                                                            <select class="form-control select2bs4 rtl" style="width: 100%;" name="city_id" data-placeholder="" data-allow-clear="true" id="new-city">
+                                                                                                <option value="" selected></option>
+                                                                                                    <option value="{{ opt.id }}"></option>
+                                                                                            </select>
+                                                                                        </td>
+                                                                                    </tr>
+                                                                                    <tr>
+                                                                                        <td>تلفن</td>
+                                                                                        <td colspan="20">
+                                                                                            <input type="text" name="phone" class="form-control rtl" id="new-phone" placeholder="تلفن">
+                                                                                        </td>
+                                                                                    </tr>
+                                                                                    <tr>
+                                                                                        <td>موبایل</td>
+                                                                                        <td colspan="20">
+                                                                                            <input type="text" name="mobile" class="form-control rtl" id="new-mobile" placeholder="موبایل">
+                                                                                        </td>
+                                                                                    </tr>
+                                                                                    <tr>
+                                                                                        <td>تحویل گیرنده</td>
+                                                                                        <td colspan="20">
+                                                                                            <input type="text" name="receiver" class="form-control rtl" id="new-receiver" placeholder="گیرنده">
+                                                                                        </td>
+                                                                                    </tr>
+                                                                                    <tr>
+                                                                                        <td>آدرس</td>
+                                                                                        <td colspan="20">
+                                                                                            <textarea type="text" name="address" class="form-control rtl" id="new-address" placeholder="آدرس"></textarea>
+                                                                                        </td>
+                                                                                    </tr>
+                                                                                    <tr>
+                                                                                        <td colspan="20">
+                                                                                            <button class=" btn-block btn-primary" type="submit" >ثبت آدرس</button>
+                                                                                        </td>
+                                                                                    </tr>
+                                                                                </form>
+                                                                                    <tr>
+                                                                                        <td>شهر</td>
+                                                                                        <td colspan="20">
+                                                                                             - تلفن:  - 
+                                                                                        </td>
+                                                                                </tr>
+                                                                        </table>
+                            
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            
+                                                </div><!-- /.tab card -->
+                                                <div class="card card-secondary">
+                                                    <div class="card-header rtl">
+                                                        <h3 class="card-title rtl block float-right">استعلام حساب</h3>
+                                                    </div>
+                                                    <div class="card-body">
+                                                        <table class="table ">
+                                                            <tbody>
+                                                            
+                                                            
+                                                            <tr class="">
+                                                                <td></td>
+                                                                <td></td>
+                                                                <td></td>
+                                                            </tr>
+                                                            </tbody>
+                                                           
+                                                        </table>
+                                                    </div>
+                                                </div> <!-- /card -->
+                            
+                                                
+                                            </div> <!-- /col-4 -->
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- end:: Content -->
+                    </div>
+
+                    <!-- begin:: Footer -->
+                    {% include "partials/footer.html" %}
+
+                    <!-- end:: Footer -->
+                </div>
+
+                <!-- end:: Wrapper -->
+            </div>
+
+            <!-- end:: Page -->
+        </div>
+
+        <!-- end:: Root -->
+
+        <!-- begin:: Topbar Offcanvas Panels -->
+
+        <!-- begin::Offcanvas Toolbar Quick Actions -->
+        <!-- <div id="kt_offcanvas_toolbar_quick_actions" class="kt-offcanvas-panel">
+            <div class="kt-offcanvas-panel__head">
+                <h3 class="kt-offcanvas-panel__title">
+                    Quick Actions
+                </h3>
+                <a href="#" class="kt-offcanvas-panel__close" id="kt_offcanvas_toolbar_quick_actions_close"><i
+                        class="flaticon2-delete"></i></a>
+            </div>
+            <div class="kt-offcanvas-panel__body">
+                <div class="kt-grid-nav-v2">
+                    <a href="#" class="kt-grid-nav-v2__item">
+                        <div class="kt-grid-nav-v2__item-icon"><i class="flaticon2-box"></i></div>
+                        <div class="kt-grid-nav-v2__item-title">Orders</div>
+                    </a>
+                    <a href="#" class="kt-grid-nav-v2__item">
+                        <div class="kt-grid-nav-v2__item-icon"><i class="flaticon-download-1"></i></div>
+                        <div class="kt-grid-nav-v2__item-title">Uploades</div>
+                    </a>
+                    <a href="#" class="kt-grid-nav-v2__item">
+                        <div class="kt-grid-nav-v2__item-icon"><i class="flaticon2-supermarket"></i></div>
+                        <div class="kt-grid-nav-v2__item-title">Products</div>
+                    </a>
+                    <a href="#" class="kt-grid-nav-v2__item">
+                        <div class="kt-grid-nav-v2__item-icon"><i class="flaticon2-avatar"></i></div>
+                        <div class="kt-grid-nav-v2__item-title">Customers</div>
+                    </a>
+                    <a href="#" class="kt-grid-nav-v2__item">
+                        <div class="kt-grid-nav-v2__item-icon"><i class="flaticon2-list"></i></div>
+                        <div class="kt-grid-nav-v2__item-title">Blog Posts</div>
+                    </a>
+                    <a href="#" class="kt-grid-nav-v2__item">
+                        <div class="kt-grid-nav-v2__item-icon"><i class="flaticon2-settings"></i></div>
+                        <div class="kt-grid-nav-v2__item-title">Settings</div>
+                    </a>
+                </div>
+            </div>
+        </div> -->
+
+        <!-- end::Offcanvas Toolbar Quick Actions -->
+
+        <!-- end:: Topbar Offcanvas Panels -->
+
+        <!-- begin:: Quick Panel -->
+        
+        <!-- end:: Scrolltop -->
+
+        <!-- begin:: Demo Toolbar -->
+
+        <!-- end:: Demo Toolbar -->
+
+
+        <!-- begin::Global Config(global config for global JS sciprts) -->
+        {% include "partials/script.html" %}
+
+        <!--end::Page Scripts -->
+    </body>
+
+    <!-- end::Body -->
+
+</html>

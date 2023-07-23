@@ -79,3 +79,142 @@ def customer_index(request):
     }
 
     return render(request, 'Customer/CustomerIndex.html', context=context)
+
+def customer_index_all(request):
+
+    return render(request,'Customer/CustomerIndexAll.html')
+
+def factor(request):
+    
+    return render(request,'Customer/Factor.html')
+
+def factor_index(request):
+    
+    return render(request,'Customer/FactorList.html')
+
+def customer_confirm_accountlist(request):
+    
+    return render(request,'Customer/CustomerConfirmAccountList.html')
+
+def customer_confirm_salelist(request):
+    
+    return render(request,'Customer/CustomerConfirmSaleList.html')
+
+def customer_factor_assessment(request):
+    
+    return render(request,'Customer/CustomerFactorAssessment.html')
+
+
+
+def factor_send_index(request):
+    
+    return render(request,'Customer/FactorSendIndex.html')
+
+
+
+def customer_payment_confirm(request):
+    
+    return render(request,'Customer/CustomerPaymentConfirm.html')
+
+
+
+
+def receipt_index(request):
+    
+    return render(request,'Customer/ReceiptIndex.html')
+
+
+
+def receipt_list(request):
+    
+    return render(request,'Customer/ReceiptList.html')
+
+
+def receipt_receive(request):
+    
+    return render(request,'Customer/ReceiptReceive.html')
+
+
+def receipt_send(request):
+    
+    return render(request,'Customer/ReceiptSend.html')
+
+
+
+def credit_index(request):
+    
+    return render(request,'Customer/CreditIndex.html')
+
+
+
+
+
+def credit_list(request):
+    
+    return render(request,'Customer/CreditList.html')
+
+
+
+
+def receipt_confirm(request):
+    
+    return render(request,'Customer/receiptconfirm.html')
+
+
+
+def prefroma(request):
+    
+    return render(request,'Customer/Prefroma.html')
+
+
+def customerfactor_sendassigndriver(request):
+    
+    return render(request,'Customer/CustomerFactorSendAssignDriver.html')
+
+
+def customerfactor_sendstatus(request):
+    
+    return render(request,'Customer/CustomerFactorSendStatus.html')
+
+
+
+
+def customerfactor_servicedoc(request):
+    
+    return render(request,'Customer/CustomerFactorServiceDoc.html')
+
+
+def customer_payment_confirms(request):
+    
+    return render(request,'Customer/CustomerPaymentConfirms.html')
+
+
+def index_inquiry_response(request):
+    
+    return render(request,'Customer/IndexInquiryResponse.html')
+
+
+
+def index_inquiry(request):
+    
+    return render(request,'Customer/IndexInquiry.html')
+
+def new_customer(request):
+    
+    return render(request,'Customer/NewCustomer.html')
+
+
+def factorsend_installerprint(request):
+    
+    return render(request,'Customer/FactorSendInstallerPrint.html')
+
+
+
+def factor_send_print(request):
+    
+    return render(request,'Customer/FactorSendPrint.html')
+#####################################################
+
+def receipt_print(request):
+    
+    return render(request,'Customer/ReceiptPrint.html')

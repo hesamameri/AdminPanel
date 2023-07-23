@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+
+<html lang="fa">
+
+    <!-- begin::Head -->
+
+    {% include "partials/head.html" %}
+
+
+    <!-- end::Head -->
+
+    <!-- begin::Body -->
+
+    <body
+        class="kt-quick-panel--right kt-demo-panel--right kt-offcanvas-panel--right kt-header--fixed kt-header-mobile--fixed kt-subheader--enabled kt-subheader--transparent kt-aside--enabled kt-aside--fixed kt-page--loading">
+
+        <!-- begin:: Header Mobile -->
+
+        {% include "partials/MobileHeader.html" %}
+
+        <!-- end:: Header Mobile -->
+
+        <!-- begin:: Root -->
+        <div class="kt-grid kt-grid--hor kt-grid--root">
+
+            <!-- begin:: Page -->
+            <div class="kt-grid__item kt-grid__item--fluid kt-grid kt-grid--ver kt-page">
+
+                <!-- begin:: Aside -->
+                {% include "partials/sidebar.html" %}
+
+
+                <!-- end:: Aside -->
+
+                <!-- begin:: Wrapper -->
+                <div class="kt-grid__item kt-grid__item--fluid kt-grid kt-grid--hor kt-wrapper" id="kt_wrapper">
+
+                    <!-- begin:: Header -->
+
+                    {% include "partials/header.html" %}
+                    <!-- end:: Header -->
+                    <div class="kt-grid__item kt-grid__item--fluid kt-grid kt-grid--hor">
+
+                        <!-- begin:: Subheader -->
+                        {% include "partials/subheader.html" %}
+
+                        <!-- end:: Subheader -->
+
+                        <!-- begin:: Content -->
+                        <div class="kt-content  kt-grid__item kt-grid__item--fluid" id="kt_content">
+
+                            <div class="content-wrapper">
+                                <div class="content-header">
+                                    <div class="container-fluid">
+                                    <div class="row mb-2">
+                                        <div class="col-sm-12">
+                                            <ol class="breadcrumb float-sm-right ">
+                                                <li class="breadcrumb-item active">دریافتی از مشتریان</li>
+                                                <li class="breadcrumb-item">مشتریان</li>
+                                            </ol>
+                                        </div>
+                                    </div>
+                                    </div>
+                                </div>
+                            
+                                <div class="content">
+                                    <div class="container-fluid">
+                                        <div class="row">
+                                            <div class="col-lg-12">
+                                                <div class="card card-primary card-outline">
+                                                    <div class="card-body">
+                                                            <div class="row ">
+                                                                <div class="col-lg-12">
+                                                                    <table class="table table-bordered table-striped dataTable table-hover ">
+                                                                            <tr>
+                                                                                <th>کد مشتری</th>
+                                                                                <td></td>
+                                                                                <th>نام مشتری</th>
+                                                                                <td></td>
+                                                                            </tr>
+                                                                            <tr>
+                                                                            </tr>
+                                                                    </table>
+                                                                    <table class="table table-bordered table-striped dataTable table-hover ">
+                                                                        <thead>
+                                                                            <tr>
+                                                                                <th>شعبه</th>
+                                                                                <th>نوع</th>
+                                                                                <th>بانک</th>
+                                                                                <th>شماره</th>
+                                                                                <th>نام شعبه</th>
+                                                                                <th>مالک حساب</th>
+                                                                                <th>توضیحات</th>
+                                                                                <th>زمان ثبت</th>
+                                                                                <th>مبلغ</th>
+                                                                                <th>اطلاعات ثبتی</th>
+                                                                                <th>تصویر</th>
+                                                                                <th></th>
+                                                                            </tr>
+                                                                        </thead>
+                                                                        <tbody>
+                                                                                
+                                                                                <tr>
+                                                                                    <td></td>
+                                                                                    <td></td>
+                                                                                    <td></td>
+                                                                                    <td></td>
+                                                                                    <td></td>
+                                                                                    <td></td>
+                                                                                    <td></td>
+                                                                                    <td></td>
+                                                                                    <td></td>
+                                                                                    <td>
+                                                                                        <i class="fa fa-info-circle" aria-hidden="true" data-toggle="popover" title="اطلاعات رکورد" data-content=""></i>
+                                                                                    </td>
+                                                                                    <td><img class="img img-rectangle img-popup-img-src" style="width: 30px;" src=""></td>
+                                                                                    <td>
+                                                                                        
+                                                                                            <a class="btn btn-success btn-xs btn-acc-confirm" data-payment-id="" data-price="" data-toggle="modal" data-target="#modal-payment">تایید مالی</a>
+                                                                                        
+                                                                                            <a class="btn btn-success btn-xs btn-acc-confirm" data-payment-id="" data-price="" data-toggle="modal" data-target="#modal-doc">ثبت سند</a>
+                                                                                    </td>
+                                                                                </tr>
+                                                                                <tr>
+                                                                                    <th colspan="8" class="text-left">جمع: </th>
+                                                                                    <td></td>
+                                                                                </tr>
+                                                                        <tbody>
+                                                                    </table>
+                                                                    <div id="myModal" class="img-popup-modal">
+                                                                        <span class="img-popup-close">&times;</span>
+                                                                        <img class="img-popup-modal-content" id="img-popup-img">
+                                                                        <div id="img-popup-caption"></div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="modal fade" id="modal-payment">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h4 class="modal-title">اعلام وضعیت</h4>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <form method="POST" action="">
+                                            <input type="hidden" name="payment_id" class="payment_id">
+                                            <div class="modal-body">
+                                                        <div class="form-group form-group-sm row">
+                                                            <div class="col-sm-8">
+                                                                <select class="form-control " name="confirm_status" id="confirm_status">
+                                                                    <option value="CONFIRM">تایید</option>
+                                                                    <option value="REJECT">رد</option>
+                                                                </select>
+                                                            </div>
+                                                            <label for="confirm_status" class="col-sm-4 col-form-label">وضعیت</label>
+                                                        </div>
+                                                        <div class="form-group form-group-sm row">
+                                                            <div class="col-sm-8">
+                                                                <input class="form-control " name="price" id="price">
+                                                            </div>
+                                                            <label for="price" class="col-sm-4 col-form-label">مبلغ <small>(ریال)</small></label>
+                                                        </div>
+                                                        <div class="form-group form-group-sm row">
+                                                            <div class="col-sm-8">
+                                                                <input type="text" name="confirm_desc" class="form-control rtl" id="confirm_desc" placeholder="توضیحات" >
+                                                            </div>
+                                                            <label for="confirm_desc" class="col-sm-4 col-form-label">توضیحات</label>
+                                                        </div>
+                                            </div>
+                                            <div class="modal-footer justify-content-between">
+                                                <button type="submit" class="btn btn-primary">اعلام وضعیت</button>
+                                                <button type="button" class="btn btn-default" data-dismiss="modal">بستن</button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                    <!-- /.modal-content -->
+                                </div>
+                                <!-- /.modal-dialog -->
+                            </div>
+                            
+                            <div class="modal fade" id="modal-doc">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h4 class="modal-title text-right rtl">ثبت سند</h4>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <form method="POST" action="">
+                                            <input type="hidden" name="payment_id" class="payment_id">
+                                            <div class="modal-body">
+                                                <div class="form-group form-group-sm row">
+                                                    <div class="col-sm-8">
+                                                        <input type="number" name="doc_no" class="form-control rtl" id="doc_no" placeholder="شماره سند">
+                                                    </div>
+                                                    <label for="doc_no" class="col-sm-4 col-form-label">شماره سند</label>
+                                                </div>
+                                                <div class="form-group form-group-sm row">
+                                                    <div class="col-sm-8">
+                                                        <input type="text" name="confirm_desc" class="form-control rtl" id="confirm_desc" placeholder="توضیحات" >
+                                                    </div>
+                                                    <label for="confirm_desc" class="col-sm-4 col-form-label">توضیحات</label>
+                                                </div>
+                                            </div>
+                                            <div class="modal-footer justify-content-between">
+                                                <button type="submit" class="btn btn-primary">ثبت</button>
+                                                <button type="button" class="btn btn-default" data-dismiss="modal">بستن</button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                    <!-- /.modal-content -->
+                                </div>
+                                <!-- /.modal-dialog -->
+                            </div>
+                        </div>
+
+                        <!-- end:: Content -->
+                    </div>
+
+                    <!-- begin:: Footer -->
+                    {% include "partials/footer.html" %}
+
+                    <!-- end:: Footer -->
+                </div>
+
+                <!-- end:: Wrapper -->
+            </div>
+
+            <!-- end:: Page -->
+        </div>
+
+        <!-- end:: Root -->
+
+        <!-- begin:: Topbar Offcanvas Panels -->
+
+        <!-- begin::Offcanvas Toolbar Quick Actions -->
+        <!-- <div id="kt_offcanvas_toolbar_quick_actions" class="kt-offcanvas-panel">
+            <div class="kt-offcanvas-panel__head">
+                <h3 class="kt-offcanvas-panel__title">
+                    Quick Actions
+                </h3>
+                <a href="#" class="kt-offcanvas-panel__close" id="kt_offcanvas_toolbar_quick_actions_close"><i
+                        class="flaticon2-delete"></i></a>
+            </div>
+            <div class="kt-offcanvas-panel__body">
+                <div class="kt-grid-nav-v2">
+                    <a href="#" class="kt-grid-nav-v2__item">
+                        <div class="kt-grid-nav-v2__item-icon"><i class="flaticon2-box"></i></div>
+                        <div class="kt-grid-nav-v2__item-title">Orders</div>
+                    </a>
+                    <a href="#" class="kt-grid-nav-v2__item">
+                        <div class="kt-grid-nav-v2__item-icon"><i class="flaticon-download-1"></i></div>
+                        <div class="kt-grid-nav-v2__item-title">Uploades</div>
+                    </a>
+                    <a href="#" class="kt-grid-nav-v2__item">
+                        <div class="kt-grid-nav-v2__item-icon"><i class="flaticon2-supermarket"></i></div>
+                        <div class="kt-grid-nav-v2__item-title">Products</div>
+                    </a>
+                    <a href="#" class="kt-grid-nav-v2__item">
+                        <div class="kt-grid-nav-v2__item-icon"><i class="flaticon2-avatar"></i></div>
+                        <div class="kt-grid-nav-v2__item-title">Customers</div>
+                    </a>
+                    <a href="#" class="kt-grid-nav-v2__item">
+                        <div class="kt-grid-nav-v2__item-icon"><i class="flaticon2-list"></i></div>
+                        <div class="kt-grid-nav-v2__item-title">Blog Posts</div>
+                    </a>
+                    <a href="#" class="kt-grid-nav-v2__item">
+                        <div class="kt-grid-nav-v2__item-icon"><i class="flaticon2-settings"></i></div>
+                        <div class="kt-grid-nav-v2__item-title">Settings</div>
+                    </a>
+                </div>
+            </div>
+        </div> -->
+
+        <!-- end::Offcanvas Toolbar Quick Actions -->
+
+        <!-- end:: Topbar Offcanvas Panels -->
+
+        <!-- begin:: Quick Panel -->
+        
+        <!-- end:: Scrolltop -->
+
+        <!-- begin:: Demo Toolbar -->
+
+        <!-- end:: Demo Toolbar -->
+
+
+        <!-- begin::Global Config(global config for global JS sciprts) -->
+        {% include "partials/script.html" %}
+
+        <!--end::Page Scripts -->
+    </body>
+
+    <!-- end::Body -->
+
+</html>

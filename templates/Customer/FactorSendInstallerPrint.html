@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+
+<html lang="fa">
+
+    <!-- begin::Head -->
+
+    {% include "partials/head.html" %}
+
+
+    <!-- end::Head -->
+
+    <!-- begin::Body -->
+
+    <body
+        class="kt-quick-panel--right kt-demo-panel--right kt-offcanvas-panel--right kt-header--fixed kt-header-mobile--fixed kt-subheader--enabled kt-subheader--transparent kt-aside--enabled kt-aside--fixed kt-page--loading">
+
+        <!-- begin:: Header Mobile -->
+
+        {% include "partials/MobileHeader.html" %}
+
+        <!-- end:: Header Mobile -->
+
+        <!-- begin:: Root -->
+        <div class="kt-grid kt-grid--hor kt-grid--root">
+
+            <!-- begin:: Page -->
+            <div class="kt-grid__item kt-grid__item--fluid kt-grid kt-grid--ver kt-page">
+
+                <!-- begin:: Aside -->
+                {% include "partials/sidebar.html" %}
+
+
+                <!-- end:: Aside -->
+
+                <!-- begin:: Wrapper -->
+                <div class="kt-grid__item kt-grid__item--fluid kt-grid kt-grid--hor kt-wrapper" id="kt_wrapper">
+
+                    <!-- begin:: Header -->
+
+                    {% include "partials/header.html" %}
+                    <!-- end:: Header -->
+                    <div class="kt-grid__item kt-grid__item--fluid kt-grid kt-grid--hor">
+
+                        <!-- begin:: Subheader -->
+                        {% include "partials/subheader.html" %}
+
+                        <!-- end:: Subheader -->
+
+                        <!-- begin:: Content -->
+                        <div class="kt-content  kt-grid__item kt-grid__item--fluid" id="kt_content">
+
+                            <div class="bbcnasim">
+                                <div class="content">
+                                    <div class="container-fluid">
+                                                <div class="card-fixed-left no-print">
+                                                    <button onclick="javascript:window.print();" class="btn btn-success" data-toggle="modal"><i class="fas fa-print"></i></button>
+                                                    <a href="" class="btn btn-success btn-sm">برگشت</a>
+                                                </div>
+                                                <div class="text-center">
+                                                    <table class="table rtl">
+                                                        <tr class="">
+                                                            <td class="h4 titr text-center bold" rowspan="4">
+                                                                <img src="" style="height: 45px">
+                                                                
+                                                            </td>
+                                                        </tr>
+                                                        <tr class="">
+                                                            <td class="h4 titr text-center bold" rowspan="4">
+                                                                فرم نصب کالا
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td class="text-left strong">تاریخ:</td>
+                                                            <td></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td  class="text-left strong">شماره سریال:</td>
+                                                            <td> # </td>
+                                                        </tr>
+                                                    </table>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-lg-12">
+                                                        <div class="card card-secondary-del card-outlines">
+                                                            <div class="card-header rtl">
+                                                                <h3 class="card-title rtl block float-right bold">مشخصات خریدار</h3>
+                                                            </div>
+                                                            <div class="card-body">
+                                                                            <table class="table  ">
+                                                                                <tr>
+                                                                                    <td class="bold text-left">خریدار:</td>
+                                                                                    <td> </td>
+                                                                                    <td class="bold text-left">شهر:</td>
+                                                                                    <td></td>
+                                                                                    <td class="bold text-left">کدپستی:</td>
+                                                                                    <td>-</td>
+                                                                                    <td class="bold text-left">تلفن/نمابر:</td>
+                                                                                    <td></td>
+                                                                                </tr>
+                                                                                <tr>
+                                                                                    <td class="bold text-left">آدرس خریدار:</td>
+                                                                                    <td colspan="10"> -  -  /  () </td>
+                                                                                </tr>
+                                                                            </table>
+                                                            </div>
+                                                        </div><!-- end.card -->
+                                                    </div>
+                                                </div>
+                            
+                                                <div class="card card-secondary-del card-outlines">
+                                                    <div class="card-header rtl">
+                                                        <h3 class="card-title rtl block float-right bold">مشخصات کالای مورد معامله</h3>
+                                                    </div>
+                                                    <div class="card-body">
+                                                                    <table class="table table-bordered table-striped ">
+                                                                        <thead>
+                                                                            <tr>
+                                                                                <th>ردیف</th>
+                                                                                <th>کد کالا</th>
+                                                                                <th>شرح کالا یا خدمات</th>
+                                                                                <th>تعداد</th>
+                                                                                <th>شماره سریال</th>
+                                                                            </tr>
+                                                                        </thead>
+                                                                        <tbody>
+                                                                            
+                                                                                <tr>
+                                                                                    <td></td>
+                                                                                    <td></td>
+                                                                                    <td></td>
+                                                                                    <td></td>
+                                                                                    <td>
+                                                                                        <table class="table">
+                                                                                            <tr>
+                                                                                                <td>سریال:</td>
+                                                                                                <td></td>
+                                                                                            </tr>
+                                                                                        </table>
+                                                                                    </td>
+                                                                                </tr>
+                                                                        </tbody>
+                                                                    </table>
+                                                    </div>
+                                                </div><!-- end.card -->
+                            
+                                                <div class="row rtl">
+                                                    <div class="col-lg-12">
+                                                        <div class="card card-secondary-del card-outlines">
+                                                            <table class="">
+                                                                <tr class="text-center" style="height: 150px;">
+                                                                    <td>نام و امضاء مشتری:</td>
+                                                                    <td>نام و امضاء سرویس‌کار:</td>
+                                                                    <td>نام و امضاء واحد خدمات:</td>
+                                                                </tr>
+                                                            </table>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                            
+                            
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- end:: Content -->
+                    </div>
+
+                    <!-- begin:: Footer -->
+                    {% include "partials/footer.html" %}
+
+                    <!-- end:: Footer -->
+                </div>
+
+                <!-- end:: Wrapper -->
+            </div>
+
+            <!-- end:: Page -->
+        </div>
+
+        <!-- end:: Root -->
+
+        <!-- begin:: Topbar Offcanvas Panels -->
+
+        <!-- begin::Offcanvas Toolbar Quick Actions -->
+        <!-- <div id="kt_offcanvas_toolbar_quick_actions" class="kt-offcanvas-panel">
+            <div class="kt-offcanvas-panel__head">
+                <h3 class="kt-offcanvas-panel__title">
+                    Quick Actions
+                </h3>
+                <a href="#" class="kt-offcanvas-panel__close" id="kt_offcanvas_toolbar_quick_actions_close"><i
+                        class="flaticon2-delete"></i></a>
+            </div>
+            <div class="kt-offcanvas-panel__body">
+                <div class="kt-grid-nav-v2">
+                    <a href="#" class="kt-grid-nav-v2__item">
+                        <div class="kt-grid-nav-v2__item-icon"><i class="flaticon2-box"></i></div>
+                        <div class="kt-grid-nav-v2__item-title">Orders</div>
+                    </a>
+                    <a href="#" class="kt-grid-nav-v2__item">
+                        <div class="kt-grid-nav-v2__item-icon"><i class="flaticon-download-1"></i></div>
+                        <div class="kt-grid-nav-v2__item-title">Uploades</div>
+                    </a>
+                    <a href="#" class="kt-grid-nav-v2__item">
+                        <div class="kt-grid-nav-v2__item-icon"><i class="flaticon2-supermarket"></i></div>
+                        <div class="kt-grid-nav-v2__item-title">Products</div>
+                    </a>
+                    <a href="#" class="kt-grid-nav-v2__item">
+                        <div class="kt-grid-nav-v2__item-icon"><i class="flaticon2-avatar"></i></div>
+                        <div class="kt-grid-nav-v2__item-title">Customers</div>
+                    </a>
+                    <a href="#" class="kt-grid-nav-v2__item">
+                        <div class="kt-grid-nav-v2__item-icon"><i class="flaticon2-list"></i></div>
+                        <div class="kt-grid-nav-v2__item-title">Blog Posts</div>
+                    </a>
+                    <a href="#" class="kt-grid-nav-v2__item">
+                        <div class="kt-grid-nav-v2__item-icon"><i class="flaticon2-settings"></i></div>
+                        <div class="kt-grid-nav-v2__item-title">Settings</div>
+                    </a>
+                </div>
+            </div>
+        </div> -->
+
+        <!-- end::Offcanvas Toolbar Quick Actions -->
+
+        <!-- end:: Topbar Offcanvas Panels -->
+
+        <!-- begin:: Quick Panel -->
+        
+        <!-- end:: Scrolltop -->
+
+        <!-- begin:: Demo Toolbar -->
+
+        <!-- end:: Demo Toolbar -->
+
+
+        <!-- begin::Global Config(global config for global JS sciprts) -->
+        {% include "partials/script.html" %}
+
+        <!--end::Page Scripts -->
+    </body>
+
+    <!-- end::Body -->
+
+</html>
