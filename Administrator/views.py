@@ -12,7 +12,7 @@ from .utils import sms  # need to fix the sms.py file and also find a solution f
 from django.contrib.auth import logout
 # def login_view(request):
 #     pass
-
+from django.contrib.auth.hashers import make_password
 # from django.contrib.auth.hashers import check_password
 from .models import User
 
@@ -24,6 +24,8 @@ def login_view(request):
         
         # Authenticate the user
         user = authenticate(request, username=username, password=password)
+        print(user)
+        
         # print(user)
         # print(user.is_otp)
         if user is not None:
@@ -48,6 +50,7 @@ def login_view(request):
             messages.error(request, 'Invalid username or password.')
             return redirect('Administrator:login_view')
     else:
+        
         return render(request, 'Administrator/login.html')
 
 

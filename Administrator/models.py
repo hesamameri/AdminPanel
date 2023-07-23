@@ -3,7 +3,7 @@ from django.contrib.auth.models import AbstractBaseUser, BaseUserManager,Abstrac
 
 class User(AbstractUser):
 
-    email = is_staff = date_joined = None
+    email = is_staff = date_joined =is_superuser= None
     user_id = models.AutoField(primary_key=True)
     username = models.CharField(unique=True, max_length=255, blank=True, null=True)
     password = models.CharField(max_length=255, blank=True, null=True)
