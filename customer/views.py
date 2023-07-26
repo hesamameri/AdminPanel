@@ -1,68 +1,88 @@
-from django.shortcuts import render
+from django.shortcuts import redirect, render
 from django.db.models import F
-from .models import CustomerSubSVA
+from .models import CustomerSubSVA, CustomerSva, ObjItemSVA, ShopCustomerCount
 from django.core.paginator import Paginator, EmptyPage
 from django.db.models import Q
 from django.contrib.auth.decorators import login_required
 from Administrator.permissions import permission_required
+from django.db.models import Max
+from customer import models
+from .models import CustomerSubSVA
+from .forms import NewCustomerForm
+from .models import  Inquiry  # Import your models
+from django.contrib.sessions.models import Session
+from django.views.decorators.cache import cache_page
+
+@cache_page(60 * 15)
+@login_required(login_url='Administrator:login_view')
+@permission_required('ROLE_PERSONEL', 'ROLE_ADMIN')
+def customer_index(request):
+    if request.method == 'POST':
+        form = NewCustomerForm(request.POST)
+        if form.is_valid():
+            new_customer = form.save()
+            return redirect('customer:customerindexAll')
+    else:
+        # Fetch distinct obj_item_id values
+        distinct_obj_item_ids = CustomerSubSVA.objects.values_list('obj_item_id', flat=True).distinct()
+
+        # Initialize the merged_records list
+        merged_records = []
+
+        # Loop through distinct obj_item_ids and retrieve the required fields for each
+        for obj_item_id in distinct_obj_item_ids:
+            customer = CustomerSubSVA.objects.filter(obj_item_id=obj_item_id).first()
+            if customer:
+                merged_records.append({
+                    'obj_item_id': customer.obj_item_id,
+                    'name': customer.name,
+                    'title': customer.title,
+                    'status': customer.status,
+                    'city_id': customer.city_id,
+                    'codemeli': customer.codemeli,
+                    'mobile': customer.mobile,
+                    'phone': customer.phone,
+                    'reagent': customer.reagent,
+                    'address': customer.address,
+                    # Add other fields as needed
+                })
+
+        # Set the number of records to display per page
+        records_per_page = 15
+
+        # Initialize the Paginator object with the data and the number of records per page
+        paginator = Paginator(merged_records, records_per_page)
+
+        # Get the current page number from the request's GET parameters. If not provided, default to 1.
+        page_number = request.GET.get('page', 1)
+
+        try:
+            # Get the Page object for the requested page number
+            page = paginator.page(page_number)
+        except EmptyPage:
+            # If the requested page number is out of range, display the last page
+            page = paginator.page(paginator.num_pages)
+
+        context = {
+            'page': page,
+        }
+
+        return render(request, 'Customer/CustomerIndex.html', context=context)
+
+
 
 @login_required(login_url='Administrator:login_view')
 @permission_required('ROLE_PERSONEL','ROLE_ADMIN')
-def customer_index(request):
-    distinct_obj_item_ids = CustomerSubSVA.objects.values('obj_item_id').distinct()
-
-    # Initialize an empty dictionary to store the merged records
-    merged_records = {}
-
-    # Loop through the distinct obj_item_ids
-    for item in distinct_obj_item_ids:
-        obj_item_id = item['obj_item_id']
-
-        # Check if the obj_item_id already exists in the merged_records dictionary
-        if obj_item_id not in merged_records:
-            # If not, initialize a dictionary for the obj_item_id
-            merged_records[obj_item_id] = {
-                'obj_item_id': obj_item_id,
-                'name': None,
-                'title': None,
-                'status': None,
-                'city_id': None,
-                'codemeli': None,
-                'mobile': None,
-                'title': None,
-                'phone':None,
-                'reagent':None,
-                'address':None,
-                # Add other fields as needed
-            }
-
-        # Get the CustomerSubSVA objects for the current obj_item_id
-        customer_records = CustomerSubSVA.objects.filter(obj_item_id=obj_item_id)
-
-        # Loop through the records and update the merged record with non-null fields
-        for record in customer_records:
-            if record.name:
-                merged_records[obj_item_id]['name'] = record.name
-            if record.title:
-                merged_records[obj_item_id]['title'] = record.title
-            if record.status:
-                merged_records[obj_item_id]['status'] = record.status
-            if record.city_id:
-                merged_records[obj_item_id]['city_id'] = record.city_id
-            if record.codemeli:
-                merged_records[obj_item_id]['codemeli'] = record.codemeli
-            if record.mobile:
-                merged_records[obj_item_id]['mobile'] = record.mobile
-            # Add other fields as needed
-
-    # Convert the dictionary values to a list to use for pagination
-    merged_records_list = list(merged_records.values())
-
+def customer_index_all(request):
+    # Get distinct obj_item_ids with maximum values for each field
+    distinct_records = CustomerSva.objects.all()
+    
+    shops = ShopCustomerCount.objects.values('name')
     # Set the number of records to display per page
     records_per_page = 15
 
     # Initialize the Paginator object with the data and the number of records per page
-    paginator = Paginator(merged_records_list, records_per_page)
+    paginator = Paginator(distinct_records, records_per_page)
 
     # Get the current page number from the request's GET parameters. If not provided, default to 1.
     page_number = request.GET.get('page', 1)
@@ -76,22 +96,28 @@ def customer_index(request):
 
     context = {
         'page': page,
+        'shops':shops,
+
     }
+    # for i in page:
+    #     print(i)
+    return render(request, 'Customer/CustomerIndexAll.html', context=context)
+    # return render(request,'Customer/CustomerIndexAll.html',context=context)
 
-    return render(request, 'Customer/CustomerIndex.html', context=context)
 
-
-@login_required(login_url='Administrator:login_view')
-@permission_required('ROLE_PERSONEL','ROLE_ADMIN')
-def customer_index_all(request):
-
-    return render(request,'Customer/CustomerIndexAll.html')
 
 @login_required(login_url='Administrator:login_view')
 @permission_required('ROLE_PERSONEL','ROLE_ADMIN')
 def factor(request):
     
     return render(request,'Customer/Factor.html')
+
+
+
+
+
+
+
 
 @login_required(login_url='Administrator:login_view')
 @permission_required('ROLE_PERSONEL','ROLE_ADMIN')
@@ -213,15 +239,28 @@ def customer_payment_confirms(request):
 @login_required(login_url='Administrator:login_view')
 @permission_required('ROLE_PERSONEL','ROLE_ADMIN')
 def index_inquiry_response(request):
-    
-    return render(request,'Customer/IndexInquiryResponse.html')
+    inquiries = Inquiry.objects.all()
+
+    context = {
+        'inquiries': inquiries,
+    }
+
+    print(inquiries)
+
+    return render(request, 'Customer/IndexInquiryResponse.html', context=context)
+
+
 
 
 @login_required(login_url='Administrator:login_view')
 @permission_required('ROLE_PERSONEL','ROLE_ADMIN')
 def index_inquiry(request):
-    
-    return render(request,'Customer/IndexInquiry.html')
+    inquiries = Inquiry.objects.all()
+
+    context = {
+        'inquiries': inquiries,
+    }
+    return render(request,'Customer/IndexInquiry.html',context=context)
 
 @login_required(login_url='Administrator:login_view')
 @permission_required('ROLE_PERSONEL','ROLE_ADMIN')

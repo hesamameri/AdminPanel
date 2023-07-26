@@ -1,5 +1,13 @@
 <!DOCTYPE html>
-
+<!-- in this section: 
+    - everything that is left directed should be placed on the right side of the page
+    - Find the usage of the first column from the left
+    - why are items in the left column buttons?
+    - have to fix the pagination
+    - there are different colors in the customer field. why? ==> different colors contain different information as popups
+    - The place under the title should be dedicated to shop list
+    
+-->
 <html lang="fa">
 
     <!-- begin::Head -->
@@ -49,12 +57,12 @@
                         <!-- begin:: Content -->
                         <div class="kt-content  kt-grid__item kt-grid__item--fluid" id="kt_content">
 
-                            <div class="content-wrapper">
-                                <div class="content-header">
-                                    <div class="container-fluid">
+                            <div class="content-wrapper ">
+                                <div class="content-header ">
+                                    <div class="container-fluid ">
                                         <div class="row mb-2">
-                                            <div class="col-sm-12">
-                                                <ol class="breadcrumb float-sm-right ">
+                                            <div class="col-sm-12 rtl">
+                                                <ol class="breadcrumb float-sm">
                                                     <li class="breadcrumb-item active">لیست مشتریان</li>
                                                     <li class="breadcrumb-item">مشتریان</li>
                                                 </ol>
@@ -63,7 +71,6 @@
                                     </div>
                                 </div>
                             
-                                
                             
                                 <div class="content">
                                     <div class="container-fluid">
@@ -73,29 +80,33 @@
                                                     <div class="card-body">
                                                         <div class="col-lg-12">
                                                             <div class="row">
-                                                                <div class="col-lg-12 text-right">
+                                                                <div class="col-lg-12 ">
                                                                    
-                                                                        <a class="btn btn-danger" href="#">لغو جستجو</a>
+                                                                        <!-- <a class="btn btn-danger" href="#">لغو جستجو</a> -->
                                                                    
                                                                     <a class="btn btn-success" data-toggle="modal" data-target="#modal-search">جستجو</a>
                                                                 </div>
                                                             </div>
                                                         </div>
+                                                        <br>
+                                                        <br>
+
                                                         <div class="col-lg-12 rtl">
                                                             <div class="row">
-                                                                <div class="col-lg-12 text-right">
-                                                                    <h5>لیست فروشگاها</h5>
+                                                                <div class="col-lg-12">
+                                                                    <h5 style="font-size: xx-large;font-weight: bold;">لیست فروشگاه ها </h5>
                                                                      
-                                                                    <a class="btn-secondary" href="#">همه فروشگاه‌ها</a>
-                                                                    <!--  -->
-                                                                        <a class="btn" href="#"></a>
-                                                                    
+                                                                    <a class="btn btn-primary" href="#">همه فروشگاه‌ها</a>
+                                                                        {% for item in shops %}
+                                                                        <a class="btn btn-success" href="#">{{item.name}}</a>
+                                                                        {% endfor %}
                                                                 </div>
                                                             </div>
                                                         </div>
                                                         <hr>
+
                                                         <form role="form">
-                                                            <div class="row">
+                                                            <div class="row right">
                                                                 <div class="col-lg-12">
                                                                     <table class="table table-bordered table-striped dataTables table-hover">
                                                                         <thead>
@@ -111,10 +122,10 @@
                                                                             </tr>
                                                                         </thead>
                                                                         <tbody>
-                                                                                <!--  -->
+                                                                            {% for item in page %}
                                                                                 <tr>
-                                                                                    <td></td>
-                                                                                    <td>
+                                                                                    <td>{{ item.obj_item_id }}</td>
+                                                                                    <td> {{item.title}}
                                                                                         
                                                                                             <br>
                                                                                             
@@ -132,10 +143,10 @@
                                                                                                 <span class="right badge badge-secondary cursor-hand" data-html="true" data-container="body" data-toggle="popover" data-placement="bottom" data-content="">&nbsp;&nbsp;</span>
                                                                                             
                                                                                     </td>
-                                                                                    <td></td>
-                                                                                    <td></td>
-                                                                                    <td></td>
-                                                                                    <td></td>
+                                                                                    <td>{{item.codemeli}} </td>
+                                                                                    <td>{{item.province_name}} / {{item.city_name}}</td>
+                                                                                    <td>{{item.phone}}</td>
+                                                                                    <td>{{item.mobile}}</td>
                                                                                     <td>
                                                                                         <a class="btn btn-xs btn-default btn-customer" data-customer-id="" data-toggle="modal" data-target="#modal-inquiry">استعلام حساب</a>
                                                                                         
@@ -158,16 +169,16 @@
                                                                                          <a class="btn btn-default btn-customer" data-customer-id="" data-toggle="modal" data-target="#modal-debit-return">برگشت بستانکاری</a> 
                                                                                          <a class="btn btn-default btn-customer" data-customer-id="" data-toggle="modal" data-target="#modal-cheque-return">عودت چک</a> 
                                                                                     </td>
-                                                                                    <td>
+                                                                                    <!-- <td>
                                                                                          <div class="btn-group">
                                                                                                 <a class="dropdown-item" href="#">دریافت از مشتری</a>
                                                                                                 <a class="dropdown-item" href="#">برگشت از فروش</a>
                                                                                                 <a class="dropdown-item" href="#">خدمات پس از فروش</a>
                                                                                                 <a class="dropdown-item" href="#">ویرایش مشخصات</a>
                                                                                         </div> 
-                                                                                    </td>
+                                                                                    </td> -->
                                                                                 </tr>
-                                                                             
+                                                                                {% endfor %}
                                                                         <tbody>
                                                                     </table>
                                                                     

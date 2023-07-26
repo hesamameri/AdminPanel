@@ -20,6 +20,58 @@ class CustomerSubSVA(models.Model):
     class Meta:
         managed = False
         db_table = 'customer_sub_sva'
+class CustomerSva(models.Model):
+    obj_item_id = models.IntegerField(primary_key=True)
+    name = models.CharField(max_length=255, null=True)
+    title = models.CharField(max_length=255, null=True)
+    status = models.CharField(max_length=255, null=True)
+    phone = models.CharField(max_length=255, null=True)
+    mobile = models.CharField(max_length=255, null=True)
+    reagent = models.CharField(max_length=255, null=True)
+    province_id = models.CharField(max_length=255, null=True)
+    city_id = models.CharField(max_length=255, null=True)
+    address = models.CharField(max_length=255, null=True)
+    idno = models.CharField(max_length=255, null=True)
+    codemeli = models.CharField(max_length=255, null=True)
+    seller_buyer_id = models.CharField(max_length=255, null=True)
+    sex_id = models.CharField(max_length=255, null=True)
+    sex_title = models.CharField(max_length=255, null=True)
+    brand_id = models.IntegerField(null=True)
+    brand_name = models.CharField(max_length=255, null=True)
+    brand_phone = models.CharField(max_length=255, null=True)
+    brand_slung = models.CharField(max_length=255, null=True)
+
+    class Meta:
+        managed = False  # Tells Django that this model is not managed by Django's ORM
+        db_table = 'customer_sva'  # Specify the database view name
+
+class ShopCustomerCount(models.Model):
+    obj_item_id = models.IntegerField()
+    name = models.CharField(max_length=255)
+    count = models.IntegerField()
+
+    class Meta:
+        managed = False  # Tells Django that this model is not managed by Django's ORM
+        db_table = 'shop_customer_count'  # Specify the database view name
+
+        
+class ObjItemSVA(models.Model):
+    name = models.CharField(max_length=255)
+    title = models.CharField(max_length=255)
+    obj_type_id = models.IntegerField()
+    obj_id = models.IntegerField()
+    obj_item_id = models.IntegerField()
+    obj_type_name = models.CharField(max_length=255)
+    obj_type_title = models.CharField(max_length=255)
+    obj_name = models.CharField(max_length=255)
+    obj_title = models.CharField(max_length=255)
+    obj_item_name = models.CharField(max_length=255)
+    obj_item_title = models.CharField(max_length=255)
+
+    class Meta:
+        managed = False  # Tells Django that this model is not managed by Django's ORM
+        db_table = 'obj_item_sva'  # Specify the database view name
+
 class Contract(models.Model):
     contract_id = models.AutoField(primary_key=True)
     type = models.CharField(max_length=4, blank=True, null=True, db_comment='نوع قرارداد یا خرید است و یا قرار فروش')
@@ -395,7 +447,7 @@ class Inquiry(models.Model):
     register = models.IntegerField(blank=True, null=True)
     reg_dt = models.DateTimeField(blank=True, null=True)
     sms_inquiry = models.IntegerField(blank=True, null=True)
-    direct_inquiry = models.IntegerField(blank=True, null=True)
+    indirect_inquiry = models.IntegerField(blank=True, null=True)
     confirm_desc = models.CharField(max_length=255, blank=True, null=True)
     confirmer = models.IntegerField(blank=True, null=True)
     confirm_dt = models.DateTimeField(blank=True, null=True)
