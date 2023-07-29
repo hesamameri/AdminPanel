@@ -35,6 +35,41 @@
 
     {% compress css %}
     <style>
+        @media print {
+      /* Hide elements with a specific class */
+      #kt_aside_menu_wrapper {
+        display: none;
+      }
+      #kt_aside_close_btn{
+        display:none;
+      }
+      #print_icon{
+        display:none;
+      }
+      
+      #kt_content{
+       
+      }
+      #logo1{
+        display:none;
+      }
+      #kt_header{
+        display:none;
+      }
+      /* Alternatively, hide elements by ID */
+      #backbutton {
+        display: none;
+      }
+      @page {
+        margin: 0;
+        scale: 100%;
+        width: 100%; /* Make sure the content fills the entire width of the page */
+        height: 100%; /* Adjust the margins as needed */
+      }
+
+      /* Apply specific print styles */
+      
+    }
         .custom-input {
             border: none;
             background-color: white; /* Replace with desired background color */
