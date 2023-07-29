@@ -1,6 +1,8 @@
 from django.db import models
 # from ticket.models import *
 # from Administrator.models import *
+
+
 class CustomerSubSVA(models.Model):
     obj_item_id = models.IntegerField(primary_key=True)
     name = models.CharField(max_length=100)
@@ -323,7 +325,25 @@ class Factor(models.Model):
         managed = False
         db_table = 'factor'
 
+class FactorSVA(models.Model):
+    contract_id = models.IntegerField(primary_key=True)
+    vendor = models.IntegerField()
+    vendor_name = models.CharField(max_length=255)
+    contract_no = models.CharField(max_length=100)
+    phone = models.CharField(max_length=20)
+    province_name = models.CharField(max_length=100)
+    city_name = models.CharField(max_length=100)
+    factor = models.ForeignKey(Factor, on_delete=models.DO_NOTHING, related_name='factor_sva_set')
+    buyer_id = models.IntegerField()
+    buyer_name = models.CharField(max_length=255)
+    reg_dt = models.DateTimeField()
+    acc_confirm_dt = models.DateTimeField()
+    acc_description = models.TextField()
+    sale_confirm_dt = models.DateTimeField()
 
+    class Meta:
+        managed = False
+        db_table = 'factor_sva'
 class FactorAddress(models.Model):
     factor_address_id = models.AutoField(primary_key=True)
     factor = models.ForeignKey('Factor', models.DO_NOTHING, blank=True, null=True)

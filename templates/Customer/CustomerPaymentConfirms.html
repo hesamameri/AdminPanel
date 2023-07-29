@@ -90,14 +90,14 @@
                                                                             </tr>
                                                                         </thead>
                                                                         <tbody>
-                                                                                
+                                                                                {% for item in inquiries %}
                                                                                 <tr>
+                                                                                    <td>{{itme.bank_code}}</td>
+                                                                                    <td>{{item.buyer_id}}</td>
+                                                                                    <td>{{item.account_owner}}</td>
                                                                                     <td></td>
-                                                                                    <td></td>
-                                                                                    <td></td>
-                                                                                    <td></td>
-                                                                                    <td></td>
-                                                                                    <td></td>
+                                                                                    <td>{{item.bank_branch}}</td>
+                                                                                    <td>{{item.account_no}}</td>
                                                                                     <td></td>
                                                                                     <td></td>
                                                                                     <td></td>
@@ -111,6 +111,7 @@
                                                                                             <a class="btn btn-success btn-xs btn-acc-confirm" data-payment-id="" data-price="" data-toggle="modal" data-target="#modal-doc">ثبت سند</a>
                                                                                     </td>
                                                                                 </tr>
+                                                                                {% endfor %}
                                                                                  <tr> 
                                                                                      <th colspan="8" class="text-left">جمع: </th> 
                                                                                      <td></td> 

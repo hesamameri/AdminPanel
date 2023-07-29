@@ -73,20 +73,18 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     "debug_toolbar.middleware.DebugToolbarMiddleware",
+    'django.middleware.cache.UpdateCacheMiddleware',
+    'django.middleware.cache.FetchFromCacheMiddleware',
 ]
 
 ROOT_URLCONF = 'panel.urls'
 CACHES = {
     'default': {
-        'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
-        'LOCATION': 'unique-location',
-        'OPTIONS': {
-            'MAX_ENTRIES': 1000,  # Adjust this as needed
-            'DEBUG': True,        # Enable cache debugging
-        },
+        'BACKEND': 'django.core.cache.backends.dummy.DummyCache',
+        
     }
 }
-STATICFILES_CACHE_TIMEOUT = 3600
+# STATICFILES_CACHE_TIMEOUT = 10
 STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.ManifestStaticFilesStorage'
 TEMPLATES = [
     {

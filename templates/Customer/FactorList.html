@@ -77,15 +77,16 @@
                                                                     </tr>
                                                                 </thead>
                                                                 <tbody>
+                                                                    <!--  -->
+                                                                {% for item in factor_sva_objects %}
                                                                 <tr>
-                                                                    <td></td>
-                                                                    <td></td>
-                                                                    <td><span title="#"></span><br>
-                                                                            <span class="badge"></span>
-                                                                    </td>
-                                                                    <td></td>
+                                                                   
+                                                                    <td>{{item.contract_id}}</td>
+                                                                    <td>{{ item.vendor_name }}</td>
+                                                                    <td>{{ item.buyer_name }}</td>
+                                                                    <td>{{item.phone}} </td>
                                                                     <td>
-                                                                        
+                                                                        {{ item.factor.reg_status }}
                                                                         <div title="" style="width: 10px; height: 10px; background-color: white; border-radius: 50%; float: left; margin-right: 12px;"></div>
                                 
                                                                         
@@ -109,6 +110,7 @@
                                                                         <div title="#" style="width: 10px; height: 10px; background-color: white; border-radius: 50%; float: left; margin-right: 3px;"></div>
                                                                     </td>
                                                                 </tr>
+                                                                {% endfor %}
                                                                 </tbody>
                                                             </table>
                                                             <div class="text-center margin-bottom">

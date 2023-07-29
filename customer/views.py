@@ -1,6 +1,6 @@
 from django.shortcuts import redirect, render
 from django.db.models import F
-from .models import CustomerSubSVA, CustomerSva, ObjItemSVA, ShopCustomerCount
+from .models import CustomerSubSVA, CustomerSva, FactorSVA, ObjItemSVA, ShopCustomerCount
 from django.core.paginator import Paginator, EmptyPage
 from django.db.models import Q
 from django.contrib.auth.decorators import login_required
@@ -13,7 +13,7 @@ from .models import  Inquiry  # Import your models
 from django.contrib.sessions.models import Session
 from django.views.decorators.cache import cache_page
 
-@cache_page(60 * 15)
+@cache_page(60)
 @login_required(login_url='Administrator:login_view')
 @permission_required('ROLE_PERSONEL', 'ROLE_ADMIN')
 def customer_index(request):
@@ -23,51 +23,32 @@ def customer_index(request):
             new_customer = form.save()
             return redirect('customer:customerindexAll')
     else:
-        # Fetch distinct obj_item_id values
-        distinct_obj_item_ids = CustomerSubSVA.objects.values_list('obj_item_id', flat=True).distinct()
+        customers = CustomerSubSVA.objects.values(
+        'obj_item_id', 'name', 'title', 'status', 'city_id', 'codemeli', 'mobile', 'phone', 'reagent', 'address'
+        # Add other fields as needed
+    ).distinct()
 
-        # Initialize the merged_records list
-        merged_records = []
+    # Set the number of records to display per page
+    records_per_page = 15
 
-        # Loop through distinct obj_item_ids and retrieve the required fields for each
-        for obj_item_id in distinct_obj_item_ids:
-            customer = CustomerSubSVA.objects.filter(obj_item_id=obj_item_id).first()
-            if customer:
-                merged_records.append({
-                    'obj_item_id': customer.obj_item_id,
-                    'name': customer.name,
-                    'title': customer.title,
-                    'status': customer.status,
-                    'city_id': customer.city_id,
-                    'codemeli': customer.codemeli,
-                    'mobile': customer.mobile,
-                    'phone': customer.phone,
-                    'reagent': customer.reagent,
-                    'address': customer.address,
-                    # Add other fields as needed
-                })
+    # Initialize the Paginator object with the data and the number of records per page
+    paginator = Paginator(customers, records_per_page)
 
-        # Set the number of records to display per page
-        records_per_page = 15
+    # Get the current page number from the request's GET parameters. If not provided, default to 1.
+    page_number = request.GET.get('page', 1)
 
-        # Initialize the Paginator object with the data and the number of records per page
-        paginator = Paginator(merged_records, records_per_page)
+    try:
+        # Get the Page object for the requested page number
+        page = paginator.page(page_number)
+    except EmptyPage:
+        # If the requested page number is out of range, display the last page
+        page = paginator.page(paginator.num_pages)
 
-        # Get the current page number from the request's GET parameters. If not provided, default to 1.
-        page_number = request.GET.get('page', 1)
+    context = {
+        'page': page,
+    }
 
-        try:
-            # Get the Page object for the requested page number
-            page = paginator.page(page_number)
-        except EmptyPage:
-            # If the requested page number is out of range, display the last page
-            page = paginator.page(paginator.num_pages)
-
-        context = {
-            'page': page,
-        }
-
-        return render(request, 'Customer/CustomerIndex.html', context=context)
+    return render(request, 'Customer/CustomerIndex.html', context=context)
 
 
 
@@ -122,8 +103,13 @@ def factor(request):
 @login_required(login_url='Administrator:login_view')
 @permission_required('ROLE_PERSONEL','ROLE_ADMIN')
 def factor_index(request):
+    factor_sva_objects = FactorSVA.objects.all()
+
     
-    return render(request,'Customer/FactorList.html')
+    context = {'factor_sva_objects': factor_sva_objects}
+
+    print(factor_sva_objects.first().factor)
+    return render(request,'Customer/FactorList.html',context=context)
 
 @login_required(login_url='Administrator:login_view')
 @permission_required('ROLE_PERSONEL','ROLE_ADMIN')
@@ -136,6 +122,8 @@ def customer_confirm_accountlist(request):
 def customer_confirm_salelist(request):
     
     return render(request,'Customer/CustomerConfirmSaleList.html')
+
+
 
 @login_required(login_url='Administrator:login_view')
 @permission_required('ROLE_PERSONEL','ROLE_ADMIN')
@@ -233,8 +221,12 @@ def customerfactor_servicedoc(request):
 @login_required(login_url='Administrator:login_view')
 @permission_required('ROLE_PERSONEL','ROLE_ADMIN')
 def customer_payment_confirms(request):
-    
-    return render(request,'Customer/CustomerPaymentConfirms.html')
+    inquiries = Inquiry.objects.all()
+
+    context = {
+        'inquiries': inquiries,
+    }
+    return render(request,'Customer/CustomerPaymentConfirms.html',context=context)
 
 @login_required(login_url='Administrator:login_view')
 @permission_required('ROLE_PERSONEL','ROLE_ADMIN')
