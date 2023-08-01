@@ -1,3 +1,5 @@
+{% load static %}
+{% load converter_tags %}
 <!DOCTYPE html>
 
 <html lang="fa">
@@ -86,12 +88,13 @@
                                                                             </tr>
                                                                         </thead>
                                                                         <tbody>
-                                                                            {% for item in inquiries %}
+                                                                            {% for item in querynet %}
+                                                                                
                                                                                 <tr>
                                                                                     <th>{{item.inquiry_id}}</th>
                                                                                     <th>{{item.account_owner}}</th>
-                                                                                    <th> فعلا خالی </th>
-                                                                                    <th>فعلا خالی </th>
+                                                                                    <th> {{item.address}}</th>
+                                                                                    <th>  </th>
                                                                                     <th>فعلا خالی </th>
                                                                                     <th>{{item.bank_branch}}</th>
                                                                                     {% if item.confirm_status == 'CONFIRM' %}

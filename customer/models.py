@@ -346,7 +346,7 @@ class FactorSVA(models.Model):
         db_table = 'factor_sva'
 class FactorAddress(models.Model):
     factor_address_id = models.AutoField(primary_key=True)
-    factor = models.ForeignKey('Factor', models.DO_NOTHING, blank=True, null=True)
+    factor = models.ForeignKey(Factor, models.DO_NOTHING, blank=True, null=True)
     city_id = models.IntegerField(blank=True, null=True)
     phone = models.CharField(max_length=255, blank=True, null=True)
     mobile = models.CharField(max_length=255, blank=True, null=True)
@@ -373,7 +373,7 @@ class FactorComment(models.Model):
 
 class FactorDocument(models.Model):
     factor_document_id = models.AutoField(primary_key=True)
-    factor = models.ForeignKey('Factor', models.DO_NOTHING)
+    factor = models.ForeignKey(Factor, models.DO_NOTHING)
     level_type = models.CharField(max_length=7)
     document_type = models.CharField(max_length=8)
     uri = models.TextField(blank=True, null=True)
@@ -481,6 +481,9 @@ class Inquiry(models.Model):
     class Meta:
         managed = False
         db_table = 'inquiry'
+        indexes = [
+            models.Index(fields=['bank_branch'])
+        ]
 
 class Obj(models.Model):
     obj_id = models.AutoField(primary_key=True)

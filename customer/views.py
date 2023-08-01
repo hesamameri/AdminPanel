@@ -1,6 +1,8 @@
 from django.shortcuts import redirect, render
 from django.db.models import F
-from .models import CustomerSubSVA, CustomerSva, FactorSVA, ObjItemSVA, ShopCustomerCount
+
+from .models import Factor, FactorAddress, FactorPayway
+from .models import CustomerSubSVA, CustomerSva, FactorComment, FactorDocument, FactorItem, FactorSVA, ObjItemSVA, ShopCustomerCount
 from django.core.paginator import Paginator, EmptyPage
 from django.db.models import Q
 from django.contrib.auth.decorators import login_required
@@ -12,6 +14,9 @@ from .forms import NewCustomerForm
 from .models import  Inquiry  # Import your models
 from django.contrib.sessions.models import Session
 from django.views.decorators.cache import cache_page
+
+
+
 
 @cache_page(10)
 @login_required(login_url='Administrator:login_view')
@@ -86,12 +91,27 @@ def customer_index_all(request):
     # return render(request,'Customer/CustomerIndexAll.html',context=context)
 
 
-@cache_page(10)
+
 @login_required(login_url='Administrator:login_view')
 @permission_required('ROLE_PERSONEL','ROLE_ADMIN')
 def factor(request):
-    
-    return render(request,'Customer/Factor.html')
+    factor_main = Factor.objects.get(factor_id = 64)
+    factor_payway = FactorPayway.objects.filter(factor = 64)
+    factor_address = FactorAddress.objects.get(factor = 64)
+    factor_document = FactorDocument.objects.filter(factor = 64)
+    factor_comment = FactorComment.objects.filter(factor_id = 64)
+    factor_item = FactorItem.objects.filter(factor= 64)
+    # factor_main_sva = FactorSVA.objects.get(factor = 64)
+    context = {
+        'factor_main':factor_main,
+        'factor_payway':factor_payway,
+        'factor_address': factor_address,
+        'factor_document': factor_document,
+        'factor_comment': factor_comment,
+        'factor_item': factor_item,
+        # 'factor_main_sva':factor_main_sva,
+    }
+    return render(request,'Customer/Factor.html',context=context)
 
 
 
@@ -108,7 +128,6 @@ def factor_index(request):
     
     context = {'factor_sva_objects': factor_sva_objects}
 
-    print(factor_sva_objects.first().factor)
     return render(request,'Customer/FactorList.html',context=context)
 
 @cache_page(10)
@@ -243,18 +262,19 @@ def customer_payment_confirms(request):
     }
     return render(request,'Customer/CustomerPaymentConfirms.html',context=context)
 
-@cache_page(10)
+# @cache_page(10)
 @login_required(login_url='Administrator:login_view')
 @permission_required('ROLE_PERSONEL','ROLE_ADMIN')
 def index_inquiry_response(request):
     inquiries = Inquiry.objects.all()
-
+    buyer_ids = Inquiry.objects.values_list('buyer_id',flat=True)
+    factors = Factor.objects.filter(buyer_id__in=buyer_ids)
+    factor_ids = factors.values_list('factor_id')
+    factor_addresses = FactorAddress.objects.filter(factor_id__in=factor_ids).values('phone','mobile', 'city_id', 'address')
+    querynet = inquiries.union(factor_addresses)
     context = {
-        'inquiries': inquiries,
+        'querynet':querynet,
     }
-
-    print(inquiries)
-
     return render(request, 'Customer/IndexInquiryResponse.html', context=context)
 
 
@@ -264,10 +284,10 @@ def index_inquiry_response(request):
 @permission_required('ROLE_PERSONEL','ROLE_ADMIN')
 def index_inquiry(request):
     inquiries = Inquiry.objects.all()
-
     context = {
         'inquiries': inquiries,
     }
+    
     return render(request,'Customer/IndexInquiry.html',context=context)
 
 
