@@ -93,19 +93,27 @@
                                                                                 {% for item in inquiries %}
                                                                                 <tr>
                                                                                     <td>{{item.inquiry_id}}</td>
-                                                                                    <td>ثبت کننده</td>
+                                                                                    <td>{{item.register|register_user}}</td>
                                                                                     <td>{{item.reg_dt|to_jalali}}</td>
                                                                                     <td>{{item.account_owner}}</td>
-                                                                                    <td>مالک حساب</td>
+                                                                                    <td>{{item.account_owner}}</td>
                                                                                     <td>{{item.bank_branch}}</td>
                                                                                     <td>{{item.account_no}}</td>
+                                                                                    {% if item.account_shaba == None %}
                                                                                     <td></td>
+                                                                                    {% else %}
+                                                                                    <td>{{item.account_shaba}}</td>
+                                                                                    {% endif %}
                                                                                     {% if item.confirm_desc == None %}
                                                                                     <td></td>
                                                                                     {% else %}
                                                                                     <td>{{item.confirm_desc}}</td>
                                                                                     {% endif %}
+                                                                                    {% if item.description == None %}
                                                                                     <td></td>
+                                                                                    {% else %}
+                                                                                    <td>{{item.description}}</td>
+                                                                                    {% endif %}
                                                                                     <td>
                                                                                         <a class="btn btn-secondary btn-xs btn-customer inq cursor-hand" data-id="">جزئیات</a>
                                                                                         <a class="btn btn-success btn-xs btn-customer" data-inquiry-id="" data-toggle="modal" data-target="#modal-inquiry">پاسخ استعلام</a>

@@ -88,16 +88,21 @@
                                                                             </tr>
                                                                         </thead>
                                                                         <tbody>
-                                                                            {% for item in querynet %}
+                                                                            {% for inquiry in combined_data %}
                                                                                 
                                                                                 <tr>
-                                                                                    <th>{{item.inquiry_id}}</th>
-                                                                                    <th>{{item.account_owner}}</th>
-                                                                                    <th> {{item.address}}</th>
-                                                                                    <th>  </th>
-                                                                                    <th>فعلا خالی </th>
-                                                                                    <th>{{item.bank_branch}}</th>
-                                                                                    {% if item.confirm_status == 'CONFIRM' %}
+                                                                                    <th>{{inquiry.0.inquiry_id}}</th>
+                                                                                    <th>{{inquiry.0.account_owner}}</th>
+                                                                                    <th>{{inquiry.1.city_id}}</th>
+                                                                                    {% if inquiry.1.phone == None %}
+                                                                                    <th></th>
+                                                                                    {% else %}
+                                                                                    <th>{{inquiry.1.phone}}</th>
+                                                                                    {% endif %}
+                                                                                    <th>{{inquiry.1.mobile}}</th>
+                                                                                   
+                                                                                    <th>{{inquiry.0.bank_branch}}</th>
+                                                                                    {% if inquiry.0.confirm_status == 'CONFIRM' %}
                                                                                     <th> تائید</th>
                                                                                     {% else %}
                                                                                     <th>عدم تائید</th>

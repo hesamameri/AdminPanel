@@ -271,10 +271,14 @@ def index_inquiry_response(request):
     factors = Factor.objects.filter(buyer_id__in=buyer_ids)
     factor_ids = factors.values_list('factor_id')
     factor_addresses = FactorAddress.objects.filter(factor_id__in=factor_ids).values('phone','mobile', 'city_id', 'address')
-    querynet = inquiries.union(factor_addresses)
+    combined_data = list(zip(inquiries,factor_addresses))
     context = {
-        'querynet':querynet,
+        # 'inquiry_tuples':inquiry_tuples,
+        # 'factor_addresses':factor_addresses,
+        'combined_data':combined_data
     }
+    # print(factor_addresses[1]['address'])
+    print(combined_data)
     return render(request, 'Customer/IndexInquiryResponse.html', context=context)
 
 

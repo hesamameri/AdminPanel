@@ -145,8 +145,17 @@
                                                                                     </td>
                                                                                     <td>{{item.codemeli}} </td>
                                                                                     <td>{{item.province_name}} / {{item.city_name}}</td>
+                                                                                    {% if item.phone == None %}
+                                                                                    <td></td>
+                                                                                    {% else%}
                                                                                     <td>{{item.phone}}</td>
+                                                                                    {% endif %}
+                                                                                    {% if item.mobile == None %}
+                                                                                    <td></td>
+                                                                                    {% else%}
                                                                                     <td>{{item.mobile}}</td>
+                                                                                    {% endif %}
+                                                                                    
                                                                                     <td>
                                                                                         <a class="btn btn-xs btn-default btn-customer" data-customer-id="" data-toggle="modal" data-target="#modal-inquiry">استعلام حساب</a>
                                                                                         

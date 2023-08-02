@@ -3,6 +3,8 @@ from persiantools.jdatetime import JalaliDate
 from datetime import date,datetime
 import random
 import pytz
+
+from Administrator.models import User
 register = template.Library()
 
 @register.filter
@@ -22,4 +24,19 @@ def to_jalali(value):
 
     return value
 
+@register.filter
+def register_user(value):
+    user = User.objects.get(user_id = value)
 
+    return user.name
+
+
+@register.filter
+def nth_item(queryset, counter):
+    try:
+        return queryset[counter]
+    except IndexError:
+        return None
+@register.filter
+def inter(number):
+    return int(number)
