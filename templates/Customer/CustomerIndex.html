@@ -67,14 +67,12 @@
                                                     <div class="col-md-6 kt-margin-b-20-tablet-and-mobile">
                                                         <div class="kt-input-icon kt-input-icon--left" style="display: flex;
                                                         align-items: center;">
-                                                        <form method="post" action="#">
-                                                            {% csrf_token %}
-                                                            <input type="submit" class="form-control"
-                                                                placeholder="...جستجو" id="generalSearch" value="Activate View">
-                                                            <!-- <span class="kt-input-icon__icon kt-input-icon__icon--left">
+                                                            <input type="text" class="form-control"
+                                                                placeholder="...جستجو" id="generalSearch">
+                                                            <span class="kt-input-icon__icon kt-input-icon__icon--left">
                                                                 <a><span><i class="la la-search"></i></span></a>
-                                                            </span> -->
-                                                        </form>
+                                                            </span>
+                                                            
                                                         </div>
                                                     </div>
                                                     <div class="col-md-6 kt-margin-b-20-tablet-and-mobile">
@@ -227,7 +225,7 @@
                                         </thead>
                                         <tbody>
                                             {% for item in page %}
-                                            <tr class="searchable-item">
+                                            <tr>
                                                 <td>{{ item.obj_item_id }}</td>
                                                 <td>{{item.name}}</td>
                                                 {% if item.city_id == None %}
@@ -307,22 +305,7 @@
 
             <!-- end:: Page -->
         </div>
-        <script>
-        $(document).ready(function() {
-            $("#generalSearch").on("keyup", function() {
-                var searchQuery = $(this).val().toLowerCase();
-                
-                $("#html_table tr.searchable-item").each(function() {
-                    var rowText = $(this).text().toLowerCase();
-                    if (rowText.includes(searchQuery)) {
-                        $(this).show();
-                    } else {
-                        $(this).hide();
-                    }
-                });
-            });
-        });
-        </script>
+        
         <!-- end:: Root -->
 
         <!-- begin:: Topbar Offcanvas Panels -->
@@ -381,7 +364,43 @@
 
         <!-- begin::Global Config(global config for global JS sciprts) -->
         {% include "partials/script.html" %}
-
+        <script>
+            $(document).ready(function() {
+                // Event listener for the "Enter" key press on the search box.
+                $("#generalSearch").on("keydown", function(e) {
+                    if (e.keyCode === 13) {  // Check for "Enter" key
+                        e.preventDefault();  // Prevent the default action (form submission, if any)
+                        var value = $(this).val().toLowerCase();
+                        
+                        // First, remove any previous highlights.
+                        $("tbody tr span.highlighted").each(function() {
+                            var text = $(this).text();
+                            $(this).replaceWith(text);
+                        });
+                        
+                        // Filter and highlight matched text in table rows based on the input.
+                        $("tbody tr").filter(function() {
+                            var matched = false;
+                            var row = $(this);
+                            
+                            // Check each cell in the row.
+                            $(this).find('td').each(function() {
+                                var cellText = $(this).text();
+                                if (cellText.toLowerCase().indexOf(value) > -1) {
+                                    // Highlight matched text.
+                                    var regex = new RegExp('(' + value + ')', 'gi');
+                                    $(this).html(cellText.replace(regex, '<span class="highlighted">$1</span>'));
+                                    matched = true;
+                                }
+                            });
+                            
+                            row.toggle(matched);
+                        });
+                    }
+                });
+            });
+        </script>
+        
         <!--end::Page Scripts -->
     </body>
 

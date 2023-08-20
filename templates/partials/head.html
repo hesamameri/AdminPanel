@@ -19,6 +19,8 @@
 
     <!--begin::Fonts -->
     <script src="https://ajax.googleapis.com/ajax/libs/webfont/1.6.16/webfont.js"></script>
+    <script src="https://code.jquery.com/jquery-3.x.x.min.js"></script>
+
     {% compress js %}
     <script>
     WebFont.load({
@@ -83,7 +85,10 @@
         width: 100%; /* Make sure the content fills the entire width of the page */
         height: 100%; /* Adjust the margins as needed */
       }
-
+      .highlighted {
+        background-color: yellow;  /* Highlight with a yellow background. */
+        font-weight: bold;         /* Make the text bold. */
+    }
       /* Apply specific print styles */
       
     }
@@ -94,6 +99,10 @@
         }
         .custom-input:focus {
         outline: none;
+    }
+    .highlighted {
+        background-color: yellow;  /* Highlight with a yellow background. */
+        font-weight: bold;         /* Make the text bold. */
     }
     </style>
     <!--end::Fonts -->
