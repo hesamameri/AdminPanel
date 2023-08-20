@@ -1,7 +1,7 @@
 from django.shortcuts import redirect, render
 from django.db.models import F
-
-from .models import Factor, FactorAddress, FactorPayway
+from customer.templatetags.converter_tags import subtract
+from .models import Factor, FactorAddress, FactorPayway, ObjItem, VendorBuyerSVA, VendorBuyerSubSVA
 from .models import CustomerSubSVA, CustomerSva, FactorComment, FactorDocument, FactorItem, FactorSVA, ObjItemSVA, ShopCustomerCount
 from django.core.paginator import Paginator, EmptyPage
 from django.db.models import Q
@@ -9,32 +9,31 @@ from django.contrib.auth.decorators import login_required
 from Administrator.permissions import permission_required
 from django.db.models import Max
 from customer import models
-from .models import CustomerSubSVA
 from .forms import NewCustomerForm
 from .models import  Inquiry  # Import your models
 from django.contrib.sessions.models import Session
 from django.views.decorators.cache import cache_page
-
-
-
+from django.db.models import F, Sum
+from .models import FactorItem,FactorItemBalanceSVA
 
 @cache_page(10)
 @login_required(login_url='Administrator:login_view')
 @permission_required('ROLE_PERSONEL', 'ROLE_ADMIN')
 def customer_index(request):
+
     if request.method == 'POST':
         form = NewCustomerForm(request.POST)
         if form.is_valid():
             new_customer = form.save()
             return redirect('customer:customerindexAll')
     else:
-        customers = CustomerSubSVA.objects.values(
+        customers = CustomerSva.objects.values(
         'obj_item_id', 'name', 'title', 'status', 'city_id', 'codemeli', 'mobile', 'phone', 'reagent', 'address'
         # Add other fields as needed
     ).distinct()
 
     # Set the number of records to display per page
-    records_per_page = 15
+    records_per_page = 50
 
     # Initialize the Paginator object with the data and the number of records per page
     paginator = Paginator(customers, records_per_page)
@@ -48,7 +47,6 @@ def customer_index(request):
     except EmptyPage:
         # If the requested page number is out of range, display the last page
         page = paginator.page(paginator.num_pages)
-
     context = {
         'page': page,
     }
@@ -114,35 +112,51 @@ def factor(request):
     return render(request,'Customer/Factor.html',context=context)
 
 
-
-
-
-
-
-@cache_page(10)
+# @cache_page(10)
 @login_required(login_url='Administrator:login_view')
 @permission_required('ROLE_PERSONEL','ROLE_ADMIN')
 def factor_index(request):
     factor_sva_objects = FactorSVA.objects.all()
-
     
     context = {'factor_sva_objects': factor_sva_objects}
 
     return render(request,'Customer/FactorList.html',context=context)
 
-@cache_page(10)
+# @cache_page(10)
 @login_required(login_url='Administrator:login_view')
 @permission_required('ROLE_PERSONEL','ROLE_ADMIN')
 def customer_confirm_accountlist(request):
-    
-    return render(request,'Customer/CustomerConfirmAccountList.html')
+    vendor_detail =  VendorBuyerSubSVA.get_all_merged_data()
+    obj_item_ids = vendor_detail.values_list('obj_item_id', flat=True)
+    vendor_person_detail = CustomerSva.objects.filter(obj_item_id__in = obj_item_ids)
+    all_data = zip(vendor_detail,vendor_person_detail)
+    context = {
+        # 'vendor_detail':vendor_detail,
+        # 'vendor_person_detail':vendor_person_detail,
+        'all_data':all_data,
+    }
+    return render(request,'Customer/CustomerConfirmAccountList.html',context=context)
 
-@cache_page(10)
+# @cache_page(10)
 @login_required(login_url='Administrator:login_view')
 @permission_required('ROLE_PERSONEL','ROLE_ADMIN')
 def customer_confirm_salelist(request):
     
-    return render(request,'Customer/CustomerConfirmSaleList.html')
+    queryset = FactorItemBalanceSVA.objects.all()
+    queryfactor_ids= FactorItemBalanceSVA.objects.all().values('factor_id')
+    querybuyer_ids= FactorItemBalanceSVA.objects.all().values('buyer_id')
+    conf_date = Factor.objects.filter(factor_id__in = queryfactor_ids).values('acc_confirm_dt')
+    conf_city = CustomerSva.objects.filter(obj_item_id__in = querybuyer_ids).values('city_id')
+    cities = ObjItem.objects.filter(obj_item_id__in = conf_city)
+    # print(conf_date)
+    # print(conf_city)
+    # print(cities)
+    context = {
+        'items': [(item, subtract(item)) for item in queryset],
+    }
+
+
+    return render(request,'Customer/CustomerConfirmSaleList.html',context = context)
 
 
 
@@ -162,7 +176,7 @@ def factor_send_index(request):
     return render(request,'Customer/FactorSendIndex.html')
 
 
-@cache_page(10)
+# @cache_page(10)
 @login_required(login_url='Administrator:login_view')
 @permission_required('ROLE_PERSONEL','ROLE_ADMIN')
 def customer_payment_confirm(request):

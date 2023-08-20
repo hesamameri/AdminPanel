@@ -1,3 +1,5 @@
+{% load static %}
+{% load converter_tags %}
 <!DOCTYPE html>
 
 <html lang="fa">
@@ -54,12 +56,12 @@
                                     <div class="container-fluid">
                                     <div class="row mb-2">
                                          <div class="col-sm-12">
-                                            <h1 class="m-0 text-dark"> /</h1>
+                                            <h1 class="m-0 text-dark">فاکتورها</h1>
                                         </div> 
                                         <div class="col-sm-12">
-                                            <ol class="breadcrumb float-sm-right ">
-                                                <li class="breadcrumb-item active">آماده تایید مالی</li>
-                                                <li class="breadcrumb-item">فاکتورها</li>
+                                            <ol class="breadcrumb  ">
+                                                <li class="breadcrumb-item active"> فاکتورها</li>
+                                                <li class="breadcrumb-item">آماده تایید مالی</li>
                                             </ol>
                                         </div>
                                     </div>
@@ -95,22 +97,42 @@
                                                                         </thead>
                                                                         <tbody>
                                                                                 <tr class="table-">
+                                                                                    {% for vendor in all_data %}
                                                                                 <tr>
                                                                                     <td></td>
                                                                                     <td>
+                                                                                        {{vendor.0.name}}
                                                                                         <br>
-                                                                                        <span class="badge badge-danger">
-                                                                                        مانده اعتبار: 
+                                                                                        {% if vendor.0.credit == None %}
+                                                                                        <span class="badge badge-danger" style="font-size: larger;">
+                                                                                            مانده اعتبار: ندراد
                                                                                         <span>
+                                                                                        {% else %}
+                                                                                        <span class="badge badge-danger" style="font-size: larger;">
+                                                                                        مانده اعتبار: {{vendor.0.credit}}
+                                                                                        <span>
+                                                                                            {% endif %}
                                                                                     </td>
                                                                                     <td></td>
+                                                                                    <td>{{ vendor.0.vendor_buyer_id}}</td>
                                                                                     <td></td>
+                                                                                    <td>{{vendor.0.name}}</td>
+                                                                                    {% if vendor.1.codemeli == None %}
                                                                                     <td></td>
+                                                                                    {% else %}
+                                                                                    <td>{{vendor.1.codemeli}}</td>
+                                                                                    {% endif %}
+                                                                                    <th>{{vendor.0.city_id|city_rec}}</th>
+                                                                                    {% if vendor.1.phone == None %}
                                                                                     <td></td>
+                                                                                    {% else %}
+                                                                                    <td>{{vendor.1.phone}}</td>
+                                                                                    {% endif %}
+                                                                                    {% if vendor.1.mobile == None %}
                                                                                     <td></td>
-                                                                                    <th></th>
-                                                                                    <td></td>
-                                                                                    <td></td>
+                                                                                    {% else %}
+                                                                                    <td>{{vendor.1.mobile}}</td>
+                                                                                    {% endif %}
                                                                                     <td>
                                                                                         
                                                                                         <form method="POST" action="">
@@ -123,6 +145,7 @@
                                                                                         
                                                                                         
                                                                                     </td>
+                                                                                    {% endfor %}
                                                                                 </tr>
                                                                                
                                                                         <tbody>

@@ -1,6 +1,10 @@
+{% load static %}
+{% load converter_tags %}
 <!DOCTYPE html>
 <!-- 
-    - Ask the changes that are required in this section. should it have two buttons or more or is it enough being one
+    - Search function should be fixed here
+    - New customer function should be enabled through python forms.py
+    - If there are more buttons in the last column in the list they should be added as well, the functionalities are for later
  -->
 <html lang="fa">
 
@@ -61,12 +65,16 @@
                                             <div class="col-xl-8 order-2 order-xl-1">
                                                 <div class="row align-items-center">
                                                     <div class="col-md-6 kt-margin-b-20-tablet-and-mobile">
-                                                        <div class="kt-input-icon kt-input-icon--left">
-                                                            <input type="text" class="form-control"
-                                                                placeholder="...جستجو" id="generalSearch">
-                                                            <span class="kt-input-icon__icon kt-input-icon__icon--left">
-                                                                <span><i class="la la-search"></i></span>
-                                                            </span>
+                                                        <div class="kt-input-icon kt-input-icon--left" style="display: flex;
+                                                        align-items: center;">
+                                                        <form method="post" action="#">
+                                                            {% csrf_token %}
+                                                            <input type="submit" class="form-control"
+                                                                placeholder="...جستجو" id="generalSearch" value="Activate View">
+                                                            <!-- <span class="kt-input-icon__icon kt-input-icon__icon--left">
+                                                                <a><span><i class="la la-search"></i></span></a>
+                                                            </span> -->
+                                                        </form>
                                                         </div>
                                                     </div>
                                                     <div class="col-md-6 kt-margin-b-20-tablet-and-mobile">
@@ -219,12 +227,24 @@
                                         </thead>
                                         <tbody>
                                             {% for item in page %}
-                                            <tr>
+                                            <tr class="searchable-item">
                                                 <td>{{ item.obj_item_id }}</td>
                                                 <td>{{item.name}}</td>
-                                                <td>{{item.city_id}}</td>
+                                                {% if item.city_id == None %}
+                                                <td></td>
+                                                {% else %}
+                                                <td>{{item.city_id|id_to_city}}</td>
+                                                {% endif %}
+                                                {% if item.codemeli == None %}
+                                                <td></td>
+                                                {% else %}
                                                 <td>{{item.codemeli}}</td>
+                                                {% endif %}
+                                                {% if item.mobile == None %}
+                                                <td></td>
+                                                {% else %}
                                                 <td>{{item.mobile}}</td>
+                                                {% endif %}
                                                 <td>
                                                     <a class="badge badge-success text-white">ثبت فاکتور
                                                         مشتری</a>
@@ -235,7 +255,7 @@
 														<button type="button" class="btn btn-hover-brand btn-elevate-hover chngeColor1 btn-icon btn-sm btn-icon-md btn-circle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 															<i class="flaticon-more-1"></i>
 														</button>
-														<div class="dropdown-menu dropdown-menu-right">
+														<div class="dropdown-menu dropdown-menu">
 															<a class="dropdown-item kt-font-dark" href="#"><i class="fa fa-plus-square text-warning kt-font-bold"></i> پیش فاکتور</a>
 															<a class="dropdown-item kt-font-dark" href="#"><i class="fa fa-bookmark kt-font-bold text-warning"></i> 554/87/214</a>
 															<a class="dropdown-item kt-font-dark" href="#"><i class="fa fa-bookmark kt-font-bold text-warning"></i> 142/54/968</a>
@@ -268,25 +288,7 @@
                                         </tbody>
                                         
                                     </table>
-                                    <div class="pagination">
-                                        <span class="step-links">
-                                            {% if page.has_previous %}
-                                                <a href="?page=1" class="badge-primary btn-sm" style="padding: 3px;">&laquo; صفحه ی اول</a>
-                                                <a href="?page={{ page.previous_page_number }}" class="badge-primary btn-sm" style="padding: 3px;">قبلی</a>
-                                            {% endif %}
-                                    
-                                            <span>
-                                                صفحه {{ page.number }} از {{ page.paginator.num_pages }}
-                                            </span>
-                                    
-                                            {% if page.has_next %}
-                                                <a href="?page={{ page.next_page_number }}" class="badge-primary btn-sm" style="padding: 3px;">بعدی</a>
-                                                <a href="?page={{ page.paginator.num_pages }}" class="badge-primary btn-sm" style="padding: 3px;">صفحه ی آخر &raquo;</a>
-                                            {% endif %}
-                                        </span>
-                                    </div>
-
-                                    <!--end: Datatable -->
+                                   
                                 </div>
                             </div>
                         </div>
@@ -305,7 +307,22 @@
 
             <!-- end:: Page -->
         </div>
-
+        <script>
+        $(document).ready(function() {
+            $("#generalSearch").on("keyup", function() {
+                var searchQuery = $(this).val().toLowerCase();
+                
+                $("#html_table tr.searchable-item").each(function() {
+                    var rowText = $(this).text().toLowerCase();
+                    if (rowText.includes(searchQuery)) {
+                        $(this).show();
+                    } else {
+                        $(this).hide();
+                    }
+                });
+            });
+        });
+        </script>
         <!-- end:: Root -->
 
         <!-- begin:: Topbar Offcanvas Panels -->

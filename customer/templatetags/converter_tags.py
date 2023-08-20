@@ -5,6 +5,7 @@ import random
 import pytz
 
 from Administrator.models import User
+from customer.models import ObjItem
 register = template.Library()
 
 @register.filter
@@ -40,3 +41,22 @@ def nth_item(queryset, counter):
 @register.filter
 def inter(number):
     return int(number)
+
+@register.filter
+def city_rec(id):
+    try:
+        city = ObjItem.objects.get(obj_item_id=id)
+        return city.name
+    except ObjItem.DoesNotExist:
+        return ""
+    
+@register.filter
+def subtract(item):
+    return (item.amount - item.sended)
+@register.filter
+def id_to_city(item):
+    id_dic = {'999001002':'تهران','999002001':'سبزوار','999002002':'تهران'}
+    if item in id_dic.keys():
+        return id_dic[item]
+    else:
+        return ""

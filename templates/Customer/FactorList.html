@@ -84,30 +84,37 @@
                                                                     <td>{{item.contract_id}}</td>
                                                                     <td>{{ item.vendor_name }}</td>
                                                                     <td>{{ item.buyer_name }}</td>
+                                                                    {% if item.phone == None %}
+                                                                    <td></td>
+                                                                    {% else %}
                                                                     <td>{{item.phone}} </td>
+                                                                    {% endif %}
                                                                     <td>
-                                                                        {{ item.factor.reg_status }}
-                                                                        <div title="" style="width: 10px; height: 10px; background-color: white; border-radius: 50%; float: left; margin-right: 12px;"></div>
+                                                                        
+                                                                        {% if item.factor.reg_status == 'CONFIRM' %}
+                                                                        <span class="btn btn-success">تایید</span>
+                                                                        {%else%}
+                                                                        <span></span>
+                                                                        {% endif %}
+                                                                        
+                                                                        <!-- <div title="#" style="width: 10px; height: 10px; background-color: white; border-radius: 50%; margin-right: 3px;"></div>
                                 
                                                                         
-                                                                        <div title="#" style="width: 10px; height: 10px; background-color: white; border-radius: 50%; float: left; margin-right: 3px;"></div>
+                                                                        <div title="#" style="width: 10px; height: 10px; background-color: white; border-radius: 50%; margin-right: 10px;"></div>
                                 
                                                                         
-                                                                        <div title="#" style="width: 10px; height: 10px; background-color: white; border-radius: 50%; float: left; margin-right: 10px;"></div>
+                                                                        <div title="#" style="width: 10px; height: 10px; background-color: white; border-radius: 50%; margin-right: 3px;"></div>
+                                                                        
+                                                                        <div title="#" style="width: 10px; height: 10px; background-color: white; border-radius: 50%; margin-right: 3px;"></div>
+                                                                        
+                                                                        <div title="#" style="width: 10px; height: 10px; background-color: white; border-radius: 50%; margin-right: 10px;"></div>
                                 
                                                                         
-                                                                        <div title="#" style="width: 10px; height: 10px; background-color: white; border-radius: 50%; float: left; margin-right: 3px;"></div>
+                                                                        <div title="#" style="width: 10px; height: 10px; background-color: white; border-radius: 50%; margin-right: 3px;"></div>
                                                                         
-                                                                        <div title="#" style="width: 10px; height: 10px; background-color: white; border-radius: 50%; float: left; margin-right: 3px;"></div>
+                                                                        <div title="#" style="width: 10px; height: 10px; background-color: white; border-radius: 50%; margin-right: 3px;"></div>
                                                                         
-                                                                        <div title="#" style="width: 10px; height: 10px; background-color: white; border-radius: 50%; float: left; margin-right: 10px;"></div>
-                                
-                                                                        
-                                                                        <div title="#" style="width: 10px; height: 10px; background-color: white; border-radius: 50%; float: left; margin-right: 3px;"></div>
-                                                                        
-                                                                        <div title="#" style="width: 10px; height: 10px; background-color: white; border-radius: 50%; float: left; margin-right: 3px;"></div>
-                                                                        
-                                                                        <div title="#" style="width: 10px; height: 10px; background-color: white; border-radius: 50%; float: left; margin-right: 3px;"></div>
+                                                                        <div title="#" style="width: 10px; height: 10px; background-color: white; border-radius: 50%; margin-right: 3px;"></div> -->
                                                                     </td>
                                                                 </tr>
                                                                 {% endfor %}

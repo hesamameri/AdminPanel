@@ -1,6 +1,104 @@
 from django.db import models
 # from ticket.models import *
 # from Administrator.models import *
+from django.db.models import Case, CharField, Value, When, F, Max
+class FactorItemBalanceSVA(models.Model):
+    factor_item_id = models.IntegerField(primary_key=True)
+    factor_id = models.IntegerField()
+    seller_factor_id = models.IntegerField()
+    buyer_id = models.IntegerField()
+    seller_buyer_id = models.IntegerField()
+    customer_name = models.CharField(max_length=100)
+    codemeli = models.CharField(max_length=10)
+    phone = models.CharField(max_length=15)
+    mobile = models.CharField(max_length=15)
+    amount = models.DecimalField(max_digits=10, decimal_places=2)
+    sended = models.DecimalField(max_digits=10, decimal_places=2)
+
+    class Meta:
+        managed = False
+        db_table = 'factor_item_balance_sva'
+
+
+class VendorBuyerSubSVA(models.Model):
+    obj_item_id = models.CharField(max_length=255, primary_key=True)
+    vendor_buyer_id = models.CharField(max_length=255)
+    name = models.CharField(max_length=255)
+    title = models.CharField(max_length=255)
+    status = models.CharField(max_length=50)
+    economic_code = models.CharField(max_length=255, null=True)
+    economic_exp_dt = models.DateField(null=True)
+    ceo = models.CharField(max_length=255, null=True)
+    ceo_mobile = models.CharField(max_length=20, null=True)
+    sof = models.CharField(max_length=255, null=True)
+    sof_mobile = models.CharField(max_length=20, null=True)
+    logistic = models.CharField(max_length=255, null=True)
+    logostic_phone = models.CharField(max_length=20, null=True)
+    province_id = models.IntegerField(null=True)
+    city_id = models.IntegerField(null=True)
+    cast = models.CharField(max_length=255, null=True)
+    material = models.CharField(max_length=255, null=True)
+    credit = models.FloatField(null=True)
+    phone = models.CharField(max_length=20, null=True)
+    address = models.CharField(max_length=255, null=True)
+    brand_id = models.IntegerField(null=True)
+    smsname = models.CharField(max_length=255, null=True)
+    @classmethod
+    def get_all_merged_data(cls):
+        return cls.objects.values(
+            'obj_item_id', 'vendor_buyer_id', 'name', 'title', 'status'
+        ).annotate(
+            economic_code=Max(Case(When(~models.Q(economic_code__isnull=True), then=F('economic_code')), output_field=CharField())),
+            economic_exp_dt=Max('economic_exp_dt'),
+            ceo=Max(Case(When(~models.Q(ceo__isnull=True), then=F('ceo')), output_field=CharField())),
+            ceo_mobile=Max(Case(When(~models.Q(ceo_mobile__isnull=True), then=F('ceo_mobile')), output_field=CharField())),
+            sof=Max(Case(When(~models.Q(sof__isnull=True), then=F('sof')), output_field=CharField())),
+            sof_mobile=Max(Case(When(~models.Q(sof_mobile__isnull=True), then=F('sof_mobile')), output_field=CharField())),
+            logistic=Max(Case(When(~models.Q(logistic__isnull=True), then=F('logistic')), output_field=CharField())),
+            logostic_phone=Max(Case(When(~models.Q(logostic_phone__isnull=True), then=F('logostic_phone')), output_field=CharField())),
+            province_id=Max('province_id'),
+            city_id=Max('city_id'),
+            cast=Max(Case(When(~models.Q(cast__isnull=True), then=F('cast')), output_field=CharField())),
+            material=Max(Case(When(~models.Q(material__isnull=True), then=F('material')), output_field=CharField())),
+            credit=Max('credit'),
+            phone=Max(Case(When(~models.Q(phone__isnull=True), then=F('phone')), output_field=CharField())),
+            address=Max(Case(When(~models.Q(address__isnull=True), then=F('address')), output_field=CharField())),
+            brand_id=Max('brand_id'),
+            smsname=Max(Case(When(~models.Q(smsname__isnull=True), then=F('smsname')), output_field=CharField())),
+        )
+    
+    class Meta:
+        managed = False
+        db_table = 'vendor_buyer_sub_sva'
+
+class VendorBuyerSVA(models.Model):
+    obj_item_id = models.IntegerField(primary_key=True)  # Assuming obj_item_id is an integer field
+    vendor_buyer_id = models.IntegerField()
+    name = models.CharField(max_length=255)
+    title = models.CharField(max_length=255)
+    status = models.CharField(max_length=50)
+    economic_code = models.CharField(max_length=50)
+    economic_exp_dt = models.DateField()
+    ceo = models.CharField(max_length=255)
+    ceo_mobile = models.CharField(max_length=20)
+    sof = models.CharField(max_length=255)
+    sof_mobile = models.CharField(max_length=20)
+    logistic = models.CharField(max_length=255)
+    logostic_phone = models.CharField(max_length=20)
+    province_id = models.IntegerField()
+    city_id = models.IntegerField()
+    cast = models.CharField(max_length=255)
+    material = models.CharField(max_length=255)
+    credit = models.FloatField()
+    phone = models.CharField(max_length=20)
+    address = models.CharField(max_length=255)
+    brand_id = models.IntegerField()
+    brand_name = models.CharField(max_length=255)
+    smsname = models.CharField(max_length=255)
+
+    class Meta:
+        managed = False
+        db_table = 'vendor_buyer_sva'
 
 
 class CustomerSubSVA(models.Model):
@@ -497,18 +595,18 @@ class Obj(models.Model):
         db_table = 'obj'
 
 
-# class ObjDocument(models.Model):
-#     obj_document_id = models.AutoField(primary_key=True)
-#     source_type = models.CharField(max_length=255)
-#     source_id = models.IntegerField()
-#     document_type = models.CharField(max_length=255)
-#     uri = models.CharField(max_length=255)
-#     description = models.TextField()
-#     hash = models.CharField(max_length=255)
+class ObjDocument(models.Model):
+    obj_document_id = models.AutoField(primary_key=True)
+    source_type = models.CharField(max_length=255)
+    source_id = models.IntegerField()
+    document_type = models.CharField(max_length=255)
+    uri = models.CharField(max_length=255)
+    description = models.TextField()
+    hash = models.CharField(max_length=255)
 
-#     class Meta:
-#         managed = False
-#         db_table = 'obj_document'
+    class Meta:
+        managed = False
+        db_table = 'obj_document'
 
 
 class ObjItem(models.Model):
@@ -567,6 +665,7 @@ class ObjSpec(models.Model):
     class Meta:
         managed = False
         db_table = 'obj_spec'
+        
 class ObjItemSpec(models.Model):
     obj_item_spec_id = models.AutoField(primary_key=True)
     obj_item = models.ForeignKey(ObjItem, models.DO_NOTHING, blank=True, null=True)
