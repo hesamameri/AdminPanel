@@ -1,7 +1,7 @@
 from django.shortcuts import redirect, render
 from django.db.models import F
 from customer.templatetags.converter_tags import subtract
-from .models import Factor, FactorAddress, FactorPayway, ObjItem, VendorBuyerSVA, VendorBuyerSubSVA
+from .models import Factor, FactorAddress, FactorPayway, ObjItem, ObjItemSpec, ObjSpec, VendorBuyerSVA, VendorBuyerSubSVA
 from .models import CustomerSubSVA, CustomerSva, FactorComment, FactorDocument, FactorItem, FactorSVA, ObjItemSVA, ShopCustomerCount
 from django.core.paginator import Paginator, EmptyPage
 from django.db.models import Q
@@ -9,50 +9,84 @@ from django.contrib.auth.decorators import login_required
 from Administrator.permissions import permission_required
 from django.db.models import Max
 from customer import models
-from .forms import NewCustomerForm
 from .models import  Inquiry  # Import your models
 from django.contrib.sessions.models import Session
 from django.views.decorators.cache import cache_page
 from django.db.models import F, Sum
 from .models import FactorItem,FactorItemBalanceSVA
-
+from .forms import NewObjItem,NewObjItemSpec
 @cache_page(10)
 @login_required(login_url='Administrator:login_view')
 @permission_required('ROLE_PERSONEL', 'ROLE_ADMIN')
 def customer_index(request):
 
-    if request.method == 'POST':
-        form = NewCustomerForm(request.POST)
-        if form.is_valid():
-            new_customer = form.save()
-            return redirect('customer:customerindexAll')
-    else:
-        customers = CustomerSva.objects.values(
-        'obj_item_id', 'name', 'title', 'status', 'city_id', 'codemeli', 'mobile', 'phone', 'reagent', 'address'
-        # Add other fields as needed
-    ).distinct()
+    customers = CustomerSva.objects.filter(obj_item_id = 1030200032)
+    page = customers
+    # # Set the number of records to display per page
+    # records_per_page = 8000
+    # print(page[0].address)
+    # # Initialize the Paginator object with the data and the number of records per page
+    # paginator = Paginator(customers, records_per_page)
 
-    # Set the number of records to display per page
-    records_per_page = 50
+    # # Get the current page number from the request's GET parameters. If not provided, default to 1.
+    # page_number = request.GET.get('page', 1)
 
-    # Initialize the Paginator object with the data and the number of records per page
-    paginator = Paginator(customers, records_per_page)
+    # try:
+    #     # Get the Page object for the requested page number
+    #     page = paginator.page(page_number)
+    # except EmptyPage:
+    #     # If the requested page number is out of range, display the last page
+    #     page = paginator.page(paginator.num_pages)
 
-    # Get the current page number from the request's GET parameters. If not provided, default to 1.
-    page_number = request.GET.get('page', 1)
-
-    try:
-        # Get the Page object for the requested page number
-        page = paginator.page(page_number)
-    except EmptyPage:
-        # If the requested page number is out of range, display the last page
-        page = paginator.page(paginator.num_pages)
     context = {
         'page': page,
     }
 
     return render(request, 'Customer/CustomerIndex.html', context=context)
 
+@cache_page(10)
+@login_required(login_url='Administrator:login_view')
+@permission_required('ROLE_PERSONEL','ROLE_ADMIN')
+def new_customer(request):
+    if request.method == 'POST':
+        print(request.POST)
+        obj_id = 10301
+        obj_item_data = {
+            'obj_id': 10301,
+            'name': request.POST.get('name'),
+            'title': request.POST.get('title'),
+        }
+        obj_specs = ObjSpec.objects.filter(obj = obj_id)
+        # obj_item_spec_data = {
+        #     'field1': request.POST.get('field1'),
+        #     'field2': request.POST.get('field2'),
+        # }
+        formObjItem = NewObjItem(obj_item_data)
+        if formObjItem.is_valid():
+            saved_instance = formObjItem.save()
+
+
+        for key, value in request.POST.items():
+            # print(key,value)
+        # Filter obj_specs by name attribute matching the key
+            matching_spec = obj_specs.filter(name=key).first()
+            print(matching_spec)
+            if matching_spec:
+                # Create a new ObjItemSpec object
+                ObjItemSpec.objects.create(
+                    obj_spec=matching_spec, # Use the actual object, not just its ID
+                    obj_item=saved_instance, # Use the actual object, not just its ID
+                    val=value
+                    # ... other required fields ...
+                )
+        return redirect('customer:customerindex')
+
+        # formObjItemSpec = NewObjItemSpec(obj_item_spec_data)
+        # if formObjItemSpec.is_valid():
+        #     formObjItemSpec.save()
+    else:
+
+        return redirect('customer:customerindex')
 
 @cache_page(10)
 @login_required(login_url='Administrator:login_view')
@@ -61,7 +95,7 @@ def customer_index_all(request):
     # Get distinct obj_item_ids with maximum values for each field
     distinct_records = CustomerSva.objects.all()
     
-    shops = ShopCustomerCount.objects.values('name')
+    shops = ShopCustomerCount.objects.all().values('name')
     # Set the number of records to display per page
     records_per_page = 15
 
@@ -309,12 +343,7 @@ def index_inquiry(request):
     return render(request,'Customer/IndexInquiry.html',context=context)
 
 
-@cache_page(10)
-@login_required(login_url='Administrator:login_view')
-@permission_required('ROLE_PERSONEL','ROLE_ADMIN')
-def new_customer(request):
-    
-    return render(request,'Customer/NewCustomer.html')
+
 
 @cache_page(10)
 @login_required(login_url='Administrator:login_view')

@@ -5,6 +5,7 @@ from django.conf.urls.static import static
 app_name = 'customer'
 urlpatterns = [
     path('customers/', views.customer_index, name='customerindex'),     # DONE(testphase)
+    path('newcustomer', views.new_customer, name='NewCustomer'),
     path('customers/all', views.customer_index_all, name='customerindexAll'),  # DONE(testphase)
     path('factor', views.factor, name='Factor'),
     path('factorlist', views.factor_index, name='FactorList'),                   # DONE(testphase)

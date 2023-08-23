@@ -1,10 +1,14 @@
 from django import forms
-from .models import CustomerSubSVA
+from .models import CustomerSubSVA,ObjItem,ObjItemSpec,ObjSpec
 
 
 
-class NewCustomerForm(forms.ModelForm):   
+class NewObjItem(forms.ModelForm):   
     class Meta:
-        model = CustomerSubSVA
-        fields = []
-    
+        model = ObjItem
+        fields = ['name','title']
+
+class NewObjItemSpec(forms.ModelForm):   
+    class Meta:
+        model = ObjItemSpec
+        fields = ['val']

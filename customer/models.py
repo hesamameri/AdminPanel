@@ -2,6 +2,33 @@ from django.db import models
 # from ticket.models import *
 # from Administrator.models import *
 from django.db.models import Case, CharField, Value, When, F, Max
+
+class CitySVA(models.Model):
+    obj_item_id = models.IntegerField()
+    name = models.CharField(max_length=255)
+    title = models.CharField(max_length=255)
+    status = models.CharField(max_length=255)
+    brand_id = models.IntegerField()
+    brand_name = models.CharField(max_length=255)
+    brand_phone = models.CharField(max_length=255)
+    brand_slung = models.CharField(max_length=255)
+
+    class Meta:
+        managed = False  # To indicate that this model is based on a view, not a table
+        db_table = 'city_sva'
+class BrandSVA(models.Model):
+    obj_item_id = models.IntegerField()
+    brand_id = models.IntegerField()
+    name = models.CharField(max_length=255)
+    title = models.CharField(max_length=255)
+    status = models.CharField(max_length=255)
+    logo = models.CharField(max_length=255)
+    phone = models.CharField(max_length=255)
+    slung = models.CharField(max_length=255)
+
+    class Meta:
+        managed = False  # To indicate that this model is based on a view, not a table
+        db_table = 'brand_sva'  # Replace with the actual database view name
 class FactorItemBalanceSVA(models.Model):
     factor_item_id = models.IntegerField(primary_key=True)
     factor_id = models.IntegerField()

@@ -91,31 +91,33 @@
 																</div>
 																<div class="modal-body">
 																	<!--begin::Form-->
-										<form class="kt-form kt-form--label-right">
+										<form class="kt-form kt-form--label-right" method="POST" action="{% url 'customer:NewCustomer' %}">
+                                            {% csrf_token %}
 											<div class="kt-portlet__body">
+
 												<div class="form-group row">
 													<div class="col-lg-4">
 														<label class="kt-font-dark kt-font-boldest">نام کامل مشتری</label>
 														<div class="kt-input-icon">
-															<input type="text" class="form-control" placeholder="نام و نام خانوادگی">
+															<input type="text" name="name" class="form-control" placeholder="نام و نام خانوادگی">
 															<span class="kt-input-icon__icon kt-input-icon__icon--right"><span><i class="fa fa-user text-primary"></i></span></span>
 														</div>
 													</div>
                                                     <div class="col-lg-4 form-group-sub">
 																<label class="form-control-label kt-font-dark kt-font-boldest">شهر </label>
-																<select class="form-control" name="billing_card_exp_month">
-																	<option value="">انتخاب کنید</option>
-																	<option value="01">تهران</option>
-																	<option value="02">سبزوار</option>
-																	<option value="03">کرج</option>
-																	<option value="04">جوین</option>
+																<select class="form-control" name="city_id">
+																	<option >انتخاب کنید</option>
+																	<option value="999002001">تهران</option>
+																	<option value="999002001">سبزوار</option>
+																	<option value="999002001">کرج</option>
+																	<option value="999002001">جوین</option>
 															
 																</select>
 															</div>
 													<div class="col-lg-4">
 														<label class="kt-font-dark kt-font-boldest">شماره موبایل</label>
 														<div class="kt-input-icon">
-															<input type="text" class="form-control" placeholder="شماره موبایل مشتری">
+															<input type="text" name="mobile" class="form-control" placeholder="شماره موبایل مشتری">
 															<span class="kt-input-icon__icon kt-input-icon__icon--right"><span><i class="fa fa-mobile text-danger"></i></span></span>
 														</div>
 														
@@ -126,7 +128,7 @@
 													<div class="col-lg-4">
                                                     <label class="kt-font-dark kt-font-boldest">تلفن ثابت</label>
 														<div class="kt-input-icon">
-															<input type="text" class="form-control" placeholder="021-0000000">
+															<input type="text" name="phone" class="form-control" placeholder="021-0000000">
 															<span class="kt-input-icon__icon kt-input-icon__icon--right"><span><i class="fa fa-phone text-danger"></i></span></span>
 														</div>
 														<span class="form-text text-muted">شماره تلفن  با پیش شماره وارد شود</span>
@@ -135,23 +137,24 @@
 													<div class="col-lg-8">
                                                     <label class="kt-font-dark kt-font-boldest">آدرس مشتری</label>
 														<div class="kt-input-icon">
-															<input type="text" class="form-control" placeholder="استان - شهرستان - خیابان اصلی - خیابان فرعی - پلاک">
+															<input type="text" name="address" class="form-control" placeholder="استان - شهرستان - خیابان اصلی - خیابان فرعی - پلاک">
 															<span class="kt-input-icon__icon kt-input-icon__icon--right"><span><i class="fa fa-search-location text-warning"></i></span></span>
 														</div>
 														<span class="form-text text-muted">لطفا آدرس دقیق  را وارد نمایید</span>
 														
 													</div>
 												</div>
+
 												<div class="form-group row">
 													<div class="col-lg-3">
 														<label class="kt-font-dark kt-font-boldest">جنسیت</label>
 														<div class="kt-radio-inline">
 															<label class="kt-radio kt-radio--solid">
-																<input type="radio" name="example_2" checked value="2"> مرد
+																<input type="radio" name="sex_id" value="999015001"> مرد
 																<span></span>
 															</label>
 															<label class="kt-radio kt-radio--solid">
-																<input type="radio" name="example_2" value="2"> زن
+																<input type="radio" name="sex_id" value="999015002"> زن
 																<span></span>
 															</label>
 														</div>
@@ -160,7 +163,7 @@
                                                     <div class="col-lg-3">
                                                     <label class="kt-font-dark kt-font-boldest">شماره شناسنامه</label>
 														<div class="kt-input-icon">
-															<input type="text" class="form-control" placeholder="">
+															<input type="text" name="idno" class="form-control" placeholder="">
 															<span class="kt-input-icon__icon kt-input-icon__icon--right"><span><i class="fa fa-book-reader text-info"></i></span></span>
 														</div>
 													
@@ -168,7 +171,7 @@
                                                     <div class="col-lg-3">
                                                     <label class="kt-font-dark kt-font-boldest">کد ملی</label>
 														<div class="kt-input-icon">
-															<input type="text" class="form-control" placeholder="">
+															<input type="text" name="codemeli" class="form-control" placeholder="">
 															<span class="kt-input-icon__icon kt-input-icon__icon--right"><span><i class="fa fa-address-card text-info"></i></span></span>
 														</div>
 														
@@ -176,22 +179,22 @@
                                                     <div class="col-lg-3">
                                                     <label class="kt-font-dark kt-font-boldest">کد معرف</label>
 														<div class="kt-input-icon">
-															<input type="text" class="form-control" placeholder="">
+															<input type="text" name="reagent" class="form-control" placeholder="">
 															<span class="kt-input-icon__icon kt-input-icon__icon--right"><span><i class="fa fa-sign-language text-info"></i></span></span>
 														</div>
 														
 													</div>
 												</div>
 											</div>
-											
+											<div class="modal-footer">
+                                                <button type="button" class="btn btn-danger" data-dismiss="modal">بستن</button>
+                                                <button type="submit" class="btn btn-brand">ثبت مشتری</button>
+                                            </div>
 										</form>
 
 										<!--end::Form-->
 																</div>
-																<div class="modal-footer">
-																	<button type="button" class="btn btn-danger" data-dismiss="modal">بستن</button>
-																	<button type="button" class="btn btn-brand">ثبت مشتری</button>
-																</div>
+																
 															</div>
 														</div>
 													</div>
