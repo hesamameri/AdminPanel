@@ -90,10 +90,11 @@
                                                                             </tr>
                                                                         </thead>
                                                                         <tbody>
+                                                                        
                                                                                 {% for item in inquiries %}
                                                                                 <tr>
                                                                                     <td>{{item.inquiry_id}}</td>
-                                                                                    <td>{{item.register|register_user}}</td>
+                                                                                    <td>item.register|register_user</td>
                                                                                     <td>{{item.reg_dt|to_jalali}}</td>
                                                                                     <td>{{item.account_owner}}</td>
                                                                                     <td>{{item.account_owner}}</td>
