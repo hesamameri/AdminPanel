@@ -143,8 +143,20 @@
                                                                                                 <span class="right badge badge-secondary cursor-hand" data-html="true" data-container="body" data-toggle="popover" data-placement="bottom" data-content="">&nbsp;&nbsp;</span>
                                                                                             
                                                                                     </td>
+                                                                                    {% if item.codemeli == None %}
+                                                                                    <td></td>
+                                                                                    {% else %}
                                                                                     <td>{{item.codemeli}} </td>
-                                                                                    <td>{{item.province_name}} / {{item.city_name}}</td>
+                                                                                    {% endif %}
+                                                                                    
+                                                                                    {% if item.city_id == None  %}
+                                                                                    <td>
+                                                                                        {% if item.province_id == None  %}
+                                                                                        {% endif %}
+                                                                                    </td>
+                                                                                    {% else %}
+                                                                                    <td>{{item.province_id}} / {{item.city_id}}</td>
+                                                                                    {% endif %}
                                                                                     {% if item.phone == None %}
                                                                                     <td></td>
                                                                                     {% else%}
