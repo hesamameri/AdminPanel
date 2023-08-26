@@ -96,7 +96,7 @@ def customer_index_all(request):
         print(request.POST)
         post_data = {
             'buyer': request.POST.get('buyer'),
-            'first_control': request.POST.get('first_control'),
+            'first_control': 1,
             'bank': request.POST.get('bank'),
             'bank_branch': request.POST.get('bank_branch'),
             'bank_code': request.POST.get('bank_code'),
@@ -115,7 +115,8 @@ def customer_index_all(request):
         formInquiry = NewInquiry(post_data)
         if formInquiry.is_valid():
             saved_instance = formInquiry.save()
-            return redirect('customer:CustomerIndexAll')
+            print("this is true")
+            return redirect('customer:customerindexAll')
         else:
             return " wrong"
     else:
