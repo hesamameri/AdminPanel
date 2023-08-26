@@ -22,6 +22,7 @@ urlpatterns = [
     path('creditlist', views.credit_list, name='CreditList'),
     path('receiptconfirm', views.receipt_confirm, name='ReceiptConfirm'),
     path('prefroma', views.prefroma, name='Prefroma'),
+    
     path('customerfactorsendassigndriver', views.customerfactor_sendassigndriver, name='CustomerFactorSendAssignDriver'),
     path('customerfactorsendstatus', views.customerfactor_sendstatus, name='CustomerFactorSendStatus'),
     path('customerfactorservicedoc', views.customerfactor_servicedoc, name='CustomerFactorServiceDoc'),

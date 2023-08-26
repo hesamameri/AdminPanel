@@ -20,7 +20,7 @@ from .forms import NewObjItem,NewObjItemSpec
 @permission_required('ROLE_PERSONEL', 'ROLE_ADMIN')
 def customer_index(request):
 
-    customers = CustomerSva.objects.filter(obj_item_id = 1030200032)
+    customers = CustomerSva.objects.filter(obj_item_id__gt = 1030200001)
     page = customers
     # # Set the number of records to display per page
     # records_per_page = 8000
@@ -143,6 +143,7 @@ def factor(request):
         'factor_item': factor_item,
         # 'factor_main_sva':factor_main_sva,
     }
+    
     return render(request,'Customer/Factor.html',context=context)
 
 
