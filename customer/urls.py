@@ -22,18 +22,19 @@ urlpatterns = [
     path('creditlist', views.credit_list, name='CreditList'),
     path('receiptconfirm', views.receipt_confirm, name='ReceiptConfirm'),
     path('prefroma', views.prefroma, name='Prefroma'),
-    
+
     path('customerfactorsendassigndriver', views.customerfactor_sendassigndriver, name='CustomerFactorSendAssignDriver'),
     path('customerfactorsendstatus', views.customerfactor_sendstatus, name='CustomerFactorSendStatus'),
     path('customerfactorservicedoc', views.customerfactor_servicedoc, name='CustomerFactorServiceDoc'),
     path('customerpaymentconfirms', views.customer_payment_confirms, name='CustomerPaymentConfirms'),  # DONE(testphase)
+
+
     path('indexinquiryresponse', views.index_inquiry_response, name='IndexInquiryResponse'),     # DONE(testphase)
     path('indexinquiry', views.index_inquiry, name='IndexInquiry'),                              # DONE(testphase)
     path('newcustomer', views.new_customer, name='NewCustomer'),
     path('factorsendinstallerprint', views.factorsend_installerprint, name='FactorSendInstallerPrint'),  # DONE(testphase)
     path('factorsendprint', views.factor_send_print, name='FactorSendPrint'),
     path('receiptprint', views.receipt_print, name='ReceiptPrint'),
-
 ]
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
