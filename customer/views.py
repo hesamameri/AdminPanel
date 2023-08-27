@@ -1,3 +1,5 @@
+from datetime import timezone
+import datetime
 from django.shortcuts import redirect, render
 from django.db.models import F
 from customer.templatetags.converter_tags import subtract
@@ -93,7 +95,6 @@ def new_customer(request):
 @permission_required('ROLE_PERSONEL','ROLE_ADMIN')
 def customer_index_all(request):
     if request.method == 'POST':
-        print(request.POST)
         post_data = {
             'buyer': request.POST.get('buyer'),
             'first_control': 1,
@@ -110,6 +111,8 @@ def customer_index_all(request):
             'description': request.POST.get('description'),
             'account_sayadi': request.POST.get('account_sayadi'),
             'account_sayadi': request.POST.get('account_sayadi'),
+            'register': request.POST.get('register'),
+            'reg_dt': datetime.datetime.now()
 
         }
         formInquiry = NewInquiry(post_data)
@@ -125,7 +128,7 @@ def customer_index_all(request):
         
         banks = ObjItem.objects.filter(obj_item_id__gte=999003010, obj_item_id__lte=999003019)        # Set the number of records to display per page
         records_per_page = 15
-
+        
         # Initialize the Paginator object with the data and the number of records per page
         paginator = Paginator(distinct_records, records_per_page)
 
@@ -144,8 +147,7 @@ def customer_index_all(request):
             'banks':banks,
 
         }
-        # for i in page:
-        #     print(i)
+       
         return render(request, 'Customer/CustomerIndexAll.html', context=context)
         # return render(request,'Customer/CustomerIndexAll.html',context=context)
 
@@ -365,12 +367,26 @@ def index_inquiry_response(request):
 @login_required(login_url='Administrator:login_view')
 @permission_required('ROLE_PERSONEL','ROLE_ADMIN')
 def index_inquiry(request):
-    inquiries = Inquiry.objects.all()
-    context = {
-        'inquiries': inquiries,
-    }
-    
-    return render(request,'Customer/IndexInquiry.html',context=context)
+    if request.method == 'POST':
+        inquiry_id = request.POST.get('inquiry_id')
+        inquiry = Inquiry.objects.get(pk=inquiry_id)
+
+        # Update the object based on form data
+        inquiry.sms_inquiry = request.POST.get('sms_inquiry')
+        inquiry.indirect_inquiry = request.POST.get('indirect_inquiry')
+        inquiry.confirm_desc = request.POST.get('confirm_desc')
+        inquiry.confirm_status = request.POST.get('confirm_status')
+        inquiry.save()
+
+        return redirect('customer:IndexInquiry')
+    else:
+
+        inquiries = Inquiry.objects.filter(confirm_status__isnull=True)    
+        context = {
+            'inquiries': inquiries,
+        }
+        
+        return render(request,'Customer/IndexInquiry.html',context=context)
 
 
 

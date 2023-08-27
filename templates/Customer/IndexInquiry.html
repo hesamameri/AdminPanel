@@ -94,11 +94,11 @@
                                                                                 {% for item in inquiries %}
                                                                                 <tr>
                                                                                     <td>{{item.inquiry_id}}</td>
-                                                                                    <td>item.register|register_user</td>
+                                                                                    <td>{{item.register|register_user}}</td>
                                                                                     <td>{{item.reg_dt|to_jalali}}</td>
                                                                                     <td>{{item.account_owner}}</td>
                                                                                     <td>{{item.account_owner}}</td>
-                                                                                    <td>{{item.bank_branch}}</td>
+                                                                                    <td>{{item.bank_branch}}</td>                                                                  
                                                                                     <td>{{item.account_no}}</td>
                                                                                     {% if item.account_shaba == None %}
                                                                                     <td></td>
@@ -117,7 +117,7 @@
                                                                                     {% endif %}
                                                                                     <td>
                                                                                         <a class="btn btn-secondary btn-xs btn-customer inq cursor-hand" data-id="">جزئیات</a>
-                                                                                        <a class="btn btn-success btn-xs btn-customer" data-inquiry-id="" data-toggle="modal" data-target="#modal-inquiry">پاسخ استعلام</a>
+                                                                                        <a class="btn btn-success btn-xs btn-customer" data-inquiry-id="{{item.inquiry_id}}" data-toggle="modal" data-target="#modal-inquiry">پاسخ استعلام</a>
                                                                                     </td>
                                                                                 </tr>
                                                                                 {% endfor %}
@@ -178,9 +178,10 @@
                                         </button>
                                     </div>
                             
-                                    <form method="POST" action="">
+                                    <form method="POST" action="{% url 'customer:IndexInquiry' %}" >
+                                        {% csrf_token %}
                                         <div class="modal-body">
-                                            <input type="hidden" name="inquiry_id" class="inquiry_id" >
+                                            <input type="hidden" name="inquiry_id" id="modal-inquiry-id" class="inquiry_id" >
                             
                                             <div class="form-group row">
                                                 <div class="col-sm-8">
@@ -196,12 +197,12 @@
                                             </div>
                                             <div class="form-group row">
                                                 <div class="col-sm-8">
-                                                <select class="form-control select2bs4 rtl text-right" style="width: 100%;" name="direct_inquiry" data-allow-clear="true">
+                                                <select class="form-control select2bs4 rtl text-right" style="width: 100%;" name="indirect_inquiry" data-allow-clear="true">
                                                     <option value="1">تایید</option>
                                                     <option value="0">رد</option>
                                                 </select>
                                                 </div>
-                                                <label for="direct_inquiry" class="col-sm-4 col-form-label">پاسخ استعلام تلفنی</label>
+                                                <label for="indirect_inquiry" class="col-sm-4 col-form-label">پاسخ استعلام تلفنی</label>
                                             </div>
                                             <div class="form-group row">
                                                 <div class="col-sm-8">
@@ -307,7 +308,36 @@
 
         <!-- begin::Global Config(global config for global JS sciprts) -->
         {% include "partials/script.html" %}
-
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                const modal = document.querySelector('.modal');
+                const openButtons = document.querySelectorAll('.open-modal');
+                const modalInquiryId = document.querySelector('#modal-inquiry-id');
+            
+                openButtons.forEach(button => {
+                    button.addEventListener('click', function () {
+                        const itemId = button.getAttribute('data-inquiry-id');
+                        modalInquiryId.value = itemId;
+                        modal.style.display = 'block';
+                    });
+                });
+            
+                // Close the modal when the close button is clicked
+                const closeButton = modal.querySelector('.close-button');
+                closeButton.addEventListener('click', function () {
+                    modal.style.display = 'none';
+                });
+            });
+                    openButtons.forEach(button => {
+            button.addEventListener('click', function () {
+                const itemId = button.getAttribute('data-inquiry-id');
+                console.log('itemId:', itemId); // Add this line to check the value
+                modalInquiryId.value = itemId;
+                modal.style.display = 'block';
+            });
+        });
+            </script>
+            
         <!--end::Page Scripts -->
     </body>
 

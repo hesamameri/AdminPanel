@@ -12,7 +12,6 @@ def user_data(request):
         user_chart = UserChart.objects.filter(user_id=user_id)
         user_chart_ids = [obj.chart.chart_id for obj in user_chart]
         ticketsystem_categories = TicketSystemCategory.objects.filter(chart_id__in=user_chart_ids)
-        print(ticketsystem_categories)
     context = {
         'ticketsystem_categories':ticketsystem_categories,
         'user_permissions': user_permissions,

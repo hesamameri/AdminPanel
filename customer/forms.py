@@ -31,4 +31,6 @@ class NewInquiry(forms.ModelForm):
             'cheque_price',
             'cheque_count',
             'description',
+            'register',
+            'reg_dt',
                   ]
