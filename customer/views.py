@@ -369,15 +369,15 @@ def index_inquiry_response(request):
 def index_inquiry(request):
     if request.method == 'POST':
         inquiry_id = request.POST.get('inquiry_id')
-        inquiry = Inquiry.objects.get(pk=inquiry_id)
+        # inquiry = Inquiry.objects.get(pk=inquiry_id)
 
-        # Update the object based on form data
-        inquiry.sms_inquiry = request.POST.get('sms_inquiry')
-        inquiry.indirect_inquiry = request.POST.get('indirect_inquiry')
-        inquiry.confirm_desc = request.POST.get('confirm_desc')
-        inquiry.confirm_status = request.POST.get('confirm_status')
-        inquiry.save()
-
+        # # Update the object based on form data
+        # inquiry.sms_inquiry = request.POST.get('sms_inquiry')
+        # inquiry.indirect_inquiry = request.POST.get('indirect_inquiry')
+        # inquiry.confirm_desc = request.POST.get('confirm_desc')
+        # inquiry.confirm_status = request.POST.get('confirm_status')
+        # inquiry.save()
+        print(request.POST)
         return redirect('customer:IndexInquiry')
     else:
 

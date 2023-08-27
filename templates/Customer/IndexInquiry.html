@@ -117,8 +117,7 @@
                                                                                     {% endif %}
                                                                                     <td>
                                                                                         <a class="btn btn-secondary btn-xs btn-customer inq cursor-hand" data-id="">جزئیات</a>
-                                                                                        <a class="btn btn-success btn-xs btn-customer" data-inquiry-id="{{item.inquiry_id}}" data-toggle="modal" data-target="#modal-inquiry">پاسخ استعلام</a>
-                                                                                    </td>
+                                                                                        <a class="btn btn-success btn-xs btn-customer" data-inquiry-id="{{item.inquiry_id}}" data-toggle="modal" data-target="#modal-inquiry" id="open-inquiry-modal">پاسخ استعلام</a>                                                                                    </td>
                                                                                 </tr>
                                                                                 {% endfor %}
 
@@ -181,8 +180,7 @@
                                     <form method="POST" action="{% url 'customer:IndexInquiry' %}" >
                                         {% csrf_token %}
                                         <div class="modal-body">
-                                            <input type="hidden" name="inquiry_id" id="modal-inquiry-id" class="inquiry_id" >
-                            
+                                            <input type="hidden" name="inquiry_id" id="modal-inquiry-id" class="inquiry-id">                            
                                             <div class="form-group row">
                                                 <div class="col-sm-8">
                                                 <select class="form-control select2bs4 rtl text-right" style="width: 100%;" name="sms_inquiry" data-allow-clear="true">
@@ -206,9 +204,9 @@
                                             </div>
                                             <div class="form-group row">
                                                 <div class="col-sm-8">
-                                                <input type="text" name="confirm_desc" class="form-control rtl text-right" id="confirm_desc" placeholder="توضحیات" {% if editable is defined %}value="{{val}}"{% endif %}>
+                                                <input type="text" name="confirm_desc" class="form-control rtl text-right" id="confirm_desc" placeholder="توضحیات" >
                                                 </div>
-                                                <label for="direct_inquiry" class="col-sm-4 col-form-label">توضحیات</label>
+                                                <label for="confirm_desc" class="col-sm-4 col-form-label">توضحیات</label>
                                             </div>
                                             <div class="form-group row">
                                                 <div class="col-sm-8">
@@ -240,7 +238,22 @@
 
                     <!-- begin:: Footer -->
                     {% include "partials/footer.html" %}
+                    
+                    <script>
+                        const buttonElement = document.getElementById('open-inquiry-modal');
 
+                        // Get the hidden input element by its ID
+                        const hiddenInputElement = document.getElementById('modal-inquiry-id');
+
+                        // Add a click event listener to the button
+                        buttonElement.addEventListener('click', function() {
+                            // Get the value of data-inquiry-id attribute from the button
+                            const inquiryId = buttonElement.getAttribute('data-inquiry-id');
+
+                            // Set the value in the hidden input element
+                            hiddenInputElement.value = inquiryId;
+                        });
+                    </script>
                     <!-- end:: Footer -->
                 </div>
 
@@ -309,33 +322,7 @@
         <!-- begin::Global Config(global config for global JS sciprts) -->
         {% include "partials/script.html" %}
         <script>
-            document.addEventListener('DOMContentLoaded', function () {
-                const modal = document.querySelector('.modal');
-                const openButtons = document.querySelectorAll('.open-modal');
-                const modalInquiryId = document.querySelector('#modal-inquiry-id');
-            
-                openButtons.forEach(button => {
-                    button.addEventListener('click', function () {
-                        const itemId = button.getAttribute('data-inquiry-id');
-                        modalInquiryId.value = itemId;
-                        modal.style.display = 'block';
-                    });
-                });
-            
-                // Close the modal when the close button is clicked
-                const closeButton = modal.querySelector('.close-button');
-                closeButton.addEventListener('click', function () {
-                    modal.style.display = 'none';
-                });
-            });
-                    openButtons.forEach(button => {
-            button.addEventListener('click', function () {
-                const itemId = button.getAttribute('data-inquiry-id');
-                console.log('itemId:', itemId); // Add this line to check the value
-                modalInquiryId.value = itemId;
-                modal.style.display = 'block';
-            });
-        });
+        
             </script>
             
         <!--end::Page Scripts -->
