@@ -195,8 +195,6 @@ def customer_confirm_accountlist(request):
     vendor_person_detail = CustomerSva.objects.filter(obj_item_id__in = obj_item_ids)
     all_data = zip(vendor_detail,vendor_person_detail)
     context = {
-        # 'vendor_detail':vendor_detail,
-        # 'vendor_person_detail':vendor_person_detail,
         'all_data':all_data,
     }
     return render(request,'Customer/CustomerConfirmAccountList.html',context=context)
@@ -344,8 +342,6 @@ def customer_payment_confirms(request):
 @login_required(login_url='Administrator:login_view')
 @permission_required('ROLE_PERSONEL','ROLE_ADMIN')
 def index_inquiry_response(request):
-    
-
     inquiries = Inquiry.objects.all()
     buyer_ids = Inquiry.objects.values_list('buyer_id',flat=True)
     factors = Factor.objects.filter(buyer_id__in=buyer_ids)
@@ -353,11 +349,8 @@ def index_inquiry_response(request):
     factor_addresses = FactorAddress.objects.filter(factor_id__in=factor_ids).values('phone','mobile', 'city_id', 'address')
     combined_data = list(zip(inquiries,factor_addresses))
     context = {
-        # 'inquiry_tuples':inquiry_tuples,
-        # 'factor_addresses':factor_addresses,
-        'combined_data':combined_data
+        'combined_data':combined_data,
     }
-    # print(factor_addresses[1]['address'])
     print(combined_data)
     return render(request, 'Customer/IndexInquiryResponse.html', context=context)
 
@@ -369,14 +362,12 @@ def index_inquiry_response(request):
 def index_inquiry(request):
     if request.method == 'POST':
         inquiry_id = request.POST.get('inquiry_id')
-        # inquiry = Inquiry.objects.get(pk=inquiry_id)
-
-        # # Update the object based on form data
-        # inquiry.sms_inquiry = request.POST.get('sms_inquiry')
-        # inquiry.indirect_inquiry = request.POST.get('indirect_inquiry')
-        # inquiry.confirm_desc = request.POST.get('confirm_desc')
-        # inquiry.confirm_status = request.POST.get('confirm_status')
-        # inquiry.save()
+        inquiry = Inquiry.objects.get(pk=inquiry_id)
+        inquiry.sms_inquiry = request.POST.get('sms_inquiry')
+        inquiry.indirect_inquiry = request.POST.get('indirect_inquiry')
+        inquiry.confirm_desc = request.POST.get('confirm_desc')
+        inquiry.confirm_status = request.POST.get('confirm_status')
+        inquiry.save()
         print(request.POST)
         return redirect('customer:IndexInquiry')
     else:

@@ -92,16 +92,31 @@
                                                                                 
                                                                                 <tr>
                                                                                     <th>{{inquiry.0.inquiry_id}}</th>
+                                                                                    {% if inquiry.0.account_owner == None %}
+                                                                                    <th></th>
+                                                                                    {% else %}
                                                                                     <th>{{inquiry.0.account_owner}}</th>
+                                                                                    {% endif %}
+                                                                                    {% if inquiry.1.city_id == None %}
+                                                                                    <th></th>
+                                                                                    {% else %}
                                                                                     <th>{{inquiry.1.city_id}}</th>
+                                                                                    {% endif %}
                                                                                     {% if inquiry.1.phone == None %}
                                                                                     <th></th>
                                                                                     {% else %}
                                                                                     <th>{{inquiry.1.phone}}</th>
                                                                                     {% endif %}
+                                                                                    {% if inquiry.1.mobile == None %}
+                                                                                    <th></th>
+                                                                                    {% else %}
                                                                                     <th>{{inquiry.1.mobile}}</th>
-                                                                                   
+                                                                                    {% endif %}
+                                                                                    {% if inquiry.0.bank_branch == None %}
+                                                                                    <th></th>
+                                                                                    {% else %}
                                                                                     <th>{{inquiry.0.bank_branch}}</th>
+                                                                                    {% endif %}
                                                                                     {% if inquiry.0.confirm_status == 'CONFIRM' %}
                                                                                     <th> تائید</th>
                                                                                     {% else %}
