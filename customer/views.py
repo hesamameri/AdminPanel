@@ -95,6 +95,7 @@ def new_customer(request):
 @permission_required('ROLE_PERSONEL','ROLE_ADMIN')
 def customer_index_all(request):
     if request.method == 'POST':
+        print(request.POST)
         post_data = {
             'buyer': request.POST.get('buyer'),
             'first_control': 1,
@@ -372,11 +373,15 @@ def index_inquiry(request):
         return redirect('customer:IndexInquiry')
     else:
 
-        inquiries = Inquiry.objects.filter(confirm_status__isnull=True)    
+        inquiries = Inquiry.objects.filter(confirm_status__isnull=True) 
+        print(inquiries) 
+        inquiry_buyer = inquiries.values('buyer')   
+        customer_data = CustomerSva.objects.filter(obj_item_id__in = inquiry_buyer)
+        combined_data = list(zip(inquiries,customer_data))
         context = {
             'inquiries': inquiries,
+            'combined_data':combined_data,
         }
-        
         return render(request,'Customer/IndexInquiry.html',context=context)
 
 

@@ -66,3 +66,7 @@ def id_to_city(item):
         return id_dic[item]
     else:
         return ""
+    
+@register.filter(name='get_attribute')
+def get_attribute(obj, attribute_name):
+    return getattr(obj, attribute_name, None)

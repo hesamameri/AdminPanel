@@ -183,7 +183,7 @@
                                                                                     {% endif %}
                                                                                     
                                                                                     <td>
-                                                                                        <a class="btn btn-xs btn-default btn-customer" data-customer-id="" data-toggle="modal" data-target="#modal-inquiry">استعلام حساب</a>
+                                                                                        <a id="myBtn" class="btn btn-xs btn-default btn-customer" data-buyer="{{ item.obj_item_id }}" data-toggle="modal" data-target="#modal-inquiry">استعلام حساب</a>
                                                                                         
                                                                                         <div class="btn-group" role="group">
                                                                                             <button id="btnGroupDropX" type="button" class="btn-xs btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -257,6 +257,7 @@
                                     <form method="POST" action="{% url 'customer:customerindexAll' %}">
                                         {% csrf_token %}
                                         <div class="modal-body">
+                                            <input id="hiddenInput" type="hidden" name="buyer" value="">
                                             <input type="hidden" value="{{request.user.user_id}}" name="register" class="customer_id">
                                             <div class="form-group form-group-sm row">
                                                 <div class="col-sm-8">
@@ -440,8 +441,24 @@
         <!-- begin:: Demo Toolbar -->
 
         <!-- end:: Demo Toolbar -->
-
-
+        <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            // Get the anchor tag element by its id
+            const myBtn = document.getElementById("myBtn");
+          
+            // Add a click event listener to the anchor tag
+            myBtn.addEventListener("click", function() {
+              // Get the data-buyer attribute from the anchor tag
+              const buyer = this.getAttribute("data-buyer");
+          
+              // Get the hidden input element by its id
+              const hiddenInput = document.getElementById("hiddenInput");
+          
+              // Set the value of the hidden input
+              hiddenInput.value = buyer;
+            });
+          });
+        </script>
         <!-- begin::Global Config(global config for global JS sciprts) -->
         {% include "partials/script.html" %}
 
