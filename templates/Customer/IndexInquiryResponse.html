@@ -100,7 +100,7 @@
                                                                                     {% if inquiry.1.city_id == None %}
                                                                                     <th></th>
                                                                                     {% else %}
-                                                                                    <th>{{inquiry.1.city_id}}</th>
+                                                                                    <th>{{inquiry.1.city_id|id_to_city}}</th>
                                                                                     {% endif %}
                                                                                     {% if inquiry.1.phone == None %}
                                                                                     <th></th>
