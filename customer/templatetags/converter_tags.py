@@ -55,6 +55,7 @@ def subtract(item):
     return (item.amount - item.sended)
 @register.filter
 def id_to_city(item):
+    item=str(item) 
     id_dic = {
         '999002001':'سبزوار',
         '999002002':'تهران','999001002':'تهران',
@@ -62,9 +63,9 @@ def id_to_city(item):
         '999002024':'اسفراین',
         }
     if item in id_dic.keys():
-        return id_dic[item]
+            return id_dic[item]
     else:
-        return ""
+        return "شهر مورد نظر یافت نشد ."
     
 @register.filter(name='get_attribute')
 def get_attribute(obj, attribute_name):
