@@ -124,6 +124,7 @@ def customer_index_all(request):
         else:
             return " wrong"
     else:
+
         # Get distinct obj_item_ids with maximum values for each field
         distinct_records = CustomerSva.objects.all()
         
@@ -139,6 +140,7 @@ def customer_index_all(request):
         try:
             # Get the Page object for the requested page number
             page = paginator.page(page_number)
+
         except EmptyPage:
             # If the requested page number is out of range, display the last page
             page = paginator.page(paginator.num_pages)
@@ -150,7 +152,6 @@ def customer_index_all(request):
         }
        
         return render(request, 'Customer/CustomerIndexAll.html', context=context)
-        # return render(request,'Customer/CustomerIndexAll.html',context=context)
 
 
 
@@ -352,7 +353,6 @@ def index_inquiry_response(request):
     context = {
         'combined_data':combined_data,
     }
-    print(combined_data)
     return render(request, 'Customer/IndexInquiryResponse.html', context=context)
 
 
@@ -372,9 +372,7 @@ def index_inquiry(request):
         print(request.POST)
         return redirect('customer:IndexInquiry')
     else:
-
         inquiries = Inquiry.objects.filter(confirm_status__isnull=True) 
-        print(inquiries) 
         inquiry_buyer = inquiries.values('buyer')   
         customer_data = CustomerSva.objects.filter(obj_item_id__in = inquiry_buyer)
         combined_data = list(zip(inquiries,customer_data))
