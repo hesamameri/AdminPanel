@@ -266,11 +266,15 @@
                                                     <a class="badge badge-primary text-white badge-sm">
                                                         دریافت از مشتری
                                                     </a>
-
-
-                                                    <a class="badge badge-info text-white badge-sm">
+                                                    <a class="badge badge-primary text-white badge-sm" data-customer-id=""  data-toggle="modal" data-target="#modal-pre-factor"> 
                                                         پیش خرید
                                                     </a>
+
+
+
+                                                    <!-- <a class="badge badge-info text-white badge-sm">
+                                                        پیش خرید
+                                                    </a> -->
 
 
                                                     <a class="badge badge-danger text-white badge-sm">
@@ -292,6 +296,43 @@
                                    
                                 </div>
                             </div>
+                            <div class="modal fade" id="modal-pre-factor">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h4 class="modal-title">پیش خرید</h4>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <form method="POST" action="#" autocomplete="off">
+                                                <input type="hidden" name="customer_id" class="customer_id">
+                                                <div class="form-group">
+                                                    <a href="#" id="new-pre-factor-row">ردیف جدید</a>
+                                                    <div id="pre-factor-row">
+                                                        <div class="row rtl" style="padding-top: 10px">
+                                                            <select class="form-control select2bs4 rtl text-right col-md-8" style="width: 100%;" name="product_id[]" data-placeholder="محصول" data-allow-clear="true">
+                                                                 for itm in contract_items
+                                                                    <option value="{{ itm.obj_item_id }}">itm.name </option>
+                                                                 endfor 
+                                                            </select>
+                                                            <select class="form-control select2bs4 rtl text-right col-md-3" style="width: 100%;" name="amount[]" data-placeholder="تعداد" data-allow-clear="true">
+                                                                 for itm in range(1, 11) 
+                                                                    <option value="{{ itm }}"> itm </option>
+                                                                 endfor 
+                                                            </select>
+                                                            <a href="#" class="pre-factor-delete-row btn btn-block col-md-1 btn-danger">X</a>
+                                                        </div>
+                                                    </div>
+                                                    <input type="submit" value="ثبت" class="btn btn-block btn-success" style="margin-top: 30px;">
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
                         </div>
 
                         <!-- end:: Content -->

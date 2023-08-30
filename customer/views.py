@@ -344,11 +344,11 @@ def customer_payment_confirms(request):
 @login_required(login_url='Administrator:login_view')
 @permission_required('ROLE_PERSONEL','ROLE_ADMIN')
 def index_inquiry_response(request):
-    inquiries = Inquiry.objects.all()
+    inquiries = Inquiry.objects.filter(shower__isnull=True)    
     buyer_ids = Inquiry.objects.values_list('buyer_id',flat=True)
     factors = Factor.objects.filter(buyer_id__in=buyer_ids)
     factor_ids = factors.values_list('factor_id')
-    factor_addresses = FactorAddress.objects.filter(factor_id__in=factor_ids).values('phone','mobile', 'city_id', 'address')
+    factor_addresses = FactorAddress.objects.filter(factor_id__in=factor_ids).values('factor','phone','mobile', 'city_id', 'address')
     combined_data = list(zip(inquiries,factor_addresses))
     context = {
         'combined_data':combined_data,
@@ -369,13 +369,13 @@ def index_inquiry(request):
         inquiry.confirm_desc = request.POST.get('confirm_desc')
         inquiry.confirm_status = request.POST.get('confirm_status')
         inquiry.save()
-        print(request.POST)
+        # print(request.POST)
         return redirect('customer:IndexInquiry')
     else:
         inquiries = Inquiry.objects.filter(confirm_status__isnull=True) 
-        print(inquiries)
+        # print(inquiries)
         inquiry_buyer = inquiries.values('buyer') 
-        print(inquiry_buyer)  
+        # print(inquiry_buyer)  
         customer_data = CustomerSva.objects.filter(obj_item_id__in = inquiry_buyer)
         combined_data = list(zip(inquiries,customer_data))
         context = {
