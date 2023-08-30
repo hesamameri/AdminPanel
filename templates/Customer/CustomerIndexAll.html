@@ -179,14 +179,11 @@
                                                                                     {% if item.mobile == None %}
                                                                                     <td></td>
                                                                                     {% else%}
-                                                                                    <td>{{item.mobile}}</td>
+                                                                                    <td>{{item.mobile}} </td>
                                                                                     {% endif %}
                                                                                     
                                                                                     <td>
-                                                                                        <a id="myBtn" class="btn btn-xs btn-default btn-customer" data-buyer="{{ item.obj_item_id }}" data-toggle="modal" data-target="#modal-inquiry">استعلام حساب</a>
-                                                                                        
-                                                                                        <div class="btn-group" role="group">
-                                                                                            <button id="btnGroupDropX" type="button" class="btn-xs btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                                                        <a class="inquiry-link" data-buyer="{{ item.obj_item_id }}" data-toggle="modal" data-target="#modal-inquiry">استعلام حساب</a>                                                                                            <button id="btnGroupDropX" type="button" class="btn-xs btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                                                                             گزارشات
                                                                                             </button>
                                                                                             <div class="dropdown-menu" aria-labelledby="btnGroupDropX">
@@ -257,8 +254,8 @@
                                     <form method="POST" action="{% url 'customer:customerindexAll' %}">
                                         {% csrf_token %}
                                         <div class="modal-body">
-                                            <input id="hiddenInput" type="hidden" name="buyer" value="">
-                                            <input type="hidden" value="{{request.user.user_id}}" name="register" class="customer_id">
+                                            <input id="hiddenInput" type="hidden" name="buyer" value="">    
+                                            <input type="hidden"  name="register" value="{{request.user.user_id}}" >                                     
                                             <div class="form-group form-group-sm row">
                                                 <div class="col-sm-8">
                                                 <select class="form-control select2bs4" style="width: 100%;" name="bank_id" data-placeholder="بانک" data-allow-clear="true">
@@ -378,6 +375,26 @@
                     <!-- begin:: Footer -->
                     {% include "partials/footer.html" %}
 
+                    <!-- <script>
+                        document.addEventListener("DOMContentLoaded", function() {
+                            // Get the anchor tag element by its id
+                            const myBtn = document.getElementById("myBtn");
+                          
+                            // Add a click event listener to the anchor tag
+                            myBtn.addEventListener("click", function() {
+                              // Get the data-buyer attribute from the anchor tag
+                              const buyer = this.getAttribute("data-buyer");
+                          
+                              // Get the hidden input element by its id
+                              const hiddenInput = document.getElementById("hiddenInput");
+                          
+                              // Set the value of the hidden input
+                              hiddenInput.value = buyer;
+                              
+                            });
+                            console.log(hiddenInput.value);
+                          });
+                        </script> -->
                     <!-- end:: Footer -->
                 </div>
 
@@ -389,46 +406,7 @@
 
         <!-- end:: Root -->
 
-        <!-- begin:: Topbar Offcanvas Panels -->
-
-        <!-- begin::Offcanvas Toolbar Quick Actions -->
-        <!-- <div id="kt_offcanvas_toolbar_quick_actions" class="kt-offcanvas-panel">
-            <div class="kt-offcanvas-panel__head">
-                <h3 class="kt-offcanvas-panel__title">
-                    Quick Actions
-                </h3>
-                <a href="#" class="kt-offcanvas-panel__close" id="kt_offcanvas_toolbar_quick_actions_close"><i
-                        class="flaticon2-delete"></i></a>
-            </div>
-            <div class="kt-offcanvas-panel__body">
-                <div class="kt-grid-nav-v2">
-                    <a href="#" class="kt-grid-nav-v2__item">
-                        <div class="kt-grid-nav-v2__item-icon"><i class="flaticon2-box"></i></div>
-                        <div class="kt-grid-nav-v2__item-title">Orders</div>
-                    </a>
-                    <a href="#" class="kt-grid-nav-v2__item">
-                        <div class="kt-grid-nav-v2__item-icon"><i class="flaticon-download-1"></i></div>
-                        <div class="kt-grid-nav-v2__item-title">Uploades</div>
-                    </a>
-                    <a href="#" class="kt-grid-nav-v2__item">
-                        <div class="kt-grid-nav-v2__item-icon"><i class="flaticon2-supermarket"></i></div>
-                        <div class="kt-grid-nav-v2__item-title">Products</div>
-                    </a>
-                    <a href="#" class="kt-grid-nav-v2__item">
-                        <div class="kt-grid-nav-v2__item-icon"><i class="flaticon2-avatar"></i></div>
-                        <div class="kt-grid-nav-v2__item-title">Customers</div>
-                    </a>
-                    <a href="#" class="kt-grid-nav-v2__item">
-                        <div class="kt-grid-nav-v2__item-icon"><i class="flaticon2-list"></i></div>
-                        <div class="kt-grid-nav-v2__item-title">Blog Posts</div>
-                    </a>
-                    <a href="#" class="kt-grid-nav-v2__item">
-                        <div class="kt-grid-nav-v2__item-icon"><i class="flaticon2-settings"></i></div>
-                        <div class="kt-grid-nav-v2__item-title">Settings</div>
-                    </a>
-                </div>
-            </div>
-        </div> -->
+       
 
         <!-- end::Offcanvas Toolbar Quick Actions -->
 
@@ -441,26 +419,32 @@
         <!-- begin:: Demo Toolbar -->
 
         <!-- end:: Demo Toolbar -->
-        <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            // Get the anchor tag element by its id
-            const myBtn = document.getElementById("myBtn");
-          
-            // Add a click event listener to the anchor tag
-            myBtn.addEventListener("click", function() {
-              // Get the data-buyer attribute from the anchor tag
-              const buyer = this.getAttribute("data-buyer");
-          
-              // Get the hidden input element by its id
-              const hiddenInput = document.getElementById("hiddenInput");
-          
-              // Set the value of the hidden input
-              hiddenInput.value = buyer;
-            });
-          });
-        </script>
+        
         <!-- begin::Global Config(global config for global JS sciprts) -->
+        <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+        
+         
+
+
         {% include "partials/script.html" %}
+        <script>
+            
+        document.addEventListener('DOMContentLoaded', function() {
+            const inquiryLinks = document.querySelectorAll('.inquiry-link');
+            const hiddenInput = document.getElementById('hiddenInput');
+
+            inquiryLinks.forEach(link => {
+                link.addEventListener('click', function() {
+                    const buyerValue = link.getAttribute('data-buyer');
+                    hiddenInput.value = buyerValue;
+                    console.log('Value copied:', buyerValue);
+                });
+            });
+        });
+</script>
+
+
+
 
         <!--end::Page Scripts -->
     </body>

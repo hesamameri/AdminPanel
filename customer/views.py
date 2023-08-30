@@ -90,12 +90,11 @@ def new_customer(request):
 
         return redirect('customer:customerindex')
 
-@cache_page(10)
+# @cache_page(10)
 @login_required(login_url='Administrator:login_view')
 @permission_required('ROLE_PERSONEL','ROLE_ADMIN')
 def customer_index_all(request):
     if request.method == 'POST':
-        print(request.POST)
         post_data = {
             'buyer': request.POST.get('buyer'),
             'first_control': 1,
@@ -116,6 +115,7 @@ def customer_index_all(request):
             'reg_dt': datetime.datetime.now()
 
         }
+        print(post_data)
         formInquiry = NewInquiry(post_data)
         if formInquiry.is_valid():
             saved_instance = formInquiry.save()
@@ -357,7 +357,7 @@ def index_inquiry_response(request):
 
 
 
-@cache_page(10)
+# @cache_page(10)
 @login_required(login_url='Administrator:login_view')
 @permission_required('ROLE_PERSONEL','ROLE_ADMIN')
 def index_inquiry(request):
@@ -373,7 +373,9 @@ def index_inquiry(request):
         return redirect('customer:IndexInquiry')
     else:
         inquiries = Inquiry.objects.filter(confirm_status__isnull=True) 
-        inquiry_buyer = inquiries.values('buyer')   
+        print(inquiries)
+        inquiry_buyer = inquiries.values('buyer') 
+        print(inquiry_buyer)  
         customer_data = CustomerSva.objects.filter(obj_item_id__in = inquiry_buyer)
         combined_data = list(zip(inquiries,customer_data))
         context = {
