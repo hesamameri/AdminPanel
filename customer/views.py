@@ -3,7 +3,7 @@ import datetime
 from django.shortcuts import redirect, render
 from django.db.models import F
 from customer.templatetags.converter_tags import subtract
-from .models import Factor, FactorAddress, FactorPayway, ObjItem, ObjItemSpec, ObjSpec, VendorBuyerSVA, VendorBuyerSubSVA
+from .models import Factor, FactorAddress, FactorPayway, ObjItem, ObjItemSpec, ObjSend, ObjSpec, VendorBuyerSVA, VendorBuyerSubSVA
 from .models import CustomerSubSVA, CustomerSva, FactorComment, FactorDocument, FactorItem, FactorSVA, ObjItemSVA, ShopCustomerCount
 from django.core.paginator import Paginator, EmptyPage
 from django.db.models import Q
@@ -232,12 +232,15 @@ def customer_factor_assessment(request):
     return render(request,'Customer/CustomerFactorAssessment.html')
 
 
-@cache_page(10)
+# @cache_page(10)
 @login_required(login_url='Administrator:login_view')
 @permission_required('ROLE_PERSONEL','ROLE_ADMIN')
 def factor_send_index(request):
-    
-    return render(request,'Customer/FactorSendIndex.html')
+    sent_index = ObjSend.objects.all()
+    context = {
+        'sents':sent_index,
+    }
+    return render(request,'Customer/FactorSendIndex.html',context=context)
 
 
 # @cache_page(10)
@@ -362,7 +365,10 @@ def index_inquiry_response(request):
 @permission_required('ROLE_PERSONEL','ROLE_ADMIN')
 def index_inquiry(request):
     if request.method == 'POST':
+        print(request.POST)
         inquiry_id = request.POST.get('inquiry_id')
+        if inquiry_id == '':
+            print("its empty")
         inquiry = Inquiry.objects.get(pk=inquiry_id)
         inquiry.sms_inquiry = request.POST.get('sms_inquiry')
         inquiry.indirect_inquiry = request.POST.get('indirect_inquiry')

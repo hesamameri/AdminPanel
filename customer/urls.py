@@ -12,7 +12,7 @@ urlpatterns = [
     path('customerconfaccountlt', views.customer_confirm_accountlist, name='CustomerConfirmAccountList'),
     path('customerconfirmsalelist', views.customer_confirm_salelist, name='CustomerConfirmSaleList'),
     path('customerfactorassessment', views.customer_factor_assessment, name='CustomerFactorAssessment'),
-    path('factorsendindex', views.factor_send_index, name='FactorSendIndex'),
+ 
     path('customerpaymentconfirm', views.customer_payment_confirm, name='CustomerPaymentConfirm'),
     path('receiptindex', views.receipt_index, name='ReceiptIndex'),
     path('receiptlist', views.receipt_list, name='ReceiptList'),
@@ -22,7 +22,8 @@ urlpatterns = [
     path('creditlist', views.credit_list, name='CreditList'),
     path('receiptconfirm', views.receipt_confirm, name='ReceiptConfirm'),
     path('prefroma', views.prefroma, name='Prefroma'),
-
+    
+    path('factorsendindex', views.factor_send_index, name='FactorSendIndex'),
     path('customerfactorsendassigndriver', views.customerfactor_sendassigndriver, name='CustomerFactorSendAssignDriver'),
     path('customerfactorsendstatus', views.customerfactor_sendstatus, name='CustomerFactorSendStatus'),
     path('customerfactorservicedoc', views.customerfactor_servicedoc, name='CustomerFactorServiceDoc'),

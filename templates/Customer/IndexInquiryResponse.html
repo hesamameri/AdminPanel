@@ -119,10 +119,14 @@
                                                                                     {% endif %}
                                                                                     {% if inquiry.0.confirm_status == 'CONFIRM' %}
                                                                                     <th> تائید</th>
-                                                                                    {% elif inquiry.0.confirm_status == None %}
-                                                                                    <th>نامشخص</th>
-                                                                                    {% else %}
+                                                                                    {% elif inquiry.0.confirm_status == 'REJECT' %}
                                                                                     <th>رد</th>
+                                                                                    {% elif inquiry.0.confirm_status == 'BACK' %}
+                                                                                    <th>برگشت</th>
+                                                                                    {% elif inquiry.0.confirm_status == 'COND_CONFIRM' %}
+                                                                                    <th>تایید مشروط</th>
+                                                                                    {% else %}
+                                                                                    <th>نامشخص</th>
                                                                                     {% endif %}
                                                                                     {% if inquiry.0.confirm_status == 'REJECT' or inquiry.1.factor.reg_status == 'REJECT' %}
                                                                                     <td>
