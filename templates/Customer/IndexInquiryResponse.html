@@ -56,7 +56,7 @@
                                     <div class="container-fluid">
                                     <div class="row mb-2">
                                         <div class="col-sm-12">
-                                            <ol class="breadcrumb float-sm-right ">
+                                            <ol class="breadcrumb float-sm ">
                                                 <li class="breadcrumb-item active">پاسخ استعلام</li>
                                                 <li class="breadcrumb-item">مشتریان</li>
                                             </ol>
@@ -130,17 +130,25 @@
                                                                                     {% endif %}
                                                                                     {% if inquiry.0.confirm_status == 'REJECT' or inquiry.1.factor.reg_status == 'REJECT' %}
                                                                                     <td>
-                                                                                        <button class="btn btn-success btn-sm btn-disabled btn-customer" disabled>ثبت فاکتور</button>
-                                                                                        
-                                                                                        <a class="btn btn-danger btn-xs" href="#">مشاهده شد</a>
+                                                                                        <form action="{% url 'customer:IndexInquiryResponse' %}" method="post">
+                                                                                            {% csrf_token %}
+                                                                                            <input type="hidden" name="inquiry_id" value="{{ inquiry.0.inquiry_id }}">
+                                                                                            <button class="btn btn-success btn-sm btn-disabled btn-customer" disabled>ثبت فاکتور</button>
+                
+                                                                                            <input class="btn btn-danger btn-xs" type="submit" name="markAsViewed" value="مشاهده شد">
+                                                                                        </form>
                                                                                     </td>
                                                                                     {% else %}
                                                                                     <td>
-                                                                                        
-                                                                                            <a class="btn btn-success btn-xs" href="#">ثبت فاکتور</a>
+                                                                                        <form action="{% url 'customer:IndexInquiryResponse' %}" method="post">
+                                                                                            {% csrf_token %}
+                                                                                            <!-- <a class="btn btn-success btn-xs" href="#">ثبت فاکتور</a> -->
+                                                                                            <input type="hidden" name="inquiry_id" value="{{ inquiry.0.inquiry_id }}">
+                                                                                            <input class="btn btn-success btn-xs" type="submit" name="submitInvoice" value="ثبت فاکتور">
                                                                                             <!-- <button class="btn btn-success btn-sm btn-disabled btn-customer" disabled>ثبت فاکتور</button> -->
-                                                                                        
-                                                                                            <a class="btn btn-danger btn-xs" href="#">مشاهده شد</a>
+                                                                                            <input class="btn btn-danger btn-xs" type="submit" name="markAsViewed" value="مشاهده شد">
+                                                                                            <!-- <a class="btn btn-danger btn-xs" href="#">مشاهده شد</a> -->
+                                                                                        </form>
                                                                                     </td>
                                                                                     {% endif %}
                                                                                 </tr>

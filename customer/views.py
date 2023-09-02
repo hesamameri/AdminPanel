@@ -2,6 +2,7 @@ from datetime import timezone
 import datetime
 from django.shortcuts import redirect, render
 from django.db.models import F
+from django.utils import timezone
 from customer.templatetags.converter_tags import subtract
 from .models import Factor, FactorAddress, FactorPayway, ObjItem, ObjItemSpec, ObjSend, ObjSpec, VendorBuyerSVA, VendorBuyerSubSVA
 from .models import CustomerSubSVA, CustomerSva, FactorComment, FactorDocument, FactorItem, FactorSVA, ObjItemSVA, ShopCustomerCount
@@ -192,6 +193,7 @@ def factor_index(request):
 @login_required(login_url='Administrator:login_view')
 @permission_required('ROLE_PERSONEL','ROLE_ADMIN')
 def customer_confirm_accountlist(request):
+    
     vendor_detail =  VendorBuyerSubSVA.get_all_merged_data()
     obj_item_ids = vendor_detail.values_list('obj_item_id', flat=True)
     vendor_person_detail = CustomerSva.objects.filter(obj_item_id__in = obj_item_ids)
@@ -347,16 +349,38 @@ def customer_payment_confirms(request):
 @login_required(login_url='Administrator:login_view')
 @permission_required('ROLE_PERSONEL','ROLE_ADMIN')
 def index_inquiry_response(request):
-    inquiries = Inquiry.objects.filter(shower__isnull=True)    
-    buyer_ids = Inquiry.objects.values_list('buyer_id',flat=True)
-    factors = Factor.objects.filter(buyer_id__in=buyer_ids)
-    factor_ids = factors.values_list('factor_id')
-    factor_addresses = FactorAddress.objects.filter(factor_id__in=factor_ids).values('factor','phone','mobile', 'city_id', 'address')
-    combined_data = list(zip(inquiries,factor_addresses))
-    context = {
-        'combined_data':combined_data,
-    }
-    return render(request, 'Customer/IndexInquiryResponse.html', context=context)
+    if request.method == 'POST':
+        
+        inquiry_number = request.POST.get('inquiry_id')
+        
+        if request.POST.get('submitInvoice'):
+            item = Inquiry.objects.get(inquiry_id = inquiry_number)
+            print("this is SSSSSSSSSSSS")
+            return redirect('customer:IndexInquiryResponse')
+
+        elif request.POST.get('markAsViewed'):
+            item = Inquiry.objects.get(inquiry_id = inquiry_number)
+            item.shower = request.user.user_id
+            item.show_dt = timezone.now()
+            item.save()
+            print("TTTTTTTTTTTTTTTTT")
+            return redirect('customer:IndexInquiryResponse')
+
+        else:
+            print("cooooool")
+            return redirect('customer:IndexInquiryResponse')
+    else:
+        inquiries = Inquiry.objects.filter(shower__isnull=True) 
+        # print(inquiries[0].inquiry_id)   
+        buyer_ids = Inquiry.objects.values_list('buyer_id',flat=True)
+        factors = Factor.objects.filter(buyer_id__in=buyer_ids)
+        factor_ids = factors.values_list('factor_id')
+        factor_addresses = FactorAddress.objects.filter(factor_id__in=factor_ids).values('factor','phone','mobile', 'city_id', 'address')
+        combined_data = list(zip(inquiries,factor_addresses))
+        context = {
+            'combined_data':combined_data,
+        }
+        return render(request, 'Customer/IndexInquiryResponse.html', context=context)
 
 
 
@@ -374,9 +398,11 @@ def index_inquiry(request):
         inquiry.indirect_inquiry = request.POST.get('indirect_inquiry')
         inquiry.confirm_desc = request.POST.get('confirm_desc')
         inquiry.confirm_status = request.POST.get('confirm_status')
+        inquiry.confirmer = request.user.user_id
+        inquiry.confirm_dt = datetime.datetime.now()
         inquiry.save()
         # print(request.POST)
-        return redirect('customer:IndexInquiry')
+        return redirect('customer:IndexInquiryResponse')
     else:
         inquiries = Inquiry.objects.filter(confirm_status__isnull=True) 
         # print(inquiries)
