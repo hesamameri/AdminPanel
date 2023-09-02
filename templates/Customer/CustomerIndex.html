@@ -105,12 +105,12 @@
 													</div>
                                                     <div class="col-lg-4 form-group-sub">
 																<label class="form-control-label kt-font-dark kt-font-boldest">شهر </label>
-																<select class="form-control" name="city_id">
+																<select class="form-control" name="city">
 																	<option >انتخاب کنید</option>
-																	<option value="999002001">تهران</option>
+																	<option value="999002002">تهران</option>
 																	<option value="999002001">سبزوار</option>
-																	<option value="999002001">کرج</option>
-																	<option value="999002001">جوین</option>
+																	<option value="999002003">کرج</option>
+																	<option value="999002024">اسفراین</option>
 															
 																</select>
 															</div>
@@ -150,7 +150,7 @@
 														<label class="kt-font-dark kt-font-boldest">جنسیت</label>
 														<div class="kt-radio-inline">
 															<label class="kt-radio kt-radio--solid">
-																<input type="radio" name="sex_id" value="999015001"> مرد
+																<input type="radio" name="sex" value="999015001"> مرد
 																<span></span>
 															</label>
 															<label class="kt-radio kt-radio--solid">
@@ -232,9 +232,9 @@
                                                 <td>{{ item.obj_item_id }}</td>
                                                 <td>{{item.name}}</td>
                                                 {% if item.city_id == None %}
-                                                <td></td>
+                                                <td>خالیه</td>
                                                 {% else %}
-                                                <td>{{item.city_id|id_to_city}}</td>
+                                                <td>{{item.city_id}}</td>
                                                 {% endif %}
                                                 {% if item.codemeli == None %}
                                                 <td></td>

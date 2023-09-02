@@ -40,7 +40,7 @@ def customer_index(request):
     # except EmptyPage:
     #     # If the requested page number is out of range, display the last page
     #     page = paginator.page(paginator.num_pages)
-
+    
     context = {
         'page': page,
     }
@@ -52,7 +52,7 @@ def customer_index(request):
 @permission_required('ROLE_PERSONEL','ROLE_ADMIN')
 def new_customer(request):
     if request.method == 'POST':
-        print(request.POST)
+        print(dict(request.POST.items()))
         obj_id = 10301
         obj_item_data = {
             'obj_id': 10301,
@@ -75,6 +75,7 @@ def new_customer(request):
             matching_spec = obj_specs.filter(name=key).first()
             print(matching_spec)
             if matching_spec:
+                print(value)
                 # Create a new ObjItemSpec object
                 ObjItemSpec.objects.create(
                     obj_spec=matching_spec, # Use the actual object, not just its ID
@@ -82,13 +83,15 @@ def new_customer(request):
                     val=value
                     # ... other required fields ...
                 )
+        
         return redirect('customer:customerindex')
 
         # formObjItemSpec = NewObjItemSpec(obj_item_spec_data)
         # if formObjItemSpec.is_valid():
         #     formObjItemSpec.save()
     else:
-
+        last_item = CustomerSva.objects.last().city_id
+        print(last_item)
         return redirect('customer:customerindex')
 
 # @cache_page(10)
@@ -193,7 +196,7 @@ def factor_index(request):
 @login_required(login_url='Administrator:login_view')
 @permission_required('ROLE_PERSONEL','ROLE_ADMIN')
 def customer_confirm_accountlist(request):
-    
+
     vendor_detail =  VendorBuyerSubSVA.get_all_merged_data()
     obj_item_ids = vendor_detail.values_list('obj_item_id', flat=True)
     vendor_person_detail = CustomerSva.objects.filter(obj_item_id__in = obj_item_ids)
