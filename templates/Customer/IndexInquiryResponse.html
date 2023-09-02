@@ -119,15 +119,30 @@
                                                                                     {% endif %}
                                                                                     {% if inquiry.0.confirm_status == 'CONFIRM' %}
                                                                                     <th> تائید</th>
+                                                                                    {% elif inquiry.0.confirm_status == 'REJECT' %}
+                                                                                    <th>رد</th>
+                                                                                    {% elif inquiry.0.confirm_status == 'BACK' %}
+                                                                                    <th>برگشت</th>
+                                                                                    {% elif inquiry.0.confirm_status == 'COND_CONFIRM' %}
+                                                                                    <th>تایید مشروط</th>
                                                                                     {% else %}
-                                                                                    <th>عدم تائید</th>
+                                                                                    <th>نامشخص</th>
                                                                                     {% endif %}
+                                                                                    {% if inquiry.0.confirm_status == 'REJECT' or inquiry.1.factor.reg_status == 'REJECT' %}
                                                                                     <td>
-                                                                                            <a class="btn btn-success btn-xs" href="#">ثبت فاکتور</a>
-                                                                                            <button class="btn btn-success btn-sm btn-disabled btn-customer" disabled>ثبت فاکتور</button>
+                                                                                        <button class="btn btn-success btn-sm btn-disabled btn-customer" disabled>ثبت فاکتور</button>
                                                                                         
                                                                                         <a class="btn btn-danger btn-xs" href="#">مشاهده شد</a>
                                                                                     </td>
+                                                                                    {% else %}
+                                                                                    <td>
+                                                                                        
+                                                                                            <a class="btn btn-success btn-xs" href="#">ثبت فاکتور</a>
+                                                                                            <!-- <button class="btn btn-success btn-sm btn-disabled btn-customer" disabled>ثبت فاکتور</button> -->
+                                                                                        
+                                                                                            <a class="btn btn-danger btn-xs" href="#">مشاهده شد</a>
+                                                                                    </td>
+                                                                                    {% endif %}
                                                                                 </tr>
                                                                             {% endfor %}
                                                                         <tbody>
@@ -142,6 +157,7 @@
                                     </div>
                                 </div>
                             </div>
+                            
                         </div>
 
                         <!-- end:: Content -->

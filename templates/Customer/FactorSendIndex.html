@@ -91,8 +91,9 @@
                                                                             </tr>
                                                                         </thead>
                                                                         <tbody>
+                                                                            {% for item in sents %}
                                                                                 <tr>
-                                                                                    <td></td>
+                                                                                    <td>{{item.drive_status_desc}}</td>
                                                                                     <td></td>
                                                                                     <td></td>
                                                                                     <td></td>
@@ -109,6 +110,8 @@
                                                                                                 <a href="#" class="btn btn-primary btn-xs btn-class">تماس مشتری</a>
                                                                                    
                                                                                     </td>
+                                                                                </tr>
+                                                                            {% endfor %}
                                                                         <tbody>
                                                                     </table>
                                                                 </div>

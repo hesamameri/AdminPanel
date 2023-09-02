@@ -3,7 +3,7 @@ import datetime
 from django.shortcuts import redirect, render
 from django.db.models import F
 from customer.templatetags.converter_tags import subtract
-from .models import Factor, FactorAddress, FactorPayway, ObjItem, ObjItemSpec, ObjSpec, VendorBuyerSVA, VendorBuyerSubSVA
+from .models import Factor, FactorAddress, FactorPayway, ObjItem, ObjItemSpec, ObjSend, ObjSpec, VendorBuyerSVA, VendorBuyerSubSVA
 from .models import CustomerSubSVA, CustomerSva, FactorComment, FactorDocument, FactorItem, FactorSVA, ObjItemSVA, ShopCustomerCount
 from django.core.paginator import Paginator, EmptyPage
 from django.db.models import Q
@@ -90,12 +90,11 @@ def new_customer(request):
 
         return redirect('customer:customerindex')
 
-@cache_page(10)
+# @cache_page(10)
 @login_required(login_url='Administrator:login_view')
 @permission_required('ROLE_PERSONEL','ROLE_ADMIN')
 def customer_index_all(request):
     if request.method == 'POST':
-        print(request.POST)
         post_data = {
             'buyer': request.POST.get('buyer'),
             'first_control': 1,
@@ -116,6 +115,7 @@ def customer_index_all(request):
             'reg_dt': datetime.datetime.now()
 
         }
+        print(post_data)
         formInquiry = NewInquiry(post_data)
         if formInquiry.is_valid():
             saved_instance = formInquiry.save()
@@ -124,6 +124,7 @@ def customer_index_all(request):
         else:
             return " wrong"
     else:
+
         # Get distinct obj_item_ids with maximum values for each field
         distinct_records = CustomerSva.objects.all()
         
@@ -139,6 +140,7 @@ def customer_index_all(request):
         try:
             # Get the Page object for the requested page number
             page = paginator.page(page_number)
+
         except EmptyPage:
             # If the requested page number is out of range, display the last page
             page = paginator.page(paginator.num_pages)
@@ -150,7 +152,6 @@ def customer_index_all(request):
         }
        
         return render(request, 'Customer/CustomerIndexAll.html', context=context)
-        # return render(request,'Customer/CustomerIndexAll.html',context=context)
 
 
 
@@ -231,12 +232,15 @@ def customer_factor_assessment(request):
     return render(request,'Customer/CustomerFactorAssessment.html')
 
 
-@cache_page(10)
+# @cache_page(10)
 @login_required(login_url='Administrator:login_view')
 @permission_required('ROLE_PERSONEL','ROLE_ADMIN')
 def factor_send_index(request):
-    
-    return render(request,'Customer/FactorSendIndex.html')
+    sent_index = ObjSend.objects.all()
+    context = {
+        'sents':sent_index,
+    }
+    return render(request,'Customer/FactorSendIndex.html',context=context)
 
 
 # @cache_page(10)
@@ -343,39 +347,41 @@ def customer_payment_confirms(request):
 @login_required(login_url='Administrator:login_view')
 @permission_required('ROLE_PERSONEL','ROLE_ADMIN')
 def index_inquiry_response(request):
-    inquiries = Inquiry.objects.all()
+    inquiries = Inquiry.objects.filter(shower__isnull=True)    
     buyer_ids = Inquiry.objects.values_list('buyer_id',flat=True)
     factors = Factor.objects.filter(buyer_id__in=buyer_ids)
     factor_ids = factors.values_list('factor_id')
-    factor_addresses = FactorAddress.objects.filter(factor_id__in=factor_ids).values('phone','mobile', 'city_id', 'address')
+    factor_addresses = FactorAddress.objects.filter(factor_id__in=factor_ids).values('factor','phone','mobile', 'city_id', 'address')
     combined_data = list(zip(inquiries,factor_addresses))
     context = {
         'combined_data':combined_data,
     }
-    print(combined_data)
     return render(request, 'Customer/IndexInquiryResponse.html', context=context)
 
 
 
-@cache_page(10)
+# @cache_page(10)
 @login_required(login_url='Administrator:login_view')
 @permission_required('ROLE_PERSONEL','ROLE_ADMIN')
 def index_inquiry(request):
     if request.method == 'POST':
+        print(request.POST)
         inquiry_id = request.POST.get('inquiry_id')
+        if inquiry_id == '':
+            print("its empty")
         inquiry = Inquiry.objects.get(pk=inquiry_id)
         inquiry.sms_inquiry = request.POST.get('sms_inquiry')
         inquiry.indirect_inquiry = request.POST.get('indirect_inquiry')
         inquiry.confirm_desc = request.POST.get('confirm_desc')
         inquiry.confirm_status = request.POST.get('confirm_status')
         inquiry.save()
-        print(request.POST)
+        # print(request.POST)
         return redirect('customer:IndexInquiry')
     else:
-
         inquiries = Inquiry.objects.filter(confirm_status__isnull=True) 
-        print(inquiries) 
-        inquiry_buyer = inquiries.values('buyer')   
+        # print(inquiries)
+        inquiry_buyer = inquiries.values('buyer') 
+        # print(inquiry_buyer)  
         customer_data = CustomerSva.objects.filter(obj_item_id__in = inquiry_buyer)
         combined_data = list(zip(inquiries,customer_data))
         context = {
