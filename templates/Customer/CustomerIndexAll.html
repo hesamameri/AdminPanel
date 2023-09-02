@@ -183,7 +183,7 @@
                                                                                     {% endif %}
                                                                                     
                                                                                     <td>
-                                                                                        <a class="inquiry-link" data-buyer="{{ item.obj_item_id }}" data-toggle="modal" data-target="#modal-inquiry">استعلام حساب</a>                                                                                            <button id="btnGroupDropX" type="button" class="btn-xs btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                                                        <a class="inquiry-link" style="border: 0.5px solid rgb(186, 183, 183);" data-buyer="{{ item.obj_item_id }}" data-toggle="modal" data-target="#modal-inquiry">استعلام حساب</a>                                                                                            <button id="btnGroupDropX" type="button" class="btn-xs btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                                                                             گزارشات
                                                                                             </button>
                                                                                             <div class="dropdown-menu" aria-labelledby="btnGroupDropX">
@@ -198,8 +198,8 @@
                                                                                             </div>
                                                                                         </div>
                                                                                         
-                                                                                         <a class="btn btn-default btn-customer" data-customer-id="" data-toggle="modal" data-target="#modal-debit-return">برگشت بستانکاری</a> 
-                                                                                         <a class="btn btn-default btn-customer" data-customer-id="" data-toggle="modal" data-target="#modal-cheque-return">عودت چک</a> 
+                                                                                         <!-- <a class="btn btn-default btn-customer" data-customer-id="" data-toggle="modal" data-target="#modal-debit-return">برگشت بستانکاری</a> 
+                                                                                         <a class="btn btn-default btn-customer" data-customer-id="" data-toggle="modal" data-target="#modal-cheque-return">عودت چک</a>  -->
                                                                                     </td>
                                                                                     <!-- <td>
                                                                                          <div class="btn-group">
@@ -215,11 +215,23 @@
                                                                             
                                                                     </table>
                                                                     <div class="text-center">
-                                                                        <a class="btn btn-default" href="#">اولین</a>
-                                                                        <a class="btn btn-default" href="#">قبلی</a>
-                                                                        <a class="btn btn-default" href="#">بعدی</a>
-                                                                        <a class="btn btn-default" href="#">آخرین</a>
+                                                                        {% for page_num in page.paginator.page_range %}
+                                                                            {% if page_num == page.number %}
+                                                                                <span class="btn btn-default">{{ page_num }}</span>
+                                                                            {% else %}
+                                                                                <a class="btn btn-default" href="?page={{ page_num }}&customer_id={{ item.0.obj_item_id }}">{{ page_num }}</a>
+                                                                            {% endif %}
+                                                                        {% endfor %}
+                                                                        
+                                                                        {% if page.has_next %}
+                                                                            <a class="btn btn-default" href="?page={{ page.next_page_number }}&customer_id={{ item.0.obj_item_id }}">بعدی</a>
+                                                                        {% endif %}
+                                                                        
+                                                                        {% if page.paginator.page_range|last != page.number %}
+                                                                            <a class="btn btn-default" href="?page={{ page.paginator.num_pages }}&customer_id={{ item.0.obj_item_id }}">آخرین</a>
+                                                                        {% endif %}
                                                                     </div>
+                                                                    
                                                                     
                                                                     
                                                                     
