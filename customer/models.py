@@ -3,6 +3,7 @@ from django.db import models
 # from Administrator.models import *
 from django.db.models import Case, CharField, Value, When, F, Max
 
+
 class CitySVA(models.Model):
     obj_item_id = models.IntegerField()
     name = models.CharField(max_length=255)

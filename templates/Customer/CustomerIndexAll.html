@@ -110,7 +110,7 @@
                                                         <form role="form">
                                                             <div class="row right">
                                                                 <div class="col-lg-12">
-                                                                    <table class="table table-bordered table-striped dataTables table-hover">
+                                                                    <table class="table table-bordered table-striped dataTables table-hover" id="html_table" width="100%">
                                                                         <thead>
                                                                             <tr>
                                                                                 <th>کد مشتری</th>
@@ -127,7 +127,7 @@
                                                                             {% for item in page %}
                                                                                 <tr>
                                                                                     <td>{{ item.obj_item_id }}</td>
-                                                                                    <td> {{item.title}}
+                                                                                    <td> {{item.name}}
                                                                                         
                                                                                             <br>
                                                                                             
@@ -212,26 +212,17 @@
                                                                                 </tr>
                                                                                 {% endfor %}
                                                                         <tbody>
-                                                                    </table>
-                                                                    
-                                                                    <div class="text-center">
-                                                                   
-                                                                        <a class="btn btn-default" href="#">اولین</a>
-                                                                   
-                                                                        <a class="btn btn-default" href="#">قبلی</a>
-                                                                        <span class=" btn-default">...</span>
-                                                                        
-                                                                                <a class="btn btn-default" href="#"></a>
                                                                             
-                                                                        <a class="btn btn-default disabled"></a>
-                                                                    
-                                                                            <a class="btn btn-default" href="#"></a>
-                                                                        
-                                                                        <span class=" btn-default">...</span>
+                                                                    </table>
+                                                                    <div class="text-center">
+                                                                        <a class="btn btn-default" href="#">اولین</a>
+                                                                        <a class="btn btn-default" href="#">قبلی</a>
                                                                         <a class="btn btn-default" href="#">بعدی</a>
-                                                                    
                                                                         <a class="btn btn-default" href="#">آخرین</a>
                                                                     </div>
+                                                                    
+                                                                    
+                                                                    
                             
                                                                 </div>
                                                             </div>
@@ -427,6 +418,13 @@
 
 
         {% include "partials/script.html" %}
+        <script>
+           
+        </script>
+
+
+
+
         <script>
             
         document.addEventListener('DOMContentLoaded', function() {

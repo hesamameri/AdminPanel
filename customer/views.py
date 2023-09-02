@@ -47,7 +47,7 @@ def customer_index(request):
 
     return render(request, 'Customer/CustomerIndex.html', context=context)
 
-@cache_page(10)
+# @cache_page(10)
 @login_required(login_url='Administrator:login_view')
 @permission_required('ROLE_PERSONEL','ROLE_ADMIN')
 def new_customer(request):
@@ -133,7 +133,7 @@ def customer_index_all(request):
         distinct_records = CustomerSva.objects.all()
         
         banks = ObjItem.objects.filter(obj_item_id__gte=999003010, obj_item_id__lte=999003019)        # Set the number of records to display per page
-        records_per_page = 15
+        records_per_page = 100
         
         # Initialize the Paginator object with the data and the number of records per page
         paginator = Paginator(distinct_records, records_per_page)
@@ -152,6 +152,7 @@ def customer_index_all(request):
         context = {
             'page': page,
             'banks':banks,
+            'paginator': paginator,
 
         }
        
@@ -161,13 +162,13 @@ def customer_index_all(request):
 
 @login_required(login_url='Administrator:login_view')
 @permission_required('ROLE_PERSONEL','ROLE_ADMIN')
-def factor(request):
-    factor_main = Factor.objects.get(factor_id = 64)
-    factor_payway = FactorPayway.objects.filter(factor = 64)
-    factor_address = FactorAddress.objects.get(factor = 64)
-    factor_document = FactorDocument.objects.filter(factor = 64)
-    factor_comment = FactorComment.objects.filter(factor_id = 64)
-    factor_item = FactorItem.objects.filter(factor= 64)
+def factor(request,factor_id):
+    factor_main = Factor.objects.get(factor_id = factor_id)
+    factor_payway = FactorPayway.objects.filter(factor = factor_id)
+    factor_address = FactorAddress.objects.get(factor = factor_id)
+    factor_document = FactorDocument.objects.filter(factor = factor_id)
+    factor_comment = FactorComment.objects.filter(factor_id = factor_id)
+    factor_item = FactorItem.objects.filter(factor= factor_id)
     # factor_main_sva = FactorSVA.objects.get(factor = 64)
     context = {
         'factor_main':factor_main,
@@ -192,19 +193,22 @@ def factor_index(request):
 
     return render(request,'Customer/FactorList.html',context=context)
 
+
+
 # @cache_page(10)
 @login_required(login_url='Administrator:login_view')
 @permission_required('ROLE_PERSONEL','ROLE_ADMIN')
 def customer_confirm_accountlist(request):
 
-    vendor_detail =  VendorBuyerSubSVA.get_all_merged_data()
-    obj_item_ids = vendor_detail.values_list('obj_item_id', flat=True)
-    vendor_person_detail = CustomerSva.objects.filter(obj_item_id__in = obj_item_ids)
-    all_data = zip(vendor_detail,vendor_person_detail)
+    vendor_customers = FactorItemBalanceSVA.objects.all()
+    # all_data = zip(vendor_detail,vendor_person_detail)
     context = {
-        'all_data':all_data,
+        'vendor_customers':vendor_customers,
     }
     return render(request,'Customer/CustomerConfirmAccountList.html',context=context)
+
+
+
 
 # @cache_page(10)
 @login_required(login_url='Administrator:login_view')

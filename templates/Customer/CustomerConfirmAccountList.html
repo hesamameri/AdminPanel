@@ -97,41 +97,40 @@
                                                                         </thead>
                                                                         <tbody>
                                                                                 <tr class="table-">
-                                                                                    {% for vendor in all_data %}
+                                                                                    {% for vc in vendor_customers %}
                                                                                 <tr>
                                                                                     <td></td>
                                                                                     <td>
-                                                                                        {{vendor.0.name}}
+                                                                                        {{vc.customer_name}}
                                                                                         <br>
-                                                                                        {% if vendor.0.credit == None %}
+                                                                                        
                                                                                         <!-- <span class="badge badge-danger" style="font-size: larger;">
                                                                                             مانده اعتبار: ندراد
                                                                                         <span> -->
-                                                                                        {% else %}
                                                                                         <span class="badge badge-danger" style="font-size: larger;">
-                                                                                        مانده اعتبار: {{vendor.0.credit}}
+                                                                                        مانده اعتبار: 
                                                                                         <span>
-                                                                                            {% endif %}
+                                                                                            
                                                                                     </td>
                                                                                     <td></td>
-                                                                                    <td>{{ vendor.0.vendor_buyer_id}}</td>
+                                                                                    <td>{{ vc.customer_name}}</td>
                                                                                     <td></td>
-                                                                                    <td>{{vendor.0.name}}</td>
-                                                                                    {% if vendor.1.codemeli == None %}
+                                                                                    <td>{{vc.name}}</td>
+                                                                                    {% if vc.codemeli == None %}
                                                                                     <td></td>
                                                                                     {% else %}
-                                                                                    <td>{{vendor.1.codemeli}}</td>
+                                                                                    <td>{{vc.1.codemeli}}</td>
                                                                                     {% endif %}
-                                                                                    <th>{{vendor.0.city_id|city_rec}}</th>
-                                                                                    {% if vendor.1.phone == None %}
+                                                                                    <th>{{vc.city_id|id_to_city}}</th>
+                                                                                    {% if vc.1.phone == None %}
                                                                                     <td></td>
                                                                                     {% else %}
-                                                                                    <td>{{vendor.1.phone}}</td>
+                                                                                    <td>{{vc.1.phone}}</td>
                                                                                     {% endif %}
-                                                                                    {% if vendor.1.mobile == None %}
+                                                                                    {% if vc.1.mobile == None %}
                                                                                     <td></td>
                                                                                     {% else %}
-                                                                                    <td>{{vendor.1.mobile}}</td>
+                                                                                    <td>{{vc.1.mobile}}</td>
                                                                                     {% endif %}
                                                                                     <td>
                                                                                         
