@@ -7,6 +7,7 @@ urlpatterns = [
     path('customers/', views.customer_index, name='customerindex'),     # DONE(testphase)
     path('newcustomer', views.new_customer, name='NewCustomer'),
     path('customers/all', views.customer_index_all, name='customerindexAll'),  # DONE(testphase)
+    path('newfactor', views.new_factor, name='NewFactor'),  # DONE(testphase)
     path('factor/<int:factor_id>', views.factor, name='Factor'),
     path('factorlist', views.factor_index, name='FactorList'),                   # DONE(testphase)
     path('customerconfaccountlt', views.customer_confirm_accountlist, name='CustomerConfirmAccountList'),

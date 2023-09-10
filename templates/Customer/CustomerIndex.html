@@ -147,6 +147,7 @@
 
 												<div class="form-group row">
 													<div class="col-lg-3">
+
 														<label class="kt-font-dark kt-font-boldest">جنسیت</label>
 														<div class="kt-radio-inline">
 															<label class="kt-radio kt-radio--solid">
@@ -232,9 +233,9 @@
                                                 <td>{{ item.obj_item_id }}</td>
                                                 <td>{{item.name}}</td>
                                                 {% if item.city_id == None %}
-                                                <td>خالیه</td>
+                                                <td></td>
                                                 {% else %}
-                                                <td>{{item.city_id}}</td>
+                                                <td>{{item.city_id|id_to_city}}</td>
                                                 {% endif %}
                                                 {% if item.codemeli == None %}
                                                 <td></td>

@@ -4,7 +4,7 @@ from django.shortcuts import redirect, render
 from django.db.models import F
 from django.utils import timezone
 from customer.templatetags.converter_tags import subtract
-from .models import Factor, FactorAddress, FactorPayway, ObjItem, ObjItemSpec, ObjSend, ObjSpec, VendorBuyerSVA, VendorBuyerSubSVA
+from .models import CreditSumSVA, DepoSend, Factor, FactorAddress, FactorPayway, ObjItem, ObjItemSpec, ObjSend, ObjSpec, VendorBuyerSVA, VendorBuyerSubSVA
 from .models import CustomerSubSVA, CustomerSva, FactorComment, FactorDocument, FactorItem, FactorSVA, ObjItemSVA, ShopCustomerCount
 from django.core.paginator import Paginator, EmptyPage
 from django.db.models import Q
@@ -23,7 +23,7 @@ from .forms import NewInquiry, NewObjItem,NewObjItemSpec
 @permission_required('ROLE_PERSONEL', 'ROLE_ADMIN')
 def customer_index(request):
 
-    customers = CustomerSva.objects.filter(obj_item_id__gt = 1030200001)
+    customers = CustomerSva.objects.filter(obj_item_id__gt = 1030200001).order_by('obj_item_id')
     page = customers
     # # Set the number of records to display per page
     # records_per_page = 8000
@@ -159,38 +159,62 @@ def customer_index_all(request):
        
         return render(request, 'Customer/CustomerIndexAll.html', context=context)
 
+@login_required(login_url='Administrator:login_view')
+@permission_required('ROLE_PERSONEL','ROLE_ADMIN')
+def new_factor(request):
+    pass
+
 
 
 @login_required(login_url='Administrator:login_view')
 @permission_required('ROLE_PERSONEL','ROLE_ADMIN')
-def factor(request,factor_id):
-    factor_main = Factor.objects.get(factor_id = factor_id)
-    factor_payway = FactorPayway.objects.filter(factor = factor_id)
-    factor_address = FactorAddress.objects.get(factor = factor_id)
-    factor_document = FactorDocument.objects.filter(factor = factor_id)
-    factor_comment = FactorComment.objects.filter(factor_id = factor_id)
-    factor_item = FactorItem.objects.filter(factor= factor_id)
-    # factor_main_sva = FactorSVA.objects.get(factor = 64)
-    context = {
-        'factor_main':factor_main,
-        'factor_payway':factor_payway,
-        'factor_address': factor_address,
-        'factor_document': factor_document,
-        'factor_comment': factor_comment,
-        'factor_item': factor_item,
-        # 'factor_main_sva':factor_main_sva,
-    }
-    
-    return render(request,'Customer/Factor.html',context=context)
+def factor(request,factor_id=None):
+    if request.method == 'POST':
+        pass
+    else:
+        factor_main = Factor.objects.get(factor_id = factor_id)
+        factor_payway = FactorPayway.objects.filter(factor = factor_id)
+        factor_address = FactorAddress.objects.get(factor = factor_id)
+        factor_document = FactorDocument.objects.filter(factor = factor_id)
+        factor_comment = FactorComment.objects.filter(factor_id = factor_id)
+        
+        # inquiry = Inquiry.objects.filter(buyer_id = factor_main.buyer_id)
+        factor_item = FactorItem.objects.filter(factor= factor_id)
+        factor_item_ids = factor_item.values('factor_item_id')
+        factor_depo_data = DepoSend.objects.filter(depo_send_id__in = factor_item_ids)
+        goods = factor_depo_data.values('goods')
+        depo_ids = factor_depo_data.values('depo_id')
+        combined_depo_goods_data = ObjItem.objects.filter(obj_item_id__in = goods).values('name')
+        combined_depo_id_data = ObjItem.objects.filter(obj_item_id__in = depo_ids).values('name')
+        combined_all_depo = list(zip(combined_depo_goods_data,combined_depo_id_data))
+        depo_all = list(zip(factor_depo_data, combined_all_depo))
+        obj_sendings = ObjSend.objects.filter(source_id__in = factor_item_ids)
+        # factor_main_sva = FactorSVA.objects.get(factor = 64)
+        
+
+        context = {
+            'factor_main':factor_main,
+            'factor_payway':factor_payway,
+            'factor_address': factor_address,
+            'factor_document': factor_document,
+            'factor_comment': factor_comment,
+            'factor_item': factor_item,
+            'depo_all':depo_all,
+            'obj_sendings':obj_sendings,
+        }  
+        print(obj_sendings)
+        return render(request,'Customer/Factor.html',context=context)
 
 
 # @cache_page(10)
 @login_required(login_url='Administrator:login_view')
 @permission_required('ROLE_PERSONEL','ROLE_ADMIN')
 def factor_index(request):
-    factor_sva_objects = FactorSVA.objects.all()
-    
-    context = {'factor_sva_objects': factor_sva_objects}
+
+    factor_sva_objects = FactorSVA.objects.all() 
+    context = {
+        'factor_sva_objects': factor_sva_objects
+        }
 
     return render(request,'Customer/FactorList.html',context=context)
 
@@ -203,20 +227,19 @@ def customer_confirm_accountlist(request):
     vendor_customers = FactorItemBalanceSVA.objects.filter(sended__lt=F('amount'))    
     vendor_paths = vendor_customers.values('factor_id')
     vendor_snatch = FactorItem.objects.filter(factor_item_id__in = vendor_paths)
+    vendor_credit = CreditSumSVA.objects.values('vendor_buyer_id','vendor_name','reminded')
     vendor_customers = zip(vendor_customers,vendor_snatch)
+    
     context = {
         'vendor_customers':vendor_customers,
     }
     return render(request,'Customer/CustomerConfirmAccountList.html',context=context)
 
-
-
-
 # @cache_page(10)
 @login_required(login_url='Administrator:login_view')
 @permission_required('ROLE_PERSONEL','ROLE_ADMIN')
 def customer_confirm_salelist(request):
-    
+
     queryset = FactorItemBalanceSVA.objects.all()
     queryfactor_ids= FactorItemBalanceSVA.objects.all().values('factor_id')
     querybuyer_ids= FactorItemBalanceSVA.objects.all().values('buyer_id')
@@ -227,7 +250,7 @@ def customer_confirm_salelist(request):
     # print(conf_city)
     # print(cities)
     context = {
-        'items': [(item, subtract(item)) for item in queryset],
+        'items': [(item, 1) for item in queryset],
     }
 
 

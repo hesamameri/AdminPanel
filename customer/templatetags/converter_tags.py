@@ -25,9 +25,21 @@ def to_jalali(value):
 
     return value
 
+
+@register.filter
+def extract_time(value):
+    if isinstance(value, datetime):
+        return value.strftime("%H:%M:%S")
+    return value
+
+
 @register.filter
 def register_user(value):
-    user = User.objects.get(user_id = value)
+    if value == 1 :
+        return "نامشخص"
+    else:
+
+        user = User.objects.get(user_id = value)
 
     return user.name
 
@@ -50,9 +62,11 @@ def city_rec(id):
     except ObjItem.DoesNotExist:
         return ""
     
-@register.filter
-def subtract(item):
-    return (item.amount - item.sended)
+# @register.filter
+# def subtract(item):
+#     return (item.amount - item.sended)
+
+
 @register.filter
 def id_to_city(item):
     item=str(item) 
@@ -71,3 +85,51 @@ def id_to_city(item):
 @register.filter(name='get_attribute')
 def get_attribute(obj, attribute_name):
     return getattr(obj, attribute_name, None)
+
+
+@register.filter(name='add')
+def custom_add(value, arg):
+    return value + arg
+
+@register.filter(name='multiply')
+def multiply(value, arg):
+    return value * arg
+
+@register.filter(name='subtract')
+def subtract(value, arg):
+    return value - arg
+
+@register.simple_tag
+def multiply_and_subtract(num1, num2, subtract_value):
+    return (num1 * num2) - subtract_value
+
+@register.filter
+def pay_to_way(value):
+    items = {
+        'CASH':'نقدی',
+        'CHEQUE':'چک',
+        'CREDIT':'اعتباری',
+        'OTHER':'سایر',
+        'CARTOCART':'کارت به کارت',
+        'REBATE':'تخفیف',
+        'ATHOME':'درب منزل',
+        'WITHACC':'تسویه با مالی',
+        'CART':'کارتخوان',
+    }
+    if items[value] != None:
+        return items[value]
+    else:
+        return " تعریف نشده"
+
+@register.filter
+def depo_location(item):
+    item = item.lower()
+    depos = {
+
+        'shahriar': 'انبار شهریار',
+        'product': 'محصول',
+        'install': 'نصب',
+        'drive': 'حمل',
+    }
+    return depos[item]
+
