@@ -4,7 +4,8 @@ from django.shortcuts import redirect, render
 from django.db.models import F
 from django.utils import timezone
 from customer.templatetags.converter_tags import subtract
-from .models import CreditSumSVA, DepoSend, Factor, FactorAddress, FactorPayway, ObjItem, ObjItemSpec, ObjSend, ObjSpec, VendorBuyerSVA, VendorBuyerSubSVA
+from ticket.models import Ticket
+from .models import CreditSumSVA, DepoSend, Factor, FactorAddress, FactorPayway, ObjItem, ObjItemSpec, ObjPayment, ObjSend, ObjSpec, PreFactor, VendorBuyerSVA, VendorBuyerSubSVA
 from .models import CustomerSubSVA, CustomerSva, FactorComment, FactorDocument, FactorItem, FactorSVA, ObjItemSVA, ShopCustomerCount
 from django.core.paginator import Paginator, EmptyPage
 from django.db.models import Q
@@ -18,13 +19,21 @@ from django.views.decorators.cache import cache_page
 from django.db.models import F, Sum
 from .models import FactorItem,FactorItemBalanceSVA
 from .forms import NewInquiry, NewObjItem,NewObjItemSpec
-@cache_page(10)
+# @cache_page(10)
 @login_required(login_url='Administrator:login_view')
 @permission_required('ROLE_PERSONEL', 'ROLE_ADMIN')
 def customer_index(request):
 
     customers = CustomerSva.objects.filter(obj_item_id__gt = 1030200001).order_by('obj_item_id')
     page = customers
+    customer_ids = customers.values_list('obj_item_id', flat=True)
+    
+    # Retrieve related objects based on customer_ids
+    obj_payments = ObjPayment.objects.filter(obj_item_id__in=customer_ids)
+    tickets = Ticket.objects.filter(obj_source_id__in=customer_ids) # assuming obj_source_id is the relevant field in Ticket model
+    pre_factors = PreFactor.objects.filter(obj_item_id__in=customer_ids)
+    factors = Factor.objects.filter(buyer__obj_item_id__in=customer_ids)
+    
     # # Set the number of records to display per page
     # records_per_page = 8000
     # print(page[0].address)
@@ -43,6 +52,10 @@ def customer_index(request):
     
     context = {
         'page': page,
+        'obj_payments': obj_payments,
+        'tickets': tickets,
+        'pre_factors': pre_factors,
+        'factors': factors,
     }
 
     return render(request, 'Customer/CustomerIndex.html', context=context)
