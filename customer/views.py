@@ -25,6 +25,8 @@ def customer_index(request):
 
     customers = CustomerSva.objects.filter(obj_item_id__gt = 1030200001).order_by('obj_item_id')
     page = customers
+    banks = ObjItem.objects.filter(obj_item_id__gte=999003010, obj_item_id__lte=999003019)        # Set the number of records to display per page
+
     # # Set the number of records to display per page
     # records_per_page = 8000
     # print(page[0].address)
@@ -43,6 +45,7 @@ def customer_index(request):
     
     context = {
         'page': page,
+        'banks':banks,
     }
     
 
