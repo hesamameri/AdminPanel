@@ -199,9 +199,10 @@ def factor_index(request):
 @login_required(login_url='Administrator:login_view')
 @permission_required('ROLE_PERSONEL','ROLE_ADMIN')
 def customer_confirm_accountlist(request):
-
-    vendor_customers = FactorItemBalanceSVA.objects.all()
-    # all_data = zip(vendor_detail,vendor_person_detail)
+    vendor_customers = FactorItemBalanceSVA.objects.filter(sended__lt=F('amount'))    
+    vendor_paths = vendor_customers.values('factor_id')
+    vendor_snatch = FactorItem.objects.filter(factor_item_id__in = vendor_paths)
+    vendor_customers = zip(vendor_customers,vendor_snatch)
     context = {
         'vendor_customers':vendor_customers,
     }

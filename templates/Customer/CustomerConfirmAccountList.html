@@ -99,9 +99,9 @@
                                                                                 <tr class="table-">
                                                                                     {% for vc in vendor_customers %}
                                                                                 <tr>
-                                                                                    <td></td>
+                                                                                    <td>{{vc.0.factor_id}}</td>
                                                                                     <td>
-                                                                                        {{vc.customer_name}}
+                                                                                        {{vc.1.factor.contract.vendor.name}}
                                                                                         <br>
                                                                                         
                                                                                         <!-- <span class="badge badge-danger" style="font-size: larger;">
@@ -112,25 +112,29 @@
                                                                                         <span>
                                                                                             
                                                                                     </td>
-                                                                                    <td></td>
-                                                                                    <td>{{ vc.customer_name}}</td>
-                                                                                    <td></td>
-                                                                                    <td>{{vc.name}}</td>
-                                                                                    {% if vc.codemeli == None %}
+                                                                                    <td>{{vc.0.seller_factor_id}}</td>
+                                                                                    <td>{{vc.0.buyer_id}}</td>
+                                                                                    {% if vc.0.seller_buyer_id == None %}
                                                                                     <td></td>
                                                                                     {% else %}
-                                                                                    <td>{{vc.1.codemeli}}</td>
+                                                                                    <td>{{vc.0.seller_buyer_id}}</td>
                                                                                     {% endif %}
-                                                                                    <th>{{vc.city_id|id_to_city}}</th>
-                                                                                    {% if vc.1.phone == None %}
+                                                                                    <td>{{ vc.0.customer_name}}</td>
+                                                                                    {% if vc.0.codemeli == None %}
                                                                                     <td></td>
                                                                                     {% else %}
-                                                                                    <td>{{vc.1.phone}}</td>
+                                                                                    <td>{{vc.0.codemeli}}</td>
                                                                                     {% endif %}
-                                                                                    {% if vc.1.mobile == None %}
+                                                                                    <th>{{vc.0.city}}</th>
+                                                                                    {% if vc.0.phone == None %}
                                                                                     <td></td>
                                                                                     {% else %}
-                                                                                    <td>{{vc.1.mobile}}</td>
+                                                                                    <td>{{vc.0.phone}}</td>
+                                                                                    {% endif %}
+                                                                                    {% if vc.0.mobile == None %}
+                                                                                    <td></td>
+                                                                                    {% else %}
+                                                                                    <td>{{vc.0.mobile}}</td>
                                                                                     {% endif %}
                                                                                     <td>
                                                                                         
