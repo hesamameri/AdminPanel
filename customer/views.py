@@ -269,9 +269,12 @@ def customer_factor_assessment(request):
 @login_required(login_url='Administrator:login_view')
 @permission_required('ROLE_PERSONEL','ROLE_ADMIN')
 def factor_send_index(request):
-    sent_index = ObjSend.objects.all()
+    sent_index = Factor.objects.all()
+    
+
     context = {
         'sents':sent_index,
+
     }
     return render(request,'Customer/FactorSendIndex.html',context=context)
 
