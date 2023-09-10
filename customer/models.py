@@ -3,7 +3,19 @@ from django.db import models
 # from Administrator.models import *
 from django.db.models import Case, CharField, Value, When, F, Max
 
+class DepoBalanceAll(models.Model):
+    depo_id = models.IntegerField(primary_key=True)
+    depo_name = models.CharField(max_length=255)
+    product_id = models.IntegerField()
+    product_name = models.CharField(max_length=255)
+    in_amount = models.DecimalField(max_digits=15, decimal_places=2)
+    out_amount = models.DecimalField(max_digits=15, decimal_places=2)
+    balance = models.DecimalField(max_digits=15, decimal_places=2)
 
+    class Meta:
+        managed = False
+        db_table = 'depo_balance_all'
+        
 class CitySVA(models.Model):
     obj_item_id = models.IntegerField()
     name = models.CharField(max_length=255)
@@ -17,6 +29,8 @@ class CitySVA(models.Model):
     class Meta:
         managed = False  # To indicate that this model is based on a view, not a table
         db_table = 'city_sva'
+
+    
 class BrandSVA(models.Model):
     obj_item_id = models.IntegerField()
     brand_id = models.IntegerField()
@@ -30,6 +44,9 @@ class BrandSVA(models.Model):
     class Meta:
         managed = False  # To indicate that this model is based on a view, not a table
         db_table = 'brand_sva'  # Replace with the actual database view name
+
+
+
 class FactorItemBalanceSVA(models.Model):
     factor_item_id = models.IntegerField(primary_key=True)
     factor_id = models.IntegerField()
@@ -183,7 +200,8 @@ class ShopCustomerCount(models.Model):
         managed = False  # Tells Django that this model is not managed by Django's ORM
         db_table = 'shop_customer_count'  # Specify the database view name
 
-        
+
+
 class ObjItemSVA(models.Model):
     name = models.CharField(max_length=255)
     title = models.CharField(max_length=255)
@@ -200,6 +218,9 @@ class ObjItemSVA(models.Model):
     class Meta:
         managed = False  # Tells Django that this model is not managed by Django's ORM
         db_table = 'obj_item_sva'  # Specify the database view name
+
+
+
 
 class Contract(models.Model):
     contract_id = models.AutoField(primary_key=True)
@@ -228,6 +249,9 @@ class Contract(models.Model):
         managed = False
         db_table = 'contract'
 
+
+
+
 class ContractCast(models.Model):
     contract_cast_id = models.AutoField(primary_key=True)
     contract_item = models.ForeignKey('ContractItem', models.DO_NOTHING, blank=True, null=True)
@@ -240,6 +264,9 @@ class ContractCast(models.Model):
         managed = False
         db_table = 'contract_cast'
 
+
+
+
 class ContractCity(models.Model):
     contract_city_id = models.AutoField(primary_key=True)
     contract = models.ForeignKey('Contract', models.DO_NOTHING, blank=True, null=True)
@@ -248,7 +275,10 @@ class ContractCity(models.Model):
     class Meta:
         managed = False
         db_table = 'contract_city'
-    
+
+
+
+
 class ContractDiscount(models.Model):
     contract_discount_id = models.AutoField(primary_key=True)
     contract = models.ForeignKey('Contract', models.DO_NOTHING, blank=True, null=True)
@@ -260,6 +290,8 @@ class ContractDiscount(models.Model):
         managed = False
         db_table = 'contract_discount'
         db_table_comment = 'تخفیفاتی که به صورت بازه ای شامل حال فروشنده خواهد شد'
+
+
 
 
 class ContractItem(models.Model):
@@ -420,6 +452,8 @@ class DocItem(models.Model):
     class Meta:
         managed = False
         db_table = 'doc_item'
+
+
 class Factor(models.Model):
     factor_id = models.AutoField(primary_key=True)
     contract = models.ForeignKey('Contract', models.DO_NOTHING, blank=True, null=True)
@@ -890,3 +924,25 @@ class Production(models.Model):
     class Meta:
         managed = False
         db_table = 'production'
+
+class CreditSVA(models.Model):
+    vendor_buyer = models.ForeignKey(VendorBuyerSVA, on_delete=models.CASCADE)
+    debit = models.DecimalField(max_digits=10, decimal_places=2)
+    credit = models.DecimalField(max_digits=10, decimal_places=2)
+
+    class Meta:
+        db_table = 'credit_sva'
+
+class CreditSumSVA(models.Model):
+    vendor_buyer = models.ForeignKey(ObjItem, on_delete=models.CASCADE)
+    vendor_name = models.CharField(max_length=255)
+    base_credit = models.DecimalField(max_digits=10, decimal_places=2)
+    debit = models.DecimalField(max_digits=10, decimal_places=2)
+    credit = models.DecimalField(max_digits=10, decimal_places=2)
+    reminded = models.DecimalField(max_digits=10, decimal_places=2)
+    credit_rate = models.DecimalField(max_digits=10, decimal_places=2)
+    credit_status = models.CharField(max_length=10)
+
+    class Meta:
+        managed = False  # To indicate that this model is backed by a database view
+        db_table = 'credit_sum_sva'

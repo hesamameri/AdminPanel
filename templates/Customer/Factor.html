@@ -1,3 +1,5 @@
+{% load static %}
+{% load converter_tags %}
 <!DOCTYPE html>
 <!-- 
     -titles on this page should be right aligned
@@ -58,11 +60,12 @@
                                     
                                     <div class="row mb-2">
                                         <div class="col-sm-12">
+
                                                 <ol class="breadcrumb float-sm ">
                                                     <li class="breadcrumb-item active"></li>
                                                     <li class="breadcrumb-item active">فاکتور فروش</li>
                                                 </ol>
-                                                <ol class="breadcrumb float-sm ">
+                                                <!-- <ol class="breadcrumb float-sm ">
                                                     <li class="breadcrumb-item active">تایید مالی</li>
                                                     <li class="breadcrumb-item active">فاکتور فروش</li>
                                                 </ol>
@@ -70,17 +73,18 @@
                                                     <li class="breadcrumb-item active">فاکتور فروش</li>
                                                     <li class="breadcrumb-item active">فاکتور فروش</li>
                                                     <li class="breadcrumb-item">مشتریان</li>
-                                                </ol>
+                                                </ol> -->
+                                               
                                         </div>
                                     </div>
                                     </div>
                                 </div>
-                                    <div class="alert alert-danger rtl" role="alert"></div>
+                                    <!-- <div class="alert alert-danger rtl" role="alert"></div>
                                 
                                     <div class="alert alert-success rtl" role="alert"></div>
                                 
                                     <div class="rtl alert alert-danger">فاکتور فوق دارای چک با استعلام نامشخص/تایید نشده می‌باشد</div>
-                            
+                             -->
                                 <div class="content">
                                     <div class="container-fluid">
                                         <div class="row">
@@ -110,79 +114,92 @@
                                                                     <th>تخفیف<span class="small">(ریال)</span></th>
                                                                     <th>مالیات<span class="small">(ریال)</span></th>
                                                                     <th>مبلغ نهایی<span class="small">(ریال)</span></th>
-                                                                        <th>تعداد</th>
+                                                                        <!-- <th>تعداد</th>
                                                                         <th>ارسال شده</th>
-                                                                        <th>مانده</th>
+                                                                        <th>مانده</th> -->
                                                              
                                                                         <th></th>
                                                                 </tr>
                                                             </thead>
                                                             <tbody>
-                                                                
+                                                                {% for product in factor_item %}
                                                                 <tr class="row-small">
-                                                                    <td></td>
+                                                                    <td>{{ product.obj_item.obj_item_id}}</td>
                                                                     <td>
-                                                                        
+                                                                        {{product.obj_item.name}}
                                                                             <br>
                                                                             
                                                                     </td>
                                                                     
-                                                                        <td></td>
-                                                                    <td></td>
-                                                                    <td></td>
-                                                                    <td>
-                                                                      
+                                                                        <td class="amount"> {{product.amount}} </td>
+                                                                    <td class="total-price"> {{product.unit_price}} </td>
+                                                                    <td class="price">{{product.price}}</td>
+                                                                    <td class="total-discount">
+                                                                        {{product.discount_price}}
                                                                     </td>
                                                                     <td>
+                                                                       0
                                                                     </td>
-                                                                    <td>
+                                                                    <td class="row-total" >
+                                                                        {% with num1=product.unit_price num2=product.amount subtract_value=product.discount_price %}
+                                                                             {% multiply_and_subtract num1=num1 num2=num2 subtract_value=subtract_value %}
+                                                                        {% endwith %}
+                                                                        
                                                                     </td>
                                                                    
                             
-                                                                     <td></td> 
-                                                                    <td></td> 
+                                                                    <!-- <td>
+
+                                                                    </td> 
+
+
+                                                                    <td></td>  -->
+
+
+
                                                                         <td>
                                                                             <form method="POST" action="">
                                                                                 <button type="submit" class="btn btn-danger btn-xs" href=""><i class="fas fa-times"></i></button>
                                                                             </form>
                                                                         </td>
                             
-                                                                        <td></td>
+                                                                        <!-- <td></td>
                                                                         <td>
                                                                             
-                                                                        </td>
-                                                                        <td>
-                                                                        </td>
-                                                                        <td>
+                                                                        </td> -->
+                                                                        <!-- <td>
+                                                                        </td> -->
+                                                                        <!-- <td>
                                                                                 <button class="btn btn-sm btn-success btn-asign-depo" 
                                                                                         data-toggle="modal" 
                                                                                         data-fid=""
                                                                                         data-reminded=""
                                                                                         data-target="#modal-assign-depo"><i class="fas fa-plus nav-icon"></i></button>
-                                                                        </td>
-                                                                        <td>
-                                                                        </td>
+                                                                        </td> -->
+                                                                        <!-- <td>
+                                                                        </td> -->
                                                                 </tr>
-                                                                <script>
-                                                                   
-                                                                </script>
+                                                                {% endfor %}
+                                                                
+
+                                                             
                                                                 
                                                                 
                                                                 <tr class="row-small">
-                                                                    <td class="bold text-left" colspan="4">حمع مبلغ کالا/خدمات</td>
-                                                                    <td colspan="4"> <small>ریال</small> </td>
+                                                                    <td class="bold text-left "  colspan="4">حمع مبلغ کالا/خدمات</td>
+                                                                    <td colspan="4" class="grand-total-price"> <small>ریال</small> </td>
                                                                 </tr>
                                                                 <tr class="row-small">
                                                                     <td class="bold text-left" colspan="4">حمع تخفیف</td>
-                                                                    <td colspan="4"> <small>ریال</small></td>
+                                                                    <td colspan="4" class="grand-total-discount" > <small>ریال</small></td>
                                                                 </tr>
                                                                 <tr class="row-small">
                                                                     <td class="bold text-left" colspan="4">حمع سهم سازمان‌ها</td>
                                                                     <td colspan="4"> <small>ریال</small></td>
                                                                 </tr>
                                                                 <tr class="row-small">
-                                                                    <td class="bold text-left" colspan="4">جمع کل</td>
-                                                                    <td colspan="4"> <small>ریال</small></td>
+                                                                    <td class="bold text-left"  colspan="4">جمع کل</td>
+                                                                    <td colspan="4" class="grand-row-total"> <small>ریال</small></td>
                                                                 </tr>
                                                             </tbody>
                                                         </table>
@@ -208,23 +225,43 @@
                                                                             <th>شناسه</th>
                                                                             <th>مبلغ <span class="small">(ریال)</span></th>
                                                                             <th>توضیحات</th>
-                                                                            <th>ثبت کنند</th>
+                                                                            <th>ثبت کننده</th>
                                                                             <th>زمان ثبت</th>
                                                                             <th></th>
                                                                         </tr>
                                                                     </thead>
                                                                     <tbody>
-                                                                        
+                                                                        {% for item in factor_payway %}
                                                                         <tr>
+                                                                            {% if item.pay_level == 'FACTOR' %}
                                                                             <td>
-                                                                                    فاکتورهای تکراری: 
+                                                                            فاکتور
                                                                             </td>
+                                                                            {% elif item.pay_level == 'DRIVE' %}
+                                                                            <td> حمل</td>
+                                                                            {% else %}
+                                                                            <td> </td>
+                                                                            {% endif %}
+                                                                            <td>{{ item.pay_type|pay_to_way}}</td>
+                                                                            {% if item.no == None %}
                                                                             <td></td>
+                                                                            {% else %}
+                                                                            <td>{{ item.no }}</td>
+                                                                            {% endif %}
+                                                                            <td> {{item.price}} </td>
+                                                                            {% if item.description == None %}
                                                                             <td></td>
-                                                                            <td></td>
-                                                                            <td></td>
-                                                                            <td></td>
-                                                                            <td></td>
+                                                                            {% else %}
+                                                                            <td>{{item.description}}</td>
+                                                                            {% endif %}
+                                                                            {% if item.register > 2 %}
+                                                                            <td> {{item.register|register_user}}</td>
+                                                                            {% else %}
+                                                                            <td>
+                                                                              
+                                                                            </td>
+                                                                            {% endif %}
+                                                                            <td>{{item.reg_dt|to_jalali}}</td>
                                                                             <td>
                                                                                 <form method="POST" action="">
                                                                                     <button type="submit" class="btn btn-danger btn-xs" href=""><i class="fas fa-times"></i></button>
@@ -232,8 +269,9 @@
                                                                             </td>
                                                                             
                                                                         </tr>
+                                                                        {% endfor %}
                                                                       
-                                                                        <tr>
+                                                                        <!-- <tr>
                                                                             <td></td>
                                                                             <td colspan="2">بدهکار</td>
                                                                             <td colspan="2">بستانکار</td>
@@ -254,7 +292,7 @@
                                                                             
                                                                             <td colspan="2"></td>
                                                                             <td colspan="2"></td>
-                                                                        </tr>
+                                                                        </tr> -->
                                                                        
                                                                     </tbody>
                                                                 </table>
@@ -278,26 +316,39 @@
                                                                         <tr>
                                                                             <th>تصویر</th>
                                                                             <th>توضیحات</th>
-                                                                            <th>ثبت کنند</th>
+                                                                            <th>ثبت کننده</th>
                                                                             <th>زمان ثبت</th>
-                                                                            <th></th>
+                                                                            <th></th> 
                                                                         </tr>
                                                                     </thead>
                                                                     <tbody>
+                                                                        {% for doc in factor_document %}
                                                                         <tr> 
-                                                                           
                                                                             <td><img class="img img-rectangle img-popup-img-srces" height="60px" src="/upload/{{filename}}"></td>
-                            
+                                                                        {% if doc.level_type == None %}
                                                                             <td>
-                                                                           
-                                                                                <hr>
-                                                                                تکراری در فاکتور: 
-                                                                    
+                                                                                {{doc.level_type}}
+                                                                                <!-- <hr>
+                                                                                تکراری در فاکتور:  -->
                                                                             </td>
-                                                                            <td></td>
-                                                                            <td></td>
-                            
-                                                                            
+                                                                          
+                                                                        {% else%} 
+                                                                        <td>
+                                                                           
+                                                                            <!-- <hr>
+                                                                            تکراری در فاکتور:  -->
+                                                                        </td> 
+                                                                        {% endif %}
+                                                                            {% if doc.register > 2 %}
+                                                                            <td> {{doc.register|register_user}}</td>
+                                                                            {% else %}
+                                                                            <td>
+                                                                                غیرفعال در سیستم
+                                                                            </td>
+                                                                            {% endif %}
+                                                                            <td>
+                                                                              {{doc.reg_dt|to_jalali}}
+                                                                            </td>
                                                                             <td>
                                                                                 <form method="POST" action="">
                                                                                     <button type="submit" class="btn btn-danger btn-xs" href=""><i class="fas fa-times"></i></button>
@@ -305,6 +356,8 @@
                                                                             </td>
                                                                             
                                                                         </tr>
+
+                                                                        {% endfor %}
                             
                                                                     </tbody>
                                                                 </table>
@@ -320,6 +373,10 @@
                                                             </div>
                                                             <div class="card-body rtl">
                                                                 <b>توضیحات فاکتور: </b>
+                                                                {% if factor_main.factore_desc == None %}
+                                                                {% else %}
+                                                                {{factor_main.factore_desc}}
+                                                                {% endif %}
                                                                 <br>
                                                             </div>
                                                         </div>
@@ -332,11 +389,25 @@
                                                             </div>
                                                             <div class="card-body rtl">
                                                                 <b>وضعیت:</b> 
+                                                                {% if factor_main.acc_status == 1 %}
+                                                                تایید
                                                                 
+                                                                {% elif factor_main.reg_status == 0 %}
+                                                                رد
+                                                                {% else %}
+                                                                نامعلوم
+                                                                {% endif %}
+                                                                <!-- This requires the inquiries to be retrieved from the database-->
                                                                 <br>
-                                                                <b>تایید کننده مالی: </b> <b>تاریخ:</b>  <b>ساعت:</b> 
+                                                                <b>تایید کننده مالی: </b>{{factor_main.acc_confirmer}} <br> <b>تاریخ:</b> 
+                                                                {{factor_main.acc_confirm_dt|to_jalali}} <br>
+                                                                  <b>ساعت: </b> 
                                                                 <br>
-                                                                <b>توضیحات مالی: </b>
+                                                                <b>توضیحات مالی: </b> 
+                                                                {% if factor_main.acc_description == None %}
+                                                                {% else %}
+                                                                {{factor_main.acc_description}}
+                                                                {% endif %}
                                                             </div>
                                                         </div>
                                                     </div>
@@ -350,6 +421,7 @@
                                                             <div class="card-body rtl">
                                                                 <table class="table">
                                                                     <thead>
+                                                                        
                                                                     <tr>
                                                                         <th>کد کالا</th>
                                                                         <th>شرح کالا</th>
@@ -361,15 +433,18 @@
                                                                     </tr>
                                                                     </thead>
                                                                     <tbody>
+                                                                    {% for item,name in depo_all %}
                                                                     <tr>
-                                                                        <td></td>
-                                                                        <td></td>
-                                                                        <td></td>
-                                                                        <td></td>
-                                                                        <td></td>
-                                                                        <td></td>
+                                                                        
+                                                                        <td>{{item.goods}}</td>
+                                                                        <td> {{name.0.name}} </td>
+                                                                        <td>{{item.amount|inter}}</td>
+                                                                        <td>{{name.1.name|depo_location}}</td>
+                                                                        <td>{{item.register|register_user}}</td>
+                                                                        <td>{{item.reg_dt|to_jalali}}</td>
                                                                         <td></td>
                                                                     </tr>
+                                                                    {% endfor %}
                                                                     </tbody>
                                                                    
                                                                 </table>
@@ -379,46 +454,51 @@
                                                     
                             
                                                     <div class="col-lg-12">
-                                                        
+                                                        {% for obj in obj_sendings %}
                                                         <div class="card card-secondary card-outlines">
                                                             <div class="card-header rtl">
-                                                                <h3 class="card-title rtl block  block">خدمت </h3>
+                                                                <h3 class="card-title rtl block  block">خدمت {{obj.action|depo_location}} </h3>
                                                                 <br>
                                                                     <h6 class="h6"></h6>
-                                                                <h6 class="h6"></h6>
-                                                                <h6 class="h6">هزینه: </h6>
+                                                                <h6 class="h6">  </h6>
+                                                                <h6 class="h6">هزینه:
+                                                                    {% if obj.price == None %}
+                                                                    {% else %}
+                                                                    {{obj.price}} 
+                                                                    {% endif %}
+                                                                </h6>
                                                             </div>
                                                             <div class="card-body rtl">
                                                                 <table class="table">
                                                                     <tbody>
                                                                     <tr>
-                                                                        <th>ثبت کنند</th>
-                                                                        <td></td>
+                                                                        <th>ثبت کننده</th>
+                                                                        <td>{{obj.drive_register|register_user}}</td>
                             
                                                                         <th>سرویس دهنده</th>
-                                                                        <td></td>
+                                                                        <td>{{obj.drive_id}}</td>
                             
                                                                         <th>ثبت وضعیت</th>
-                                                                        <td></td>
+                                                                        <td>{{obj.drive_status_id}}</td>
                             
                                                                         <th>ثبت ارزیابی</th>
-                                                                        <td></td>
+                                                                        <td>{{obj.assesmenter}}</td>
                                                                     </tr>  
                                                                     <tr>  
                                                                         <th>ارسال کننده</th>
-                                                                        <td></td>
+                                                                        <td>{{obj.drive_register}}</td>
                             
                                                                         <th></th>
                                                                         <td></td>
                             
                                                                         <th>وضعیت سرویس</th>
-                                                                        <td></td>
+                                                                        <td>{{obj.drive_status}}</td>
                             
                                                                         <th>ارزیابی</th>
-                                                                        <td></td>
+                                                                        <td>{{obj.assesment_opinion}}</td>
                             
                                                                         <th>رسید</th>
-                                                                        <td></td>
+                                                                        <td>{{obj.docer}}</td>
                                                                     </tr>  
                                                                     <tr>  
                                                                         <th>تاریخ سرویس</th>
@@ -431,14 +511,14 @@
                                                                         <td></td>
                             
                                                                         <th>تاریخ ارزیابی</th>
-                                                                        <td></td>
+                                                                        <td>{{obj.assesment_dt|to_jalali}}</td>
                             
                                                                         <th>تاریخ رسید</th>
-                                                                        <td></td>
+                                                                        <td>{{obj.doc_dt|to_jalali}}</td>
                                                                     </tr>  
                                                                     <tr>  
                                                                         <th>توضیحات ارسال</th>
-                                                                        <td></td>
+                                                                        <td>{{obj.drive_status_desc}}</td>
                             
                                                                         <th>توضیحات اختصاص</th>
                                                                         <td></td>
@@ -457,6 +537,7 @@
                                                                 </table>
                                                             </div>
                                                         </div><!-- /card -->
+                                                        {% endfor %}
                                                     </div>
                             
                                                 </div>
@@ -573,11 +654,11 @@
                                                                                 </tr>
                                                                                 <tr>
                                                                                     <th>کد مشتری فروشنده:</th>
-                                                                                    <td></td>
+                                                                                    <td>{{factor_main.buyer_id}}</td>
                                                                                 </tr>
                                                                                 <tr>
                                                                                     <th>شماره فاکتور فروشنده:</th>
-                                                                                    <td></td>
+                                                                                    <td>{{factor_main.seller_factor_id}}</td>
                                                                                 </tr>
                                                                                 <tr>
                                                                                     <th>خریدار:</th>
@@ -653,11 +734,24 @@
                                                             <tbody>
                                                             
                                                             
-                                                            <tr class="">
-                                                                <td></td>
-                                                                <td></td>
-                                                                <td></td>
+                                                            <tr class="alert alert-warning rtl" >
+                                                                <td><label role="alert"></label></td>
                                                             </tr>
+                                                                
+                                                            <tr class="alert alert-success rtl">
+                                                                <td><label  role="alert"></label></td>
+                                                            </tr>
+
+                                                            <tr class="alert alert-danger rtl">
+                                                                <td><label  role="alert"> </label></td>
+                                                            </tr>    
+
+                                                            <tr class="rtl alert alert-info">
+                                                                <td><label ></label></td>
+
+                                                            </tr>    
+                                                                
+                                                            
                                                             </tbody>
                                                            
                                                         </table>
@@ -745,7 +839,64 @@
 
         <!-- begin::Global Config(global config for global JS sciprts) -->
         {% include "partials/script.html" %}
+        <script>
+        // Function to calculate the sum of all row-total, price, and total-discount values
+function calculateSums() {
+    // Initialize sums to 0
+    let rowTotalSum = 0;
+    let priceSum = 0;
+    let discountSum = 0;
 
+    // Find all td elements with class "row-total" and sum their contents
+    const rowTotalElements = document.querySelectorAll('.row-total');
+    rowTotalElements.forEach(function(element) {
+        const value = parseFloat(element.textContent);
+        if (!isNaN(value)) {
+            rowTotalSum += value;
+        }
+    });
+
+    // Find all td elements with class "price" and sum their contents
+    const priceElements = document.querySelectorAll('.price');
+    priceElements.forEach(function(element) {
+        const value = parseFloat(element.textContent);
+        if (!isNaN(value)) {
+            priceSum += value;
+        }
+    });
+
+    // Find all td elements with class "total-discount" and sum their contents
+    const discountElements = document.querySelectorAll('.total-discount');
+    discountElements.forEach(function(element) {
+        const value = parseFloat(element.textContent);
+        if (!isNaN(value)) {
+            discountSum += value;
+        }
+    });
+
+    // Update the content of the td elements for the sums
+    const grandRowTotalElement = document.querySelector('.grand-row-total');
+    if (grandRowTotalElement) {
+        grandRowTotalElement.innerHTML = rowTotalSum + " <small>ریال</small>";
+    }
+
+    const grandTotalPriceElement = document.querySelector('.grand-total-price');
+    if (grandTotalPriceElement) {
+        grandTotalPriceElement.innerHTML = priceSum + " <small>ریال</small>";
+    }
+
+    const grandTotalDiscountElement = document.querySelector('.grand-total-discount');
+    if (grandTotalDiscountElement) {
+        grandTotalDiscountElement.innerHTML = discountSum + " <small>ریال</small>";
+    }
+}
+
+// Execute the function to calculate and display the sums
+calculateSums();
+
+
+ 
+        </script>
         <!--end::Page Scripts -->
     </body>
 
