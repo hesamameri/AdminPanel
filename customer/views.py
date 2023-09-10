@@ -26,6 +26,13 @@ def customer_index(request):
 
     customers = CustomerSva.objects.filter(obj_item_id__gt = 1030200001).order_by('obj_item_id')
     page = customers
+    customer_ids = customers.values_list('obj_item_id', flat=True)
+    
+    # Retrieve related objects based on customer_ids
+    obj_payments = ObjPayment.objects.filter(obj_item_id__in=customer_ids)
+    tickets = Ticket.objects.filter(obj_source_id__in=customer_ids) # assuming obj_source_id is the relevant field in Ticket model
+    pre_factors = PreFactor.objects.filter(obj_item_id__in=customer_ids)
+    factors = Factor.objects.filter(buyer__obj_item_id__in=customer_ids)
     # # Set the number of records to display per page
     # records_per_page = 8000
     # print(page[0].address)
@@ -44,6 +51,10 @@ def customer_index(request):
     
     context = {
         'page': page,
+        'obj_payments': obj_payments,
+        'tickets': tickets,
+        'pre_factors': pre_factors,
+        'factors': factors,
     }
     
 
