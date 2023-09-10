@@ -273,10 +273,7 @@
                                                         پیش خرید
                                                     </a>
 
-                                                    <a class="badge badge-danger text-white badge-sm">
-                                                        استعلام حساب
-                                                    </a>
-
+                                                    <a class="badge badge-primary text-white badge-sm" style="" data-buyer="{{ item.obj_item_id }}" data-toggle="modal" data-target="#modal-inquiry">استعلام حساب</a>
 
                                                 </td>
 
@@ -297,6 +294,103 @@
                         </div>
 
                         <!-- end:: Content -->
+                    </div>
+                    <div class="modal fade" id="modal-inquiry">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                            <div class="modal-header rtl">
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                <h4 class="modal-title">استعلام حساب</h4>
+                            </div>
+                            <form method="POST" action="{% url 'customer:customerindexAll' %}">
+                                {% csrf_token %}
+                                <div class="modal-body">
+                                    <input id="hiddenInput" type="hidden" name="buyer" value="">    
+                                    <input type="hidden"  name="register" value="{{request.user.user_id}}" >                                     
+                                    <div class="form-group form-group-sm row">
+                                        <div class="col-sm-8">
+                                        <select class="form-control select2bs4" style="width: 100%;" name="bank_id" data-placeholder="بانک" data-allow-clear="true">
+                                                {% for bank in banks %}
+                                                <option value="{{bank.bank_id}}" > {{bank.name}}</option>
+                                                {% endfor %}
+                                        </select>
+                                        </div>
+                                        <label for="bank_id" class="col-sm-4 col-form-label">بانک</label>
+                                    </div>
+                                    <div class="form-group form-group-sm row">
+                                        <div class="col-sm-8">
+                                        <input type="text" name="bank_code" id="bank_code" class="form-control rtl" placeholder="کد شعبه" value="">
+                                        </div>
+                                        <label for="bank_code" class="col-sm-4 col-form-label">* کد شعبه</label>
+                                    </div>
+                                    <div class="form-group form-group-sm row">
+                                        <div class="col-sm-8">
+                                        <input type="text" name="bank_branch" id="bank_branch" class="form-control rtl " placeholder="نام شعبه" value="">
+                                        </div>
+                                        <label for="bank_branch" class="col-sm-4 col-form-label">* نام شعبه</label>
+                                    </div>
+                                    <div class="form-group form-group-sm row">
+                                        <div class="col-sm-8">
+                                        <input type="text" name="account_owner" class="form-control rtl " id="account_owner" placeholder="نام صاحب حساب" value="">
+                                        </div>
+                                        <label for="account_owner" class="col-sm-4 col-form-label">نام صاحب حساب</label>
+                                    </div>
+                                    <div class="form-group form-group-sm row">
+                                        <div class="col-sm-8">
+                                        <input type="text" name="account_owner_nat_code" class="form-control rtl " id="account_owner_nat_code" placeholder="کد ملی صاحب حساب" value="">
+                                        </div>
+                                        <label for="account_owner_nat_code" class="col-sm-4 col-form-label">کد ملی صاحب حساب</label>
+                                    </div>
+                                    <div class="form-group form-group-sm row">
+                                        <div class="col-sm-8">
+                                        <input type="text" name="account_sayadi" class="form-control" id="account_sayadi" placeholder="شماره صیادی" value="">
+                                        </div>
+                                        <label for="account_sayadi" class="col-sm-4 col-form-label">* شماره صیادی</label>
+                                    </div>
+                                    <div class="form-group form-group-sm row">
+                                        <div class="col-sm-8">
+                                        <input type="text" name="account_no" class="form-control" id="account_no" placeholder="شماره حساب" value="">
+                                        </div>
+                                        <label for="account_no" class="col-sm-4 col-form-label">* شماره حساب</label>
+                                    </div>
+                                    <div class="form-group form-group-sm row">
+                                        <div class="col-sm-8">
+                                            <input type="text" name="cheque_price" id="cheque_price" class="form-control" placeholder="مبلغ چک‌ها" value="">
+                                        </div>
+                                        <label for="cheque_price" class="col-sm-4 col-form-label">* مبلغ خرید</label>
+                                    </div>
+                                    <div class="form-group form-group-sm row">
+                                        <div class="col-sm-8">
+                                            <input type="text" name="cheque_count" id="cheque_count" class="form-control" placeholder="تعداد چک‌ها" value="">
+                                        </div>
+                                        <label for="cheque_count" class="col-sm-4 col-form-label">* تعداد چک</label>
+                                    </div>
+                                    <div class="form-group form-group-sm row">
+                                        <div class="col-sm-8">
+                                            <input type="text" name="description" class="form-control rtl" id="description" placeholder="توضیحات" value="">
+                                        </div>
+                                        <label for="description" class="col-sm-4 col-form-label">توضیحات</label>
+                                    </div>
+                                    <div class="form-group form-group-sm row">
+                                        <div class="col-sm-8">
+                                            <div class="custom-file">
+                                                <input type="file" name="cheque_image" id="cheque_image" class="rtl custom-file-input" placeholder="تصویر چک‌ها" value="">
+                                                <label class="custom-file-label" for="exampleInputFile">تصویر چک</label>
+                                            </div>
+                                        </div>
+                                        <label for="cheque_image" class="col-sm-4 col-form-label">تصویر چک‌ها</label>
+                                    </div>
+                                </div>
+                                <div class="modal-footer justify-content-between">
+                                    <button type="submit" class="btn btn-primary">ثبت استعلام</button>
+                                    <button type="button" class="btn btn-default" data-dismiss="modal">بستن</button>
+                                </div>
+                            </form>
+                    
+                            </div>
+                            <!-- /.modal-content -->
+                        </div>
+                        <!-- /.modal-dialog -->
                     </div>
                     <div class="modal fade" id="modal-inquiry">
                         <div class="modal-dialog">
@@ -354,10 +448,13 @@
                                     </div>
                                 </form>
                             </div>
+                            
                             <!-- /.modal-content -->
                         </div>
                         <!-- /.modal-dialog -->
                     </div>
+                    
+                    
                     <!-- begin:: Footer -->
                     {% include "partials/footer.html" %}
 

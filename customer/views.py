@@ -44,6 +44,7 @@ def customer_index(request):
     context = {
         'page': page,
     }
+    
 
     return render(request, 'Customer/CustomerIndex.html', context=context)
 
