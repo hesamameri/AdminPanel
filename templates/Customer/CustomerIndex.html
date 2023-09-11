@@ -295,7 +295,7 @@
                                                         پیش خرید
                                                     </a>
 
-                                                    <a class="badge badge-primary text-white badge-sm"  data-buyer="{{ item.obj_item_id }}" data-toggle="modal" data-target="#modal-inquiry">استعلام حساب</a>
+                                                    <a class="badge badge-danger text-white badge-sm"  data-buyer="{{ item.obj_item_id }}" data-toggle="modal" data-target="#modal-inquiry">استعلام حساب</a>
 
                                                 </td>
 
@@ -322,7 +322,7 @@
                             <div class="modal-content">
                             <div class="modal-header rtl">
                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                                <h4 class="modal-title">استعلام حساب</h4>
+                                <h4 class="modal-title"> استعلام حساب</h4>
                             </div>
                             <form method="POST" action="{% url 'customer:customerindex' %}" >
                                 {% csrf_token %}
