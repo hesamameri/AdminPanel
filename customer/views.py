@@ -49,7 +49,7 @@ def customer_index(request):
         if formInquiry.is_valid():
             saved_instance = formInquiry.save()
             print("this is true")
-            return redirect('customer:customerindexAll')
+            return redirect('customer:customerindex')
         else:
             return " wrong"
     else:
@@ -507,7 +507,7 @@ def index_inquiry(request):
         inquiry.confirm_dt = datetime.datetime.now()
         inquiry.save()
         # print(request.POST)
-        return redirect('customer:IndexInquiryResponse')
+        return redirect('customer:IndexInquiry')
     else:
         inquiries = Inquiry.objects.filter(confirm_status__isnull=True) 
         # print(inquiries)

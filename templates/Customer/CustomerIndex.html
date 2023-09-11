@@ -53,6 +53,18 @@
                         <!-- end:: Subheader -->
 
                         <!-- begin:: Content -->
+                        <div class="content-header">
+                            <div class="container-fluid">
+                            <div class="row mb-2">
+                                <div class="col-sm-12">
+                                    <ol class="breadcrumb float-sm ">
+                                        <li class="breadcrumb-item active">مشتریان</li>
+                                        <li class="breadcrumb-item">مشتریان</li>
+                                    </ol>
+                                </div>
+                            </div>
+                            </div>
+                        </div>
                         <div class="kt-content  kt-grid__item kt-grid__item--fluid" id="kt_content">
 
                             <div class="kt-portlet kt-portlet--mobile">
@@ -422,15 +434,15 @@
                             <div class="modal-header rtl">
                                 <h4 class="modal-title">دریافت از مشتری</h4>
                             </div>
-                            <form method="POST" action="" enctype="multipart/form-data" id="frm-payment" autocomplete="off">
+                            <form method="POST" action="{% url 'customer:customerindex' %}" enctype="multipart/form-data" id="frm-payment" autocomplete="off">
                                 <div class="modal-body">
                                     <input id="hiddenInput" type="hidden" name="buyer" value="">
                                     <input type="hidden" value="{{request.user.user_id}}" name="register" class="customer_id">
                                     <div class="form-group form-group-sm row">
                                         <div class="col-sm-8">
                                             <select class="form-control select2bs4s rtl text-left" style="width: 100%;" name="type" id="type" onchange="showHideFields()">
-                                                <option value="CASH">وجه نقد</option>
-                                                <option value="CART" selected>کارت خوان</option>
+                                                <option value="CASH" selected>وجه نقد</option>
+                                                <option value="CART">کارت خوان</option>
                                                 <option value="CARTOCART">کارت به کارت</option>
                                                 <option value="CHEQUE">چک</option>
                                             </select>
@@ -530,7 +542,7 @@
                                         </div>
                                     </div>
 
-                                    <div id="commonFields" style="display: none;">
+                                    <div id="commonFields" >
                                         <div class="form-group form-group-sm row">
                                             <div class="col-sm-8">
                                                 <input type="text" name="price" id="depoit-price" class="form-control numeric" placeholder="مبلغ" >
