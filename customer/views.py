@@ -24,19 +24,15 @@ from .forms import NewInquiry, NewObjItem,NewObjItemSpec
 @permission_required('ROLE_PERSONEL', 'ROLE_ADMIN')
 def customer_index(request):
 
-    customers = CustomerSva.objects.filter(obj_item_id__gt = 10301238).order_by('obj_item_id')
+    customers = CustomerSva.objects.filter(obj_item_id__gt = 1030200001).order_by('obj_item_id')
     page = customers
     customer_ids = customers.values_list('obj_item_id', flat=True)
-    print(customer_ids)
     # Retrieve related objects based on customer_ids
     obj_payments = ObjPayment.objects.filter(obj_item_id__in=customer_ids)
-    print(obj_payments)
+    
     tickets = Ticket.objects.filter(obj_source_id__in=customer_ids) # assuming obj_source_id is the relevant field in Ticket model
-    print(tickets)
     pre_factors = PreFactor.objects.filter(buyer_id__in=customer_ids)
-    print(pre_factors)
-    factors = Factor.objects.filter(buyer__obj_item_id__in=customer_ids, reg_status='CONFIRM')
-    print(factors)
+    factors = Factor.objects.filter(buyer_id__in=customer_ids, reg_status='CONFIRM')
     banks = ObjItem.objects.filter(obj_item_id__gte=999003010, obj_item_id__lte=999003019)        # Set the number of records to display per page
 
     # # Set the number of records to display per page
