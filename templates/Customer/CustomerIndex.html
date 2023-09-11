@@ -248,7 +248,7 @@
                                                 <td>{{item.mobile}}</td>
                                                 {% endif %}
                                                 <td>
-                                                    <a class="badge badge-success text-white">ثبت فاکتور
+                                                    <a class="badge badge-success text-white" href="{% url 'customer:NewFactor' %}">ثبت فاکتور
                                                         مشتری</a>
                                                         
                                                 </td>
@@ -259,9 +259,28 @@
 															<i class="flaticon-more-1"></i>
 														</button>
 														<div class="dropdown-menu dropdown-menu">
-															<a class="dropdown-item kt-font-dark" href="#"><i class="fa fa-plus-square text-warning kt-font-bold"></i> پیش فاکتور</a>
-															<a class="dropdown-item kt-font-dark" href="#"><i class="fa fa-bookmark kt-font-bold text-warning"></i> 554/87/214</a>
-															<a class="dropdown-item kt-font-dark" href="#"><i class="fa fa-bookmark kt-font-bold text-warning"></i> 142/54/968</a>
+                                                            
+                                                            {% for payment in obj_payments %}
+                                                                {% if payment.obj_item_id == item.obj_item_id %}
+                                                                <a class="dropdown-item kt-font-dark" href="#"><i class="fa fa-plus-square text-warning kt-font-bold"></i>1</a>
+                                                                {% endif %}
+                                                            {% endfor %}
+                                                            {% for factor in factors %}
+                                                                {% if factor.buyer_id == item.obj_item_id %}
+                                                                <a class="dropdown-item kt-font-dark" href="#"><i class="fa fa-bookmark kt-font-bold text-warning"></i>فاکتور {{factor.reg_dt|to_jalali}}</a>
+                                                                {% endif %}
+                                                            {% endfor %}
+                                                            {% for ticket in tickets %}
+                                                                {% if ticket.obj_item_id == item.obj_item_id %}
+                                                                <a class="dropdown-item kt-font-dark" href="#"><i class="fa fa-bookmark kt-font-bold text-warning"></i> تیکت {{ticket.reg_dt|to_jalali}}</a>
+                                                                {% endif %}
+                                                            {% endfor %}
+
+                                                            {% for prefactor in pre_factors %}
+                                                                {% if prefactor.obj_item_id == item.obj_item_id %}
+                                                                <a class="dropdown-item kt-font-dark" href="#"><i class="fa fa-bookmark kt-font-bold text-warning"></i>  پیش فاکتور</a>
+                                                                {% endif %}
+                                                            {% endfor %}
 														</div>
 													</div>
                                                    
@@ -275,8 +294,8 @@
                                                         پیش خرید
                                                     </a>
 
-                                                    <a class="inquiry-link" style="border: 0.5px solid rgb(186, 183, 183);" data-buyer="{{ item.obj_item_id }}" data-toggle="modal" data-target="#modal-inquiry">استعلام حساب</a>    
-                                                    
+                                                    <a class="badge badge-primary text-white badge-sm" style="" data-buyer="{{ item.obj_item_id }}" data-toggle="modal" data-target="#modal-inquiry">استعلام حساب</a>
+
                                                 </td>
 
                                             </tr>

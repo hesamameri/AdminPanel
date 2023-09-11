@@ -4,7 +4,8 @@ from django.shortcuts import redirect, render
 from django.db.models import F
 from django.utils import timezone
 from customer.templatetags.converter_tags import subtract
-from .models import CreditSumSVA, DepoSend, Factor, FactorAddress, FactorPayway, ObjItem, ObjItemSpec, ObjSend, ObjSpec, VendorBuyerSVA, VendorBuyerSubSVA
+from ticket.models import Ticket
+from .models import CreditSumSVA, DepoSend, Factor, FactorAddress, FactorPayway, ObjItem, ObjItemSpec, ObjPayment, ObjSend, ObjSpec, PreFactor, VendorBuyerSVA, VendorBuyerSubSVA
 from .models import CustomerSubSVA, CustomerSva, FactorComment, FactorDocument, FactorItem, FactorSVA, ObjItemSVA, ShopCustomerCount
 from django.core.paginator import Paginator, EmptyPage
 from django.db.models import Q
@@ -74,8 +75,19 @@ def customer_index(request):
             page = paginator.page(paginator.num_pages)
 
 
-    customers = CustomerSva.objects.filter(obj_item_id__gt = 1030200001).order_by('obj_item_id')
+    customers = CustomerSva.objects.filter(obj_item_id__gt = 10301238).order_by('obj_item_id')
     page = customers
+    customer_ids = customers.values_list('obj_item_id', flat=True)
+    print(customer_ids)
+    # Retrieve related objects based on customer_ids
+    obj_payments = ObjPayment.objects.filter(obj_item_id__in=customer_ids)
+    print(obj_payments)
+    tickets = Ticket.objects.filter(obj_source_id__in=customer_ids) # assuming obj_source_id is the relevant field in Ticket model
+    print(tickets)
+    pre_factors = PreFactor.objects.filter(buyer_id__in=customer_ids)
+    print(pre_factors)
+    factors = Factor.objects.filter(buyer__obj_item_id__in=customer_ids, reg_status='CONFIRM')
+    print(factors)
     banks = ObjItem.objects.filter(obj_item_id__gte=999003010, obj_item_id__lte=999003019)        # Set the number of records to display per page
 
     # # Set the number of records to display per page
@@ -96,6 +108,10 @@ def customer_index(request):
     
     context = {
         'page': page,
+        'obj_payments': obj_payments,
+        'tickets': tickets,
+        'pre_factors': pre_factors,
+        'factors': factors,
         'banks':banks,
         'paginator': paginator,
 
@@ -215,10 +231,13 @@ def customer_index_all(request):
        
         return render(request, 'Customer/CustomerIndexAll.html', context=context)
 
+
+
 @login_required(login_url='Administrator:login_view')
 @permission_required('ROLE_PERSONEL','ROLE_ADMIN')
 def new_factor(request):
     pass
+
 
 
 
@@ -228,39 +247,38 @@ def factor(request,factor_id=None):
     if request.method == 'POST':
         pass
     else:
-        factor_main = Factor.objects.get(factor_id = factor_id)
-        factor_payway = FactorPayway.objects.filter(factor = factor_id)
-        factor_address = FactorAddress.objects.get(factor = factor_id)
-        factor_document = FactorDocument.objects.filter(factor = factor_id)
-        factor_comment = FactorComment.objects.filter(factor_id = factor_id)
-        
-        # inquiry = Inquiry.objects.filter(buyer_id = factor_main.buyer_id)
-        factor_item = FactorItem.objects.filter(factor= factor_id)
-        factor_item_ids = factor_item.values('factor_item_id')
-        factor_depo_data = DepoSend.objects.filter(depo_send_id__in = factor_item_ids)
-        goods = factor_depo_data.values('goods')
-        depo_ids = factor_depo_data.values('depo_id')
-        combined_depo_goods_data = ObjItem.objects.filter(obj_item_id__in = goods).values('name')
-        combined_depo_id_data = ObjItem.objects.filter(obj_item_id__in = depo_ids).values('name')
-        combined_all_depo = list(zip(combined_depo_goods_data,combined_depo_id_data))
-        depo_all = list(zip(factor_depo_data, combined_all_depo))
-        obj_sendings = ObjSend.objects.filter(source_id__in = factor_item_ids)
-        # factor_main_sva = FactorSVA.objects.get(factor = 64)
-        
-
-        context = {
-            'factor_main':factor_main,
-            'factor_payway':factor_payway,
-            'factor_address': factor_address,
-            'factor_document': factor_document,
-            'factor_comment': factor_comment,
-            'factor_item': factor_item,
-            'depo_all':depo_all,
-            'obj_sendings':obj_sendings,
-        }  
-        print(obj_sendings)
-        return render(request,'Customer/Factor.html',context=context)
-
+        if factor_id:
+            factor_main = Factor.objects.get(factor_id = factor_id)
+            factor_payway = FactorPayway.objects.filter(factor = factor_id)
+            factor_address = FactorAddress.objects.get(factor = factor_id)
+            factor_document = FactorDocument.objects.filter(factor = factor_id)
+            factor_comment = FactorComment.objects.filter(factor_id = factor_id)
+            # inquiry = Inquiry.objects.filter(buyer_id = factor_main.buyer_id)
+            factor_item = FactorItem.objects.filter(factor= factor_id)
+            factor_item_ids = factor_item.values('factor_item_id')
+            factor_depo_data = DepoSend.objects.filter(depo_send_id__in = factor_item_ids)
+            goods = factor_depo_data.values('goods')
+            depo_ids = factor_depo_data.values('depo_id')
+            combined_depo_goods_data = ObjItem.objects.filter(obj_item_id__in = goods).values('name')
+            combined_depo_id_data = ObjItem.objects.filter(obj_item_id__in = depo_ids).values('name')
+            combined_all_depo = list(zip(combined_depo_goods_data,combined_depo_id_data))
+            depo_all = list(zip(factor_depo_data, combined_all_depo))
+            obj_sendings = ObjSend.objects.filter(source_id__in = factor_item_ids)
+            # factor_main_sva = FactorSVA.objects.get(factor = 64)
+            context = {
+                'factor_main':factor_main,
+                'factor_payway':factor_payway,
+                'factor_address': factor_address,
+                'factor_document': factor_document,
+                'factor_comment': factor_comment,
+                'factor_item': factor_item,
+                'depo_all':depo_all,
+                'obj_sendings':obj_sendings,
+            }  
+            print(obj_sendings)
+            return render(request,'Customer/Factor.html',context=context)
+        else:
+            Factor.objects.create()
 
 # @cache_page(10)
 @login_required(login_url='Administrator:login_view')
