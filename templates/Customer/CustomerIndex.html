@@ -324,10 +324,10 @@
                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                                 <h4 class="modal-title">استعلام حساب</h4>
                             </div>
-                            <form method="POST" action="{% url 'customer:customerindexAll' %}">
+                            <form method="POST" action="{% url 'customer:customerindex' %}" >
                                 {% csrf_token %}
                                 <div class="modal-body">
-                                    <input id="hiddenInput" type="hidden" name="buyer" value="">    
+                                    <input id="hiddenInput" type="hidden" name="buyer" >    
                                     <input type="hidden"  name="register" value="{{request.user.user_id}}" >                                     
                                     <div class="form-group form-group-sm row">
                                         <div class="col-sm-8">
@@ -700,6 +700,10 @@
         
         <!-- begin::Global Config(global config for global JS sciprts) -->
         <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+        <!-- Add jQuery -->
+
+        <!-- Add Bootstrap JavaScript -->
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
 
         {% include "partials/script.html" %}
@@ -742,20 +746,20 @@
 
         
         <script>
-                    
-            document.addEventListener('DOMContentLoaded', function() {
-                const inquiryLinks = document.querySelectorAll('.inquiry-link');
-                const hiddenInput = document.getElementById('hiddenInput');
+        document.addEventListener('DOMContentLoaded', function() {
+  // Listen to the 'show.bs.modal' event on the modal
+  $('#modal-inquiry').on('show.bs.modal', function(event) {
+    // Get the button (<a> tag) that triggered the modal
+    var button = $(event.relatedTarget);
 
-                inquiryLinks.forEach(link => {
-                    link.addEventListener('click', function() {
-                        const buyerValue = link.getAttribute('data-buyer');
-                        hiddenInput.value = buyerValue;
-                        console.log('Value copied:', buyerValue);
-                        console.log('Hidden input value:', hiddenInput.value);
-                    });
-                });
-            });
+    // Get the 'data-buyer' attribute from the button
+    var buyerValue = button.data('buyer');
+
+    // Find the hidden input element by its ID and update its value
+    $('#hiddenInput').val(buyerValue);
+  });
+});
+        
         </script>
         
 
