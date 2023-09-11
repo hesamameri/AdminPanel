@@ -56,8 +56,13 @@ def customer_index(request):
 
         # Get distinct obj_item_ids with maximum values for each field
         distinct_records = CustomerSva.objects.all()
-        
-        banks = ObjItem.objects.filter(obj_item_id__gte=999003010, obj_item_id__lte=999003019)        # Set the number of records to display per page
+        customer_ids = customers.values_list('obj_item_id', flat=True)
+        obj_payments = ObjPayment.objects.filter(obj_item_id__in=customer_ids)
+        tickets = Ticket.objects.filter(obj_source_id__in=customer_ids) # assuming obj_source_id is the relevant field in Ticket model
+        pre_factors = PreFactor.objects.filter(buyer_id__in=customer_ids)
+        factors = Factor.objects.filter(buyer_id__in=customer_ids, reg_status='CONFIRM')
+        banks = ObjItem.objects.filter(obj_item_id__gte=999003010, obj_item_id__lte=999003019) 
+                # Set the number of records to display per page
         records_per_page = 100
         
         # Initialize the Paginator object with the data and the number of records per page
@@ -200,8 +205,14 @@ def customer_index_all(request):
 
         # Get distinct obj_item_ids with maximum values for each field
         distinct_records = CustomerSva.objects.all()
-        
-        banks = ObjItem.objects.filter(obj_item_id__gte=999003010, obj_item_id__lte=999003019)        # Set the number of records to display per page
+
+        # customer_ids = distinct_records.values_list('obj_item_id', flat=True)
+        # obj_payments = ObjPayment.objects.filter(obj_item_id__in=customer_ids)
+        # tickets = Ticket.objects.filter(obj_source_id__in=customer_ids) # assuming obj_source_id is the relevant field in Ticket model
+        # pre_factors = PreFactor.objects.filter(buyer_id__in=customer_ids)
+        # factors = Factor.objects.filter(buyer_id__in=customer_ids, reg_status='CONFIRM')
+
+        banks = ObjItem.objects.filter(obj_item_id__gte=999003010, obj_item_id__lte=999003019) 
         records_per_page = 100
         
         # Initialize the Paginator object with the data and the number of records per page
@@ -249,7 +260,6 @@ def factor(request,factor_id=None):
             factor_address = FactorAddress.objects.get(factor = factor_id)
             factor_document = FactorDocument.objects.filter(factor = factor_id)
             factor_comment = FactorComment.objects.filter(factor_id = factor_id)
-            # inquiry = Inquiry.objects.filter(buyer_id = factor_main.buyer_id)
             factor_item = FactorItem.objects.filter(factor= factor_id)
             factor_item_ids = factor_item.values('factor_item_id')
             factor_depo_data = DepoSend.objects.filter(depo_send_id__in = factor_item_ids)
@@ -260,7 +270,6 @@ def factor(request,factor_id=None):
             combined_all_depo = list(zip(combined_depo_goods_data,combined_depo_id_data))
             depo_all = list(zip(factor_depo_data, combined_all_depo))
             obj_sendings = ObjSend.objects.filter(source_id__in = factor_item_ids)
-            # factor_main_sva = FactorSVA.objects.get(factor = 64)
             context = {
                 'factor_main':factor_main,
                 'factor_payway':factor_payway,
@@ -297,7 +306,6 @@ def customer_confirm_accountlist(request):
     vendor_customers = FactorItemBalanceSVA.objects.filter(sended__lt=F('amount'))    
     vendor_paths = vendor_customers.values('factor_id')
     vendor_snatch = FactorItem.objects.filter(factor_item_id__in = vendor_paths)
-    vendor_credit = CreditSumSVA.objects.values('vendor_buyer_id','vendor_name','reminded')
     vendor_customers = zip(vendor_customers,vendor_snatch)
     
     context = {
@@ -305,7 +313,6 @@ def customer_confirm_accountlist(request):
     }
     return render(request,'Customer/CustomerConfirmAccountList.html',context=context)
 
-# @cache_page(10)
 @login_required(login_url='Administrator:login_view')
 @permission_required('ROLE_PERSONEL','ROLE_ADMIN')
 def customer_confirm_salelist(request):
@@ -313,12 +320,9 @@ def customer_confirm_salelist(request):
     queryset = FactorItemBalanceSVA.objects.all()
     queryfactor_ids= FactorItemBalanceSVA.objects.all().values('factor_id')
     querybuyer_ids= FactorItemBalanceSVA.objects.all().values('buyer_id')
-    conf_date = Factor.objects.filter(factor_id__in = queryfactor_ids).values('acc_confirm_dt')
-    conf_city = CustomerSva.objects.filter(obj_item_id__in = querybuyer_ids).values('city_id')
+    conf_city = CustomerSva.objects.filter(obj_item_id__in = querybuyer_ids).values('obj_item_id')
     cities = ObjItem.objects.filter(obj_item_id__in = conf_city)
-    # print(conf_date)
-    # print(conf_city)
-    # print(cities)
+    remaining_credit = CreditSumSVA.objects.filter()
     context = {
         'items': [(item, 1) for item in queryset],
     }
@@ -468,7 +472,6 @@ def index_inquiry_response(request):
             item.shower = request.user.user_id
             item.show_dt = timezone.now()
             item.save()
-            print("TTTTTTTTTTTTTTTTT")
             return redirect('customer:IndexInquiryResponse')
 
         else:
