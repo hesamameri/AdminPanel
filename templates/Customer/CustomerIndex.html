@@ -295,7 +295,7 @@
                                                         پیش خرید
                                                     </a>
 
-                                                    <a class="badge badge-primary text-white badge-sm" style="" data-buyer="{{ item.obj_item_id }}" data-toggle="modal" data-target="#modal-inquiry">استعلام حساب</a>
+                                                    <a class="badge badge-primary text-white badge-sm"  data-buyer="{{ item.obj_item_id }}" data-toggle="modal" data-target="#modal-inquiry">استعلام حساب</a>
 
                                                 </td>
 
@@ -697,12 +697,56 @@
         
         
 
+        
+        <!-- begin::Global Config(global config for global JS sciprts) -->
+        <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+
+
+        {% include "partials/script.html" %}
+
         <script>
-            
+        function showHideFields() {
+        var selectedOption = document.getElementById("type").value;
+        var cashFields = document.getElementById("cashFields");
+        var chequeFields = document.getElementById("chequeFields");
+        var cartFields = document.getElementById("cartFields");
+        var cartocartFields = document.getElementById("cartocartFields");
+        var commonFields = document.getElementById("commonFields");
+
+        // Hide all fields by default
+        cashFields.style.display = "none";
+        chequeFields.style.display = "none";
+        cartFields.style.display = "none";
+        cartocartFields.style.display = "none";
+        commonFields.style.display = "none";
+
+        // Show fields based on the selected option
+        if (selectedOption === "CASH") {
+            cashFields.style.display = "block";
+            commonFields.style.display = "block"; // Show common fields for "CASH"
+
+        } else if (selectedOption === "CHEQUE") {
+            chequeFields.style.display = "block";
+            commonFields.style.display = "block"; // Show common fields for "CHEQUE"
+        }
+        else if (selectedOption === "CARTOCART") {
+            cartocartFields.style.display = "block";
+            commonFields.style.display = "block"; // Show common fields for "CHEQUE"
+        }
+        else {
+            cartFields.style.display = "block";
+            commonFields.style.display = "block"; // Show common fields for "CHEQUE"
+        }
+    }
+        </script>
+
+        
+        <script>
+                    
             document.addEventListener('DOMContentLoaded', function() {
                 const inquiryLinks = document.querySelectorAll('.inquiry-link');
                 const hiddenInput = document.getElementById('hiddenInput');
-    
+
                 inquiryLinks.forEach(link => {
                     link.addEventListener('click', function() {
                         const buyerValue = link.getAttribute('data-buyer');
@@ -713,18 +757,6 @@
                 });
             });
         </script>
-        <!-- begin::Global Config(global config for global JS sciprts) -->
-        <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
-
-
-        {% include "partials/script.html" %}
-
-        <script>
-            
-        </script>
-
-        
-
         
 
 
