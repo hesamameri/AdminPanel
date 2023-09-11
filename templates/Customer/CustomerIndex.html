@@ -56,8 +56,10 @@
                         <div class="kt-content  kt-grid__item kt-grid__item--fluid" id="kt_content">
 
                             <div class="kt-portlet kt-portlet--mobile">
+                                
 
                                 <div class="kt-portlet__body">
+                                    
 
                                     <!--begin: Search Form -->
                                     <div class="kt-form kt-fork--label-right kt-margin-t-20 kt-margin-b-10">
@@ -426,7 +428,7 @@
                                     <input type="hidden" value="{{request.user.user_id}}" name="register" class="customer_id">
                                     <div class="form-group form-group-sm row">
                                         <div class="col-sm-8">
-                                            <select class="form-control select2bs4s rtl text-right float-right" style="width: 100%;" name="type" id="type" onchange="showHideFields()">
+                                            <select class="form-control select2bs4s rtl text-left" style="width: 100%;" name="type" id="type" onchange="showHideFields()">
                                                 <option value="CASH">وجه نقد</option>
                                                 <option value="CART" selected>کارت خوان</option>
                                                 <option value="CARTOCART">کارت به کارت</option>
@@ -453,25 +455,20 @@
                                         </div>
                                         <div class="form-group form-group-sm row" id="div_no">
                                             <div class="col-sm-8">
-                                                <input type="text" name="no" id="no" class="form-control rtl text-right" placeholder="کد شعبه" >
+                                                <input type="text" name="no" id="no" class="form-control rtl text-left" placeholder="کد شعبه" >
                                             </div>
-                                            <label for="no" id="lbl_no" class="col-sm-4 col-form-label">شماره</label>
+                                            <label for="no" id="lbl_no" class="col-sm-4 col-form-label">شماره </label>
                                         </div>
                                         <div class="form-group form-group-sm row" id="div_bank_branch">
                                             <div class="col-sm-8">
-                                            <input type="text" name="branch_code" id="branch_code" class="form-control rtl text-right" placeholder="نام شعبه" >
+                                            <input type="text" name="branch_code" id="branch_code" class="form-control rtl text-left" placeholder="نام شعبه" >
                                             </div>
                                             <label for="branch_code" class="col-sm-4 col-form-label">کد شعبه</label>
                                         </div>
-                                        <div class="form-group form-group-sm row" id="div_branch_name">
-                                            <div class="col-sm-8">
-                                            <input type="text" name="branch_name" id="branch_name" class="form-control rtl text-right" placeholder="نام شعبه" >
-                                            </div>
-                                            <label for="branch_name" class="col-sm-4 col-form-label">نام شعبه</label>
-                                        </div>
+                                 
                                         <div class="form-group form-group-sm row" id="div_account_owner">
                                             <div class="col-sm-8">
-                                            <input type="text" name="owner" class="form-control rtl text-right" id="owner" placeholder="نام صاحب حساب" >
+                                            <input type="text" name="owner" class="form-control rtl text-left" id="owner" placeholder="نام صاحب حساب" >
                                             </div>
                                             <label for="owner" class="col-sm-4 col-form-label">نام صاحب حساب</label>
                                         </div>
@@ -493,13 +490,13 @@
                                         </div>
                                         <div class="form-group form-group-sm row" id="div_no">
                                             <div class="col-sm-8">
-                                                <input type="text" name="no" id="no" class="form-control rtl text-right" placeholder="کد شعبه" >
+                                                <input type="text" name="no" id="no" class="form-control rtl text-left" placeholder="کد شعبه" >
                                             </div>
                                             <label for="no" id="lbl_no" class="col-sm-4 col-form-label">شماره</label>
                                         </div>
                                         <div class="form-group form-group-sm row" id="div_bank_branch">
                                             <div class="col-sm-8">
-                                            <input type="text" name="branch_code" id="branch_code" class="form-control rtl text-right" placeholder="نام شعبه" >
+                                            <input type="text" name="branch_code" id="branch_code" class="form-control rtl text-left" placeholder="نام شعبه" >
                                             </div>
                                             <label for="branch_code" class="col-sm-4 col-form-label">کد شعبه</label>
                                         </div>
@@ -510,7 +507,10 @@
                                             <div class="col-sm-8">
                                             <select class="form-control select2bs4 rtl bank-list" style="width: 100%;" name="bank_id" data-placeholder="بانک" data-allow-clear="true">
                                             
-                                                    <option value="7"></option>
+                                                    
+                                                {% for bank in banks %}
+                                                <option value="{{bank.obj_item_id}}">{{bank.name}}</option>
+                                                {% endfor %}
                                                 
                                             </select>
                                             </div>
@@ -518,13 +518,13 @@
                                         </div>
                                         <div class="form-group form-group-sm row" id="div_no">
                                             <div class="col-sm-8">
-                                                <input type="text" name="no" id="no" class="form-control rtl text-right" placeholder="کد شعبه" >
+                                                <input type="text" name="no" id="no" class="form-control rtl text-left" placeholder="کد شعبه" >
                                             </div>
                                             <label for="no" id="lbl_no" class="col-sm-4 col-form-label">شماره</label>
                                         </div>
                                         <div class="form-group form-group-sm row" id="div_bank_branch">
                                             <div class="col-sm-8">
-                                            <input type="text" name="branch_code" id="branch_code" class="form-control rtl text-right" placeholder="نام شعبه" >
+                                            <input type="text" name="branch_code" id="branch_code" class="form-control rtl text-left" placeholder="نام شعبه" >
                                             </div>
                                             <label for="branch_code" class="col-sm-4 col-form-label">کد شعبه</label>
                                         </div>
