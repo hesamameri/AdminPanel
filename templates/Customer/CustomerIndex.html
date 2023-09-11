@@ -258,10 +258,10 @@
                                                 <td>
 
                                                     <div class="dropdown dropdown-inline">
-														<button type="button" class="btn btn-hover-brand btn-elevate-hover chngeColor1 btn-icon btn-sm btn-icon-md btn-circle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+														<button id="dropdownButton"  type="button" class="btn btn-hover-brand btn-elevate-hover chngeColor1 btn-icon btn-sm btn-icon-md btn-circle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 															<i class="flaticon-more-1"></i>
 														</button>
-														<div class="dropdown-menu dropdown-menu">
+														<div class="dropdown-menu dropdown-menu" id="dropdownMenu" >
                                                             
                                                             {% for payment in obj_payments %}
                                                                 {% if payment.obj_item_id == item.obj_item_id %}
@@ -274,7 +274,7 @@
                                                                 {% endif %}
                                                             {% endfor %}
                                                             {% for ticket in tickets %}
-                                                                {% if ticket.obj_item_id == item.obj_item_id %}
+                                                                {% if ticket.obj_source_id == item.obj_item_id %}
                                                                 <a class="dropdown-item kt-font-dark" href="#"><i class="fa fa-bookmark kt-font-bold text-warning"></i> تیکت {{ticket.reg_dt|to_jalali}}</a>
                                                                 {% endif %}
                                                             {% endfor %}
@@ -806,6 +806,21 @@
                 });
             });
  
+        </script>
+        <script>
+            document.addEventListener("DOMContentLoaded", function() {
+            const dropdownButton = document.getElementById('dropdownButton');
+            const dropdownMenu = document.getElementById('dropdownMenu');
+
+            dropdownButton.addEventListener('click', function() {
+                if (dropdownMenu.classList.contains('show')) {
+                    dropdownMenu.classList.remove('show');
+                } else {
+                    dropdownMenu.classList.add('show');
+                }
+            });
+        });
+
         </script>
         
         <!--end::Page Scripts -->

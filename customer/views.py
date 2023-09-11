@@ -54,72 +54,52 @@ def customer_index(request):
             return " wrong"
     else:
 
-        # Get distinct obj_item_ids with maximum values for each field
-        distinct_records = CustomerSva.objects.all()
-        customer_ids = customers.values_list('obj_item_id', flat=True)
-        obj_payments = ObjPayment.objects.filter(obj_item_id__in=customer_ids)
-        tickets = Ticket.objects.filter(obj_source_id__in=customer_ids) # assuming obj_source_id is the relevant field in Ticket model
-        pre_factors = PreFactor.objects.filter(buyer_id__in=customer_ids)
-        factors = Factor.objects.filter(buyer_id__in=customer_ids, reg_status='CONFIRM')
-        banks = ObjItem.objects.filter(obj_item_id__gte=999003010, obj_item_id__lte=999003019) 
-                # Set the number of records to display per page
-        records_per_page = 100
         
-        # Initialize the Paginator object with the data and the number of records per page
-        paginator = Paginator(distinct_records, records_per_page)
-
-        # Get the current page number from the request's GET parameters. If not provided, default to 1.
-        page_number = request.GET.get('page', 1)
-
-        try:
-            # Get the Page object for the requested page number
-            page = paginator.page(page_number)
-
-        except EmptyPage:
-            # If the requested page number is out of range, display the last page
-            page = paginator.page(paginator.num_pages)
 
 
-    customers = CustomerSva.objects.filter(obj_item_id__gt = 1030200001).order_by('obj_item_id')
-    page = customers
-    customer_ids = customers.values_list('obj_item_id', flat=True)
-    # Retrieve related objects based on customer_ids
-    obj_payments = ObjPayment.objects.filter(obj_item_id__in=customer_ids)
-    
-    tickets = Ticket.objects.filter(obj_source_id__in=customer_ids) # assuming obj_source_id is the relevant field in Ticket model
-    pre_factors = PreFactor.objects.filter(buyer_id__in=customer_ids)
-    factors = Factor.objects.filter(buyer_id__in=customer_ids, reg_status='CONFIRM')
-    banks = ObjItem.objects.filter(obj_item_id__gte=999003010, obj_item_id__lte=999003019)        # Set the number of records to display per page
+        customers = CustomerSva.objects.filter(obj_item_id__gt = 1030200001).order_by('obj_item_id')
+        page = customers
+        customer_ids = customers.values_list('obj_item_id', flat=True)
+        # Retrieve related objects based on customer_ids
+        obj_payments = ObjPayment.objects.filter(obj_item_id__in=customer_ids)
+        print(obj_payments)
+        tickets = Ticket.objects.filter(obj_source_id__in=customer_ids) # assuming obj_source_id is the relevant field in Ticket model
+        print(tickets)
+        pre_factors = PreFactor.objects.filter(buyer_id__in=customer_ids)
+        print(pre_factors)
+        factors = Factor.objects.filter(buyer_id__in=customer_ids, reg_status='CONFIRM')
+        print(factors)
+        banks = ObjItem.objects.filter(obj_item_id__gte=999003010, obj_item_id__lte=999003019)        # Set the number of records to display per page
 
-    # # Set the number of records to display per page
-    # records_per_page = 8000
-    # print(page[0].address)
-    # # Initialize the Paginator object with the data and the number of records per page
-    # paginator = Paginator(customers, records_per_page)
+        # # Set the number of records to display per page
+        # records_per_page = 8000
+        # print(page[0].address)
+        # # Initialize the Paginator object with the data and the number of records per page
+        # paginator = Paginator(customers, records_per_page)
 
-    # # Get the current page number from the request's GET parameters. If not provided, default to 1.
-    # page_number = request.GET.get('page', 1)
+        # # Get the current page number from the request's GET parameters. If not provided, default to 1.
+        # page_number = request.GET.get('page', 1)
 
-    # try:
-    #     # Get the Page object for the requested page number
-    #     page = paginator.page(page_number)
-    # except EmptyPage:
-    #     # If the requested page number is out of range, display the last page
-    #     page = paginator.page(paginator.num_pages)
-    
-    context = {
-        'page': page,
-        'obj_payments': obj_payments,
-        'tickets': tickets,
-        'pre_factors': pre_factors,
-        'factors': factors,
-        'banks':banks,
-        'paginator': paginator,
+        # try:
+        #     # Get the Page object for the requested page number
+        #     page = paginator.page(page_number)
+        # except EmptyPage:
+        #     # If the requested page number is out of range, display the last page
+        #     page = paginator.page(paginator.num_pages)
+        
+        context = {
+            'page': page,
+            'obj_payments': obj_payments,
+            'tickets': tickets,
+            'pre_factors': pre_factors,
+            'factors': factors,
+            'banks':banks,
+            
 
-    }
-    
+        }
+        
 
-    return render(request, 'Customer/CustomerIndex.html', context=context)
+        return render(request, 'Customer/CustomerIndex.html', context=context)
 
 # @cache_page(10)
 @login_required(login_url='Administrator:login_view')
