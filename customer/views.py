@@ -490,7 +490,7 @@ def index_inquiry(request):
         inquiry.confirm_dt = datetime.datetime.now()
         inquiry.save()
         # print(request.POST)
-        return redirect('customer:IndexInquiryResponse')
+        return redirect('customer:IndexInquiry')
     else:
         inquiries = Inquiry.objects.filter(confirm_status__isnull=True) 
         # print(inquiries)
