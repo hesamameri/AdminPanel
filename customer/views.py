@@ -18,10 +18,61 @@ from django.views.decorators.cache import cache_page
 from django.db.models import F, Sum
 from .models import FactorItem,FactorItemBalanceSVA
 from .forms import NewInquiry, NewObjItem,NewObjItemSpec
-@cache_page(10)
+# @cache_page(10)
 @login_required(login_url='Administrator:login_view')
 @permission_required('ROLE_PERSONEL', 'ROLE_ADMIN')
 def customer_index(request):
+    if request.method == 'POST':
+        post_data = {
+            'buyer': request.POST.get('buyer'),
+            'first_control': 1,
+            'bank': request.POST.get('bank'),
+            'bank_branch': request.POST.get('bank_branch'),
+            'bank_code': request.POST.get('bank_code'),
+            'account_owner': request.POST.get('account_owner'),
+            'account_owner_nat_code': request.POST.get('account_owner_nat_code'),
+            'account_no': request.POST.get('account_no'),
+            'account_shaba': request.POST.get('account_shaba'),
+            'cheque_image': request.POST.get('cheque_image'),
+            'cheque_price': request.POST.get('cheque_price'),
+            'cheque_count': request.POST.get('cheque_count'),
+            'description': request.POST.get('description'),
+            'account_sayadi': request.POST.get('account_sayadi'),
+            'account_sayadi': request.POST.get('account_sayadi'),
+            'register': request.POST.get('register'),
+            'reg_dt': datetime.datetime.now()
+
+        }
+        print(post_data)
+        formInquiry = NewInquiry(post_data)
+        if formInquiry.is_valid():
+            saved_instance = formInquiry.save()
+            print("this is true")
+            return redirect('customer:customerindexAll')
+        else:
+            return " wrong"
+    else:
+
+        # Get distinct obj_item_ids with maximum values for each field
+        distinct_records = CustomerSva.objects.all()
+        
+        banks = ObjItem.objects.filter(obj_item_id__gte=999003010, obj_item_id__lte=999003019)        # Set the number of records to display per page
+        records_per_page = 100
+        
+        # Initialize the Paginator object with the data and the number of records per page
+        paginator = Paginator(distinct_records, records_per_page)
+
+        # Get the current page number from the request's GET parameters. If not provided, default to 1.
+        page_number = request.GET.get('page', 1)
+
+        try:
+            # Get the Page object for the requested page number
+            page = paginator.page(page_number)
+
+        except EmptyPage:
+            # If the requested page number is out of range, display the last page
+            page = paginator.page(paginator.num_pages)
+
 
     customers = CustomerSva.objects.filter(obj_item_id__gt = 1030200001).order_by('obj_item_id')
     page = customers
@@ -46,6 +97,8 @@ def customer_index(request):
     context = {
         'page': page,
         'banks':banks,
+        'paginator': paginator,
+
     }
     
 

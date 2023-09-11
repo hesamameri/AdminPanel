@@ -437,20 +437,20 @@
 
 
 
-        <script>
+<script>
             
-        document.addEventListener('DOMContentLoaded', function() {
-            const inquiryLinks = document.querySelectorAll('.inquiry-link');
-            const hiddenInput = document.getElementById('hiddenInput');
+    document.addEventListener('DOMContentLoaded', function() {
+        const inquiryLinks = document.querySelectorAll('.inquiry-link');
+        const hiddenInput = document.getElementById('hiddenInput');
 
-            inquiryLinks.forEach(link => {
-                link.addEventListener('click', function() {
-                    const buyerValue = link.getAttribute('data-buyer');
-                    hiddenInput.value = buyerValue;
-                    console.log('Value copied:', buyerValue);
-                });
+        inquiryLinks.forEach(link => {
+            link.addEventListener('click', function() {
+                const buyerValue = link.getAttribute('data-buyer');
+                hiddenInput.value = buyerValue;
+                console.log('Value copied:', buyerValue);
             });
         });
+    });
 </script>
 
 
