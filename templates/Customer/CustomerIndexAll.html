@@ -188,12 +188,22 @@
                                                                                             </button>
                                                                                             <div class="dropdown-menu" aria-labelledby="btnGroupDropX">
                                                                                                 <!--  -->
+                                                                                                {% for factor in factors %}
+                                                                                                    {% if factor.buyer_id == item.obj_item_id %}
                                                                                                     <a href="#" class="dropdown-item text-right rtl">فاکتور </a>
-                                                                                                
-                                                                                                            <a href=""  class="dropdown-item text-right rtl">تیکت </a>
-                                                                                                        
+                                                                                                    {% endif %}
+                                                                                                {% endfor %}
+                                                                                                {% for ticket in tickets %}
+                                                                                                    {% if ticket.obj_source_id == item.obj_item_id %}
+                                                                                                    <a href=""  class="dropdown-item text-right rtl">تیکت </a>
+                                                                                                    {% endif %}
+                                                                                                {% endfor %}
                                                                                                     <hr>
-                                                                                                    <a href="#" class="dropdown-item text-right rtl">پرداختی‌ها</a>
+                                                                                                    {% for payment in obj_payments %}
+                                                                                                      {% if payment.obj_item_id == item.obj_item_id %}
+                                                                                                        <a href="#" class="dropdown-item text-right rtl">پرداختی‌ها</a>
+                                                                                                        {% endif %}
+                                                                                                    {% endfor %}
                                                                                                
                                                                                             </div>
                                                                                         </div>

@@ -52,7 +52,22 @@ def nth_item(queryset, counter):
         return None
 @register.filter
 def inter(number):
-    return int(number)
+    if not isinstance(number, str):
+        number = str(number)
+
+    # Convert to float first, then to int
+    try:
+        number = int(float(number))
+    except ValueError:
+        return "Invalid number"
+
+    number_str = str(number)
+
+    # Check if the negative sign is at the end and move it to the front
+    if number_str.endswith('-'):
+        number_str = '-' + number_str[:-1]
+
+    return number_str
 
 @register.filter
 def city_rec(id):
@@ -133,3 +148,27 @@ def depo_location(item):
     }
     return depos[item]
 
+
+@register.filter
+def insert_slashes(value):
+    value = str(value)
+    if len(value) >= 7:
+        return value[:5] + '/' + value[5:7] + '/' + value[7:]
+    
+    elif len(value) >= 5:
+        return value[:5] + '/' + value[5:]
+    else:
+        return value
+@register.filter
+def inquiry_translate(value):
+    items = {
+        'COND_CONFIRM':'تایید مشروط',
+        'CONFIRM':'تایید',
+        'REJECT':'رد',
+        'BACK':'برگشتی',
+        
+    }
+    if items[value] != None:
+        return items[value]
+    else:
+        return value
