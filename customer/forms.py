@@ -1,5 +1,5 @@
 from django import forms
-from .models import CustomerSubSVA, Factor, Inquiry,ObjItem,ObjItemSpec,ObjSpec
+from .models import CustomerSubSVA, Factor, Inquiry,ObjItem,ObjItemSpec,ObjSpec, PreFactor
 
 
 
@@ -65,5 +65,16 @@ class NewFactor(forms.ModelForm):
             'receiver',
             'status',
             ]
+class NewPreFactor(forms.ModelForm):   
+    class Meta:
+        model = PreFactor
+        fields = [
+                'obj_item_id',
+                'buyer_id',
+                'amount',
+                'register',
+                'reg_dt',
 
+
+                  ]
 
