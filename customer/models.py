@@ -934,7 +934,7 @@ class CreditSVA(models.Model):
         db_table = 'credit_sva'
 
 class CreditSumSVA(models.Model):
-    vendor_buyer = models.ForeignKey(ObjItem, on_delete=models.CASCADE)
+    vendor_buyer = models.ForeignKey(ObjItem, on_delete=models.CASCADE, primary_key=True) 
     vendor_name = models.CharField(max_length=255)
     base_credit = models.DecimalField(max_digits=10, decimal_places=2)
     debit = models.DecimalField(max_digits=10, decimal_places=2)

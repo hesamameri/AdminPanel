@@ -44,7 +44,7 @@ def customer_index(request):
             'reg_dt': datetime.datetime.now()
 
         }
-        print(post_data)
+     
         formInquiry = NewInquiry(post_data)
         if formInquiry.is_valid():
             saved_instance = formInquiry.save()
@@ -57,7 +57,7 @@ def customer_index(request):
         
 
 
-        customers = CustomerSva.objects.filter(obj_item_id__gt = 1030200001).order_by('obj_item_id')
+        customers = CustomerSva.objects.filter(obj_item_id__gt = 1030200027).order_by('obj_item_id')
         page = customers
         customer_ids = customers.values_list('obj_item_id', flat=True)
         # Retrieve related objects based on customer_ids
@@ -180,12 +180,22 @@ def customer_index_all(request):
             print("this is true")
             return redirect('customer:customerindexAll')
         else:
-            return " wrong"
+            return "wrong"
     else:
 
         # Get distinct obj_item_ids with maximum values for each field
-        distinct_records = CustomerSva.objects.all()
-
+        # distinct_records = CustomerSva.objects.all()
+        customers = CustomerSva.objects.filter(obj_item_id__gt = 1030200027).order_by('-obj_item_id')
+        page = customers
+        customer_ids = customers.values_list('obj_item_id', flat=True)
+        # Retrieve related objects based on customer_ids
+        obj_payments = ObjPayment.objects.filter(obj_item_id__in=customer_ids)
+        print(obj_payments)
+        tickets = Ticket.objects.filter(obj_source_id__in=customer_ids) # assuming obj_source_id is the relevant field in Ticket model
+        print(tickets)
+        pre_factors = PreFactor.objects.filter(buyer_id__in=customer_ids)
+        print(pre_factors)
+        factors = Factor.objects.filter(buyer_id__in=customer_ids, reg_status='CONFIRM')
         # customer_ids = distinct_records.values_list('obj_item_id', flat=True)
         # obj_payments = ObjPayment.objects.filter(obj_item_id__in=customer_ids)
         # tickets = Ticket.objects.filter(obj_source_id__in=customer_ids) # assuming obj_source_id is the relevant field in Ticket model
@@ -196,7 +206,7 @@ def customer_index_all(request):
         records_per_page = 100
         
         # Initialize the Paginator object with the data and the number of records per page
-        paginator = Paginator(distinct_records, records_per_page)
+        paginator = Paginator(customers, records_per_page)
 
         # Get the current page number from the request's GET parameters. If not provided, default to 1.
         page_number = request.GET.get('page', 1)
@@ -213,6 +223,10 @@ def customer_index_all(request):
             'page': page,
             'banks':banks,
             'paginator': paginator,
+            'obj_payments': obj_payments,
+            'tickets': tickets,
+            'pre_factors': pre_factors,
+            'factors': factors,
 
         }
        
@@ -236,6 +250,10 @@ def factor(request,factor_id=None):
     else:
         if factor_id:
             factor_main = Factor.objects.get(factor_id = factor_id)
+            customer_data = CustomerSva.objects.get(obj_item_id = factor_main.buyer_id)
+            inquiry_test = Inquiry.objects.get(buyer_id = factor_main.buyer_id)
+            credit_id = int(customer_data.seller_buyer_id[:10])
+            vendor_credit = CreditSumSVA.objects.get(pk = credit_id)
             factor_payway = FactorPayway.objects.filter(factor = factor_id)
             factor_address = FactorAddress.objects.get(factor = factor_id)
             factor_document = FactorDocument.objects.filter(factor = factor_id)
@@ -252,6 +270,8 @@ def factor(request,factor_id=None):
             obj_sendings = ObjSend.objects.filter(source_id__in = factor_item_ids)
             context = {
                 'factor_main':factor_main,
+                'customer_data':customer_data,
+                'vendor_credit':vendor_credit,
                 'factor_payway':factor_payway,
                 'factor_address': factor_address,
                 'factor_document': factor_document,
@@ -259,8 +279,8 @@ def factor(request,factor_id=None):
                 'factor_item': factor_item,
                 'depo_all':depo_all,
                 'obj_sendings':obj_sendings,
+                'inquiry_test':inquiry_test,
             }  
-            print(obj_sendings)
             return render(request,'Customer/Factor.html',context=context)
         else:
             Factor.objects.create()

@@ -486,13 +486,13 @@
                                                                     </tr>  
                                                                     <tr>  
                                                                         <th>ارسال کننده</th>
-                                                                        <td>{{obj.drive_register}}</td>
+                                                                        <td>{{obj.drive_register|register_user}}</td>
                             
                                                                         <th></th>
                                                                         <td></td>
                             
                                                                         <th>وضعیت سرویس</th>
-                                                                        <td>{{obj.drive_status}}</td>
+                                                                        <td>{{obj.drive_status|inquiry_translate}}</td>
                             
                                                                         <th>ارزیابی</th>
                                                                         <td>{{obj.assesment_opinion}}</td>
@@ -518,7 +518,13 @@
                                                                     </tr>  
                                                                     <tr>  
                                                                         <th>توضیحات ارسال</th>
-                                                                        <td>{{obj.drive_status_desc}}</td>
+                                                                        <td>
+                                                                            {% if obj.drive_status_desc == None %}
+                                                                            {% else %}
+                                                                            {{obj.drive_status_desc}}
+                                                                            {% endif %}
+
+                                                                        </td>
                             
                                                                         <th>توضیحات اختصاص</th>
                                                                         <td></td>
@@ -544,6 +550,7 @@
                             
                                                 <div class="row">
                                                     <div class="col-lg-12">
+                                                        {% if factor_main.reg_status == None %}
                                                         <div class="card  card-outline">
                                                             <div class="card-body">
                                                                 <form method="POST"  action="" id="saveForm" name="saveForm">
@@ -559,10 +566,14 @@
                                                                 </form>
                                                             </div>
                                                         </div>
+                                                        {% else %}
+                                                        {% endif %}
+                                                            {% if inquiry_test.confirm_status == None %}
                                                             <div class="card card- card-outline">
                                                                 <div class="card-header rtl">
                                                                     <h3 class="card-title rtl block  bold">اعلام وضعیت مالی</h3>
                                                                 </div>
+                                                                
                                                                 <div class="card-body">
                                                                     <form method="POST" action="">
                                                                         <div class="form-group form-group-sm row" style="width: 100%;">
@@ -585,7 +596,8 @@
                                                                     </form>
                                                                 </div>
                                                             </div>
-                            
+                                                            {% else %}
+                                                        {% endif %}
                                                              <div class="card card- card-outline">
                                                                 <div class="card-header rtl">
                                                                     <h3 class="card-title rtl block float-right"></h3>
@@ -615,15 +627,17 @@
                                                         <table class="table ">
                                                             <tr>
                                                                 <th>فروشگاه:</th>
-                                                                <td></td>
+                                                                <td>{{vendor_credit.vendor_name}}</td>
                                                             </tr>
                                                             <tr>
                                                                 <th>اعتبار:</th>
-                                                                <td></td>
+                                                                <td>{{vendor_credit.credit}}</td>
                                                             </tr>
                                                             <tr>
                                                                 <th>مانده اعتبار:</th>
-                                                                <td></td>
+                                                                <td class="alert alert-{{vendor_credit.credit_status}}">
+                                                                    {{vendor_credit.reminded|inter}}</label>
+                                                                </td>
                                                             </tr>
                                                         </table>                            
                                                     </div>
@@ -654,15 +668,15 @@
                                                                                 </tr>
                                                                                 <tr>
                                                                                     <th>کد مشتری فروشنده:</th>
-                                                                                    <td>{{factor_main.buyer_id}}</td>
+                                                                                    <td>{{customer_data.seller_buyer_id|insert_slashes}}</td>
                                                                                 </tr>
                                                                                 <tr>
                                                                                     <th>شماره فاکتور فروشنده:</th>
-                                                                                    <td>{{factor_main.seller_factor_id}}</td>
+                                                                                    <td>{{factor_main.seller_factor_id|insert_slashes}}</td>
                                                                                 </tr>
                                                                                 <tr>
                                                                                     <th>خریدار:</th>
-                                                                                    <td></td>
+                                                                                    <td>{{customer_data.name}}</td>
                                                                                 </tr>
                                                                                 <tr>
                                                                                     <th>آدرس :</th>
@@ -725,6 +739,8 @@
                                                             </div>
                                                             
                                                 </div><!-- /.tab card -->
+                                        
+                                               
                                                 <div class="card card-secondary">
                                                     <div class="card-header rtl">
                                                         <h3 class="card-title rtl block">استعلام حساب</h3>
@@ -732,32 +748,39 @@
                                                     <div class="card-body">
                                                         <table class="table ">
                                                             <tbody>
-                                                            
-                                                            
+                                                            {% if inquiry_test.confirm_status == 'COND_CONFIRM' %}
                                                             <tr class="alert alert-warning rtl" >
-                                                                <td><label role="alert"></label></td>
+                                                                <td><label role="alert">{{inquiry_test.inquiry_id}}   - {{inquiry_test.bank_branch}}   - {{inquiry_test.confirm_status|inquiry_translate}}</label></td>
                                                             </tr>
-                                                                
+                                                            
+
+                                                            {% elif inquiry_test.confirm_status == 'CONFIRM' %}    
                                                             <tr class="alert alert-success rtl">
-                                                                <td><label  role="alert"></label></td>
+                                                                <td><label  role="alert">{{inquiry_test.inquiry_id}} -   {{inquiry_test.bank_branch}} -   {{inquiry_test.confirm_status|inquiry_translate}}</label></td>
                                                             </tr>
+                                                           
 
+                                                            {% elif inquiry_test.confirm_status == 'REJECT' %}    
                                                             <tr class="alert alert-danger rtl">
-                                                                <td><label  role="alert"> </label></td>
+                                                                <td><label  role="alert">{{inquiry_test.inquiry_id}}  -  {{inquiry_test.bank_branch}}  -  {{inquiry_test.confirm_status|inquiry_translate}} </label></td>
                                                             </tr>    
+                                                     
 
+                                                            {% elif inquiry_test.confirm_status == 'BACK' %}    
                                                             <tr class="rtl alert alert-info">
-                                                                <td><label ></label></td>
+                                                                <td><label >{{inquiry_test.inquiry_id}}  -  {{inquiry_test.bank_branch}}   - {{inquiry_test.confirm_status|inquiry_translate}}</label></td>
 
                                                             </tr>    
-                                                                
+                                                            
+                             
+                                                            {% endif %}    
                                                             
                                                             </tbody>
                                                            
                                                         </table>
                                                     </div>
                                                 </div> <!-- /card -->
-                            
+                                              
                                                 
                                             </div> <!-- /col-4 -->
                                         </div>
