@@ -588,19 +588,38 @@
                                 </div>
                                 <div class="modal-body">
                                 <form method="POST" action="" autocomplete="off">
-                                    <input type="hidden" name="customer_id" class="customer_id" >
+                                    <!-- <input type="hidden" name="buyer_id" class="buyer_id" > -->
+                                    <input id="hiddenInput" type="hidden" name="buyer_id" >    
+                                    <input type="hidden"  name="register" value="{{request.user.user_id}}" >  
                                     <div class="form-group">
                                         <a href="#" id="new-pre-factor-row">ردیف جدید</a>
                                         <div id="pre-factor-row">
                                             <div class="row rtl" style="padding-top: 10px">
-                                                    <select class="form-control select2bs4 rtl text-right col-md-8" style="width: 100%;" name="product_id[]" data-placeholder="محصول" data-allow-clear="true">
-                                                        
-                                                            <option value="3"></option>
+                                                    <select class="form-control select2bs4 rtl text-left col-md-8" style="width: 100%;" name="obj_item_id" data-placeholder="محصول" data-allow-clear="true">
+                                                        <option value="115009" selected>CM6000BL-T</option>
+                                                        <option value="115036">CMT6000BL-T</option>
+                                                        <option value="115040">CM8000BL-T</option>
+                                                        <option value="115066">CMT8000BL-T</option>
+                                                        <option value="1150025">CP9000BL-T</option>
+                                                        <option value="115024">CM12000BL-T</option>
+                                                        <option value="1151001">پنل مدل expono ساده</option>
+                                                        <option value="1151019">پنل مدل امانوئل</option>
+                                                        <option value="1050487">موتور BLDC</option>
                                                         
                                                     </select>
-                                                    <select class="form-control select2bs4 rtl text-right col-md-3" style="width: 100%;" name="amount[]" data-placeholder="تعداد" data-allow-clear="true">
+                                                    <select class="form-control select2bs4 rtl text-left col-md-3" style="width: 100%;" name="amount" data-placeholder="تعداد" data-allow-clear="true">
                                                        
-                                                            <option value="2"></option>
+                                                            <option value="1" selected>1</option>
+                                                            <option value="2">2</option>
+                                                            <option value="3">3</option>
+                                                            <option value="4">4</option>
+                                                            <option value="5">5</option>
+                                                            <option value="6">6</option>
+                                                            <option value="7">7</option>
+                                                            <option value="8">8</option>
+                                                            <option value="9">9</option>
+                                                            <option value="10">10</option>
+
                                                         
                                                     </select>
                                                     <a href="#" class="pre-factor-delete-row btn btn-block col-md-1 btn-danger">X</a>
