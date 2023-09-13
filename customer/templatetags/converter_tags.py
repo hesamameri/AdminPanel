@@ -172,3 +172,7 @@ def inquiry_translate(value):
         return items[value]
     else:
         return value
+    
+@register.filter(name='get_range') 
+def get_range(number):
+    return range(1,number+1)

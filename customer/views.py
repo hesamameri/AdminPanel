@@ -398,6 +398,7 @@ def credit_index(request):
     
     return render(request,'Customer/CreditIndex.html')
 
+
 @cache_page(10)
 @login_required(login_url='Administrator:login_view')
 @permission_required('ROLE_PERSONEL','ROLE_ADMIN')

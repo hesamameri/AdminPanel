@@ -435,6 +435,7 @@
                                 <h4 class="modal-title">دریافت از مشتری</h4>
                             </div>
                             <form method="POST" action="{% url 'customer:customerindex' %}" enctype="multipart/form-data" id="frm-payment" autocomplete="off">
+                                {% csrf_token %}
                                 <div class="modal-body">
                                     <input id="hiddenInput" type="hidden" name="buyer" value="">
                                     <input type="hidden" value="{{request.user.user_id}}" name="register" class="customer_id">
@@ -515,18 +516,21 @@
                                     </div>
 
                                     <div id="cartocartFields" style="display: none;">
+
                                         <div class="form-group form-group-sm row" id="div_bank_id">
+
                                             <div class="col-sm-8">
+
                                             <select class="form-control select2bs4 rtl bank-list" style="width: 100%;" name="bank_id" data-placeholder="بانک" data-allow-clear="true">
-                                            
                                                 {% for bank in banks %}
                                                 <option value="{{bank.obj_item_id}}">{{bank.name}}</option>
                                                 {% endfor %}
-                                                
                                             </select>
                                             </div>
                                             <label for="bank_id" class="col-sm-4 col-form-label">بانک</label>
+
                                         </div>
+
                                         <div class="form-group form-group-sm row" id="div_no">
                                             <div class="col-sm-8">
                                                 <input type="text" name="no" id="no" class="form-control rtl text-left" placeholder="کد شعبه" >
@@ -580,12 +584,14 @@
                     <div class="modal fade" id="modal-pre-factor">
                         <div class="modal-dialog">
                             <div class="modal-content">
+
                                 <div class="modal-header">
                                     <h4 class="modal-title">پیش خرید</h4>
                                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                     <span aria-hidden="true">&times;</span>
                                     </button>
                                 </div>
+
                                 <div class="modal-body">
                                 <form method="POST" action="" autocomplete="off">
                                     <!-- <input type="hidden" name="buyer_id" class="buyer_id" > -->
@@ -596,7 +602,7 @@
                                         <div id="pre-factor-row">
                                             <div class="row rtl" style="padding-top: 10px">
                                                     <select class="form-control select2bs4 rtl text-left col-md-8" style="width: 100%;" name="obj_item_id" data-placeholder="محصول" data-allow-clear="true">
-                                                        <option value="115009" selected>CM6000BL-T</option>
+                                                        <option value="115009" >CM6000BL-T</option>
                                                         <option value="115036">CMT6000BL-T</option>
                                                         <option value="115040">CM8000BL-T</option>
                                                         <option value="115066">CMT8000BL-T</option>
@@ -607,22 +613,15 @@
                                                         <option value="1050487">موتور BLDC</option>
                                                         
                                                     </select>
-                                                    <select class="form-control select2bs4 rtl text-left col-md-3" style="width: 100%;" name="amount" data-placeholder="تعداد" data-allow-clear="true">
-                                                       
-                                                            <option value="1" selected>1</option>
-                                                            <option value="2">2</option>
-                                                            <option value="3">3</option>
-                                                            <option value="4">4</option>
-                                                            <option value="5">5</option>
-                                                            <option value="6">6</option>
-                                                            <option value="7">7</option>
-                                                            <option value="8">8</option>
-                                                            <option value="9">9</option>
-                                                            <option value="10">10</option>
 
-                                                        
+                                                    <select class="form-control select2bs4 rtl text-left col-md-3" style="width: 100%;" name="amount" data-placeholder="تعداد" data-allow-clear="true">
+                                                            {% for item in 10|get_range %}
+                                                            <option value="{{ forloop.counter }}">{{ item }}</option>
+                                                            {% endfor %}
                                                     </select>
+
                                                     <a href="#" class="pre-factor-delete-row btn btn-block col-md-1 btn-danger">X</a>
+
                                             </div>
                                         </div>
                                         <input type="submit" value="ثبت" class="btn btn-block btn-success" style="margin-top: 30px;">
