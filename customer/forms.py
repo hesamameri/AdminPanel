@@ -1,5 +1,5 @@
 from django import forms
-from .models import CustomerSubSVA, Factor, Inquiry,ObjItem,ObjItemSpec,ObjSpec, PreFactor
+from .models import CustomerSubSVA, Factor, Inquiry,ObjItem,ObjItemSpec, ObjPayment,ObjSpec, PreFactor
 
 
 
@@ -65,6 +65,8 @@ class NewFactor(forms.ModelForm):
             'receiver',
             'status',
             ]
+        
+
 class NewPreFactor(forms.ModelForm):   
     class Meta:
         model = PreFactor
@@ -77,4 +79,26 @@ class NewPreFactor(forms.ModelForm):
 
 
                   ]
+
+class NewObjPayment(forms.ModelForm):   
+    class Meta:
+        model = ObjPayment
+        fields = [
+                
+                'obj_item_id',
+                'type',
+                'source_type',
+                'source_id' ,
+                'price',
+                'description',
+                'register',
+                'reg_dt',
+                'bank_id',
+                'branch_code',
+                'no',
+                'owner',
+                ]
+
+
+
 
