@@ -352,11 +352,14 @@ def new_factor(request):
 
 @login_required(login_url='Administrator:login_view')
 @permission_required('ROLE_PERSONEL','ROLE_ADMIN')
-def factor(request,factor_id=None):
+def factor(request,factor_id=None,obj_buyer = None):
+    print("factor_id:", factor_id)
+    print("buyer_id:", obj_buyer)
+    
     if request.method == 'POST':
         pass
     else:
-        if factor_id:
+        if factor_id is not None:
             factor_main = Factor.objects.get(factor_id = factor_id)
             customer_data = CustomerSva.objects.get(obj_item_id = factor_main.buyer_id)
             inquiry_test = Inquiry.objects.get(buyer_id = factor_main.buyer_id)
@@ -391,7 +394,11 @@ def factor(request,factor_id=None):
             }  
             return render(request,'Customer/Factor.html',context=context)
         else:
-            Factor.objects.create()
+            
+            objinstance = ObjItem.objects.get(obj_item_id = obj_buyer)
+           
+            new_factor = Factor.objects.create(buyer = objinstance)
+            return redirect('customer:FactorWithFactorID', factor_id=new_factor.factor_id)
 
 # @cache_page(10)
 @login_required(login_url='Administrator:login_view')

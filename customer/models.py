@@ -481,7 +481,7 @@ class Factor(models.Model):
     mobile = models.CharField(max_length=255, blank=True, null=True)
     receiver = models.CharField(max_length=255, blank=True, null=True)
     status = models.CharField(max_length=7, blank=True, null=True)
-
+    
     class Meta:
         managed = False
         db_table = 'factor'
