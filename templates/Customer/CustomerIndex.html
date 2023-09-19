@@ -263,8 +263,9 @@
                                                 <td>{{item.mobile}}</td>
                                                 {% endif %}
                                                 <td>
-                                                    <a class="badge badge-success text-white" href="{% url 'customer:NewFactor' %}">ثبت فاکتور
-                                                        مشتری</a>
+                                                {% with my_arg=item.obj_item_id %}
+                                                <a class="badge badge-success text-white" href="{% url 'customer:FactorWithBuyerID' obj_buyer=my_arg %}">ثبت فاکتور مشتری</a>
+                                                {% endwith %}
                                                         
                                                 </td>
                                                 <td>
@@ -302,7 +303,7 @@
                          
                                                  
                                               
-                                                    <a id="myBtn" class="badge badge-primary text-white badge-sm" data-buyer="{{ item.obj_item_id }}" data-toggle="modal" data-target="#modal-inquiry1">دریافت از مشتری</a>
+                                                    <a id="myBtn" class="badge badge-primary text-white badge-sm" data-payer="{{ item.obj_item_id }}" data-toggle="modal" data-target="#modal-inquiry1">دریافت از مشتری</a>
                 
                                                     <a class="badge badge-primary text-white badge-sm" data-customer="{{ item.obj_item_id }}"  data-toggle="modal" data-target="#modal-pre-factor"> 
 
@@ -434,9 +435,10 @@
                             <div class="modal-header rtl">
                                 <h4 class="modal-title">دریافت از مشتری</h4>
                             </div>
-                            <form method="POST" action="{% url 'customer:customerindex' %}" enctype="multipart/form-data" id="frm-payment" autocomplete="off">
+                            <form method="POST" action="{% url 'customer:CustomerPay' %}" enctype="multipart/form-data" id="frm-payment" autocomplete="off">
+                                {% csrf_token %}
                                 <div class="modal-body">
-                                    <input id="hiddenInput" type="hidden" name="buyer" value="">
+                                    <input id="hiddenInput2" type="hidden" name="obj_item_id">
                                     <input type="hidden" value="{{request.user.user_id}}" name="register" class="customer_id">
                                     <div class="form-group form-group-sm row">
                                         <div class="col-sm-8">
@@ -446,6 +448,7 @@
                                                 <option value="CARTOCART">کارت به کارت</option>
                                                 <option value="CHEQUE">چک</option>
                                             </select>
+
                                         </div>
                                         <label for="pay_type" class="col-sm-3 col-form-label">نوع</label>
                                     </div>
@@ -515,18 +518,21 @@
                                     </div>
 
                                     <div id="cartocartFields" style="display: none;">
+
                                         <div class="form-group form-group-sm row" id="div_bank_id">
+
                                             <div class="col-sm-8">
+
                                             <select class="form-control select2bs4 rtl bank-list" style="width: 100%;" name="bank_id" data-placeholder="بانک" data-allow-clear="true">
-                                            
                                                 {% for bank in banks %}
                                                 <option value="{{bank.obj_item_id}}">{{bank.name}}</option>
                                                 {% endfor %}
-                                                
                                             </select>
                                             </div>
                                             <label for="bank_id" class="col-sm-4 col-form-label">بانک</label>
+
                                         </div>
+
                                         <div class="form-group form-group-sm row" id="div_no">
                                             <div class="col-sm-8">
                                                 <input type="text" name="no" id="no" class="form-control rtl text-left" placeholder="کد شعبه" >
@@ -580,12 +586,14 @@
                     <div class="modal fade" id="modal-pre-factor">
                         <div class="modal-dialog">
                             <div class="modal-content">
+
                                 <div class="modal-header">
                                     <h4 class="modal-title">پیش خرید</h4>
                                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                     <span aria-hidden="true">&times;</span>
                                     </button>
                                 </div>
+
                                 <div class="modal-body">
                                 <form method="POST" action="{% url 'customer:PreFactor' %}" autocomplete="off">
                                     {% csrf_token %}
@@ -596,37 +604,37 @@
                                         <button type="button" id="add-new-row">ردیف جدید</button>
                                         <div id="row-container"></div>
                                         <div id="pre-factor-row">
-                                                <div class="row rtl" style="padding-top: 10px">
-                                                        <select class="form-control select2bs4 rtl text-left col-md-8" style="width: 100%;" name="obj_item_id" data-placeholder="محصول" data-allow-clear="true">
-                                                            <option value="115009" selected>CM6000BL-T</option>
-                                                            <option value="115036">CMT6000BL-T</option>
-                                                            <option value="115040">CM8000BL-T</option>
-                                                            <option value="115066">CMT8000BL-T</option>
-                                                            <option value="1150025">CP9000BL-T</option>
-                                                            <option value="115024">CM12000BL-T</option>
-                                                            <option value="1151001">پنل مدل expono ساده</option>
-                                                            <option value="1151019">پنل مدل امانوئل</option>
-                                                            <option value="1050487">موتور BLDC</option>
-                                                            
-                                                        </select>
-                                                        <select class="form-control select2bs4 rtl text-left col-md-3" style="width: 100%;" name="amount" data-placeholder="تعداد" data-allow-clear="true">
+                                            <div class="row rtl" style="padding-top: 10px">
+                                                    <select class="form-control select2bs4 rtl text-left col-md-8" style="width: 100%;" name="obj_item_id" data-placeholder="محصول" data-allow-clear="true">
+                                                        <option value="115009" selected>CM6000BL-T</option>
+                                                        <option value="115036">CMT6000BL-T</option>
+                                                        <option value="115040">CM8000BL-T</option>
+                                                        <option value="115066">CMT8000BL-T</option>
+                                                        <option value="1150025">CP9000BL-T</option>
+                                                        <option value="115024">CM12000BL-T</option>
+                                                        <option value="1151001">پنل مدل expono ساده</option>
+                                                        <option value="1151019">پنل مدل امانوئل</option>
+                                                        <option value="1050487">موتور BLDC</option>
                                                         
-                                                                <option value="1" selected>1</option>
-                                                                <option value="2">2</option>
-                                                                <option value="3">3</option>
-                                                                <option value="4">4</option>
-                                                                <option value="5">5</option>
-                                                                <option value="6">6</option>
-                                                                <option value="7">7</option>
-                                                                <option value="8">8</option>
-                                                                <option value="9">9</option>
-                                                                <option value="10">10</option>
+                                                    </select>
+                                                    <select class="form-control select2bs4 rtl text-left col-md-3" style="width: 100%;" name="amount" data-placeholder="تعداد" data-allow-clear="true">
+                                                       
+                                                            <option value="1" selected>1</option>
+                                                            <option value="2">2</option>
+                                                            <option value="3">3</option>
+                                                            <option value="4">4</option>
+                                                            <option value="5">5</option>
+                                                            <option value="6">6</option>
+                                                            <option value="7">7</option>
+                                                            <option value="8">8</option>
+                                                            <option value="9">9</option>
+                                                            <option value="10">10</option>
 
-                                                            
-                                                        </select>
-                                                        <a href="#" class="pre-factor-delete-row btn btn-block col-md-1 btn-danger">X</a>
-                                                </div>
+                                                        
+                                                    </select>
+                                                    <a href="#" class="pre-factor-delete-row btn btn-block col-md-1 btn-danger">X</a>
                                             </div>
+                                        </div>
                                         <input type="submit" value="ثبت" class="btn btn-block btn-success" style="margin-top: 30px;">
                                     </div>
                                 </form>
@@ -750,7 +758,7 @@
         var cartFields = document.getElementById("cartFields");
         var cartocartFields = document.getElementById("cartocartFields");
         var commonFields = document.getElementById("commonFields");
-
+        
         // Hide all fields by default
         cashFields.style.display = "none";
         chequeFields.style.display = "none";
@@ -798,25 +806,8 @@
 });
         
         </script>
-
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-    // Listen to the 'show.bs.modal' event on the modal
-    $('#modal-pre-factor').on('show.bs.modal', function(event) {
-    // Get the button (<a> tag) that triggered the modal
-    var button = $(event.relatedTarget);
-
-    // Get the 'data-buyer' attribute from the button
-    var buyerValue = button.data('customer');
-
-    // Find the hidden input element by its ID and update its value
-    $('#hiddenInput3').val(buyerValue);
-    });
-    });
         
-    </script>
-        
-        
+
 
         <script>
             document.addEventListener("DOMContentLoaded", function() {

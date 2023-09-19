@@ -5,10 +5,13 @@ from django.conf.urls.static import static
 app_name = 'customer'
 urlpatterns = [
     path('customers/', views.customer_index, name='customerindex'),     # DONE(testphase)
+    path('customers/customer_pay/', views.customer_pay, name='CustomerPay'),  
     path('newcustomer', views.new_customer, name='NewCustomer'),
     path('customers/all', views.customer_index_all, name='customerindexAll'),  # DONE(testphase)
     path('newfactor', views.new_factor, name='NewFactor'),  # DONE(testphase)
-    path('factor/<int:factor_id>', views.factor, name='Factor'),
+    path('factor/by_buyer/<int:obj_buyer>/', views.factor, name='FactorWithBuyerID'),
+    path('factor/by_factor/<int:factor_id>/', views.factor, name='FactorWithFactorID'),
+    
     path('factorlist', views.factor_index, name='FactorList'),                   # DONE(testphase)
     path('customerconfaccountlt', views.customer_confirm_accountlist, name='CustomerConfirmAccountList'),
     path('customerconfirmsalelist', views.customer_confirm_salelist, name='CustomerConfirmSaleList'),
@@ -23,7 +26,7 @@ urlpatterns = [
     path('creditlist', views.credit_list, name='CreditList'),
     path('receiptconfirm', views.receipt_confirm, name='ReceiptConfirm'),
     path('prefroma', views.prefroma, name='Prefroma'),
-    
+
     path('factorsendindex', views.factor_send_index, name='FactorSendIndex'),
     path('customerfactorsendassigndriver', views.customerfactor_sendassigndriver, name='CustomerFactorSendAssignDriver'),
     path('customerfactorsendstatus', views.customerfactor_sendstatus, name='CustomerFactorSendStatus'),

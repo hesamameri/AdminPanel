@@ -17,10 +17,8 @@ from .models import  Inquiry  # Import your models
 from django.contrib.sessions.models import Session
 from django.views.decorators.cache import cache_page
 from django.db.models import F, Sum
-from .models import FactorItem,FactorItemBalanceSVA,PreFactor
-from .forms import NewInquiry,NewObjItem,NewObjItemSpec,NewPreFactor 
-from django.contrib import messages
-from django.http import HttpResponse
+from .models import FactorItem,FactorItemBalanceSVA
+from .forms import NewInquiry, NewObjItem,NewObjItemSpec
 # @cache_page(10)
 @login_required(login_url='Administrator:login_view')
 @permission_required('ROLE_PERSONEL', 'ROLE_ADMIN')
@@ -102,6 +100,114 @@ def customer_index(request):
         
 
         return render(request, 'Customer/CustomerIndex.html', context=context)
+    
+
+
+@login_required(login_url='Administrator:login_view')
+@permission_required('ROLE_PERSONEL','ROLE_ADMIN')
+def customer_pay(request):
+    
+    if request.method == 'POST':
+        pay_type = request.POST.get('type')
+        if pay_type == 'CASH':
+            print(request.POST)
+            pay_data = {
+            'obj_item_id': request.POST.get('obj_item_id'),
+            'type': request.POST.get('type'),
+            'source_type': 'CUSTOMER_PAYMENT',
+            'source_id': request.POST.get('obj_item_id'),
+            'price': request.POST.get('price'),
+            'register': request.POST.get('register'),
+            'description': request.POST.get('description'),
+            'reg_dt': datetime.datetime.now()
+
+                        }
+            
+            payment_form = NewObjPayment(pay_data)
+            if payment_form.is_valid():
+                payment_instance = payment_form.save()  # Save the payment object to the database
+                return redirect('customer:customerindex')
+            else:
+                print('didnt work')
+                return redirect('customer:customerindex')
+
+           
+
+        elif pay_type == 'CART':
+            pay_data = {
+
+            'obj_item_id': request.POST.get('obj_item_id'),
+            'type': request.POST.get('type'),
+            'source_type': 'CUSTOMER_PAYMENT',
+            'source_id': request.POST.get('obj_item_id'),
+            'price': request.POST.get('price'),
+            'register': request.POST.get('register'),
+            'description': request.POST.get('description'),
+            'reg_dt': datetime.datetime.now(),
+            'bank_id': request.POST.get('bank_id'),
+            'no': request.POST.get('no'),
+            'branch_code':request.POST.get('branch_code'),
+                        }
+            
+            payment_form = NewObjPayment(pay_data)
+            if payment_form.is_valid():
+                payment_instance = payment_form.save()  # Save the payment object to the database
+                return redirect('customer:customerindex')
+            else:
+                print('didnt work')
+                return redirect('customer:customerindex')
+
+        elif pay_type == 'CARTOCART':
+            pay_data = {
+            'obj_item_id': request.POST.get('obj_item_id'),
+            'price': request.POST.get('price'),
+            'register': request.POST.get('register'),
+            'description': request.POST.get('description'),
+            'type': request.POST.get('type'),
+            'source_type': 'CUSTOMER_PAYMENT',
+            'source_id': request.POST.get('obj_item_id'),
+            'bank_id': request.POST.get('bank_id'),
+            'no': request.POST.get('no'),
+            'branch_code':request.POST.get('branch_code'),
+            'reg_dt': datetime.datetime.now(),
+                        }
+            
+            payment_form = NewObjPayment(pay_data)
+            if payment_form.is_valid():
+                payment_instance = payment_form.save()  # Save the payment object to the database
+                return redirect('customer:customerindex')
+            else:
+                print('didnt work')
+                return redirect('customer:customerindex')
+
+        else:
+            pay_data = {
+            'obj_item_id': request.POST.get('obj_item_id'),
+            'price': request.POST.get('price'),
+            'register': request.POST.get('register'),
+            'description': request.POST.get('description'),
+            'type': request.POST.get('type'),
+            'source_type': 'CUSTOMER_PAYMENT',
+            'source_id': request.POST.get('obj_item_id'),
+            'bank_id': request.POST.get('bank_id'),
+            'no': request.POST.get('no'),
+            'branch_code':request.POST.get('branch_code'),
+            'owner': request.POST.get('owner'),
+            'reg_dt': datetime.datetime.now(),
+                        }
+            
+            payment_form = NewObjPayment(pay_data)
+            if payment_form.is_valid():
+                payment_instance = payment_form.save()  # Save the payment object to the database
+                return redirect('customer:customerindex')
+            else:
+                
+                return redirect('customer:customerindex')
+    else:
+        redirect('customer:CustomerIndex')
+
+
+
 
 # @cache_page(10)
 @login_required(login_url='Administrator:login_view')
@@ -246,46 +352,56 @@ def new_factor(request):
 
 @login_required(login_url='Administrator:login_view')
 @permission_required('ROLE_PERSONEL','ROLE_ADMIN')
-def factor(request,factor_id=None):
+def factor(request,factor_id=None,obj_buyer = None):
+    print("factor_id:", factor_id)
+    print("buyer_id:", obj_buyer)
+    
     if request.method == 'POST':
         pass
     else:
-        if factor_id:
-            factor_main = Factor.objects.get(factor_id = factor_id)
-            customer_data = CustomerSva.objects.get(obj_item_id = factor_main.buyer_id)
-            inquiry_test = Inquiry.objects.get(buyer_id = factor_main.buyer_id)
-            credit_id = int(customer_data.seller_buyer_id[:10])
-            vendor_credit = CreditSumSVA.objects.get(pk = credit_id)
-            factor_payway = FactorPayway.objects.filter(factor = factor_id)
-            factor_address = FactorAddress.objects.get(factor = factor_id)
-            factor_document = FactorDocument.objects.filter(factor = factor_id)
-            factor_comment = FactorComment.objects.filter(factor_id = factor_id)
-            factor_item = FactorItem.objects.filter(factor= factor_id)
-            factor_item_ids = factor_item.values('factor_item_id')
-            factor_depo_data = DepoSend.objects.filter(depo_send_id__in = factor_item_ids)
-            goods = factor_depo_data.values('goods')
-            depo_ids = factor_depo_data.values('depo_id')
-            combined_depo_goods_data = ObjItem.objects.filter(obj_item_id__in = goods).values('name')
-            combined_depo_id_data = ObjItem.objects.filter(obj_item_id__in = depo_ids).values('name')
-            combined_all_depo = list(zip(combined_depo_goods_data,combined_depo_id_data))
-            depo_all = list(zip(factor_depo_data, combined_all_depo))
-            obj_sendings = ObjSend.objects.filter(source_id__in = factor_item_ids)
-            context = {
-                'factor_main':factor_main,
-                'customer_data':customer_data,
-                'vendor_credit':vendor_credit,
-                'factor_payway':factor_payway,
-                'factor_address': factor_address,
-                'factor_document': factor_document,
-                'factor_comment': factor_comment,
-                'factor_item': factor_item,
-                'depo_all':depo_all,
-                'obj_sendings':obj_sendings,
-                'inquiry_test':inquiry_test,
-            }  
-            return render(request,'Customer/Factor.html',context=context)
-        else:
-            Factor.objects.create()
+        try:
+            if factor_id is not None:
+                factor_main = Factor.objects.get(factor_id = factor_id)
+                customer_data = CustomerSva.objects.get(obj_item_id = factor_main.buyer_id)
+                inquiry_test = Inquiry.objects.get(buyer_id = factor_main.buyer_id).exists()
+                credit_id = int(customer_data.seller_buyer_id[:10])
+                vendor_credit = CreditSumSVA.objects.get(pk = credit_id)
+                factor_payway = FactorPayway.objects.filter(factor = factor_id)
+                factor_address = FactorAddress.objects.get(factor = factor_id)
+                factor_document = FactorDocument.objects.filter(factor = factor_id)
+                factor_comment = FactorComment.objects.filter(factor_id = factor_id)
+                factor_item = FactorItem.objects.filter(factor= factor_id)
+                factor_item_ids = factor_item.values('factor_item_id')
+                factor_depo_data = DepoSend.objects.filter(depo_send_id__in = factor_item_ids)
+                goods = factor_depo_data.values('goods')
+                depo_ids = factor_depo_data.values('depo_id')
+                combined_depo_goods_data = ObjItem.objects.filter(obj_item_id__in = goods).values('name')
+                combined_depo_id_data = ObjItem.objects.filter(obj_item_id__in = depo_ids).values('name')
+                combined_all_depo = list(zip(combined_depo_goods_data,combined_depo_id_data))
+                depo_all = list(zip(factor_depo_data, combined_all_depo))
+                obj_sendings = ObjSend.objects.filter(source_id__in = factor_item_ids)
+                context = {
+                    'factor_main':factor_main,
+                    'customer_data':customer_data,
+                    'vendor_credit':vendor_credit,
+                    'factor_payway':factor_payway,
+                    'factor_address': factor_address,
+                    'factor_document': factor_document,
+                    'factor_comment': factor_comment,
+                    'factor_item': factor_item,
+                    'depo_all':depo_all,
+                    'obj_sendings':obj_sendings,
+                    'inquiry_test':inquiry_test,
+                }  
+                return render(request,'Customer/Factor.html',context=context)
+            else:
+                print(obj_buyer)
+                objinstance = ObjItem.objects.get(obj_item_id = obj_buyer)
+                print(objinstance)
+                new_factor = Factor.objects.create(buyer = objinstance,register = request.user.user_id,reg_dt = datetime.datetime.now())
+                return redirect('customer:FactorWithFactorID', factor_id=new_factor.factor_id)
+        except:
+            return redirect('customer:customerindex')
 
 # @cache_page(10)
 @login_required(login_url='Administrator:login_view')
@@ -399,6 +515,7 @@ def receipt_send(request):
 def credit_index(request):
     
     return render(request,'Customer/CreditIndex.html')
+
 
 @cache_page(10)
 @login_required(login_url='Administrator:login_view')
