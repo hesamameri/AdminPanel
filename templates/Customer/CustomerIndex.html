@@ -263,9 +263,9 @@
                                                 <td>{{item.mobile}}</td>
                                                 {% endif %}
                                                 <td>
-                                                
-                                                <a class="badge badge-success text-white" href="#">ثبت فاکتور مشتری</a>
-                                               
+                                                {% with my_arg=item.obj_item_id %}
+                                                <a class="badge badge-success text-white" href="{% url 'customer:FactorWithBuyerID' obj_buyer=my_arg %}">ثبت فاکتور مشتری</a>
+                                                {% endwith %}
                                                         
                                                 </td>
                                                 <td>
