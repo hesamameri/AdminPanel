@@ -16,7 +16,7 @@ urlpatterns = [
     path('customerconfaccountlt', views.customer_confirm_accountlist, name='CustomerConfirmAccountList'),
     path('customerconfirmsalelist', views.customer_confirm_salelist, name='CustomerConfirmSaleList'),
     path('customerfactorassessment', views.customer_factor_assessment, name='CustomerFactorAssessment'),
- 
+    path('customers/prefactor', views.prefactor, name='PreFactor'),
     path('customerpaymentconfirm', views.customer_payment_confirm, name='CustomerPaymentConfirm'),
     path('receiptindex', views.receipt_index, name='ReceiptIndex'),
     path('receiptlist', views.receipt_list, name='ReceiptList'),

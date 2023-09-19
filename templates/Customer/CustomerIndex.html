@@ -305,7 +305,7 @@
                                               
                                                     <a id="myBtn" class="badge badge-primary text-white badge-sm" data-payer="{{ item.obj_item_id }}" data-toggle="modal" data-target="#modal-inquiry1">دریافت از مشتری</a>
                 
-                                                    <a class="badge badge-primary text-white badge-sm" data-customer-id="{{ item.obj_item_id }}"  data-toggle="modal" data-target="#modal-pre-factor"> 
+                                                    <a class="badge badge-primary text-white badge-sm" data-customer="{{ item.obj_item_id }}"  data-toggle="modal" data-target="#modal-pre-factor"> 
 
                                                         پیش خرید
                                                     </a>
@@ -594,16 +594,18 @@
                                 </div>
 
                                 <div class="modal-body">
-                                <form method="POST" action="" autocomplete="off">
+                                <form method="POST" action="{% url 'customer:PreFactor' %}" autocomplete="off">
+                                    {% csrf_token %}
                                     <!-- <input type="hidden" name="buyer_id" class="buyer_id" > -->
-                                    <input id="hiddenInput" type="hidden" name="buyer_id" >    
+                                    <input id="hiddenInput3" type="hidden" name="buyer_id" >    
                                     <input type="hidden"  name="register" value="{{request.user.user_id}}" >  
                                     <div class="form-group">
-                                        <a href="#" id="new-pre-factor-row">ردیف جدید</a>
+                                        <button type="button" id="add-new-row">ردیف جدید</button>
+                                        <div id="row-container"></div>
                                         <div id="pre-factor-row">
                                             <div class="row rtl" style="padding-top: 10px">
                                                     <select class="form-control select2bs4 rtl text-left col-md-8" style="width: 100%;" name="obj_item_id" data-placeholder="محصول" data-allow-clear="true">
-                                                        <option value="115009" >CM6000BL-T</option>
+                                                        <option value="115009" selected>CM6000BL-T</option>
                                                         <option value="115036">CMT6000BL-T</option>
                                                         <option value="115040">CM8000BL-T</option>
                                                         <option value="115066">CMT8000BL-T</option>
@@ -614,20 +616,28 @@
                                                         <option value="1050487">موتور BLDC</option>
                                                         
                                                     </select>
-
                                                     <select class="form-control select2bs4 rtl text-left col-md-3" style="width: 100%;" name="amount" data-placeholder="تعداد" data-allow-clear="true">
-                                                            {% for item in 10|get_range %}
-                                                            <option value="{{ forloop.counter }}">{{ item }}</option>
-                                                            {% endfor %}
+                                                       
+                                                            <option value="1" selected>1</option>
+                                                            <option value="2">2</option>
+                                                            <option value="3">3</option>
+                                                            <option value="4">4</option>
+                                                            <option value="5">5</option>
+                                                            <option value="6">6</option>
+                                                            <option value="7">7</option>
+                                                            <option value="8">8</option>
+                                                            <option value="9">9</option>
+                                                            <option value="10">10</option>
+
+                                                        
                                                     </select>
-
                                                     <a href="#" class="pre-factor-delete-row btn btn-block col-md-1 btn-danger">X</a>
-
                                             </div>
                                         </div>
                                         <input type="submit" value="ثبت" class="btn btn-block btn-success" style="margin-top: 30px;">
                                     </div>
                                 </form>
+                                
                                 </div>
                             </div>
                         </div>
@@ -735,6 +745,7 @@
         <!-- Add Bootstrap JavaScript -->
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
         {% include "partials/script.html" %}
 
@@ -774,42 +785,47 @@
     }
         </script>
 
+       
+            
+
         
         <script>
-        document.addEventListener('DOMContentLoaded', function() {
-  // Listen to the 'show.bs.modal' event on the modal
-  $('#modal-inquiry').on('show.bs.modal', function(event) {
-    // Get the button (<a> tag) that triggered the modal
-    var button = $(event.relatedTarget);
+            document.addEventListener('DOMContentLoaded', function() {
+                // Listen to the 'show.bs.modal' event on the modal
+                $('#modal-inquiry').on('show.bs.modal', function(event) {
+                    // Get the button (<a> tag) that triggered the modal
+                    var button = $(event.relatedTarget);
 
-    // Get the 'data-buyer' attribute from the button
-    var buyerValue = button.data('buyer');
+                    // Get the 'data-buyer' attribute from the button
+                    var buyerValue = button.data('buyer');
 
-    // Find the hidden input element by its ID and update its value
-    $('#hiddenInput').val(buyerValue);
-  });
-});
-        
+                    // Find the hidden input element by its ID and update its value
+                    $('#hiddenInput').val(buyerValue);
+            });
+            });
+                    
         </script>
+
 
 
 
         <script>
             document.addEventListener('DOMContentLoaded', function() {
-      // Listen to the 'show.bs.modal' event on the modal
-      $('#modal-inquiry1').on('show.bs.modal', function(event) {
-        // Get the button (<a> tag) that triggered the modal
-        var button = $(event.relatedTarget);
-    
-        // Get the 'data-buyer' attribute from the button
-        var buyerValue = button.data('payer');
-    
-        // Find the hidden input element by its ID and update its value
-        $('#hiddenInput2').val(buyerValue);
-      });
-    });
-            
+                // Listen to the 'show.bs.modal' event on the modal
+                $('#modal-pre-factor').on('show.bs.modal', function(event) {
+                    // Get the button (<a> tag) that triggered the modal
+                    var button = $(event.relatedTarget);
+
+                    // Get the 'data-buyer' attribute from the button
+                    var buyerValue = button.data('customer');
+
+                    // Find the hidden input element by its ID and update its value
+                    $('#hiddenInput3').val(buyerValue);
+            });
+            });
+                    
         </script>
+        
 
 
         <script>
@@ -874,6 +890,104 @@
         });
 
         </script>
+
+        <script>
+            document.addEventListener("DOMContentLoaded", function() {
+                document.getElementById("add-new-row").addEventListener("click", function() {
+                    // Clone the existing row containing select elements
+                    var newRow = document.querySelector(".row.rtl").cloneNode(true);
+            
+                    // Clear the selected options if needed
+                    var selects = newRow.querySelectorAll("select");
+                    selects.forEach(function(select) {
+                        select.selectedIndex = 0; // Set the first option as selected
+                    });
+            
+                    // Append the new row to the row-container
+                    document.getElementById("row-container").appendChild(newRow);
+                });
+            });
+        </script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        // Function to delete a row
+        function deleteRow(row) {
+            row.remove();
+        }
+    
+        // Event listener for deleting rows with the "X" button
+        document.addEventListener("click", function(event) {
+            if (event.target.classList.contains("pre-factor-delete-row")) {
+                event.preventDefault();
+                var rowToDelete = event.target.closest(".row.rtl");
+                deleteRow(rowToDelete);
+            }
+        });
+    
+        // Event listener for adding a new row
+        document.getElementById("add-new-row").addEventListener("click", function() {
+            // Clone the row template
+            var newRow = document.getElementById("row-template").cloneNode(true);
+            newRow.style.display = "block"; // Make it visible
+    
+            // Clear the selected options if needed
+            var selects = newRow.querySelectorAll("select");
+            selects.forEach(function(select) {
+                select.selectedIndex = 0; // Set the first option as selected
+            });
+    
+            // Append the new row to the row-container
+            document.getElementById("row-container").appendChild(newRow);
+        });
+    });
+    </script>
+        <!-- <script>
+            document.addEventListener("DOMContentLoaded", function() {
+                // Function to delete a row
+                function deleteRow(row) {
+                    row.remove();
+                }
+            
+                // Event listener for deleting rows with the "X" button
+                document.addEventListener("click", function(event) {
+                    if (event.target.classList.contains("pre-factor-delete-row")) {
+                        event.preventDefault();
+                        var rowToDelete = event.target.closest(".row.rtl");
+                        deleteRow(rowToDelete);
+                    }
+                });
+            
+                // Event listener for adding a new row
+                document.getElementById("add-new-row").addEventListener("click", function() {
+                    // Clone the existing row containing select elements
+                    var newRow = document.querySelector(".row.rtl").cloneNode(true);
+            
+                    // Clear the selected options if needed
+                    var selects = newRow.querySelectorAll("select");
+                    selects.forEach(function(select) {
+                        select.selectedIndex = 0; // Set the first option as selected
+                    });
+            
+                    // Append the new row to the row-container
+                    document.getElementById("row-container").appendChild(newRow);
+                });
+            });
+        </script> -->
+   
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+       
+      
         
         <!--end::Page Scripts -->
     </body>
