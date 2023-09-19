@@ -903,6 +903,72 @@
                 });
             });
         </script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        // Function to delete a row
+        function deleteRow(row) {
+            row.remove();
+        }
+    
+        // Event listener for deleting rows with the "X" button
+        document.addEventListener("click", function(event) {
+            if (event.target.classList.contains("pre-factor-delete-row")) {
+                event.preventDefault();
+                var rowToDelete = event.target.closest(".row.rtl");
+                deleteRow(rowToDelete);
+            }
+        });
+    
+        // Event listener for adding a new row
+        document.getElementById("add-new-row").addEventListener("click", function() {
+            // Clone the row template
+            var newRow = document.getElementById("row-template").cloneNode(true);
+            newRow.style.display = "block"; // Make it visible
+    
+            // Clear the selected options if needed
+            var selects = newRow.querySelectorAll("select");
+            selects.forEach(function(select) {
+                select.selectedIndex = 0; // Set the first option as selected
+            });
+    
+            // Append the new row to the row-container
+            document.getElementById("row-container").appendChild(newRow);
+        });
+    });
+    </script>
+        <!-- <script>
+            document.addEventListener("DOMContentLoaded", function() {
+                // Function to delete a row
+                function deleteRow(row) {
+                    row.remove();
+                }
+            
+                // Event listener for deleting rows with the "X" button
+                document.addEventListener("click", function(event) {
+                    if (event.target.classList.contains("pre-factor-delete-row")) {
+                        event.preventDefault();
+                        var rowToDelete = event.target.closest(".row.rtl");
+                        deleteRow(rowToDelete);
+                    }
+                });
+            
+                // Event listener for adding a new row
+                document.getElementById("add-new-row").addEventListener("click", function() {
+                    // Clone the existing row containing select elements
+                    var newRow = document.querySelector(".row.rtl").cloneNode(true);
+            
+                    // Clear the selected options if needed
+                    var selects = newRow.querySelectorAll("select");
+                    selects.forEach(function(select) {
+                        select.selectedIndex = 0; // Set the first option as selected
+                    });
+            
+                    // Append the new row to the row-container
+                    document.getElementById("row-container").appendChild(newRow);
+                });
+            });
+        </script> -->
    
     
     
