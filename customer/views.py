@@ -12,13 +12,15 @@ from django.db.models import Q
 from django.contrib.auth.decorators import login_required
 from Administrator.permissions import permission_required
 from django.db.models import Max
-from customer import models
+from customer import models 
 from .models import  Inquiry  # Import your models
 from django.contrib.sessions.models import Session
 from django.views.decorators.cache import cache_page
 from django.db.models import F, Sum
-from .models import FactorItem,FactorItemBalanceSVA
-from .forms import NewInquiry, NewObjItem,NewObjItemSpec
+from .models import FactorItem,FactorItemBalanceSVA,PreFactor
+from .forms import NewInquiry,NewObjItem,NewObjItemSpec,NewPreFactor 
+from django.contrib import messages
+from django.http import HttpResponse
 # @cache_page(10)
 @login_required(login_url='Administrator:login_view')
 @permission_required('ROLE_PERSONEL', 'ROLE_ADMIN')
@@ -547,3 +549,24 @@ def factor_send_print(request):
 def receipt_print(request):
     
     return render(request,'Customer/ReceiptPrint.html')
+
+# @cache_page(10)
+@login_required(login_url='Administrator:login_view')
+@permission_required('ROLE_PERSONEL','ROLE_ADMIN')
+def prefactor(request):
+        if request.method == 'POST':
+            form = NewPreFactor(request.POST)
+            if form.is_valid():
+                pre_factor = form.save()
+                return redirect('customer:customerindex')    
+            else:
+                return render(request, 'CustomerIndex.html', {'form': form})  
+        else:
+            form = NewPreFactor()
+        
+        context = {
+            'form': form,
+        }
+        return render(request, 'CustomerIndex.html', context)
+    
+    
