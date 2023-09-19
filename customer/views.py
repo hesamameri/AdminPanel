@@ -18,7 +18,7 @@ from django.contrib.sessions.models import Session
 from django.views.decorators.cache import cache_page
 from django.db.models import F, Sum
 from .models import FactorItem,FactorItemBalanceSVA
-from .forms import NewInquiry, NewObjItem,NewObjItemSpec
+from .forms import NewInquiry, NewObjItem,NewObjItemSpec, NewPreFactor
 # @cache_page(10)
 @login_required(login_url='Administrator:login_view')
 @permission_required('ROLE_PERSONEL', 'ROLE_ADMIN')
@@ -672,6 +672,7 @@ def receipt_print(request):
 @permission_required('ROLE_PERSONEL','ROLE_ADMIN')
 def prefactor(request):
         if request.method == 'POST':
+            print(request.POST)
             form = NewPreFactor(request.POST)
             if form.is_valid():
                 pre_factor = form.save()
