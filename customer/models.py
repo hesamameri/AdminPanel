@@ -609,6 +609,8 @@ class FactorPayway(models.Model):
     class Meta:
         managed = False
         db_table = 'factor_payway'
+
+       
 class Inquiry(models.Model):
     inquiry_id = models.AutoField(primary_key=True)
     buyer = models.ForeignKey('ObjItem', models.DO_NOTHING, blank=True, null=True)
@@ -657,6 +659,7 @@ class Obj(models.Model):
         managed = False
         db_table = 'obj'
 
+
 class ObjItem(models.Model):
     obj_item_id = models.AutoField(primary_key=True)
     obj = models.ForeignKey(Obj, models.DO_NOTHING, blank=True, null=True)
@@ -667,6 +670,8 @@ class ObjItem(models.Model):
     class Meta:
         managed = False
         db_table = 'obj_item'
+
+
 class ObjDocument(models.Model):
     obj_document_id = models.AutoField(primary_key=True)
     source_type = models.CharField(max_length=255)
@@ -679,9 +684,6 @@ class ObjDocument(models.Model):
     class Meta:
         managed = False
         db_table = 'obj_document'
-
-
-
 
 
 # class ObjItemCity(models.Model):
