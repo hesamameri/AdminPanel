@@ -19,7 +19,7 @@ from django.contrib.sessions.models import Session
 from django.views.decorators.cache import cache_page
 from django.db.models import F, Sum
 from .models import FactorItem,FactorItemBalanceSVA
-from .forms import NewInquiry, NewObjItem,NewObjItemSpec, NewPreFactor
+from .forms import NewInquiry, NewObjItem,NewObjItemSpec, NewObjPayment, NewPreFactor
 # @cache_page(10)
 @login_required(login_url='Administrator:login_view')
 @permission_required('ROLE_PERSONEL', 'ROLE_ADMIN')
@@ -212,11 +212,15 @@ def new_customer(request):
     if request.method == 'POST':
         print(dict(request.POST.items()))
         obj_id = 10301
+
         obj_item_data = {
+
             'obj_id': 10301,
             'name': request.POST.get('name'),
             'title': request.POST.get('title'),
+
         }
+
         obj_specs = ObjSpec.objects.filter(obj = obj_id)
         # obj_item_spec_data = {
         #     'field1': request.POST.get('field1'),
