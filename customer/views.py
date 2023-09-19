@@ -1,5 +1,6 @@
 from datetime import timezone
 import datetime
+from .utilities import get_object_or_none
 from django.shortcuts import redirect, render
 from django.db.models import F
 from django.utils import timezone
@@ -53,10 +54,6 @@ def customer_index(request):
         else:
             return " wrong"
     else:
-
-        
-
-
         customers = CustomerSva.objects.filter(obj_item_id__gt = 1030200027).order_by('obj_item_id')
         page = customers
         customer_ids = customers.values_list('obj_item_id', flat=True)
@@ -119,8 +116,7 @@ def customer_pay(request):
             'price': request.POST.get('price'),
             'register': request.POST.get('register'),
             'description': request.POST.get('description'),
-            'reg_dt': datetime.datetime.now()
-
+            'reg_dt': datetime.datetime.now(),
                         }
             
             payment_form = NewObjPayment(pay_data)
@@ -353,21 +349,40 @@ def new_factor(request):
 @login_required(login_url='Administrator:login_view')
 @permission_required('ROLE_PERSONEL','ROLE_ADMIN')
 def factor(request,factor_id=None,obj_buyer = None):
-    print("factor_id:", factor_id)
-    print("buyer_id:", obj_buyer)
+    # print("factor_id:", factor_id)
+    # print("buyer_id:", obj_buyer)
     
     if request.method == 'POST':
         pass
     else:
-        try:
+        # try:
             if factor_id is not None:
-                factor_main = Factor.objects.get(factor_id = factor_id)
-                customer_data = CustomerSva.objects.get(obj_item_id = factor_main.buyer_id)
-                inquiry_test = Inquiry.objects.get(buyer_id = factor_main.buyer_id).exists()
-                credit_id = int(customer_data.seller_buyer_id[:10])
-                vendor_credit = CreditSumSVA.objects.get(pk = credit_id)
+                # factor_main = Factor.objects.get(factor_id = factor_id)
+                factor_main = get_object_or_none(Factor, factor_id=factor_id)
+                
+
+                
+                # customer_data = CustomerSva.objects.get(obj_item_id = factor_main.buyer_id)
+                customer_data = get_object_or_none(CustomerSva, obj_item_id=factor_main.buyer_id)
+               
+                # inquiry_test = Inquiry.objects.get(buyer_id = factor_main.buyer_id)
+                inquiry_test = get_object_or_none(Inquiry, buyer_id=factor_main.buyer_id)
+                if customer_data.seller_buyer_id is not None:
+                    credit_id = int(customer_data.seller_buyer_id[:10])
+                    vendor_credit = get_object_or_none(CreditSumSVA, pk=credit_id)
+                else:
+                    credit_id = 102010
+                    vendor_credit = None
+
+                # vendor_credit = CreditSumSVA.objects.get(pk = credit_id)
+                
+
                 factor_payway = FactorPayway.objects.filter(factor = factor_id)
-                factor_address = FactorAddress.objects.get(factor = factor_id)
+
+                # factor_address = FactorAddress.objects.get(factor = factor_id)
+                factor_address = get_object_or_none(FactorAddress, factor=factor_id)
+
+
                 factor_document = FactorDocument.objects.filter(factor = factor_id)
                 factor_comment = FactorComment.objects.filter(factor_id = factor_id)
                 factor_item = FactorItem.objects.filter(factor= factor_id)
@@ -380,7 +395,10 @@ def factor(request,factor_id=None,obj_buyer = None):
                 combined_all_depo = list(zip(combined_depo_goods_data,combined_depo_id_data))
                 depo_all = list(zip(factor_depo_data, combined_all_depo))
                 obj_sendings = ObjSend.objects.filter(source_id__in = factor_item_ids)
+                banks = ObjItem.objects.filter(obj_item_id__gte=999003010, obj_item_id__lte=999003019) 
+                
                 context = {
+
                     'factor_main':factor_main,
                     'customer_data':customer_data,
                     'vendor_credit':vendor_credit,
@@ -392,6 +410,8 @@ def factor(request,factor_id=None,obj_buyer = None):
                     'depo_all':depo_all,
                     'obj_sendings':obj_sendings,
                     'inquiry_test':inquiry_test,
+                    'banks':banks,
+
                 }  
                 return render(request,'Customer/Factor.html',context=context)
             else:
@@ -400,8 +420,13 @@ def factor(request,factor_id=None,obj_buyer = None):
                 print(objinstance)
                 new_factor = Factor.objects.create(buyer = objinstance,register = request.user.user_id,reg_dt = datetime.datetime.now())
                 return redirect('customer:FactorWithFactorID', factor_id=new_factor.factor_id)
-        except:
-            return redirect('customer:customerindex')
+        # except:
+        #     banks = ObjItem.objects.filter(obj_item_id__gte=999003010, obj_item_id__lte=999003019) 
+        #     context = {
+        #         'banks':banks,
+        #     }
+        #     return render(request,'Customer/Factor.html',context=context)
+
 
 # @cache_page(10)
 @login_required(login_url='Administrator:login_view')
@@ -444,8 +469,6 @@ def customer_confirm_salelist(request):
     context = {
         'items': [(item, 1) for item in queryset],
     }
-
-
     return render(request,'Customer/CustomerConfirmSaleList.html',context = context)
 
 
@@ -594,7 +617,7 @@ def index_inquiry_response(request):
             return redirect('customer:IndexInquiryResponse')
 
         else:
-            print("cooooool")
+            
             return redirect('customer:IndexInquiryResponse')
     else:
         inquiries = Inquiry.objects.filter(shower__isnull=True) 

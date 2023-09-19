@@ -213,7 +213,7 @@
                                                         <div class="card card-secondary card-outlines">
                                                             <div class="card-header rtl">
                                                                 <h3 class="card-title rtl block ">پرداختی‌ها</h3>
-                                                                    <button class="btn btn-sm btn-success card-fixed-left float-right" data-toggle="modal" data-target="#modal-payment"><i class="fas fa-plus nav-icon"></i></button>
+                                                                    <button class="btn btn-sm btn-success card-fixed-left float-right" data-toggle="modal" data-target="#modal-inquiry1"><i class="fas fa-plus nav-icon"></i></button>
                                                                 
                                                             </div>
                                                             <div class="card-body">
@@ -804,7 +804,318 @@
 
             <!-- end:: Page -->
         </div>
+        <div class="modal fade" id="modal-product-item">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title">کالای جدید</h4>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <form method="POST" action="">
+                    <div class="modal-body">
+        
+                            <div class="form-group form-group-sm row">
+                                <div class="col-sm-9">
+                                    <select class="form-control select2bs4 rtl text-right float-right" style="width: 100%;" name="product_id">
+                                        
+                                            <option value="2"></option>
+                                        
+                                    </select>
+                                </div>
+                                <label for="product_id" class="col-sm-3 col-form-label">محصول</label>
+                            </div>
+                            <div class="form-group form-group-sm row">
+                                <div class="col-sm-9">
+                                    <select class="form-control select2bs4 rtl text-right float-right" style="width: 100%;" name="amount">
+                                        
+                                            <option value="1"></option>
+                                        
+                                    </select>
+                                </div>
+                                <label for="amount" class="col-sm-3 col-form-label">تعداد</label>
+                            </div>
+        
+                    </div>
+                    <div class="modal-footer justify-content-between">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">بستن</button>
+                        <button type="submit" class="btn btn-primary">ثبت</button>
+                    </div>
+                    </form>
+                </div>
+                <!-- /.modal-content -->
+            </div>
+            <!-- /.modal-dialog -->
+        </div>
+        
+        <!-- <div class="modal fade" id="modal-payment">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title">پرداختی جدید</h4>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <form method="POST" action="" enctype="multipart/form-data" autocomplete="off">
+                    <div class="modal-body">
+                                <div class="form-group form-group-sm row">
+                                    <div class="col-sm-8">
+                                        <select class="form-control select2bs4s rtl text-right float-right" style="width: 100%;" name="pay_type" id="pay_type">
+                                            <option value="CASH">وجه نقد</option>
+                                            <option value="CART">کارت خوان</option>
+                                            <option value="CARTOCART">کارت به کارت</option>
+                                            <option value="CHEQUE">چک</option>
+                                            <option value="REBATE">تخفیف</option>
+                                            <option value="CREDIT">اعتباری</option>
+                                            <option value="ATHOME">درب منزل</option>
+                                            <option value="WITHACC">تسویه با مالی</option>
+                                        </select>
+                                    </div>
+                                    <label for="pay_type" class="col-sm-3 col-form-label">نوع</label>
+                                </div>
+                                <div class="form-group form-group-sm row" id="div_bank_id">
+                                    <div class="col-sm-8">
+                                        <select class="form-control select2bs4x rtl text-right" style="width: 100%;" name="bank_id" data-placeholder="بانک" data-allow-clear="true" id="bank-id">
+                                            <option value=""></option>
+                                            
+                                                <option class="" value="" ></option>
+                                            
+                                        </select>
+                                    </div>
+                                    <label for="bank_id" class="col-sm-4 col-form-label">بانک</label>
+                                </div>
+                                <div class="form-group form-group-sm row" id="div_price">
+                                    <div class="col-sm-8">
+                                        <input type="text" name="price" class="form-control numeric" id="price" placeholder="مبلغ" value="">
+                                    </div>
+                                    <label for="price" class="col-sm-4 col-form-label">مبلغ</label>
+                                </div>
+                                <div class="form-group form-group-sm row" id="div_no">
+                                    <div class="col-sm-8">
+                                        <input type="text" name="no" class="form-control" id="no" placeholder="شماره" value="">
+                                    </div>
+                                    <label for="no" id="lbl_no" class="col-sm-4 col-form-label">شماره فیش</label>
+                                </div>
+                                <div class="form-group form-group-sm row" id="div_desc">
+                                    <div class="col-sm-8">
+                                        <input type="text" name="description" class="form-control rtl" id="description" placeholder="توضیحات" value="">
+                                    </div>
+                                    <label for="description" class="col-sm-4 col-form-label">توضیحات</label>
+                                </div>
+                    </div>
+                    <div class="modal-footer justify-content-between">
+                        <button type="submit" class="btn btn-primary">ثبت پرداخت</button>
+                        <button type="button" class="btn btn-default" data-dismiss="modal">بستن</button>
+                    </div>
+                    </form>
+                </div>
+                 /.modal-content -->
+            <!-- </div> -->
+            <!-- /.modal-dialog -->
+        <!-- </div>  -->
+        <div class="modal fade" id="modal-inquiry1">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                <div class="modal-header rtl">
+                    <h4 class="modal-title">دریافت از مشتری</h4>
+                </div>
+                <form method="POST" action="{% url 'customer:CustomerPay' %}" enctype="multipart/form-data" id="frm-payment" autocomplete="off">
+                    {% csrf_token %}
+                    <div class="modal-body">
+                        <input id="hiddenInput2" type="hidden" name="obj_item_id">
+                        <input type="hidden" value="{{request.user.user_id}}" name="register" class="customer_id">
+                        <div class="form-group form-group-sm row">
+                            <div class="col-sm-8">
+                                <select class="form-control select2bs4s rtl text-left" style="width: 100%;" name="type" id="type" onchange="showHideFields()">
+                                    <option value="CASH" selected>وجه نقد</option>
+                                    <option value="CART">کارت خوان</option>
+                                    <option value="CARTOCART">کارت به کارت</option>
+                                    <option value="CHEQUE">چک</option>
+                                </select>
 
+                            </div>
+                            <label for="pay_type" class="col-sm-3 col-form-label">نوع</label>
+                        </div>
+
+                        <div id="cashFields" style="display: none;">
+                            <!-- Empty -->
+                        </div>
+
+                        <div id="chequeFields" style="display: none;">
+                            <div class="form-group form-group-sm row" id="div_bank_id">
+                                <div class="col-sm-8">
+                                <select class="form-control select2bs4 rtl bank-list" style="width: 100%;" name="bank_id" data-placeholder="بانک" data-allow-clear="true">
+                                        {% for bank in banks %}
+                                        <option value="{{bank.obj_item_id}}">{{bank.name}}</option>
+                                        {% endfor %}
+                                </select>
+                                </div>
+                                <label for="bank_id" class="col-sm-4 col-form-label">بانک</label>
+                            </div>
+                            <div class="form-group form-group-sm row" id="div_no">
+                                <div class="col-sm-8">
+                                    <input type="text" name="no" id="no" class="form-control rtl text-left" placeholder="کد شعبه" >
+                                </div>
+                                <label for="no" id="lbl_no" class="col-sm-4 col-form-label">شماره </label>
+                            </div>
+                            <div class="form-group form-group-sm row" id="div_bank_branch">
+                                <div class="col-sm-8">
+                                <input type="text" name="branch_code" id="branch_code" class="form-control rtl text-left" placeholder="نام شعبه" >
+                                </div>
+                                <label for="branch_code" class="col-sm-4 col-form-label">کد شعبه</label>
+                            </div>
+                     
+                            <div class="form-group form-group-sm row" id="div_account_owner">
+                                <div class="col-sm-8">
+                                <input type="text" name="owner" class="form-control rtl text-left" id="owner" placeholder="نام صاحب حساب" >
+                                </div>
+                                <label for="owner" class="col-sm-4 col-form-label">نام صاحب حساب</label>
+                            </div>
+                        </div>
+
+                        <div id="cartFields" style="display: none;">
+                            <div class="form-group form-group-sm row" id="div_bank_id">
+                                <div class="col-sm-8">
+                                <select class="form-control select2bs4 rtl bank-list" style="width: 100%;" name="bank_id" data-placeholder="بانک" data-allow-clear="true">
+                                
+                                    {% for bank in banks %}
+                                    <option value="{{bank.obj_item_id}}">{{bank.name}}</option>
+                                    {% endfor %}
+                                    
+                                </select>
+                                </div>
+                                <label for="bank_id" class="col-sm-4 col-form-label">بانک</label>
+                            </div>
+                            <div class="form-group form-group-sm row" id="div_no">
+                                <div class="col-sm-8">
+                                    <input type="text" name="no" id="no" class="form-control rtl text-left" placeholder="کد شعبه" >
+                                </div>
+                                <label for="no" id="lbl_no" class="col-sm-4 col-form-label">شماره</label>
+                            </div>
+                            <div class="form-group form-group-sm row" id="div_bank_branch">
+                                <div class="col-sm-8">
+                                <input type="text" name="branch_code" id="branch_code" class="form-control rtl text-left" placeholder="نام شعبه" >
+                                </div>
+                                <label for="branch_code" class="col-sm-4 col-form-label">کد شعبه</label>
+                            </div>
+                        </div>
+
+                        <div id="cartocartFields" style="display: none;">
+
+                            <div class="form-group form-group-sm row" id="div_bank_id">
+
+                                <div class="col-sm-8">
+
+                                <select class="form-control select2bs4 rtl bank-list" style="width: 100%;" name="bank_id" data-placeholder="بانک" data-allow-clear="true">
+                                    {% for bank in banks %}
+                                    <option value="{{bank.obj_item_id}}">{{bank.name}}</option>
+                                    {% endfor %}
+                                </select>
+                                </div>
+                                <label for="bank_id" class="col-sm-4 col-form-label">بانک</label>
+
+                            </div>
+
+                            <div class="form-group form-group-sm row" id="div_no">
+                                <div class="col-sm-8">
+                                    <input type="text" name="no" id="no" class="form-control rtl text-left" placeholder="کد شعبه" >
+                                </div>
+                                <label for="no" id="lbl_no" class="col-sm-4 col-form-label">شماره</label>
+                            </div>
+                            <div class="form-group form-group-sm row" id="div_bank_branch">
+                                <div class="col-sm-8">
+                                <input type="text" name="branch_code" id="branch_code" class="form-control rtl text-left" placeholder="نام شعبه" >
+                                </div>
+                                <label for="branch_code" class="col-sm-4 col-form-label">کد شعبه</label>
+                            </div>
+                        </div>
+
+                        <div id="commonFields" >
+                            <div class="form-group form-group-sm row">
+                                <div class="col-sm-8">
+                                    <input type="text" name="price" id="depoit-price" class="form-control numeric" placeholder="مبلغ" >
+                                </div>
+                                <label for="vprice2" id="depoit-price" class="col-sm-4 col-form-label">مبلغ</label>
+                            </div>
+                            <div class="form-group form-group-sm row">
+                                <div class="col-sm-8">
+                                    <input type="text" name="description" class="form-control rtl" id="description" placeholder="توضیحات" >
+                                </div>
+                                <label for="description" class="col-sm-4 col-form-label">توضیحات</label>
+                            </div>
+                            <div class="form-group form-group-sm row" id="div_image">
+                                <div class="col-sm-8">
+                                    <div class="custom-file">
+                                        <input type="file" name="image" id="image" class="rtl custom-file-input" placeholder="تصویر" >
+                                        <label class="custom-file-label" for="image">تصویر</label>
+                                    </div>
+                                </div>
+                                <label for="cheque_image" class="col-sm-4 col-form-label">تصویر</label>
+                            </div>
+                        </div>
+                        
+                        
+                    </div>
+                    <div class="modal-footer justify-content-between">
+                        <button type="submit" class="btn btn-primary">ثبت</button>
+                        <button type="button" class="btn btn-default" data-dismiss="modal">بستن</button>
+                    </div>
+                </form>
+            </div>
+            </div>
+            <!-- /.modal-dialog -->
+        </div>
+      
+        
+        <div class="modal fade" id="modal-document">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title">مدارک</h4>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <form method="POST" action="" enctype="multipart/form-data">
+                    <div class="modal-body">
+                                <div class="form-group form-group-sm row" style="width: 100%;">
+                                    <div class="col-sm-8">
+                                        <select class="form-control select2bs4s rtl text-right float-right" style="width: 100%;" name="document_type">
+                                            <option value="CHEQUE">چک</option>
+                                            <option value="CART">کارت خوان</option>
+                                            <option value="FORM">فرم درخواست</option>
+                                            <option value="OTHER">سایر موارد</option>
+                                        </select>
+                                    </div>
+                                    <label for="document_type" class="col-sm-4 col-form-label">نوع مدرک</label>
+                                </div>
+                                <div class="form-group form-group-sm row">
+                                    <div class="col-sm-8">
+                                        <div class="custom-file">
+                                            <input type="file" name="uri" id="uri">
+                                        </div>
+                                    </div>
+                                    <label for="uri" class="col-sm-4 col-form-label">تصویر مدرک</label>
+                                </div>
+                                <div class="form-group form-group-sm row">
+                                    <div class="col-sm-8">
+                                        <input type="text" name="description" class="form-control rtl" id="description" placeholder="توضیحات" value="">
+                                    </div>
+                                    <label for="description" class="col-sm-4 col-form-label">توضیحات</label>
+                                </div>
+                    </div>
+                    <div class="modal-footer justify-content-between">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">بستن</button>
+                        <button type="submit" class="btn btn-primary">ارسال مدرک</button>
+                    </div>
+                    </form>
+                </div>
+                <!-- /.modal-content -->
+            </div>
+            <!-- /.modal-dialog -->
+        </div>
         <!-- end:: Root -->
 
         <!-- begin:: Topbar Offcanvas Panels -->
@@ -863,6 +1174,41 @@
 
         <!-- begin::Global Config(global config for global JS sciprts) -->
         {% include "partials/script.html" %}
+        <script>
+            function showHideFields() {
+            var selectedOption = document.getElementById("type").value;
+            var cashFields = document.getElementById("cashFields");
+            var chequeFields = document.getElementById("chequeFields");
+            var cartFields = document.getElementById("cartFields");
+            var cartocartFields = document.getElementById("cartocartFields");
+            var commonFields = document.getElementById("commonFields");
+            
+            // Hide all fields by default
+            cashFields.style.display = "none";
+            chequeFields.style.display = "none";
+            cartFields.style.display = "none";
+            cartocartFields.style.display = "none";
+            commonFields.style.display = "none";
+    
+            // Show fields based on the selected option
+            if (selectedOption === "CASH") {
+                cashFields.style.display = "block";
+                commonFields.style.display = "block"; // Show common fields for "CASH"
+    
+            } else if (selectedOption === "CHEQUE") {
+                chequeFields.style.display = "block";
+                commonFields.style.display = "block"; // Show common fields for "CHEQUE"
+            }
+            else if (selectedOption === "CARTOCART") {
+                cartocartFields.style.display = "block";
+                commonFields.style.display = "block"; // Show common fields for "CHEQUE"
+            }
+            else {
+                cartFields.style.display = "block";
+                commonFields.style.display = "block"; // Show common fields for "CHEQUE"
+            }
+        }
+            </script>
         <script>
         // Function to calculate the sum of all row-total, price, and total-discount values
 function calculateSums() {
