@@ -610,6 +610,20 @@
                                     <input id="hiddenInput3" type="hidden" name="buyer_id" >    
                                     <input type="hidden"  name="register" value="{{request.user.user_id}}" >  
                                     <div class="form-group">
+                                        <style>
+                                            #add-new-row {
+                                                background-color: #007bff; /* Set the background color to blue */
+                                                color: #fff; /* Set the text color to white */
+                                                padding: 9px 15px; /* Add padding to the button */
+                                                border: none; /* Remove the border */
+                                                border-radius: 5px; /* Add rounded corners */
+                                                cursor: pointer; /* Add a pointer cursor on hover */
+                                            }
+                                            
+                                            #add-new-row:hover {
+                                                background-color: #0056b3; /* Change background color on hover */
+                                            }
+                                        </style>
                                         <button type="button" id="add-new-row">ردیف جدید</button>
                                         <div id="row-container"></div>
                                         <div id="pre-factor-row">

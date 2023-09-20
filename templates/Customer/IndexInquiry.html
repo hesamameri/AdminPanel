@@ -45,10 +45,13 @@
 
                         <!-- begin:: Subheader -->
                         {% include "partials/subheader.html" %}
+                       
 
                         <!-- end:: Subheader -->
 
                         <!-- begin:: Content -->
+                        <body class="kt-quick-panel--right kt-demo-panel--right kt-offcanvas-panel--right kt-header--fixed kt-header-mobile--fixed kt-subheader--enabled kt-subheader--transparent kt-aside--enabled kt-aside--fixed kt-page--loading">
+
                         <div class="kt-content  kt-grid__item kt-grid__item--fluid" id="kt_content">
 
                             <div class="content-wrapper">
@@ -57,8 +60,10 @@
                                     <div class="row mb-2">
                                         <div class="col-sm-12">
                                             <ol class="breadcrumb float-sm ">
-                                                <li class="breadcrumb-item active">پاسخ استعلام</li>
-                                                <li class="breadcrumb-item">مشتریان</li>
+                                                <li class="breadcrumb-item active">
+                                                    مشتریان
+                                                </li>
+                                                <li class="breadcrumb-item">تایید استعلام </li>
                                             </ol>
                                         </div>
                                     </div>
@@ -93,35 +98,57 @@
                                                                         
                                                                                 {% for item in combined_data %}
                                                                                 <tr>
-                                                                                    <td>{{item.0.inquiry_id}}   </td>
-                                                                                    <td>{{item.0.register|register_user}}</td>
-                                                                                    <td>{{item.0.reg_dt|to_jalali}}</td>
-                                                                                    <td>{{item.0.account_owner}}</td>
-                                                                                    <td>{{item.0.account_owner}}</td>
+                                                                                    <td>
+                                                                                        {{item.0.inquiry_id}} 
+                                                                                    </td>
+                                                                                    <td>
+                                                                                        {{item.0.register|register_user}}
+                                                                                    </td>
+                                                                                    <td>
+                                                                                        {{item.0.reg_dt|to_jalali}}
+                                                                                    </td>
+                                                                                    <td>
+                                                                                        {{item.0.account_owner}}
+                                                                                    </td>
+                                                                                    <td>
+                                                                                        {{item.0.account_owner}}
+                                                                                    </td>
                                                                                     {% if item.0.bank_branch == None %}
                                                                                     <td></td>
                                                                                     {% else %}
-                                                                                    <td>{{item.0.bank_branch}}</td>  
+                                                                                    <td>
+                                                                                        {{item.0.bank_branch}}
+                                                                                    </td>  
                                                                                     {% endif %}                                                                
-                                                                                    <td>{{item.0.account_no}}</td>
+                                                                                    <td>
+                                                                                        {{item.0.account_no}}
+                                                                                    </td>
                                                                                     {% if item.0.account_shaba == None %}
                                                                                     <td></td>
                                                                                     {% else %}
-                                                                                    <td>{{item.0.account_shaba}}</td>
+                                                                                    <td>
+                                                                                        {{item.0.account_shaba}}
+                                                                                    </td>
                                                                                     {% endif %}
+                                                                                    
                                                                                     {% if item.0.confirm_desc == None %}
                                                                                     <td></td>
                                                                                     {% else %}
-                                                                                    <td>{{item.0.confirm_desc}}</td>
+                                                                                    <td>
+                                                                                        {{item.0.confirm_desc}}
+                                                                                    </td>
                                                                                     {% endif %}
+                                                                                    
                                                                                     {% if item.0.description == None %}
                                                                                     <td></td>
                                                                                     {% else %}
-                                                                                    <td>{{item.0.description}}</td>
+                                                                                    <td>
+                                                                                        {{item.0.description}}
+                                                                                    </td>
                                                                                     {% endif %}
                                                                                     <td>
-                                                                                        <a class="btn btn-secondary btn-xs btn-customer inq cursor-hand" data-id="{{ forloop.counter }}" data-row-id="row-{{ forloop.counter }}">جزئیات</a>
-                                                                                        <a class="btn btn-success btn-xs btn-customer" data-inquiry-id="{{item.0.inquiry_id}}" data-toggle="modal" data-target="#modal-inquiry" id="open-inquiry-modal">پاسخ استعلام</a>
+                                                                                        <a class="btn btn-danger btn-sm btn-customer inq cursor-hand text-white" data-id="{{ forloop.counter }}" data-row-id="row-{{ forloop.counter }}">جزئیات</a>
+                                                                                        <a class="btn btn-success btn-sm btn-customer text-white" data-inquiry-id="{{item.0.inquiry_id}}" data-toggle="modal" data-target="#modal-inquiry" id="open-inquiry-modal">پاسخ استعلام</a>
                                                                                     </td>
                                                                                 </tr>
                                                                                 
@@ -131,41 +158,73 @@
                                                                                         <table style="width: 100%" id="myTable">
                                                                                             <tr>
                                                                                                 <th>نام مشتری</th> <!--customer_sva-->
-                                                                                                <td>{{item.1.name}}</td>
+                                                                                                <td>
+                                                                                                    {{item.1.name}}
+                                                                                                </td>
                                                                                                 <th>بانک</th><!--inquiry-->
-                                                                                                <td>{{item.0.bank_branch}}</td>
+                                                                                                <td>
+                                                                                                    {{item.0.bank_branch}}
+                                                                                                </td>
                                                                                                 <th>مبلغ چک</th><!--inquiry-->
-                                                                                                <td>{{item.0.cheque_price}}</td>
+                                                                                                <td>
+                                                                                                    <script>
+                                                                                                        var chequePrice = {{item.0.cheque_price}};
+                                                                                                        var formattedPrice = chequePrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+                                                                                                        document.write(formattedPrice);
+                                                                                                    </script>
+                                                                                                </td>
                                                                                             </tr>
                                                                                             <tr>
                                                                                                 <th>تلفن</th><!--customer_sva-->
-                                                                                                <td>{{item.1.phone}}</td>
+                                                                                                <td>
+                                                                                                    {{item.1.phone}}
+                                                                                                </td>
                                                                                                 <th>شعبه</th><!--inquiry-->
-                                                                                                <td> - </td>
+                                                                                                <td> 
+                                                                                                    -
+                                                                                                </td>
                                                                                                 <th>تعداد چک</th><!--inquiry-->
-                                                                                                <td>{{item.0.cheque_count}}</td>
+                                                                                                <td>
+                                                                                                    {{item.0.cheque_count}}
+                                                                                                </td>
                                                                                             </tr>
                                                                                             <tr>
                                                                                                 <th>موبایل</th><!--customer_sva-->
-                                                                                                <td>{{item.1.mobile}}</td>
+                                                                                                <td>
+                                                                                                    {{item.1.mobile}}
+                                                                                                </td>
                                                                                                 <th>شماره حساب</th><!--inquiry-->
-                                                                                                <td>{{item.0.account_no}}</td>
+                                                                                                <td>
+                                                                                                    {{item.0.account_no}}
+                                                                                                </td>
                                                                                                 <th>مالک</th><!--inquiry-->
-                                                                                                <td>{{item.0.account_owner}}</td>
+                                                                                                <td>
+                                                                                                    {{item.0.account_owner}}
+                                                                                                </td>
                                                                                             </tr>
                                                                                             <tr>
                                                                                                 <th>شهر</th><!--customer_sva-->
-                                                                                                <td>{{item.1.city_id|id_to_city}}</td>
+                                                                                                <td>
+                                                                                                    {{item.1.city_id|id_to_city}}
+                                                                                                </td>
                                                                                                 <th>شبا</th><!--inquiry-->
-                                                                                                <td>{{item.0.account_owner_nat_code}}</td>
+                                                                                                <td>
+                                                                                                    -
+                                                                                                </td>
                                                                                                 <th>کد ملی مالک</th><!--inquiry-->
-                                                                                                <td>{{item.1.codemeli}}</td>
+                                                                                                <td>
+                                                                                                    {{item.1.codemeli}}
+                                                                                                </td>
                                                                                             </tr>
                                                                                             <tr>
                                                                                                 <th>فروشگاه</th><!--customer_sva-->
-                                                                                                <td>{{item.1.brand_name}}</td>
+                                                                                                <td>
+                                                                                                    {{item.1.brand_name}}
+                                                                                                </td>
                                                                                                 <th>صیادی</th><!--inquiry-->
-                                                                                                <td>{{item.0.account_sayadi}}</td>
+                                                                                                <td>
+                                                                                                    {{item.0.account_sayadi}}
+                                                                                                </td>
                                                                                             </tr>
                                                                                             <tr>
                                                                                                 <th>آدرس</th><!---->
@@ -290,6 +349,8 @@
                             hiddenInputElement.value = inquiryId;
                         });
                     </script>
+                    
+                    
                     
                     <!-- end:: Footer -->
                 </div>
