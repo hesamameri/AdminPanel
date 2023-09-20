@@ -6,6 +6,7 @@ app_name = 'customer'
 urlpatterns = [
     path('customers/', views.customer_index, name='customerindex'),     # DONE(testphase)
     path('customers/customer_pay/', views.customer_pay, name='CustomerPay'),  
+    path('customers/customer_pay/<int:factor_id>', views.customer_pay, name='CustomerFactorPay'), 
     path('newcustomer', views.new_customer, name='NewCustomer'),
     path('customers/all', views.customer_index_all, name='customerindexAll'),  # DONE(testphase)
     path('newfactor', views.new_factor, name='NewFactor'),  # DONE(testphase)

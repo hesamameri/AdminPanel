@@ -1,5 +1,5 @@
 from django import forms
-from .models import CustomerSubSVA, Factor, Inquiry,ObjItem,ObjItemSpec, ObjPayment,ObjSpec, PreFactor
+from .models import CustomerSubSVA, Factor, FactorPayway, Inquiry,ObjItem,ObjItemSpec, ObjPayment,ObjSpec, PreFactor
 
 
 
@@ -19,7 +19,7 @@ class NewInquiry(forms.ModelForm):
         fields = [
             'buyer',
             'first_control',
-            'bank',
+            'bank_id',
             'bank_branch',
             'bank_code',
             'account_owner',
@@ -99,6 +99,21 @@ class NewObjPayment(forms.ModelForm):
                 'owner',
                 ]
 
-
-
+class NewFactorPayway(forms.ModelForm):
+    class Meta:
+            model = FactorPayway
+            fields = [
+                    
+                    'factor',
+                    'pay_level',
+                    'pay_type',
+                    'price' ,
+                    'bank',
+                    'cheque_owner',
+                    'no',
+                    'description',
+                    'register',
+                    'reg_dt',
+                    
+                    ]
 

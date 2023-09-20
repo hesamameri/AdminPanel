@@ -618,7 +618,7 @@ class Inquiry(models.Model):
     inquiry_id = models.AutoField(primary_key=True)
     buyer = models.ForeignKey('ObjItem', models.DO_NOTHING, blank=True, null=True)
     first_control = models.IntegerField()
-    bank = models.ForeignKey('ObjItem', models.DO_NOTHING, related_name='inquiry_bank_set', blank=True, null=True)
+    bank_id = models.IntegerField()
     bank_branch = models.CharField(max_length=255, blank=True, null=True)
     bank_code = models.CharField(max_length=255, blank=True, null=True)
     account_owner = models.CharField(max_length=255, blank=True, null=True)

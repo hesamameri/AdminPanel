@@ -30,7 +30,7 @@ def customer_index(request):
         post_data = {
             'buyer': request.POST.get('buyer'),
             'first_control': 1,
-            'bank': request.POST.get('bank'),
+            'bank_id': request.POST.get('bank_id'),
             'bank_branch': request.POST.get('bank_branch'),
             'bank_code': request.POST.get('bank_code'),
             'account_owner': request.POST.get('account_owner'),
@@ -104,106 +104,108 @@ def customer_index(request):
 
 @login_required(login_url='Administrator:login_view')
 @permission_required('ROLE_PERSONEL','ROLE_ADMIN')
-def customer_pay(request):
+def customer_pay(request,factor_id=None):
     
     if request.method == 'POST':
-        pay_type = request.POST.get('type')
-        if pay_type == 'CASH':
-            print(request.POST)
-            pay_data = {
-            'obj_item_id': request.POST.get('obj_item_id'),
-            'type': request.POST.get('type'),
-            'source_type': 'CUSTOMER_PAYMENT',
-            'source_id': request.POST.get('obj_item_id'),
-            'price': request.POST.get('price'),
-            'register': request.POST.get('register'),
-            'description': request.POST.get('description'),
-            'reg_dt': datetime.datetime.now(),
-                        }
-            
-            payment_form = NewObjPayment(pay_data)
-            if payment_form.is_valid():
-                payment_instance = payment_form.save()  # Save the payment object to the database
-                return redirect('customer:customerindex')
-            else:
-                print('didnt work')
-                return redirect('customer:customerindex')
-
-           
-
-        elif pay_type == 'CART':
-            pay_data = {
-
-            'obj_item_id': request.POST.get('obj_item_id'),
-            'type': request.POST.get('type'),
-            'source_type': 'CUSTOMER_PAYMENT',
-            'source_id': request.POST.get('obj_item_id'),
-            'price': request.POST.get('price'),
-            'register': request.POST.get('register'),
-            'description': request.POST.get('description'),
-            'reg_dt': datetime.datetime.now(),
-            'bank_id': request.POST.get('bank_id'),
-            'no': request.POST.get('no'),
-            'branch_code':request.POST.get('branch_code'),
-                        }
-            
-            payment_form = NewObjPayment(pay_data)
-            if payment_form.is_valid():
-                payment_instance = payment_form.save()  # Save the payment object to the database
-                return redirect('customer:customerindex')
-            else:
-                print('didnt work')
-                return redirect('customer:customerindex')
-
-        elif pay_type == 'CARTOCART':
-            pay_data = {
-            'obj_item_id': request.POST.get('obj_item_id'),
-            'price': request.POST.get('price'),
-            'register': request.POST.get('register'),
-            'description': request.POST.get('description'),
-            'type': request.POST.get('type'),
-            'source_type': 'CUSTOMER_PAYMENT',
-            'source_id': request.POST.get('obj_item_id'),
-            'bank_id': request.POST.get('bank_id'),
-            'no': request.POST.get('no'),
-            'branch_code':request.POST.get('branch_code'),
-            'reg_dt': datetime.datetime.now(),
-                        }
-            
-            payment_form = NewObjPayment(pay_data)
-            if payment_form.is_valid():
-                payment_instance = payment_form.save()  # Save the payment object to the database
-                return redirect('customer:customerindex')
-            else:
-                print('didnt work')
-                return redirect('customer:customerindex')
-
-        else:
-            pay_data = {
-            'obj_item_id': request.POST.get('obj_item_id'),
-            'price': request.POST.get('price'),
-            'register': request.POST.get('register'),
-            'description': request.POST.get('description'),
-            'type': request.POST.get('type'),
-            'source_type': 'CUSTOMER_PAYMENT',
-            'source_id': request.POST.get('obj_item_id'),
-            'bank_id': request.POST.get('bank_id'),
-            'no': request.POST.get('no'),
-            'branch_code':request.POST.get('branch_code'),
-            'owner': request.POST.get('owner'),
-            'reg_dt': datetime.datetime.now(),
-                        }
-            
-            payment_form = NewObjPayment(pay_data)
-            if payment_form.is_valid():
-                payment_instance = payment_form.save()  # Save the payment object to the database
-                return redirect('customer:customerindex')
-            else:
+        if factor_id is None:
+            pay_type = request.POST.get('type')
+            if pay_type == 'CASH':
+                print(request.POST)
+                pay_data = {
+                'obj_item_id': request.POST.get('obj_item_id'),
+                'type': request.POST.get('type'),
+                'source_type': 'CUSTOMER_PAYMENT',
+                'source_id': request.POST.get('obj_item_id'),
+                'price': request.POST.get('price'),
+                'register': request.POST.get('register'),
+                'description': request.POST.get('description'),
+                'reg_dt': datetime.datetime.now(),
+                            }
                 
-                return redirect('customer:customerindex')
-    else:
-        redirect('customer:CustomerIndex')
+                payment_form = NewObjPayment(pay_data)
+                if payment_form.is_valid():
+                    payment_form.save()  # Save the payment object to the database
+                    return redirect('customer:customerindex')
+                else:
+                    print('didnt work')
+                    return redirect('customer:customerindex')
+                
+            elif pay_type == 'CART':
+                pay_data = {
 
+                'obj_item_id': request.POST.get('obj_item_id'),
+                'type': request.POST.get('type'),
+                'source_type': 'CUSTOMER_PAYMENT',
+                'source_id': request.POST.get('obj_item_id'),
+                'price': request.POST.get('price'),
+                'register': request.POST.get('register'),
+                'description': request.POST.get('description'),
+                'reg_dt': datetime.datetime.now(),
+                'bank_id': request.POST.get('bank_id'),
+                'no': request.POST.get('no'),
+                'branch_code':request.POST.get('branch_code'),
+                            }
+                
+                payment_form = NewObjPayment(pay_data)
+                if payment_form.is_valid():
+                    payment_instance = payment_form.save()  # Save the payment object to the database
+                    return redirect('customer:customerindex')
+                else:
+                    print('didnt work')
+                    return redirect('customer:customerindex')
+
+            elif pay_type == 'CARTOCART':
+                pay_data = {
+                'obj_item_id': request.POST.get('obj_item_id'),
+                'price': request.POST.get('price'),
+                'register': request.POST.get('register'),
+                'description': request.POST.get('description'),
+                'type': request.POST.get('type'),
+                'source_type': 'CUSTOMER_PAYMENT',
+                'source_id': request.POST.get('obj_item_id'),
+                'bank_id': request.POST.get('bank_id'),
+                'no': request.POST.get('no'),
+                'branch_code':request.POST.get('branch_code'),
+                'reg_dt': datetime.datetime.now(),
+                            }
+                
+                payment_form = NewObjPayment(pay_data)
+                if payment_form.is_valid():
+                    payment_instance = payment_form.save()  # Save the payment object to the database
+                    return redirect('customer:customerindex')
+                else:
+                    print('didnt work')
+                    return redirect('customer:customerindex')
+   
+
+
+            else:
+                pay_data = {
+                'obj_item_id': request.POST.get('obj_item_id'),
+                'price': request.POST.get('price'),
+                'register': request.POST.get('register'),
+                'description': request.POST.get('description'),
+                'type': request.POST.get('type'),
+                'source_type': 'CUSTOMER_PAYMENT',
+                'source_id': request.POST.get('obj_item_id'),
+                'bank_id': request.POST.get('bank_id'),
+                'no': request.POST.get('no'),
+                'branch_code':request.POST.get('branch_code'),
+                'owner': request.POST.get('owner'),
+                'reg_dt': datetime.datetime.now(),
+                            }
+                
+                payment_form = NewObjPayment(pay_data)
+                if payment_form.is_valid():
+                    payment_instance = payment_form.save()  # Save the payment object to the database
+                    return redirect('customer:customerindex')
+                else:
+                    
+                    return redirect('customer:customerindex')
+        else:
+           pass
+    else:
+        return redirect('customer:customerindex')
 
 # @cache_page(10)
 @login_required(login_url='Administrator:login_view')
@@ -355,39 +357,38 @@ def new_factor(request):
 @login_required(login_url='Administrator:login_view')
 @permission_required('ROLE_PERSONEL','ROLE_ADMIN')
 def factor(request,factor_id=None,obj_buyer = None):
-    # print("factor_id:", factor_id)
-    # print("buyer_id:", obj_buyer)
+    # print("factor_id: ", factor_id)
+    # print("buyer_id: ", obj_buyer)
     
     if request.method == 'POST':
         pass
     else:
         # try:
             if factor_id is not None:
+
                 # factor_main = Factor.objects.get(factor_id = factor_id)
                 factor_main = get_object_or_none(Factor, factor_id=factor_id)
                 
                 # customer_data = CustomerSva.objects.get(obj_item_id = factor_main.buyer_id)
                 customer_data = get_object_or_none(CustomerSva, obj_item_id=factor_main.buyer_id)
-                print(customer_data)
+                
                 # inquiry_test = Inquiry.objects.get(buyer_id = factor_main.buyer_id)
                 inquiry_test = get_object_or_none(Inquiry, buyer_id=factor_main.buyer_id)
 
                 if customer_data.seller_buyer_id is not None:
                     credit_id = int(customer_data.seller_buyer_id[:10])
                     vendor_credit = get_object_or_none(CreditSumSVA, pk=credit_id)
+
                 else:
                     credit_id = 102010
                     vendor_credit = None
 
-
                 # vendor_credit = CreditSumSVA.objects.get(pk = credit_id)
                 
-
                 factor_payway = FactorPayway.objects.filter(factor = factor_id)
 
                 # factor_address = FactorAddress.objects.get(factor = factor_id)
                 factor_address = get_object_or_none(FactorAddress, factor=factor_id)
-
 
                 factor_document = FactorDocument.objects.filter(factor = factor_id)
                 factor_comment = FactorComment.objects.filter(factor_id = factor_id)
