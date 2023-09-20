@@ -12,6 +12,7 @@ urlpatterns = [
     path('factor/by_buyer/<int:obj_buyer>/', views.factor, name='FactorWithBuyerID'),
     path('factor/by_factor/<int:factor_id>/', views.factor, name='FactorWithFactorID'),
     
+    
     path('factorlist', views.factor_index, name='FactorList'),                   # DONE(testphase)
     path('customerconfaccountlt', views.customer_confirm_accountlist, name='CustomerConfirmAccountList'),
     path('customerconfirmsalelist', views.customer_confirm_salelist, name='CustomerConfirmSaleList'),

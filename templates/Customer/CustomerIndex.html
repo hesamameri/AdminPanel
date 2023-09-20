@@ -114,6 +114,16 @@
 														<label class="kt-font-dark kt-font-boldest">نام کامل مشتری</label>
 														<div class="kt-input-icon">
 															<input type="text" name="name" class="form-control" placeholder="نام و نام خانوادگی">
+                                                            <input type="hidden" name="title" class="form-control">
+                                                            <script>
+                                                                const visibleInput = document.querySelector('input[name="name"]');
+                                                                const hiddenInput = document.querySelector('input[name="title"]');
+                                                            
+                                                                visibleInput.addEventListener('input', function() {
+                                                                  hiddenInput.value = visibleInput.value;
+                                                                });
+                                                              </script>
+                                                            
 															<span class="kt-input-icon__icon kt-input-icon__icon--right"><span><i class="fa fa-user text-primary"></i></span></span>
 														</div>
 													</div>

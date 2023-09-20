@@ -505,6 +505,8 @@ class FactorSVA(models.Model):
     class Meta:
         managed = False
         db_table = 'factor_sva'
+    
+
 class FactorAddress(models.Model):
     factor_address_id = models.AutoField(primary_key=True)
     factor = models.ForeignKey(Factor, models.DO_NOTHING, blank=True, null=True)
@@ -517,6 +519,7 @@ class FactorAddress(models.Model):
     class Meta:
         managed = False
         db_table = 'factor_address'
+
 
 
 class FactorComment(models.Model):

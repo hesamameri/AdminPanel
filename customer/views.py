@@ -59,13 +59,13 @@ def customer_index(request):
         customer_ids = customers.values_list('obj_item_id', flat=True)
         # Retrieve related objects based on customer_ids
         obj_payments = ObjPayment.objects.filter(obj_item_id__in=customer_ids)
-        print(obj_payments)
+        # print(obj_payments)
         tickets = Ticket.objects.filter(obj_source_id__in=customer_ids) # assuming obj_source_id is the relevant field in Ticket model
-        print(tickets)
+        # print(tickets)
         pre_factors = PreFactor.objects.filter(buyer_id__in=customer_ids)
-        print(pre_factors)
-        factors = Factor.objects.filter(buyer_id__in=customer_ids, reg_status='CONFIRM')
-        print(factors)
+        # print(pre_factors)
+        factors = Factor.objects.filter(buyer_id__in=customer_ids,)
+        # print(factors)
         banks = ObjItem.objects.filter(obj_item_id__gte=999003010, obj_item_id__lte=999003019)        # Set the number of records to display per page
 
         # # Set the number of records to display per page
@@ -203,8 +203,6 @@ def customer_pay(request):
         redirect('customer:CustomerIndex')
 
 
-
-
 # @cache_page(10)
 @login_required(login_url='Administrator:login_view')
 @permission_required('ROLE_PERSONEL','ROLE_ADMIN')
@@ -215,13 +213,14 @@ def new_customer(request):
 
         obj_item_data = {
 
-            'obj_id': 10301,
+            'obj': 10301,
             'name': request.POST.get('name'),
             'title': request.POST.get('title'),
 
         }
 
         obj_specs = ObjSpec.objects.filter(obj = obj_id)
+        print(obj_item_data)
         # obj_item_spec_data = {
         #     'field1': request.POST.get('field1'),
         #     'field2': request.POST.get('field2'),
@@ -229,7 +228,8 @@ def new_customer(request):
         formObjItem = NewObjItem(obj_item_data)
         if formObjItem.is_valid():
             saved_instance = formObjItem.save()
-
+        else:
+            print("WROOOONG")
 
         for key, value in request.POST.items():
             # print(key,value)
@@ -364,19 +364,19 @@ def factor(request,factor_id=None,obj_buyer = None):
                 # factor_main = Factor.objects.get(factor_id = factor_id)
                 factor_main = get_object_or_none(Factor, factor_id=factor_id)
                 
-
-                
                 # customer_data = CustomerSva.objects.get(obj_item_id = factor_main.buyer_id)
                 customer_data = get_object_or_none(CustomerSva, obj_item_id=factor_main.buyer_id)
-               
+                print(customer_data)
                 # inquiry_test = Inquiry.objects.get(buyer_id = factor_main.buyer_id)
                 inquiry_test = get_object_or_none(Inquiry, buyer_id=factor_main.buyer_id)
+
                 if customer_data.seller_buyer_id is not None:
                     credit_id = int(customer_data.seller_buyer_id[:10])
                     vendor_credit = get_object_or_none(CreditSumSVA, pk=credit_id)
                 else:
                     credit_id = 102010
                     vendor_credit = None
+
 
                 # vendor_credit = CreditSumSVA.objects.get(pk = credit_id)
                 
@@ -398,6 +398,9 @@ def factor(request,factor_id=None,obj_buyer = None):
                 combined_depo_id_data = ObjItem.objects.filter(obj_item_id__in = depo_ids).values('name')
                 combined_all_depo = list(zip(combined_depo_goods_data,combined_depo_id_data))
                 depo_all = list(zip(factor_depo_data, combined_all_depo))
+                if depo_all == []:
+                    depo_all = None
+                
                 obj_sendings = ObjSend.objects.filter(source_id__in = factor_item_ids)
                 banks = ObjItem.objects.filter(obj_item_id__gte=999003010, obj_item_id__lte=999003019) 
                 
@@ -417,6 +420,7 @@ def factor(request,factor_id=None,obj_buyer = None):
                     'banks':banks,
 
                 }  
+                
                 return render(request,'Customer/Factor.html',context=context)
             else:
                 print(obj_buyer)
@@ -477,7 +481,7 @@ def customer_confirm_salelist(request):
 
 
 
-@cache_page(10)
+# @cache_page(10)
 @login_required(login_url='Administrator:login_view')
 @permission_required('ROLE_PERSONEL','ROLE_ADMIN')
 def customer_factor_assessment(request):
@@ -507,21 +511,21 @@ def customer_payment_confirm(request):
     return render(request,'Customer/CustomerPaymentConfirm.html')
 
 
-@cache_page(10)
+# @cache_page(10)
 @login_required(login_url='Administrator:login_view')
 @permission_required('ROLE_PERSONEL','ROLE_ADMIN')
 def receipt_index(request):
     
     return render(request,'Customer/ReceiptIndex.html')
 
-@cache_page(10)
+# @cache_page(10)
 @login_required(login_url='Administrator:login_view')
 @permission_required('ROLE_PERSONEL','ROLE_ADMIN')
 def receipt_list(request):
     
     return render(request,'Customer/ReceiptList.html')
 
-@cache_page(10)
+# @cache_page(10)
 @login_required(login_url='Administrator:login_view')
 @permission_required('ROLE_PERSONEL','ROLE_ADMIN')
 def receipt_receive(request):
@@ -529,14 +533,14 @@ def receipt_receive(request):
     return render(request,'Customer/ReceiptReceive.html')
 
 
-@cache_page(10)
+# @cache_page(10)
 @login_required(login_url='Administrator:login_view')
 @permission_required('ROLE_PERSONEL','ROLE_ADMIN')
 def receipt_send(request):
     
     return render(request,'Customer/ReceiptSend.html')
 
-@cache_page(10)
+# @cache_page(10)
 @login_required(login_url='Administrator:login_view')
 @permission_required('ROLE_PERSONEL','ROLE_ADMIN')
 def credit_index(request):
@@ -544,7 +548,7 @@ def credit_index(request):
     return render(request,'Customer/CreditIndex.html')
 
 
-@cache_page(10)
+# @cache_page(10)
 @login_required(login_url='Administrator:login_view')
 @permission_required('ROLE_PERSONEL','ROLE_ADMIN')
 def credit_list(request):
@@ -552,7 +556,7 @@ def credit_list(request):
     return render(request,'Customer/CreditList.html')
 
 
-@cache_page(10)
+# @cache_page(10)
 @login_required(login_url='Administrator:login_view')
 @permission_required('ROLE_PERSONEL','ROLE_ADMIN')
 def receipt_confirm(request):
@@ -560,7 +564,7 @@ def receipt_confirm(request):
     return render(request,'Customer/receiptconfirm.html')
 
 
-@cache_page(10)
+# @cache_page(10)
 @login_required(login_url='Administrator:login_view')
 @permission_required('ROLE_PERSONEL','ROLE_ADMIN')
 def prefroma(request):
@@ -568,28 +572,28 @@ def prefroma(request):
     return render(request,'Customer/Prefroma.html')
 
 
-@cache_page(10)
+# @cache_page(10)
 @login_required(login_url='Administrator:login_view')
 @permission_required('ROLE_PERSONEL','ROLE_ADMIN')
 def customerfactor_sendassigndriver(request):
     
     return render(request,'Customer/CustomerFactorSendAssignDriver.html')
 
-@cache_page(10)
+# @cache_page(10)
 @login_required(login_url='Administrator:login_view')
 @permission_required('ROLE_PERSONEL','ROLE_ADMIN')
 def customerfactor_sendstatus(request):
     
     return render(request,'Customer/CustomerFactorSendStatus.html')
 
-@cache_page(10)
+# @cache_page(10)
 @login_required(login_url='Administrator:login_view')
 @permission_required('ROLE_PERSONEL','ROLE_ADMIN')
 def customerfactor_servicedoc(request):
     
     return render(request,'Customer/CustomerFactorServiceDoc.html')
 
-@cache_page(10)
+# @cache_page(10)
 @login_required(login_url='Administrator:login_view')
 @permission_required('ROLE_PERSONEL','ROLE_ADMIN')
 def customer_payment_confirms(request):

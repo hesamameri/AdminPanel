@@ -6,7 +6,7 @@ from .models import CustomerSubSVA, Factor, Inquiry,ObjItem,ObjItemSpec, ObjPaym
 class NewObjItem(forms.ModelForm):   
     class Meta:
         model = ObjItem
-        fields = ['name','title']
+        fields = ['obj','name','title']
 
 class NewObjItemSpec(forms.ModelForm):   
     class Meta:

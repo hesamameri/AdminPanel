@@ -118,7 +118,7 @@
                                                                         <th>ارسال شده</th>
                                                                         <th>مانده</th> -->
                                                              
-                                                                        <th></th>
+                                                                    <th></th>
                                                                 </tr>
                                                             </thead>
                                                             <tbody>
@@ -366,7 +366,10 @@
                                                         </div>
                             
                                                     </div>
-                            
+                                                    <br>
+                                                    
+                                                    {% if factor_main.factore_desc == None %}
+                                                    {% else %}
                                                     <div class="col-lg-12">
                                                         <div class="card card-secondary card-outlines">
                                                             <div class="card-header rtl">
@@ -382,7 +385,11 @@
                                                             </div>
                                                         </div>
                                                     </div>
+                                                    {% endif %}
                                                     
+                                                    
+                                                    {% if factor_main.acc_status == None %}
+                                                    {% else %}
                                                     <div class="col-lg-12">
                                                         <div class="card card-secondary card-outlines">
                                                             <div class="card-header rtl">
@@ -412,8 +419,11 @@
                                                             </div>
                                                         </div>
                                                     </div>
+                                                    {% endif %}
+                                                
                             
-                                                    
+                                                {% if depo_all == None %}
+                                                {% else %}
                                                     <div class="col-lg-12">
                                                         <div class="card card-secondary card-outlines">
                                                             <div class="card-header rtl">
@@ -452,6 +462,7 @@
                                                             </div>
                                                         </div>
                                                     </div>
+                                                    {% endif %}
                                                     
                             
                                                     <div class="col-lg-12">
