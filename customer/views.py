@@ -1,5 +1,7 @@
 from datetime import timezone
 import datetime
+
+from django.http import HttpResponse
 from .utilities import get_object_or_none
 from django.shortcuts import redirect, render
 from django.db.models import F
@@ -692,22 +694,40 @@ def receipt_print(request):
 
 # @cache_page(10)
 @login_required(login_url='Administrator:login_view')
-@permission_required('ROLE_PERSONEL','ROLE_ADMIN')
+@permission_required('ROLE_PERSONEL', 'ROLE_ADMIN')
 def prefactor(request):
-        if request.method == 'POST':
-            print(request.POST)
-            form = NewPreFactor(request.POST)
+    if request.method == 'POST':
+        buyers = request.POST.getlist("buyer_id")
+        obj_item_ids = request.POST.getlist("obj_item_id")
+        amounts = request.POST.getlist("amount")
+
+        # Check if the lengths of obj_item_ids and amounts match
+        if len(obj_item_ids) != len(amounts):
+            return HttpResponse("Invalid form data")
+
+        for obj_item_id, amount in zip(obj_item_ids, amounts):
+            post_data = {
+                "buyer_id": buyers[0],  # Assuming buyer_id is the same for all rows
+                "obj_item_id": obj_item_id,
+                "amount": amount,
+                "register": request.POST.get("register"),
+                "reg_dt": datetime.datetime.now(),
+            }
+
+            form = NewPreFactor(post_data)
             if form.is_valid():
-                pre_factor = form.save()
-                return redirect('customer:customerindex')    
+                form.save()
             else:
-                return render(request, 'CustomerIndex.html', {'form': form})  
-        else:
-            form = NewPreFactor()
-        
-        context = {
-            'form': form,
-        }
-        return render(request, 'CustomerIndex.html', context)
+                return HttpResponse("Invalid form")
+
+        return redirect("customer:customerindex")
+
+    else:
+        form = NewPreFactor()
+
+    context = {
+        'form': form,
+    }
+    return render(request, 'CustomerIndex.html', context)
     
     
