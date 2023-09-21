@@ -268,7 +268,7 @@ def customer_index_all(request):
         post_data = {
             'buyer': request.POST.get('buyer'),
             'first_control': 1,
-            'bank': request.POST.get('bank'),
+            'bank_id': request.POST.get('bank_id'),
             'bank_branch': request.POST.get('bank_branch'),
             'bank_code': request.POST.get('bank_code'),
             'account_owner': request.POST.get('account_owner'),

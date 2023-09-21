@@ -270,13 +270,13 @@
                                     <form method="POST" action="{% url 'customer:customerindexAll' %}">
                                         {% csrf_token %}
                                         <div class="modal-body">
-                                            <input id="hiddenInput" type="hidden" name="buyer" value="">    
+                                            <input id="hiddenInput" type="hidden" name="buyer" >    
                                             <input type="hidden"  name="register" value="{{request.user.user_id}}" >                                     
                                             <div class="form-group form-group-sm row">
                                                 <div class="col-sm-8">
                                                 <select class="form-control select2bs4" style="width: 100%;" name="bank_id" data-placeholder="بانک" data-allow-clear="true">
                                                         {% for bank in banks %}
-                                                        <option value="{{bank.bank_id}}" > {{bank.name}}</option>
+                                                        <option value="{{bank.obj_item_id}}" > {{bank.name}}</option>
                                                         {% endfor %}
                                                 </select>
                                                 </div>
