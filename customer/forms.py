@@ -1,5 +1,5 @@
 from django import forms
-from .models import CustomerSubSVA, Factor, FactorPayway, Inquiry,ObjItem,ObjItemSpec, ObjPayment,ObjSpec, PreFactor
+from .models import CustomerSubSVA, Factor, FactorItem, FactorPayway, Inquiry,ObjItem,ObjItemSpec, ObjPayment,ObjSpec, PreFactor
 
 
 
@@ -117,3 +117,14 @@ class NewFactorPayway(forms.ModelForm):
                     
                     ]
 
+class NewFactorItem(forms.ModelForm):
+    class Meta:
+            model = FactorItem
+            fields = [
+                    'factor',
+                    'obj_item',
+                    'amount',
+                    'unit_price',
+                    'discount_price',
+                    'register',
+                    ]

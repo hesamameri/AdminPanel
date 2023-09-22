@@ -573,6 +573,19 @@ class FactorItem(models.Model):
         managed = False
         db_table = 'factor_item'
 
+class ProductSVA(models.Model):
+    obj_type_id = models.IntegerField()
+    obj_id = models.IntegerField()
+    obj_item_id = models.IntegerField()
+    product_id = models.IntegerField(primary_key=True)
+    name = models.CharField(max_length=255)
+    title = models.CharField(max_length=255)
+    status = models.IntegerField()
+    unit_price = models.FloatField()
+
+    class Meta:
+        managed = False  # No database table creation or deletion operations will be performed for this model.
+        db_table = 'product_sva'
 
 class FactorItemOrgan(models.Model):
     factor_item_organ_id = models.AutoField(primary_key=True)

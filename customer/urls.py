@@ -12,7 +12,10 @@ urlpatterns = [
     path('newfactor', views.new_factor, name='NewFactor'),  # DONE(testphase)
     path('factor/by_buyer/<int:obj_buyer>/', views.factor, name='FactorWithBuyerID'),
     path('factor/by_factor/<int:factor_id>/', views.factor, name='FactorWithFactorID'),
-    
+    path('delete_factor_element/<int:element>/', views.delete_factor_element, name='delete_payway'),
+    path('delete_factor_element/<int:element>/', views.delete_factor_element, name='delete_goods'),
+    path('add_goods_factor/<int:factor_id>/', views.factor_add_goods, name='add_goods_factor'),
+
     
     path('factorlist', views.factor_index, name='FactorList'),                   # DONE(testphase)
     path('customerconfaccountlt', views.customer_confirm_accountlist, name='CustomerConfirmAccountList'),

@@ -158,8 +158,11 @@
 
 
                                                                         <td>
-                                                                            <form method="POST" action="">
-                                                                                <button type="submit" class="btn btn-danger btn-xs" href=""><i class="fas fa-times"></i></button>
+                                                                            <form method="POST" action="{% url 'customer:delete_goods' element=product.factor_item_id %}">
+                                                                                {% csrf_token %}
+                                                                                <input type="hidden" name="form_type" value="addgoods">
+                                                                                <input type="hidden" name="factor" value="{{ factor_main.factor_id }}">
+                                                                                <button type="submit" class="btn btn-danger btn-xs"><i class="fas fa-times"></i></button>
                                                                             </form>
                                                                         </td>
                             
@@ -263,8 +266,11 @@
                                                                             {% endif %}
                                                                             <td>{{item.reg_dt|to_jalali}}</td>
                                                                             <td>
-                                                                                <form method="POST" action="">
-                                                                                    <button type="submit" class="btn btn-danger btn-xs" href=""><i class="fas fa-times"></i></button>
+                                                                                <form method="POST" action="{% url 'customer:delete_payway' element=item.factor_payway_id %}">
+                                                                                    {% csrf_token %}
+                                                                                    <input type="hidden" name="factor" value="{{ factor_main.factor_id }}">
+                                                                                    <input type="hidden" name="form_type" value="paywayform">
+                                                                                    <button type="submit" class="btn btn-danger btn-xs"><i class="fas fa-times"></i></button>
                                                                                 </form>
                                                                             </td>
                                                                             
@@ -844,15 +850,24 @@
                         <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
-                    <form method="POST" action="">
+                    <form method="POST" action="{% url 'customer:add_goods_factor' factor_id=factor_main.factor_id %}">
+                    {% csrf_token %}
                     <div class="modal-body">
-        
+
+                            <input type="hidden" name="register" value="{{request.user.user_id}}">
                             <div class="form-group form-group-sm row">
                                 <div class="col-sm-9">
-                                    <select class="form-control select2bs4 rtl text-right float-right" style="width: 100%;" name="product_id">
-                                        
-                                            <option value="2"></option>
-                                        
+                                    <select class="form-control select2bs4 rtl text-right float-right" style="width: 100%;" name="obj_item">
+                                        <option value="115009" selected>CM6000BL-T</option>
+                                        <option value="115036">CMT6000BL-T</option>
+                                        <option value="115040">CM8000BL-T</option>
+                                        <option value="115066">CMT8000BL-T</option>
+                                        <option value="1150025">CP9000BL-T</option>
+                                        <option value="115024">CM12000BL-T</option>
+                                        <option value="1151001">پنل مدل expono ساده</option>
+                                        <option value="1151019">پنل مدل امانوئل</option>
+                                        <option value="1050487">موتور BLDC</option>
+
                                     </select>
                                 </div>
                                 <label for="product_id" class="col-sm-3 col-form-label">محصول</label>
@@ -860,9 +875,16 @@
                             <div class="form-group form-group-sm row">
                                 <div class="col-sm-9">
                                     <select class="form-control select2bs4 rtl text-right float-right" style="width: 100%;" name="amount">
-                                        
-                                            <option value="1"></option>
-                                        
+                                        <option value="1" selected>1</option>
+                                        <option value="2">2</option>
+                                        <option value="3">3</option>
+                                        <option value="4">4</option>
+                                        <option value="5">5</option>
+                                        <option value="6">6</option>
+                                        <option value="7">7</option>
+                                        <option value="8">8</option>
+                                        <option value="9">9</option>
+                                        <option value="10">10</option>
                                     </select>
                                 </div>
                                 <label for="amount" class="col-sm-3 col-form-label">تعداد</label>
@@ -952,14 +974,15 @@
                 <div class="modal-header rtl">
                     <h4 class="modal-title">دریافت از مشتری</h4>
                 </div>
-                <form method="POST" action="{% url 'customer:CustomerPay' %}" enctype="multipart/form-data" id="frm-payment" autocomplete="off">
+                <form method="POST" action="{% url 'customer:FactorWithFactorID' factor_id=factor_main.factor_id %}" enctype="multipart/form-data" id="frm-payment" autocomplete="off">
                     {% csrf_token %}
                     <div class="modal-body">
-                        <input id="hiddenInput2" type="hidden" name="obj_item_id">
+                        <input type="hidden" name="form_type" value="paywayform">
+                        <input id="reference" type="hidden" name="factor_id" value="{{factor_main.factor_id}}">
                         <input type="hidden" value="{{request.user.user_id}}" name="register" class="customer_id">
                         <div class="form-group form-group-sm row">
                             <div class="col-sm-8">
-                                <select class="form-control select2bs4s rtl text-left" style="width: 100%;" name="type" id="type" onchange="showHideFields()">
+                                <select class="form-control select2bs4s rtl text-left" style="width: 100%;" name="pay_type" id="type" onchange="showHideFields()">
                                     <option value="CASH" selected>وجه نقد</option>
                                     <option value="CART">کارت خوان</option>
                                     <option value="CARTOCART">کارت به کارت</option>

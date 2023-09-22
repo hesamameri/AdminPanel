@@ -1,14 +1,14 @@
 from datetime import timezone
 import datetime
-
 from django.http import HttpResponse
+from django.urls import reverse
 from .utilities import get_object_or_none
-from django.shortcuts import redirect, render
+from django.shortcuts import get_object_or_404, redirect, render
 from django.db.models import F
 from django.utils import timezone
 from customer.templatetags.converter_tags import subtract
 from ticket.models import Ticket
-from .models import CreditSumSVA, DepoSend, Factor, FactorAddress, FactorPayway, ObjItem, ObjItemSpec, ObjPayment, ObjSend, ObjSpec, PreFactor, VendorBuyerSVA, VendorBuyerSubSVA
+from .models import CreditSumSVA, DepoSend, Factor, FactorAddress, FactorPayway, ObjItem, ObjItemSpec, ObjPayment, ObjSend, ObjSpec, PreFactor, ProductSVA, VendorBuyerSVA, VendorBuyerSubSVA
 from .models import CustomerSubSVA, CustomerSva, FactorComment, FactorDocument, FactorItem, FactorSVA, ObjItemSVA, ShopCustomerCount
 from django.core.paginator import Paginator, EmptyPage
 from django.db.models import Q
@@ -21,7 +21,9 @@ from django.contrib.sessions.models import Session
 from django.views.decorators.cache import cache_page
 from django.db.models import F, Sum
 from .models import FactorItem,FactorItemBalanceSVA
-from .forms import NewInquiry, NewObjItem,NewObjItemSpec, NewObjPayment, NewPreFactor
+from .forms import NewFactorItem, NewFactorPayway, NewInquiry, NewObjItem,NewObjItemSpec, NewObjPayment, NewPreFactor
+
+
 # @cache_page(10)
 @login_required(login_url='Administrator:login_view')
 @permission_required('ROLE_PERSONEL', 'ROLE_ADMIN')
@@ -357,11 +359,34 @@ def new_factor(request):
 @login_required(login_url='Administrator:login_view')
 @permission_required('ROLE_PERSONEL','ROLE_ADMIN')
 def factor(request,factor_id=None,obj_buyer = None):
-    # print("factor_id: ", factor_id)
+    # print("factor_id: ", factor_id) 3757
     # print("buyer_id: ", obj_buyer)
     
     if request.method == 'POST':
-        pass
+        print(request.POST)
+        form_type = request.POST.get('form_type')
+        if form_type == 'paywayform':
+            payway_data = {
+                'factor': request.POST.get('factor_id'),
+                'pay_level':'FACTOR',
+                'pay_type':request.POST.get('pay_type'),
+                'price': request.POST.get('price'),
+                'bank':request.POST.get('bank_id'),
+                'cheque_owner':request.POST.get('owner'),
+                'no':request.POST.get('no'),
+                'description':request.POST.get('description'),
+                'register':request.POST.get('register'),
+                'reg_dt': datetime.datetime.now(),    
+            }
+            paywayform = NewFactorPayway(payway_data)
+            if paywayform.is_valid():
+                paywayform.save()
+                return  redirect(reverse('customer:FactorWithFactorID', args=[payway_data['factor']]))  # or redirect as per your needs
+            else:
+                # Handle the form errors. This is just a simple example.
+                # You might want to send the errors back to the template or handle in some other way.
+                return HttpResponse("Form has errors: {}".format(paywayform.errors))
+
     else:
         # try:
             if factor_id is not None:
@@ -406,7 +431,7 @@ def factor(request,factor_id=None,obj_buyer = None):
                 
                 obj_sendings = ObjSend.objects.filter(source_id__in = factor_item_ids)
                 banks = ObjItem.objects.filter(obj_item_id__gte=999003010, obj_item_id__lte=999003019) 
-                
+                paywayform = NewFactorPayway()
                 context = {
 
                     'factor_main':factor_main,
@@ -421,8 +446,10 @@ def factor(request,factor_id=None,obj_buyer = None):
                     'obj_sendings':obj_sendings,
                     'inquiry_test':inquiry_test,
                     'banks':banks,
+                    'paywayform':paywayform,
 
                 }  
+               
                 
                 return render(request,'Customer/Factor.html',context=context)
             else:
@@ -437,7 +464,48 @@ def factor(request,factor_id=None,obj_buyer = None):
         #         'banks':banks,
         #     }
         #     return render(request,'Customer/Factor.html',context=context)
+@login_required(login_url='Administrator:login_view')
+@permission_required('ROLE_PERSONEL','ROLE_ADMIN')
+def factor_add_goods(request,factor_id):
+    if request.method == 'POST':
+        obj_item_id = request.POST.get('obj_item')
+        obj = get_object_or_404(ObjItem, obj_item_id=obj_item_id)
+        factor = get_object_or_404(Factor,factor_id=factor_id)
+        unit_price = get_object_or_404(ProductSVA,product_id = obj.obj_item_id).unit_price
+        goods_data = {
+            'factor':factor,
+            'obj_item':obj,
+            'amount':request.POST.get('amount'),
+            'unit_price': unit_price,
+            'discount_price': 1,
+            'register':request.POST.get('amount'),
+        }
+        goodsform = NewFactorItem(goods_data)
+        if goodsform.is_valid():
+            goodsform.save()
+            return redirect(reverse('customer:FactorWithFactorID', args=[factor_id]))  # Adjust the redirect as per your needs
 
+        else:
+            return redirect(reverse('customer:FactorWithFactorID', args=[request.POST.get('factor')]))  # Adjust the redirect as per your needs
+ 
+        
+    else:
+        return redirect('customer:customerindex')
+
+@login_required(login_url='Administrator:login_view')
+@permission_required('ROLE_PERSONEL','ROLE_ADMIN')
+def delete_factor_element(request,element):
+    if request.method == 'POST':
+        if request.POST['form_type'] == 'paywayform':
+            payway = get_object_or_404(FactorPayway, pk=element)
+            payway.delete()
+            return redirect(reverse('customer:FactorWithFactorID', args=[request.POST.get('factor')]))  # Adjust the redirect as per your needs
+        elif request.POST['form_type'] == 'addgoods':
+            payway = get_object_or_404(FactorItem, pk=element)
+            payway.delete()
+            return redirect(reverse('customer:FactorWithFactorID', args=[request.POST.get('factor')]))
+    else:
+        return redirect('customer:customerindex')
 
 # @cache_page(10)
 @login_required(login_url='Administrator:login_view')
