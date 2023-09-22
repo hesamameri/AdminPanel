@@ -571,55 +571,64 @@
                             
                                                 <div class="row">
                                                     <div class="col-lg-12">
-                                                        {% if factor_main.reg_status == None %}
-                                                        <div class="card  card-outline">
-                                                            <div class="card-body">
-                                                                <form method="POST"  action="" id="saveForm" name="saveForm">
-                                                                    <div class="form-group form-group-sm row" style="width: 100%;">
-                                                                        <div class="col-sm-10">
-                                                                            <input type="text" name="factore_desc" class="form-control rtl" id="factore_desc" placeholder="توضیحات" >
-                                                                        </div>
-                                                                        <label for="factore_desc" class="col-sm-2 col-form-label">توضیحات</label>
-                                                                    </div>
-                                                                    <button class="btn btn-primary" type="submit" form="saveForm">ثبت نهایی فاکتور</button>
-                                                                    <a href="" class="btn btn-danger" >حذف فاکتور</a>
-                                                                    <a href="" class="btn btn-secondary float-right" >برگشت</a>
-                                                                </form>
-                                                            </div>
-                                                        </div>
-                                                        {% else %}
-                                                        {% endif %}
-                                                            {% if inquiry_test.confirm_status == None %}
-                                                            <div class="card card- card-outline">
-                                                                <div class="card-header rtl">
-                                                                    <h3 class="card-title rtl block  bold">اعلام وضعیت مالی</h3>
-                                                                </div>
-                                                                
+                                                        {% if request.user.user_id|final_register_access %}
+                                                            {% if factor_main.reg_status == None %}
+                                                            <div class="card  card-outline">
                                                                 <div class="card-body">
-                                                                    <form method="POST" action="">
+                                                                    <form method="POST"  action="" id="saveForm" name="saveForm">
                                                                         <div class="form-group form-group-sm row" style="width: 100%;">
-                                                                            <div class="col-sm-8">
-                                                                                <input type="text" name="acc_description" class="form-control rtl" id="acc_description" placeholder="توضیحات" >
+                                                                            <div class="col-sm-10">
+                                                                                <input type="text" name="factore_desc" class="form-control rtl" id="factore_desc" placeholder="توضیحات" >
                                                                             </div>
-                                                                            <label for="acc_description" class="col-sm-3 col-form-label">توضیحات</label>
+                                                                            <label for="factore_desc" class="col-sm-2 col-form-label">توضیحات</label>
                                                                         </div>
-                                                                        <div class="form-group form-group-sm row" style="width: 100%;">
-                                                                            <div class="col-sm-8">
-                                                                                <select class="form-control select2bs4s rtl text-right float-right" style="width: 100%;" name="acc_status" id="acc_status">
-                                                                                    <option value="CONFIRM">تایید</option>
-                                                                                    <option value="REJECT">رد</option>
-                                                                                </select>
-                                                                            </div>
-                                                                            <label for="acc_status" class="col-sm-3 col-form-label">وضعیت</label>
-                                                                        </div>
-                                                                            <button class="btn btn-" type="submit">تایید مالی</button>
-                                                                            <button class="btn btn-secondary" disabled>تایید مالی</button>
+                                                                        <button class="btn btn-primary" type="submit" form="saveForm">ثبت نهایی فاکتور</button>
+                                                                        <a href="" class="btn btn-danger" >حذف فاکتور</a>
+                                                                        <a href="" class="btn btn-secondary float-right" >برگشت</a>
                                                                     </form>
                                                                 </div>
                                                             </div>
                                                             {% else %}
+                                                            {% endif %}
+                                                        {% else %}
                                                         {% endif %}
-                                                             <div class="card card- card-outline">
+                                                            {% if request.user.user_id|financial_approval_access %}
+                                                                {% if inquiry_test.confirm_status == None %}
+                                                                <div class="card card- card-outline">
+                                                                    <div class="card-header rtl">
+                                                                        <h3 class="card-title rtl block  bold">اعلام وضعیت مالی</h3>
+                                                                    </div>
+                                                                    
+                                                                    <div class="card-body">
+                                                                        <form method="POST" action="">
+                                                                            <div class="form-group form-group-sm row" style="width: 100%;">
+                                                                                <div class="col-sm-8">
+                                                                                    <input type="text" name="acc_description" class="form-control rtl" id="acc_description" placeholder="توضیحات" >
+                                                                                </div>
+                                                                                <label for="acc_description" class="col-sm-3 col-form-label">توضیحات</label>
+                                                                            </div>
+                                                                            <div class="form-group form-group-sm row" style="width: 100%;">
+                                                                                <div class="col-sm-8">
+                                                                                    <select class="form-control select2bs4s rtl text-right float-right" style="width: 100%;" name="acc_status" id="acc_status">
+                                                                                        <option value="CONFIRM">تایید</option>
+                                                                                        <option value="REJECT">رد</option>
+                                                                                    </select>
+                                                                                </div>
+                                                                                <label for="acc_status" class="col-sm-3 col-form-label">وضعیت</label>
+                                                                            </div>
+                                                                                <button class="btn btn-" type="submit">تایید مالی</button>
+                                                                                <button class="btn btn-secondary" disabled>تایید مالی</button>
+                                                                        </form>
+                                                                    </div>
+                                                                </div>
+                                                                    {% else %}
+                                                                {% endif %}
+                                                            {% else %}
+                                                            {% endif %}
+                                                             
+                                                            
+                                                            {% if request.user.user_id|sales_register_access %}
+                                                            <div class="card card- card-outline">
                                                                 <div class="card-header rtl">
                                                                     <h3 class="card-title rtl block float-right"></h3>
                                                                 </div>
@@ -635,6 +644,8 @@
                                                                     </form>
                                                                 </div>
                                                             </div> 
+                                                            {% else %}
+                                                            {% endif %}
                                                                   
                                                     </div>
                                                 </div>

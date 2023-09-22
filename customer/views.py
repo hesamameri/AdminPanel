@@ -432,6 +432,8 @@ def factor(request,factor_id=None,obj_buyer = None):
                 obj_sendings = ObjSend.objects.filter(source_id__in = factor_item_ids)
                 banks = ObjItem.objects.filter(obj_item_id__gte=999003010, obj_item_id__lte=999003019) 
                 paywayform = NewFactorPayway()
+                
+                
                 context = {
 
                     'factor_main':factor_main,
@@ -447,6 +449,7 @@ def factor(request,factor_id=None,obj_buyer = None):
                     'inquiry_test':inquiry_test,
                     'banks':banks,
                     'paywayform':paywayform,
+                    
 
                 }  
                

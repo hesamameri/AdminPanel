@@ -198,3 +198,30 @@ def id_to_bank(item):
             return id_dic[item]
     else:
         return "بانک مورد نظر یافت نشد ."
+
+
+@register.filter
+def financial_approval_access(id):
+    finance_approval_access = 5
+    if id == finance_approval_access:
+        return True
+    else:
+        return False
+    
+@register.filter
+def final_register_access(id):
+    
+    final_register_access = [9 ,21, 37, 4]
+    if id in final_register_access:
+        return True
+    else:
+        return False
+    
+@register.filter
+def sales_register_access(id):
+    
+    final_register_access = [21, 37]
+    if id in final_register_access:
+        return True
+    else:
+        return False
