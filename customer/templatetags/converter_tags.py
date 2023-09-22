@@ -176,3 +176,25 @@ def inquiry_translate(value):
 @register.filter(name='get_range') 
 def get_range(number):
     return range(1,number+1)
+
+@register.filter
+def id_to_bank(item):
+    item=str(item) 
+    id_dic = {
+        '999003010':'سپه',
+        '999003011':'ملی 3003-1820',
+        '999003012':'ملی 67000-9211',
+        '999003013':'ملی',
+        '999003014':'شهر',
+        '999003015':'کشاورزی',
+        '999003016':'سامان',
+        '999003017':'ملت',
+        '999003018':'رسالت',
+        '999003019':'پست بانک ایران',
+
+
+        }
+    if item in id_dic.keys():
+            return id_dic[item]
+    else:
+        return "بانک مورد نظر یافت نشد ."
