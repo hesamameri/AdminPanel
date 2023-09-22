@@ -486,6 +486,7 @@ class Factor(models.Model):
         managed = False
         db_table = 'factor'
 
+
 class FactorSVA(models.Model):
     contract_id = models.IntegerField(primary_key=True)
     vendor = models.IntegerField()

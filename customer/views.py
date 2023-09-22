@@ -21,8 +21,8 @@ from django.contrib.sessions.models import Session
 from django.views.decorators.cache import cache_page
 from django.db.models import F, Sum
 from .models import FactorItem,FactorItemBalanceSVA
-from .forms import NewFactorItem, NewFactorPayway, NewInquiry, NewObjItem,NewObjItemSpec, NewObjPayment, NewPreFactor
-
+from .forms import NewFactorAddress, NewFactorItem, NewFactorPayway, NewInquiry, NewObjItem,NewObjItemSpec, NewObjPayment, NewPreFactor
+from django.core.files.storage import FileSystemStorage
 
 # @cache_page(10)
 @login_required(login_url='Administrator:login_view')
@@ -491,6 +491,60 @@ def factor_add_goods(request,factor_id):
         
     else:
         return redirect('customer:customerindex')
+@login_required(login_url='Administrator:login_view')
+@permission_required('ROLE_PERSONEL','ROLE_ADMIN')
+def factor_add_document(request,factor_id):
+    
+    if request.method == 'POST' and request.FILES['uri']:
+        uploaded_file = request.FILES['uri']
+        fs = FileSystemStorage()
+        filename = fs.save(uploaded_file.name, uploaded_file)
+        file_url = fs.url(filename)
+        factor = get_object_or_404(Factor,factor_id=factor_id)
+        document_type = request.POST.get('document_type')
+        description = request.POST.get('description')
+        register = request.POST.get('register')
+        level_type = request.POST.get('level_type')
+        document = FactorDocument(
+            factor = factor,
+            level_type = level_type,
+            document_type=document_type,
+            uri=file_url,  # save the relative path to the TextField
+            description=description,
+            register=register,  # assuming your user model has an id field
+            reg_dt=timezone.now()
+        )
+        document.save()
+
+        return redirect(reverse('customer:FactorWithFactorID', args=[factor_id]))   # Assuming you have a document_detail view
+
+    else:
+        return redirect(reverse('customer:FactorWithFactorID', args=[factor_id])) 
+
+@login_required(login_url='Administrator:login_view')
+@permission_required('ROLE_PERSONEL','ROLE_ADMIN')
+def factor_add_address(request,factor_id):
+    if request.method == 'POST':
+        factor = get_object_or_404(Factor,factor_id=factor_id)
+        address_data = {
+            'factor' : factor,
+            'city_id': request.POST['city_id'],
+            'phone':request.POST['phone'],
+            'mobile':request.POST['mobile'],
+            'address':request.POST['address'],
+            'receiver':request.POST['receiver'],
+        }
+        addressform = NewFactorAddress(address_data)
+        if addressform.is_valid():
+            addressform.save()
+            return redirect(reverse('customer:FactorWithFactorID', args=[factor_id]))  # Adjust the redirect as per your needs
+        else:
+            return redirect(reverse('customer:FactorWithFactorID', args=[factor_id]))  # Adjust the redirect as per your needs
+
+
+        
+    else:
+        return redirect('customer:customerindex')
 
 @login_required(login_url='Administrator:login_view')
 @permission_required('ROLE_PERSONEL','ROLE_ADMIN')
@@ -501,8 +555,12 @@ def delete_factor_element(request,element):
             payway.delete()
             return redirect(reverse('customer:FactorWithFactorID', args=[request.POST.get('factor')]))  # Adjust the redirect as per your needs
         elif request.POST['form_type'] == 'addgoods':
-            payway = get_object_or_404(FactorItem, pk=element)
-            payway.delete()
+            item = get_object_or_404(FactorItem, pk=element)
+            item.delete()
+            return redirect(reverse('customer:FactorWithFactorID', args=[request.POST.get('factor')]))
+        elif request.POST['form_type'] == 'document':
+            doc = get_object_or_404(FactorDocument, pk=element)
+            doc.delete()
             return redirect(reverse('customer:FactorWithFactorID', args=[request.POST.get('factor')]))
     else:
         return redirect('customer:customerindex')

@@ -357,8 +357,11 @@
                                                                               {{doc.reg_dt|to_jalali}}
                                                                             </td>
                                                                             <td>
-                                                                                <form method="POST" action="">
-                                                                                    <button type="submit" class="btn btn-danger btn-xs" href=""><i class="fas fa-times"></i></button>
+                                                                                <form method="POST" action="{% url 'customer:delete_document' element=doc.factor_document_id %}">
+                                                                                    {% csrf_token %}
+                                                                                    <input type="hidden" name="form_type" value="document">
+                                                                                    <input type="hidden" name="factor" value="{{factor_main.factor_id}}">
+                                                                                    <button type="submit" class="btn btn-danger btn-xs"><i class="fas fa-times"></i></button>
                                                                                 </form>
                                                                             </td>
                                                                             
@@ -724,7 +727,8 @@
                                                                     </div>
                                                                     <div class="tab-pane fade" id="custom-tabs-one-profile" role="tabpanel" aria-labelledby="custom-tabs-one-profile-tab">
                                                                         <table class="table ">
-                                                                                <form method="POST"  action="" id="n-address">
+                                                                                <form method="POST"  action="{% url 'customer:add_address_factor' factor_id=factor_main.factor_id %}" id="n-address">
+                                                                                    {% csrf_token %}
                                                                                     <tr>
                                                                                         <td>شهر</td>
                                                                                         <td colspan="20">
@@ -1132,15 +1136,19 @@
                         <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
-                    <form method="POST" action="" enctype="multipart/form-data">
+                    <form method="POST" action="{% url 'customer:add_document_factor' factor_id=factor_main.factor_id %}" enctype="multipart/form-data">
+                        {% csrf_token %}
                     <div class="modal-body">
                                 <div class="form-group form-group-sm row" style="width: 100%;">
+                                    <input type="hidden" name="level_type" value="FACTOR">
+                                    <input type="hidden" name="register" value="{{ request.user.user_id }}">
                                     <div class="col-sm-8">
                                         <select class="form-control select2bs4s rtl text-right float-right" style="width: 100%;" name="document_type">
                                             <option value="CHEQUE">چک</option>
                                             <option value="CART">کارت خوان</option>
                                             <option value="FORM">فرم درخواست</option>
                                             <option value="OTHER">سایر موارد</option>
+                                            
                                         </select>
                                     </div>
                                     <label for="document_type" class="col-sm-4 col-form-label">نوع مدرک</label>

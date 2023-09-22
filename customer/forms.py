@@ -1,5 +1,5 @@
 from django import forms
-from .models import CustomerSubSVA, Factor, FactorItem, FactorPayway, Inquiry,ObjItem,ObjItemSpec, ObjPayment,ObjSpec, PreFactor
+from .models import CustomerSubSVA, Factor, FactorAddress, FactorDocument, FactorItem, FactorPayway, Inquiry,ObjItem,ObjItemSpec, ObjPayment,ObjSpec, PreFactor
 
 
 
@@ -128,3 +128,30 @@ class NewFactorItem(forms.ModelForm):
                     'discount_price',
                     'register',
                     ]
+            
+class NewFactorAddress(forms.ModelForm):
+    class Meta:
+            model = FactorAddress
+            fields = [
+                    'factor',
+                    'city_id',
+                    'phone',
+                    'mobile',
+                    'address',
+                    'receiver',
+                    ]
+    
+class DocumentUploadForm(forms.ModelForm):
+    class Meta:
+        model = FactorDocument
+        fields = [
+            'factor',
+            'document_type',
+            'uri',
+            'description',
+            'level_type',
+            'register',
+            'hash',
+            'reg_dt',
+
+            ]

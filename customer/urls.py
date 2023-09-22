@@ -14,7 +14,11 @@ urlpatterns = [
     path('factor/by_factor/<int:factor_id>/', views.factor, name='FactorWithFactorID'),
     path('delete_factor_element/<int:element>/', views.delete_factor_element, name='delete_payway'),
     path('delete_factor_element/<int:element>/', views.delete_factor_element, name='delete_goods'),
+    path('delete_factor_element/<int:element>/', views.delete_factor_element, name='delete_document'),
     path('add_goods_factor/<int:factor_id>/', views.factor_add_goods, name='add_goods_factor'),
+    path('add_address_factor/<int:factor_id>/', views.factor_add_address, name='add_address_factor'),
+    path('add_document_factor/<int:factor_id>/', views.factor_add_document, name='add_document_factor'),
+
 
     
     path('factorlist', views.factor_index, name='FactorList'),                   # DONE(testphase)
