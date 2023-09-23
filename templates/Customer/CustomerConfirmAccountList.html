@@ -97,54 +97,76 @@
                                                                         </thead>
                                                                         <tbody>
                                                                                 <tr class="table-">
-                                                                                    {% for vc in vendor_customers %}
+                                                                                    {% for entry in combined_data %}
                                                                                 <tr>
-                                                                                    <td>{{vc.0.factor_id}}</td>
+                                                                                    <td>{{ forloop.counter }}</td>
                                                                                     <td>
-                                                                                        {{vc.1.factor.contract.vendor.name}}
+                                                                                        {{ entry.vendor_data.name }}
                                                                                         <br>
                                                                                         
                                                                                         <!-- <span class="badge badge-danger" style="font-size: larger;">
                                                                                             مانده اعتبار: ندراد
                                                                                         <span> -->
                                                                                         <span class="badge badge-danger" style="font-size: larger;">
-                                                                                        مانده اعتبار: 
+                                                                                        مانده اعتبار: {{ entry.vendor_data.detail_val }}
                                                                                         <span>
                                                                                             
                                                                                     </td>
-                                                                                    <td>{{vc.0.seller_factor_id}}</td>
-                                                                                    <td>{{vc.0.buyer_id}}</td>
-                                                                                    {% if vc.0.seller_buyer_id == None %}
+                                                                                    {% if entry.factor.seller_factor_id == None %}
                                                                                     <td></td>
                                                                                     {% else %}
-                                                                                    <td>{{vc.0.seller_buyer_id}}</td>
+                                                                                    <td>{{ entry.factor.seller_factor_id }}</td>
                                                                                     {% endif %}
-                                                                                    <td>{{ vc.0.customer_name}}</td>
-                                                                                    {% if vc.0.codemeli == None %}
+                                                                                    <td>{{ entry.factor.buyer_id }} </td>
+                                                                                    {% if entry.obj_item_specs.seller_buyer_id == None %}
                                                                                     <td></td>
                                                                                     {% else %}
-                                                                                    <td>{{vc.0.codemeli}}</td>
+                                                                                    <td> {{ entry.obj_item_specs.seller_buyer_id}}</td>
                                                                                     {% endif %}
-                                                                                    <th>{{vc.0.city}}</th>
-                                                                                    {% if vc.0.phone == None %}
+                                                                                    
+
+
+                                                                                    <td>{{ entry.buyer_name }}</td> 
+
+                                                                                    {% if entry.obj_item_specs.codemeli == None %}
                                                                                     <td></td>
                                                                                     {% else %}
-                                                                                    <td>{{vc.0.phone}}</td>
+                                                                                    <td>{{ entry.obj_item_specs.codemeli }}</td> 
                                                                                     {% endif %}
-                                                                                    {% if vc.0.mobile == None %}
+
+                                                                                    {% if entry.obj_item_specs.city == None %}
                                                                                     <td></td>
                                                                                     {% else %}
-                                                                                    <td>{{vc.0.mobile}}</td>
+                                                                                    <td>{{ entry.obj_item_specs.city|id_to_city }}</td> 
                                                                                     {% endif %}
+
+                                                                                    {% if entry.obj_item_specs.phone == None %}
+                                                                                    <td></td>
+                                                                                    {% else %}
+                                                                                    <td>{{ entry.obj_item_specs.phone }}</td> 
+                                                                                    {% endif %}
+                                                                                    {% if entry.obj_item_specs.mobile == None %}
+                                                                                    <td></td>
+                                                                                    {% else %}
+                                                                                    <td>{{ entry.obj_item_specs.mobile }}</td> 
+                                                                                    {% endif %}
+                                                                                   
+
+                                                                                    
+                                                                                    
                                                                                     <td>
-                                                                                        
+                                                                                       
                                                                                         <!-- <form method="POST" action="">
                                                                                             <button type="submit" class="btn btn-xs btn-danger btn-customer">تایید فاکتور</button>
                                                                                         </form> -->
                                                                                         
-                                                                                        <form method="POST" action="#">
-                                                                                            <button type="submit" class="btn btn-xs btn-success btn-customer">تایید فاکتور</button>
-                                                                                        </form>                                                            
+                                                                                        
+                                                                                        
+                                                                                        <a  class="btn btn-xs btn-success btn-customer" href="{% url 'customer:FactorWithFactorID' factor_id=entry.factor.factor_id %}">
+                                                                                            تایید فاکتور
+                                                                                            
+                                                                                        </button>
+                                                                                                                                               
                                                                                         
                                                                                         
                                                                                     </td>

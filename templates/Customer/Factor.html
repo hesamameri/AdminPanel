@@ -330,7 +330,7 @@
                                                                     <tbody>
                                                                         {% for doc in factor_document %}
                                                                         <tr> 
-                                                                            <td><img class="img img-rectangle img-popup-img-srces" height="60px" src="/upload/{{filename}}"></td>
+                                                                            <td><img class="img img-rectangle img-popup-img-srces" height="60px" src="{{ doc.uri }}"></td>
                                                                         {% if doc.level_type == None %}
                                                                             <td>
                                                                                 {{doc.level_type}}

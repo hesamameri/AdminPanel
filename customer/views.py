@@ -8,9 +8,11 @@ from django.db.models import F
 from django.utils import timezone
 from customer.templatetags.converter_tags import subtract
 from ticket.models import Ticket
-from .models import CreditSumSVA, DepoSend, Factor, FactorAddress, FactorPayway, ObjItem, ObjItemSpec, ObjPayment, ObjSend, ObjSpec, PreFactor, ProductSVA, VendorBuyerSVA, VendorBuyerSubSVA
+from .models import Contract, CreditSumSVA, DepoSend, Factor, FactorAddress, FactorPayway, ObjItem, ObjItemSpec, ObjPayment, ObjSend, ObjSpec, PreFactor, ProductSVA, VendorBuyerSVA, VendorBuyerSubSVA
 from .models import CustomerSubSVA, CustomerSva, FactorComment, FactorDocument, FactorItem, FactorSVA, ObjItemSVA, ShopCustomerCount
 from django.core.paginator import Paginator, EmptyPage
+from collections import defaultdict
+from django.db.models import Case, When, Value, IntegerField
 from django.db.models import Q
 from django.contrib.auth.decorators import login_required
 from Administrator.permissions import permission_required
@@ -359,7 +361,7 @@ def new_factor(request):
 @login_required(login_url='Administrator:login_view')
 @permission_required('ROLE_PERSONEL','ROLE_ADMIN')
 def factor(request,factor_id=None,obj_buyer = None):
-    # print("factor_id: ", factor_id) 3757
+    print("factor_id: ", factor_id) 
     # print("buyer_id: ", obj_buyer)
     
     if request.method == 'POST':
@@ -585,16 +587,54 @@ def factor_index(request):
 # @cache_page(10)
 @login_required(login_url='Administrator:login_view')
 @permission_required('ROLE_PERSONEL','ROLE_ADMIN')
-def customer_confirm_accountlist(request):
-    vendor_customers = FactorItemBalanceSVA.objects.filter(sended__lt=F('amount'))    
-    vendor_paths = vendor_customers.values('factor_id')
-    vendor_snatch = FactorItem.objects.filter(factor_item_id__in = vendor_paths)
-    vendor_customers = zip(vendor_customers,vendor_snatch)
+def customer_confirm_accountlist(request):  
     
+    customer_obj_id = 10301
+    factors = Factor.objects.filter(acc_confirmer=None)
+
+    contract_ids = factors.values_list('contract', flat=True)
+    contract_objs = Contract.objects.filter(contract_id__in=contract_ids)
+    vendor_ids = contract_objs.values_list('vendor', flat=True)
+    vendor_objs = ObjItem.objects.filter(obj_item_id__in=vendor_ids)
+    vendor_details = ObjItemSpec.objects.filter(obj_item_id__in=vendor_objs, obj_spec_id=113).values('val', 'obj_item_id')
+
+    # Create a dictionary to map contract_id to vendor data
+    vendor_data_dict = {}
+    for contract, vendor, detail in zip(contract_objs, vendor_objs, vendor_details):
+        vendor_data_dict[contract.contract_id] = {
+            'name': vendor.name,
+            'detail_val': detail['val']
+        }
+
+    buyer_ids = factors.values_list('buyer_id', flat=True)
+    buyer_names = ObjItem.objects.filter(obj_item_id__in=buyer_ids).values('obj_item_id', 'name')
+    buyer_name_dict = {buyer['obj_item_id']: buyer['name'] for buyer in buyer_names}
+
+    obj_item_specs = ObjItemSpec.objects.filter(obj_item_id__in=buyer_ids).select_related('obj_spec')
+    spec_data = defaultdict(dict)
+    for spec in obj_item_specs:
+        spec_data[spec.obj_item_id][spec.obj_spec.name] = spec.val
+
+    combined_data = [
+        {
+            'factor': factor,
+            'buyer_name': buyer_name_dict.get(factor.buyer_id),
+            'obj_item_specs': spec_data.get(factor.buyer_id, {}),
+            'vendor_data': vendor_data_dict.get(factor.contract_id, {'name': None, 'detail_val': None})
+        }
+        for factor in factors
+    ]
+
     context = {
-        'vendor_customers':vendor_customers,
+        'combined_data': combined_data,
     }
-    return render(request,'Customer/CustomerConfirmAccountList.html',context=context)
+
+    return render(request, 'Customer/CustomerConfirmAccountList.html', context=context)
+
+
+
+
+
 
 @login_required(login_url='Administrator:login_view')
 @permission_required('ROLE_PERSONEL','ROLE_ADMIN')
@@ -610,6 +650,10 @@ def customer_confirm_salelist(request):
         'items': [(item, 1) for item in queryset],
     }
     return render(request,'Customer/CustomerConfirmSaleList.html',context = context)
+
+
+
+
 
 
 
@@ -772,9 +816,6 @@ def index_inquiry_response(request):
         }
         return render(request, 'Customer/IndexInquiryResponse.html', context=context)
 
-
-
-# @cache_page(10)
 @login_required(login_url='Administrator:login_view')
 @permission_required('ROLE_PERSONEL','ROLE_ADMIN')
 def index_inquiry(request):
