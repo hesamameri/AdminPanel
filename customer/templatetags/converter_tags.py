@@ -77,9 +77,11 @@ def city_rec(id):
     except ObjItem.DoesNotExist:
         return ""
     
-# @register.filter
-# def subtract(item):
-#     return (item.amount - item.sended)
+@register.filter
+def subtract_items(item,item2):
+    item = int(item)
+    item2 = int(item2)
+    return (item - item2)
 
 
 @register.filter
@@ -145,6 +147,7 @@ def depo_location(item):
         'product': 'محصول',
         'install': 'نصب',
         'drive': 'حمل',
+        'beyhagh' : 'بیهق دوام'
     }
     return depos[item]
 
@@ -221,6 +224,16 @@ def final_register_access(id):
 def sales_register_access(id):
     
     final_register_access = [21, 37]
+    if id in final_register_access:
+        return True
+    else:
+        return False
+    
+
+@register.filter
+def goods_register_access(id):
+    
+    final_register_access = [4, 9]
     if id in final_register_access:
         return True
     else:

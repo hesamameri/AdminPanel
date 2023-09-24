@@ -8,7 +8,7 @@ from django.db.models import F
 from django.utils import timezone
 from customer.templatetags.converter_tags import subtract
 from ticket.models import Ticket
-from .models import Contract, CreditSumSVA, DepoSend, Factor, FactorAddress, FactorPayway, ObjItem, ObjItemSpec, ObjPayment, ObjSend, ObjSpec, PreFactor, ProductSVA, VendorBuyerSVA, VendorBuyerSubSVA
+from .models import Contract, ContractCity, CreditSumSVA, DepoSend, Factor, FactorAddress, FactorPayway, ObjItem, ObjItemSpec, ObjPayment, ObjSend, ObjSpec, PreFactor, ProductSVA, VendorBuyerSVA, VendorBuyerSubSVA
 from .models import CustomerSubSVA, CustomerSva, FactorComment, FactorDocument, FactorItem, FactorSVA, ObjItemSVA, ShopCustomerCount
 from django.core.paginator import Paginator, EmptyPage
 from collections import defaultdict
@@ -25,7 +25,8 @@ from django.db.models import F, Sum
 from .models import FactorItem,FactorItemBalanceSVA
 from .forms import NewFactorAddress, NewFactorItem, NewFactorPayway, NewInquiry, NewObjItem,NewObjItemSpec, NewObjPayment, NewPreFactor
 from django.core.files.storage import FileSystemStorage
-
+from django.db.models import Sum, F, Value, CharField, Case, When,FloatField,Subquery, OuterRef
+from django.db.models.functions import Coalesce
 # @cache_page(10)
 @login_required(login_url='Administrator:login_view')
 @permission_required('ROLE_PERSONEL', 'ROLE_ADMIN')
@@ -420,6 +421,15 @@ def factor(request,factor_id=None,obj_buyer = None):
                 factor_document = FactorDocument.objects.filter(factor = factor_id)
                 factor_comment = FactorComment.objects.filter(factor_id = factor_id)
                 factor_item = FactorItem.objects.filter(factor= factor_id)
+                 # New query to get the sended field from FactorItemBalanceSVA
+                factor_item_balance_sva = FactorItemBalanceSVA.objects.filter(factor_id=factor_id).values('factor_item_id', 'sended')
+
+                # Create a dictionary to map factor_item_id to sended value
+                sended_dict = {item['factor_item_id']: item['sended'] for item in factor_item_balance_sva}
+
+                # Attach the sended value to each factor_item
+                for item in factor_item:
+                    item.sended = sended_dict.get(item.factor_item_id)
                 factor_item_ids = factor_item.values('factor_item_id')
                 factor_depo_data = DepoSend.objects.filter(depo_send_id__in = factor_item_ids)
                 goods = factor_depo_data.values('goods')
@@ -640,16 +650,45 @@ def customer_confirm_accountlist(request):
 @permission_required('ROLE_PERSONEL','ROLE_ADMIN')
 def customer_confirm_salelist(request):
 
-    queryset = FactorItemBalanceSVA.objects.all()
-    queryfactor_ids= FactorItemBalanceSVA.objects.all().values('factor_id')
-    querybuyer_ids= FactorItemBalanceSVA.objects.all().values('buyer_id')
-    conf_city = CustomerSva.objects.filter(obj_item_id__in = querybuyer_ids).values('obj_item_id')
-    cities = ObjItem.objects.filter(obj_item_id__in = conf_city)
-    remaining_credit = CreditSumSVA.objects.filter()
+    factor_items = FactorItemBalanceSVA.objects.exclude(amount__exact=F('sended'))
+
+    # Getting the related Factor objects
+    factor_ids = factor_items.values_list('factor_id', flat=True)
+    factors = Factor.objects.filter(factor_id__in=factor_ids).values('factor_id', 'acc_confirm_dt', 'contract_id')
+
+    # Creating a dictionary to easily look up the acc_confirm_dt and contract_id by factor_id
+    factor_dict = {factor['factor_id']: {'acc_confirm_dt': factor['acc_confirm_dt'], 'contract_id': factor['contract_id']} for factor in factors}
+
+    # Getting the related Contract objects
+    contract_ids = [factor['contract_id'] for factor in factors]
+    contract_cities = ContractCity.objects.filter(contract_id__in=contract_ids).values('contract_id', 'obj_item_id')
+
+    # Getting the related ObjItem objects
+    obj_item_ids = contract_cities.values_list('obj_item_id', flat=True)
+    obj_items = ObjItem.objects.filter(obj_item_id__in=obj_item_ids).values('obj_item_id', 'name')
+
+    # Creating a dictionary to easily look up the name by obj_item_id
+    obj_item_name_dict = {obj_item['obj_item_id']: obj_item['name'] for obj_item in obj_items}
+
+    template_data = []
+    for factor_item in factor_items:
+        factor_data = factor_dict.get(factor_item.factor_id, {})
+        contract_city = contract_cities.filter(contract_id=factor_data.get('contract_id')).first()
+        city_name = None
+        if contract_city:
+            city_name = obj_item_name_dict.get(contract_city['obj_item_id'])
+        template_data.append({
+            'factor_item': factor_item,
+            'acc_confirm_dt': factor_data.get('acc_confirm_dt'),
+            'city_name': city_name,
+        })
+    # print(template_data)
     context = {
-        'items': [(item, 1) for item in queryset],
+        'factor_items': template_data,
     }
-    return render(request,'Customer/CustomerConfirmSaleList.html',context = context)
+
+    return render(request, 'Customer/CustomerConfirmSaleList.html', context=context)
+    
 
 
 

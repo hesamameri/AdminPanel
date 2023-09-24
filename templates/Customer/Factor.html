@@ -109,6 +109,9 @@
                                                                     <th>کد</th>
                                                                     <th>عنوان</th>
                                                                     <th>تعداد</th>
+                                                                    {% if request.user.user_id|goods_register_access %}
+                                                                    <th> ارسال شده </th>
+                                                                    {% endif %}
                                                                     <th>فی<span class="small">(ریال)</span></th>
                                                                     <th>مبلغ<span class="small">(ریال)</span></th>
                                                                     <th>تخفیف<span class="small">(ریال)</span></th>
@@ -131,7 +134,10 @@
                                                                             
                                                                     </td>
                                                                     
-                                                                        <td class="amount"> {{product.amount}} </td>
+                                                                    <td class="amount"> {{product.amount}} </td>
+                                                                    {% if request.user.user_id|goods_register_access %}
+                                                                    <td> {{product.sended}} </td>
+                                                                    {% endif %}
                                                                     <td class="total-price"> {{product.unit_price}} </td>
                                                                     <td class="price">{{product.price}}</td>
                                                                     <td class="total-discount">
@@ -172,15 +178,15 @@
                                                                         </td> -->
                                                                         <!-- <td>
                                                                         </td> -->
-                                                                        <!-- <td>
+                                                                    {% if request.user.user_id|goods_register_access %}
+                                                                        <td>
                                                                                 <button class="btn btn-sm btn-success btn-asign-depo" 
                                                                                         data-toggle="modal" 
                                                                                         data-fid=""
                                                                                         data-reminded=""
                                                                                         data-target="#modal-assign-depo"><i class="fas fa-plus nav-icon"></i></button>
-                                                                        </td> -->
-                                                                        <!-- <td>
-                                                                        </td> -->
+                                                                        </td>
+                                                                    {% endif %}
                                                                 </tr>
                                                                 {% endfor %}
                                                                 
@@ -917,72 +923,7 @@
             <!-- /.modal-dialog -->
         </div>
         
-        <!-- <div class="modal fade" id="modal-payment">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h4 class="modal-title">پرداختی جدید</h4>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <form method="POST" action="" enctype="multipart/form-data" autocomplete="off">
-                    <div class="modal-body">
-                                <div class="form-group form-group-sm row">
-                                    <div class="col-sm-8">
-                                        <select class="form-control select2bs4s rtl text-right float-right" style="width: 100%;" name="pay_type" id="pay_type">
-                                            <option value="CASH">وجه نقد</option>
-                                            <option value="CART">کارت خوان</option>
-                                            <option value="CARTOCART">کارت به کارت</option>
-                                            <option value="CHEQUE">چک</option>
-                                            <option value="REBATE">تخفیف</option>
-                                            <option value="CREDIT">اعتباری</option>
-                                            <option value="ATHOME">درب منزل</option>
-                                            <option value="WITHACC">تسویه با مالی</option>
-                                        </select>
-                                    </div>
-                                    <label for="pay_type" class="col-sm-3 col-form-label">نوع</label>
-                                </div>
-                                <div class="form-group form-group-sm row" id="div_bank_id">
-                                    <div class="col-sm-8">
-                                        <select class="form-control select2bs4x rtl text-right" style="width: 100%;" name="bank_id" data-placeholder="بانک" data-allow-clear="true" id="bank-id">
-                                            <option value=""></option>
-                                            
-                                                <option class="" value="" ></option>
-                                            
-                                        </select>
-                                    </div>
-                                    <label for="bank_id" class="col-sm-4 col-form-label">بانک</label>
-                                </div>
-                                <div class="form-group form-group-sm row" id="div_price">
-                                    <div class="col-sm-8">
-                                        <input type="text" name="price" class="form-control numeric" id="price" placeholder="مبلغ" value="">
-                                    </div>
-                                    <label for="price" class="col-sm-4 col-form-label">مبلغ</label>
-                                </div>
-                                <div class="form-group form-group-sm row" id="div_no">
-                                    <div class="col-sm-8">
-                                        <input type="text" name="no" class="form-control" id="no" placeholder="شماره" value="">
-                                    </div>
-                                    <label for="no" id="lbl_no" class="col-sm-4 col-form-label">شماره فیش</label>
-                                </div>
-                                <div class="form-group form-group-sm row" id="div_desc">
-                                    <div class="col-sm-8">
-                                        <input type="text" name="description" class="form-control rtl" id="description" placeholder="توضیحات" value="">
-                                    </div>
-                                    <label for="description" class="col-sm-4 col-form-label">توضیحات</label>
-                                </div>
-                    </div>
-                    <div class="modal-footer justify-content-between">
-                        <button type="submit" class="btn btn-primary">ثبت پرداخت</button>
-                        <button type="button" class="btn btn-default" data-dismiss="modal">بستن</button>
-                    </div>
-                    </form>
-                </div>
-                 /.modal-content -->
-            <!-- </div> -->
-            <!-- /.modal-dialog -->
-        <!-- </div>  -->
+        
         <div class="modal fade" id="modal-inquiry1">
             <div class="modal-dialog">
                 <div class="modal-content">
@@ -1189,6 +1130,67 @@
             </div>
             <!-- /.modal-dialog -->
         </div>
+
+
+
+
+        <div class="modal fade" id="modal-assign-depo">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title">اختصاص انبار</h4>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <form method="POST" action="">
+                        <input name="factor_item_id" id="sale_factor_item_id" type="hidden" value="">
+        
+                        <input name="city_id" id="sale_city_id" type="hidden" value="">
+                        <input name="phone" id="sale_phone" type="hidden" value="">
+                        <input name="mobile" id="sale_mobile" type="hidden" value="">
+                        <input name="address" id="sale_address" type="hidden" value="">
+                        <input name="receiver" id="sale_receiver" type="hidden" value="">
+                        <div class="modal-body">
+                                <div class="form-group form-group-sm row">
+                                    <div class="col-sm-9">
+                                        <select class="form-control select2bs4s rtl text-right float-right" id="sale_amount" name="amount">
+                                        </select>
+                                    </div>
+                                    <label for="product_id" class="col-sm-3 col-form-label">تعداد</label>
+                                </div>
+        
+                                <div class="form-group form-group-sm row">
+                                    <div class="col-sm-9">
+                                        <select class="form-control select2bs4s rtl text-right float-right" id="factor_address">
+                                            <option></option>
+                                            
+                                                <option value="" 
+                                                    data-city-id="{{ itemAddress.city_id }}"
+                                                    data-address="{{ itemAddress.address }}"
+                                                    data-phone="{{ itemAddress.phone }}"
+                                                    data-mobile="{{ itemAddress.mobile }}"
+                                                    data-receiver="{{ itemAddress.receiver }}">
+                                                    آدرس  
+                                                </option>
+                                            
+                                        </select>
+                                    </div>
+                                    <label for="factor_address" class="col-sm-3 col-form-label">آدرس</label>
+                                </div>
+        
+                                <div class="form-group form-group-sm row">
+                                    <div class="col-sm-9">
+                                        <select class="form-control select2bs4s rtl text-right float-right" style="width: 100%;" name="depo" id="sale_depo">
+                                        </select>
+                                    </div>
+                                    <label for="product_id" class="col-sm-3 col-form-label">انبار</label>
+                                </div>
+                        </div>
+                        <div class="modal-footer justify-content-between">
+                            <button type="submit" class="btn btn-primary">ارسال به انبار</button>
+                            <button type="button" class="btn btn-default" data-dismiss="modal">بستن</button>
+                        </div>
         <!-- end:: Root -->
 
         <!-- begin:: Topbar Offcanvas Panels -->
