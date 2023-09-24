@@ -44,7 +44,7 @@ urlpatterns = [
     path('customerfactorsendassigndriver', views.customerfactor_sendassigndriver, name='CustomerFactorSendAssignDriver'),
     path('customerfactorsendstatus', views.customerfactor_sendstatus, name='CustomerFactorSendStatus'),
     path('customerfactorservicedoc', views.customerfactor_servicedoc, name='CustomerFactorServiceDoc'),
-    path('customerpaymentconfirms', views.customer_payment_confirms, name='CustomerPaymentConfirms'),  # DONE(testphase)
+    path('customerpaymentconfirms', views.customer_payment_confirms, name='CustomerPaymentConfirms'),  
 
 
     path('indexinquiryresponse', views.index_inquiry_response, name='IndexInquiryResponse'),     # DONE(testphase)

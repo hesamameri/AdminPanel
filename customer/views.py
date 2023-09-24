@@ -723,7 +723,31 @@ def factor_send_index(request):
 @permission_required('ROLE_PERSONEL','ROLE_ADMIN')
 def customer_payment_confirm(request):
     
-    return render(request,'Customer/CustomerPaymentConfirm.html')
+    if request.method == 'POST':
+        print(request.POST)
+        obj_payment_id = request.POST['obj_payment_id']
+        obj_payment = get_object_or_404(ObjPayment, pk = obj_payment_id)
+        obj_payment.price = request.POST['price']
+        obj_payment.confirmer = request.user.user_id
+        obj_payment.confirm_desc = request.POST['confirm_desc']
+        obj_payment.confirm_status = request.POST['confirm_status']
+        obj_payment.confirm_dt = datetime.datetime.now()
+        obj_payment.save()
+
+    else:
+        obj_payments = ObjPayment.objects.filter(
+          confirmer = None  
+        )
+
+        
+        context = {
+            'obj_payments':obj_payments,
+        }
+        
+
+        return render(request, 'Customer/CustomerPaymentConfirm.html', context=context)
+    
+    
 
 
 # @cache_page(10)
