@@ -473,12 +473,18 @@ def factor(request,factor_id=None,obj_buyer = None):
                 print(objinstance)
                 new_factor = Factor.objects.create(buyer = objinstance,register = request.user.user_id,reg_dt = datetime.datetime.now())
                 return redirect('customer:FactorWithFactorID', factor_id=new_factor.factor_id)
-        # except:
-        #     banks = ObjItem.objects.filter(obj_item_id__gte=999003010, obj_item_id__lte=999003019) 
-        #     context = {
-        #         'banks':banks,
-        #     }
-        #     return render(request,'Customer/Factor.html',context=context)
+
+
+@login_required(login_url='Administrator:login_view')
+@permission_required('ROLE_PERSONEL','ROLE_ADMIN')
+def factor_add_depo(request):
+    
+    return redirect('customer:customerindex')
+
+
+
+
+
 @login_required(login_url='Administrator:login_view')
 @permission_required('ROLE_PERSONEL','ROLE_ADMIN')
 def factor_add_goods(request,factor_id):

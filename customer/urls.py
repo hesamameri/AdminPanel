@@ -18,6 +18,7 @@ urlpatterns = [
     path('add_goods_factor/<int:factor_id>/', views.factor_add_goods, name='add_goods_factor'),
     path('add_address_factor/<int:factor_id>/', views.factor_add_address, name='add_address_factor'),
     path('add_document_factor/<int:factor_id>/', views.factor_add_document, name='add_document_factor'),
+    path('add_depo_factor/', views.factor_add_depo, name='add_depo_factor'),
 
 
     
