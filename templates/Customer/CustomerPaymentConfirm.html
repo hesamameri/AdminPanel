@@ -55,8 +55,8 @@
                                     <div class="row mb-2">
                                         <div class="col-sm-12">
                                             <ol class="breadcrumb float-sm ">
-                                                <li class="breadcrumb-item active">دریافتی از مشتریان</li>
-                                                <li class="breadcrumb-item">مشتریان</li>
+                                                <li class="breadcrumb-item active">مشتریان</li>
+                                                <li class="breadcrumb-item">تایید دریافت از مشتری</li>
                                             </ol>
                                         </div>
                                     </div>
@@ -73,18 +73,14 @@
                                                                 <div class="col-lg-12">
                                                                     <table class="table table-bordered table-striped dataTable table-hover ">
                                                                             <tr>
-                                                                                <th>کد مشتری</th>
-                                                                                <td></td>
-                                                                                <th>نام مشتری</th>
-                                                                                <td></td>
-                                                                            </tr>
-                                                                            <tr>
                                                                             </tr>
                                                                     </table>
                                                                     <table class="table table-bordered table-striped dataTable table-hover ">
                                                                         <thead>
                                                                             <tr>
                                                                                 <th>شعبه</th>
+                                                                                <th>کد مشتری</th>
+                                                                                <th>نام مشتری</th>
                                                                                 <th>نوع</th>
                                                                                 <th>بانک</th>
                                                                                 <th>شماره</th>
@@ -93,42 +89,51 @@
                                                                                 <th>توضیحات</th>
                                                                                 <th>زمان ثبت</th>
                                                                                 <th>مبلغ</th>
-                                                                                <th>اطلاعات ثبتی</th>
                                                                                 <th>تصویر</th>
                                                                                 <th></th>
                                                                             </tr>
                                                                         </thead>
                                                                         <tbody>
                                                                                 
+                                                                                
+                                                                                {% for item in obj_payments %}
                                                                                 <tr>
                                                                                     <td></td>
+                                                                                    <td>>{{item.obj_item_id}}</td>
                                                                                     <td></td>
+                                                                                    <td>{{item.type}}</td>
+                                                                                    <td>{{item.bank_id}}</td>
+                                                                                    <td>{{item.no}}</td>
+                                                                                    {% if item.branch_name == None %}
                                                                                     <td></td>
+                                                                                    {% else %}
+                                                                                    <td>{{item.branch_name}}</td>
+                                                                                    {% endif %}
+                                                                                    {% if item.owner == None %}
                                                                                     <td></td>
-                                                                                    <td></td>
-                                                                                    <td></td>
-                                                                                    <td></td>
-                                                                                    <td></td>
-                                                                                    <td></td>
+                                                                                    {% else %}
+                                                                                    <td>{{item.owner}}</td>
+                                                                                    {% endif %}
+                                                                                    <td>{{item.description}}</td>
+                                                                                    <td>{{item.reg_dt}}</td>
+                                                                                    <td>{{item.price}}</td>
                                                                                     <td>
                                                                                         <i class="fa fa-info-circle" aria-hidden="true" data-toggle="popover" title="اطلاعات رکورد" data-content=""></i>
                                                                                     </td>
                                                                                     <td><img class="img img-rectangle img-popup-img-src" style="width: 30px;" src=""></td>
                                                                                     <td>
                                                                                         
-                                                                                            <a class="btn btn-success btn-xs btn-acc-confirm" data-payment-id="" data-price="" data-toggle="modal" data-target="#modal-payment">تایید مالی</a>
+                                                                                        <a class="btn btn-success btn-xs btn-acc-confirm" data-payment="{{item.obj_payment_id}}" data-price="" data-toggle="modal" data-target="#modal-payment" style="padding: 5px 10px; font-size: 14px;">
+                                                                                            <i class="fas fa-check"></i> تایید مالی
+                                                                                        </a>
                                                                                         
-                                                                                            <a class="btn btn-success btn-xs btn-acc-confirm" data-payment-id="" data-price="" data-toggle="modal" data-target="#modal-doc">ثبت سند</a>
                                                                                     </td>
                                                                                 </tr>
-                                                                                <tr>
-                                                                                    <th colspan="8" class="text-left">جمع: </th>
-                                                                                    <td></td>
-                                                                                </tr>
+                                                                                {% endfor %}
+                                                                               
                                                                         <tbody>
                                                                     </table>
                                                                     <div id="myModal" class="img-popup-modal">
-                                                                        <span class="img-popup-close">&times;</span>
                                                                         <img class="img-popup-modal-content" id="img-popup-img">
                                                                         <div id="img-popup-caption"></div>
                                                                     </div>
@@ -151,8 +156,9 @@
                                             <span aria-hidden="true">&times;</span>
                                             </button>
                                         </div>
-                                        <form method="POST" action="">
-                                            <input type="hidden" name="payment_id" class="payment_id">
+                                        <form method="POST" action="{% url 'customer:CustomerPaymentConfirm' %}">
+                                            {% csrf_token %}
+                                            <input type="hidden" name="obj_payment_id" class="obj_payment_id">
                                             <div class="modal-body">
                                                         <div class="form-group form-group-sm row">
                                                             <div class="col-sm-8">
@@ -187,42 +193,7 @@
                                 <!-- /.modal-dialog -->
                             </div>
                             
-                            <div class="modal fade" id="modal-doc">
-                                <div class="modal-dialog">
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-                                            <h4 class="modal-title text-right rtl">ثبت سند</h4>
-                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                            <span aria-hidden="true">&times;</span>
-                                            </button>
-                                        </div>
-                                        <form method="POST" action="">
-                                            <input type="hidden" name="payment_id" class="payment_id">
-                                            <div class="modal-body">
-                                                <div class="form-group form-group-sm row">
-                                                    <div class="col-sm-8">
-                                                        <input type="number" name="doc_no" class="form-control rtl" id="doc_no" placeholder="شماره سند">
-                                                    </div>
-                                                    <label for="doc_no" class="col-sm-4 col-form-label">شماره سند</label>
-                                                </div>
-                                                <div class="form-group form-group-sm row">
-                                                    <div class="col-sm-8">
-                                                        <input type="text" name="confirm_desc" class="form-control rtl" id="confirm_desc" placeholder="توضیحات" >
-                                                    </div>
-                                                    <label for="confirm_desc" class="col-sm-4 col-form-label">توضیحات</label>
-                                                </div>
-                                            </div>
-                                            <div class="modal-footer justify-content-between">
-                                                <button type="submit" class="btn btn-primary">ثبت</button>
-                                                <button type="button" class="btn btn-default" data-dismiss="modal">بستن</button>
-                                            </div>
-                                        </form>
-                                    </div>
-                                    <!-- /.modal-content -->
-                                </div>
-                                <!-- /.modal-dialog -->
-                            </div>
-                        </div>
+                            
 
                         <!-- end:: Content -->
                     </div>
@@ -297,6 +268,23 @@
 
         <!-- begin::Global Config(global config for global JS sciprts) -->
         {% include "partials/script.html" %}
+
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                // Listen to the 'show.bs.modal' event on the modal
+                $('#modal-payment').on('show.bs.modal', function(event) {
+                    // Get the button (<a> tag) that triggered the modal
+                    var button = $(event.relatedTarget);
+
+                    // Get the 'data-buyer' attribute from the button
+                    var buyerValue = button.data('payment');
+
+                    // Find the hidden input element by its ID and update its value
+                    $('#obj_payment_id').val(buyerValue);
+            });
+            });
+                    
+        </script>
 
         <!--end::Page Scripts -->
     </body>

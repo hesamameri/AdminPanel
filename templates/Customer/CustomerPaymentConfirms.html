@@ -90,19 +90,19 @@
                                                                             </tr>
                                                                         </thead>
                                                                         <tbody>
-                                                                                {% for item in inquiries %}
+                                                                                {% for item in obj_payments %}
                                                                                 <tr>
-                                                                                    <td>{{itme.bank_code}}</td>
-                                                                                    <td>{{item.buyer_id}}</td>
-                                                                                    <td>{{item.account_owner}}</td>
                                                                                     <td></td>
-                                                                                    <td>{{item.bank_branch}}</td>
-                                                                                    <td>{{item.account_no}}</td>
+                                                                                    <td>>{{item.obj_item_id}}</td>
                                                                                     <td></td>
-                                                                                    <td></td>
-                                                                                    <td></td>
-                                                                                    <td></td>
-                                                                                    <td></td>
+                                                                                    <td>{{item.type}}</td>
+                                                                                    <td>{{item.bank_id}}</td>
+                                                                                    <td>{{item.no}}</td>
+                                                                                    <td>{{item.branch_name}}</td>
+                                                                                    <td>{{item.owner}}</td>
+                                                                                    <td>{{item.description}}</td>
+                                                                                    <td>{{item.reg_dt}}</td>
+                                                                                    <td>{{item.price}}</td>
                                                                                     <td><img class="img img-rectangle img-popup-img-src" style="width: 30px;" src=""></td>
                                                                                     <td>
                                                                                         
