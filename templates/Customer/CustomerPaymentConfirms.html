@@ -1,3 +1,5 @@
+{% load converter_tags %}
+{% load static %}
 <!DOCTYPE html>
 
 <html lang="fa">
@@ -54,9 +56,9 @@
                                     <div class="container-fluid">
                                     <div class="row mb-2">
                                         <div class="col-sm-12">
-                                            <ol class="breadcrumb float-sm-right ">
-                                                <li class="breadcrumb-item active">تایید دریافتی مشتریان</li>
-                                                <li class="breadcrumb-item">مشتریان</li>
+                                            <ol class="breadcrumb float-sm-left ">
+                                                <li class="breadcrumb-item active">مشتریان</li>
+                                                <li class="breadcrumb-item">ثبت دریافت از مشتری</li>
                                             </ol>
                                         </div>
                                     </div>
@@ -95,31 +97,35 @@
                                                                                     <td></td>
                                                                                     <td>>{{item.obj_item_id}}</td>
                                                                                     <td></td>
-                                                                                    <td>{{item.type}}</td>
-                                                                                    <td>{{item.bank_id}}</td>
+                                                                                    <td>{{item.type|name_to_type}}</td>
+                                                                                    <td>{{item.bank_id|id_to_bank}}</td>
                                                                                     <td>{{item.no}}</td>
+                                                                                    {% if branch_name == None %}
+                                                                                    <td></td>
+                                                                                    {% else %}
                                                                                     <td>{{item.branch_name}}</td>
+                                                                                    {% endif %}
+                                                                                    {% if item.owner == None %}
+                                                                                    <td></td>
+                                                                                    {% else %}
                                                                                     <td>{{item.owner}}</td>
+                                                                                    {% endif %}
                                                                                     <td>{{item.description}}</td>
-                                                                                    <td>{{item.reg_dt}}</td>
+                                                                                    <td>{{item.reg_dt|to_jalali}}</td>
                                                                                     <td>{{item.price}}</td>
                                                                                     <td><img class="img img-rectangle img-popup-img-src" style="width: 30px;" src=""></td>
-                                                                                    <td>
-                                                                                        
-                                                                                            <a class="btn btn-primary btn-xs btn-acc-confirm" data-payment-id="" data-price="" data-toggle="modal" data-target="#modal-payment">تایید مالی</a>
-                                                                                        
-                                                                                            <a class="btn btn-success btn-xs btn-acc-confirm" data-payment-id="" data-price="" data-toggle="modal" data-target="#modal-doc">ثبت سند</a>
+                                                                                    <td>   
+                                                                                        <a class="btn btn-success btn-xs btn-acc-confirm" data-payment="{{item.obj_payment_id}}" data-price="" data-toggle="modal" data-target="#modal-payment">
+                                                                                            <i class="far fa-file-alt"></i> ثبت سند
+                                                                                        </a>
                                                                                     </td>
                                                                                 </tr>
                                                                                 {% endfor %}
-                                                                                 <tr> 
-                                                                                     <th colspan="8" class="text-left">جمع: </th> 
-                                                                                     <td></td> 
-                                                                                 </tr> 
+                                                                                 
                                                                         <tbody>
                                                                     </table>
                                                                     <div id="myModal" class="img-popup-modal">
-                                                                        <span class="img-popup-close">&times;</span>
+                                                                    
                                                                         <img class="img-popup-modal-content" id="img-popup-img">
                                                                         <div id="img-popup-caption"></div>
                                                                     </div>
@@ -133,36 +139,29 @@
                                 </div>
                             </div>
                             
+                        
                             <div class="modal fade" id="modal-payment">
                                 <div class="modal-dialog">
                                     <div class="modal-content">
                                         <div class="modal-header">
-                                            <h4 class="modal-title">اعلام وضعیت</h4>
+                                            <h4 class="modal-title">ثبت سند </h4>
                                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                             <span aria-hidden="true">&times;</span>
                                             </button>
                                         </div>
-                                        <form method="POST" action="">
-                                            <input type="hidden" name="payment_id" class="payment_id">
+                                        <form method="POST" action="{% url 'customer:CustomerPaymentConfirms' %}">
+                                            {% csrf_token %}
+                                            <input type="hidden" name="obj_payment_id" class="obj_payment_id">
                                             <div class="modal-body">
                                                         <div class="form-group form-group-sm row">
                                                             <div class="col-sm-8">
-                                                                <select class="form-control " name="confirm_status" id="confirm_status">
-                                                                    <option value="CONFIRM">تایید</option>
-                                                                    <option value="REJECT">رد</option>
-                                                                </select>
+                                                                <input class="form-control " name="doc_no" id="doc_no" placeholder="شماره سند ">
                                                             </div>
-                                                            <label for="confirm_status" class="col-sm-4 col-form-label">وضعیت</label>
+                                                            <label for="price" class="col-sm-4 col-form-label">شماره سند </label>
                                                         </div>
                                                         <div class="form-group form-group-sm row">
                                                             <div class="col-sm-8">
-                                                                <input class="form-control " name="price" id="price">
-                                                            </div>
-                                                            <label for="price" class="col-sm-4 col-form-label">مبلغ <small>(ریال)</small></label>
-                                                        </div>
-                                                        <div class="form-group form-group-sm row">
-                                                            <div class="col-sm-8">
-                                                                <input type="text" name="confirm_desc" class="form-control rtl" id="confirm_desc" placeholder="توضیحات" value="3">
+                                                                <input type="text" name="roc_register_desc" class="form-control rtl" id="roc_register_desc" placeholder="توضیحات" >
                                                             </div>
                                                             <label for="confirm_desc" class="col-sm-4 col-form-label">توضیحات</label>
                                                         </div>
@@ -177,45 +176,6 @@
                                 </div>
                                 <!-- /.modal-dialog -->
                             </div>
-                            <div class="modal fade" id="modal-doc">
-                                <div class="modal-dialog">
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-                                            <h4 class="modal-title text-right rtl">ثبت سند</h4>
-                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                            <span aria-hidden="true">&times;</span>
-                                            </button>
-                                        </div>
-                                        <form method="POST" action="">
-                                            <input type="hidden" name="payment_id" class="payment_id">
-                                            <div class="modal-body">
-                                                <div class="form-group form-group-sm row">
-                                                    <div class="col-sm-8">
-                                                        <input type="number" name="doc_no" class="form-control rtl" id="doc_no" placeholder="شماره سند">
-                                                    </div>
-                                                    <label for="doc_no" class="col-sm-4 col-form-label">شماره سند</label>
-                                                </div>
-                                                <div class="form-group form-group-sm row">
-                                                    <div class="col-sm-8">
-                                                        <input type="text" name="confirm_desc" class="form-control rtl" id="confirm_desc1" placeholder="توضیحات" value="f">
-                                                    </div>
-                                                    <label for="confirm_desc1" class="col-sm-4 col-form-label">توضیحات</label>
-                                                </div>
-                                            </div>
-                                            <div class="modal-footer justify-content-between">
-                                                <button type="submit" class="btn btn-primary">ثبت</button>
-                                                <button type="button" class="btn btn-default" data-dismiss="modal">بستن</button>
-                                            </div>
-                                        </form>
-                                    </div>
-                                    <!-- /.modal-content -->
-                                </div>
-                                <!-- /.modal-dialog -->
-                            </div>
-                        </div>
-
-                        <!-- end:: Content -->
-                    </div>
 
                     <!-- begin:: Footer -->
                     {% include "partials/footer.html" %}
@@ -287,6 +247,19 @@
 
         <!-- begin::Global Config(global config for global JS sciprts) -->
         {% include "partials/script.html" %}
+
+        <script>
+            $(document).ready(function() {
+                // Listen for the button click event
+                $('.btn-acc-confirm').click(function() {
+                    // Get the value of 'data-payment' attribute from the clicked button
+                    var objPaymentId = $(this).data('payment');
+                    
+                    // Set the 'obj_payment_id' field in the modal form
+                    $('#modal-payment input[name="obj_payment_id"]').val(objPaymentId);
+                });
+            });
+        </script>   
 
         <!--end::Page Scripts -->
     </body>

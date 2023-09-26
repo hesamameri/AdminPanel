@@ -129,6 +129,8 @@ def customer_pay(request,factor_id=None):
                 'reg_dt': datetime.datetime.now(),
                             }
                 
+                print(pay_data)
+                
                 payment_form = NewObjPayment(pay_data)
                 if payment_form.is_valid():
                     payment_form.save()  # Save the payment object to the database
@@ -800,6 +802,8 @@ def customer_payment_confirm(request):
         obj_payment.confirm_status = request.POST['confirm_status']
         obj_payment.confirm_dt = datetime.datetime.now()
         obj_payment.save()
+        return render(request, 'Customer/CustomerPaymentConfirm.html', context=context)
+       
 
     else:
         obj_payments = ObjPayment.objects.filter(
@@ -903,12 +907,31 @@ def customerfactor_servicedoc(request):
 @login_required(login_url='Administrator:login_view')
 @permission_required('ROLE_PERSONEL','ROLE_ADMIN')
 def customer_payment_confirms(request):
-    inquiries = Inquiry.objects.all()
+    if request.method == 'POST':
+        print(request.POST)
+        obj_payment_id = request.POST['obj_payment_id']
+        obj_payment = get_object_or_404(ObjPayment, pk = obj_payment_id)
+        obj_payment.doc_register_id = request.user.user_id
+        obj_payment.roc_register_desc = request.POST['roc_register_desc']
+        obj_payment.doc_no = request.POST['doc_no']
+        obj_payment.doc_register_dt = datetime.datetime.now()
+        obj_payment.save()
+        return render(request, 'Customer/CustomerPaymentConfirm.html', context=context)
+       
 
-    context = {
-        'inquiries': inquiries,
-    }
-    return render(request,'Customer/CustomerPaymentConfirms.html',context=context)
+    else:
+        obj_payments = ObjPayment.objects.filter(
+            Q(confirmer__isnull=False) & (Q(doc_register_id__isnull=True) | Q(doc_register_dt__isnull=True))
+        )
+
+        
+        context = {
+            'obj_payments':obj_payments,
+        }
+        
+
+        return render(request, 'Customer/CustomerPaymentConfirms.html', context=context)
+    
 
 # @cache_page(10)
 @login_required(login_url='Administrator:login_view')

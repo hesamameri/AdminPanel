@@ -238,3 +238,18 @@ def goods_register_access(id):
         return True
     else:
         return False
+    
+@register.filter
+def name_to_type(item):
+    item=str(item) 
+    id_dic = {
+        'CASH':'نقدی',
+        'CARTOCART':'کارت به کارت',
+        'CHEQUE':'چک',
+        'CART':'کارت خوان',
+
+        }
+    if item in id_dic.keys():
+            return id_dic[item]
+    else:
+        return ""
