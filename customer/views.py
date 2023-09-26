@@ -1,5 +1,7 @@
 from datetime import timezone
 import datetime
+import json
+from django.core import serializers
 from django.http import HttpResponse
 from django.urls import reverse
 from .utilities import get_object_or_none
@@ -8,7 +10,7 @@ from django.db.models import F
 from django.utils import timezone
 from customer.templatetags.converter_tags import subtract
 from ticket.models import Ticket
-from .models import Contract, ContractCity, CreditSumSVA, DepoSend, Factor, FactorAddress, FactorPayway, ObjItem, ObjItemSpec, ObjPayment, ObjSend, ObjSpec, PreFactor, ProductSVA, VendorBuyerSVA, VendorBuyerSubSVA
+from .models import Contract, ContractCity, CreditSumSVA, DepoInit, DepoSend, Factor, FactorAddress, FactorPayway, ObjItem, ObjItemCity, ObjItemSpec, ObjPayment, ObjSend, ObjSpec, PreFactor, ProductSVA, VendorBuyerSVA, VendorBuyerSubSVA
 from .models import CustomerSubSVA, CustomerSva, FactorComment, FactorDocument, FactorItem, FactorSVA, ObjItemSVA, ShopCustomerCount
 from django.core.paginator import Paginator, EmptyPage
 from collections import defaultdict
@@ -431,8 +433,11 @@ def factor(request,factor_id=None,obj_buyer = None):
                 for item in factor_item:
                     item.sended = sended_dict.get(item.factor_item_id)
                 factor_item_ids = factor_item.values('factor_item_id')
-                factor_depo_data = DepoSend.objects.filter(depo_send_id__in = factor_item_ids)
+                # print(factor_item_ids)
+                factor_depo_data = DepoSend.objects.filter(source_id__in = factor_item_ids)
+                # print(factor_depo_data)
                 goods = factor_depo_data.values('goods')
+                
                 depo_ids = factor_depo_data.values('depo_id')
                 combined_depo_goods_data = ObjItem.objects.filter(obj_item_id__in = goods).values('name')
                 combined_depo_id_data = ObjItem.objects.filter(obj_item_id__in = depo_ids).values('name')
@@ -444,10 +449,64 @@ def factor(request,factor_id=None,obj_buyer = None):
                 obj_sendings = ObjSend.objects.filter(source_id__in = factor_item_ids)
                 banks = ObjItem.objects.filter(obj_item_id__gte=999003010, obj_item_id__lte=999003019) 
                 paywayform = NewFactorPayway()
-                
-                
-                context = {
+                # ------------------------------------------------------------------
+                # depo assign section
+                # have to use the ObjItemCity model here to retrieve the correct
+                depo_addresses = FactorAddress.objects.filter(factor_id=factor_id)
+                cities = depo_addresses.values('city_id')
+                depo_itemcity = ObjItemCity.objects.filter(city_id__in=cities)
+                depo_fac = depo_itemcity.values('obj_item_id')
+                depos = ObjItem.objects.filter(obj_item_id__in=depo_fac, obj_id=1352)
+                factor_item_depo = factor_item.values_list('obj_item_id', flat=True)
 
+                # Create a dictionary to store depo data
+                depo_data_dict = {}
+
+                # Iterate over each address
+                for address in depo_addresses:
+                    city_id = address.city_id
+                    depo_itemcity = ObjItemCity.objects.filter(city_id=city_id)
+                    depo_fac = depo_itemcity.values_list('obj_item_id', flat=True)
+                    depos = ObjItem.objects.filter(obj_item_id__in=depo_fac, obj_id=1352)
+
+                    # Create a list to store depo data for this address
+                    depo_data = []
+
+                    # Create a set to keep track of depo IDs that have already been processed
+                    processed_depo_ids = set()
+
+                    # Iterate over each depo
+                    for depo in depos:
+                        # Check if this depo has already been processed
+                        if depo.obj_item_id not in processed_depo_ids:
+                            # Iterate over each product in factor_item_depo
+                            for good in factor_item_depo:
+                                aggregated = (
+                                    DepoInit.objects
+                                    .filter(depo=depo.obj_item_id, obj_item=good)
+                                    .aggregate(
+                                        total_in_amount=Coalesce(Sum('in_amount'), Value(0)),
+                                        total_out_amount=Coalesce(Sum('out_amount'), Value(0))
+                                    )
+                                )
+                                net_amount = aggregated['total_in_amount'] - aggregated['total_out_amount']
+                                depo_data.append({
+                                    'obj_item_id': depo.obj_item_id,
+                                    'title': depo.title,
+                                    'net_amount': net_amount,
+                                    'related_obj_item_id': good,  # Include the related obj_item_id
+                                })
+                            # Mark this depo as processed
+                            processed_depo_ids.add(depo.obj_item_id)
+
+                    # Store the depo data for this address in the dictionary
+                    depo_data_dict[str(city_id)] = depo_data
+
+                # Convert the dictionary to JSON
+                depo_data_json = json.dumps(depo_data_dict)
+                print(depo_data_json)
+                #--------------------------------------------------------------------
+                context = {
                     'factor_main':factor_main,
                     'customer_data':customer_data,
                     'vendor_credit':vendor_credit,
@@ -461,8 +520,11 @@ def factor(request,factor_id=None,obj_buyer = None):
                     'inquiry_test':inquiry_test,
                     'banks':banks,
                     'paywayform':paywayform,
-                    
-
+                    #depo
+                    'depo_addresses':depo_addresses,
+                    'depo_itemcity':depo_itemcity,
+                    'depos':depos,
+                    'depo_data_json': depo_data_json,
                 }  
                
                 
@@ -656,8 +718,7 @@ def customer_confirm_accountlist(request):
 @permission_required('ROLE_PERSONEL','ROLE_ADMIN')
 def customer_confirm_salelist(request):
 
-    factor_items = FactorItemBalanceSVA.objects.exclude(amount__exact=F('sended'))
-
+    factor_items = FactorItemBalanceSVA.objects.filter(sended__lt=F('amount'))
     # Getting the related Factor objects
     factor_ids = factor_items.values_list('factor_id', flat=True)
     factors = Factor.objects.filter(factor_id__in=factor_ids).values('factor_id', 'acc_confirm_dt', 'contract_id')

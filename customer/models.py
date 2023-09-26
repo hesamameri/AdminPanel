@@ -703,15 +703,15 @@ class ObjDocument(models.Model):
         db_table = 'obj_document'
 
 
-# class ObjItemCity(models.Model):
-#     obj_item_city_id = models.AutoField(primary_key=True)
-#     obj_item = models.ForeignKey('ObjItem', models.DO_NOTHING)
-#     city = models.ForeignKey('ObjItem', models.DO_NOTHING, related_name='objitemcity_city_set')
+class ObjItemCity(models.Model):
+    obj_item_city_id = models.AutoField(primary_key=True)
+    obj_item = models.ForeignKey('ObjItem', models.DO_NOTHING)
+    city = models.ForeignKey('ObjItem', models.DO_NOTHING, related_name='objitemcity_city_set')
 
-#     class Meta:
-#         managed = False
-#         db_table = 'obj_item_city'
-#         db_table_comment = 'هدف از طراحی جدول فوق برای انبارها بوده است\nکه هر انبار به شهرهایی سرویس میدهد و انباردار مربوطه فقط فاکتروهای منطقه خودش را مشاهده کند\nهمپوشانی انبار و منطقه اگر وجود داشته باشد امکان ارسال دوباره کالا خواهد شد'
+    class Meta:
+        managed = False
+        db_table = 'obj_item_city'
+        db_table_comment = 'هدف از طراحی جدول فوق برای انبارها بوده است\nکه هر انبار به شهرهایی سرویس میدهد و انباردار مربوطه فقط فاکتروهای منطقه خودش را مشاهده کند\nهمپوشانی انبار و منطقه اگر وجود داشته باشد امکان ارسال دوباره کالا خواهد شد'
 
 
 # class ObjItemConfirmer(models.Model):

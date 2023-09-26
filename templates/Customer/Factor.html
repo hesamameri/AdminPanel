@@ -53,14 +53,14 @@
 
                         <!-- begin:: Content -->
                         <div class="kt-content  kt-grid__item kt-grid__item--fluid" id="kt_content">
-
+                            
                             <div class="content-wrapper">
                                 <div class="content-header">
                                     <div class="container-fluid">
                                     
                                     <div class="row mb-2">
                                         <div class="col-sm-12">
-
+                                        
                                                 <ol class="breadcrumb float-sm ">
                                                     <li class="breadcrumb-item active"></li>
                                                     <li class="breadcrumb-item active">فاکتور فروش</li>
@@ -180,12 +180,17 @@
                                                                         </td> -->
                                                                     {% if request.user.user_id|goods_register_access %}
                                                                         <td>
+                                                                           
                                                                                 <button class="btn btn-sm btn-success btn-asign-depo" 
                                                                                         data-toggle="modal" 
-                                                                                        data-fid=""
+                                                                                        data-obid="{{product.obj_item_id}}"
                                                                                         data-reminded=""
+                                                                                        data-amount="{{product.amount}}" 
+                                                                                        data-sended="{{product.sended}}"
                                                                                         data-target="#modal-assign-depo"><i class="fas fa-plus nav-icon"></i></button>
                                                                         </td>
+                                                                        
+                                                                            
                                                                     {% endif %}
                                                                 </tr>
                                                                 {% endfor %}
@@ -1156,6 +1161,7 @@
                                 <div class="form-group form-group-sm row">
                                     <div class="col-sm-9">
                                         <select class="form-control select2bs4s rtl text-right float-right" id="sale_amount" name="amount">
+                                            <option value=""></option>
                                         </select>
                                     </div>
                                     <label for="product_id" class="col-sm-3 col-form-label">تعداد</label>
@@ -1164,27 +1170,33 @@
                                 <div class="form-group form-group-sm row">
                                     <div class="col-sm-9">
                                         <select class="form-control select2bs4s rtl text-right float-right" id="factor_address">
-                                            <option></option>
-                                            
-                                                <option value="" 
-                                                    data-city-id="{{ itemAddress.city_id }}"
-                                                    data-address="{{ itemAddress.address }}"
-                                                    data-phone="{{ itemAddress.phone }}"
-                                                    data-mobile="{{ itemAddress.mobile }}"
-                                                    data-receiver="{{ itemAddress.receiver }}">
-                                                    آدرس  
+                                            <option value="" selected></option>
+                                                {% for address in depo_addresses %}
+                                                <option value="{{address.factor_id}}" 
+                                                    data-city-id="{{ address.city_id }}"
+                                                    data-address="{{ address.address }}"
+                                                    data-phone="{{ address.phone }}"
+                                                    data-mobile="{{ address.mobile }}"
+                                                    data-receiver="{{ address.receiver }}">
+                                                    آدرس :{{ address.address }}/{{ address.receiver }}/{{ address.city_id|id_to_city }}/{{ address.address }}/ 
                                                 </option>
-                                            
+                                                {% endfor %}
                                         </select>
                                     </div>
                                     <label for="factor_address" class="col-sm-3 col-form-label">آدرس</label>
+                                    
                                 </div>
         
                                 <div class="form-group form-group-sm row">
+
                                     <div class="col-sm-9">
                                         <select class="form-control select2bs4s rtl text-right float-right" style="width: 100%;" name="depo" id="sale_depo">
+                                            
+                                            <option value="" selected></option>
+                                            
                                         </select>
                                     </div>
+
                                     <label for="product_id" class="col-sm-3 col-form-label">انبار</label>
                                 </div>
                         </div>
@@ -1192,9 +1204,11 @@
                             <button type="submit" class="btn btn-primary">ارسال به انبار</button>
                             <button type="button" class="btn btn-default" data-dismiss="modal">بستن</button>
                         </div>
-        
-
-
+                </form>
+            </div>
+        </form>
+    </div>
+                       
         <!-- begin::Global Config(global config for global JS sciprts) -->
         {% include "partials/script.html" %}
         <script>
@@ -1213,6 +1227,111 @@
             });
                     
         </script>
+        <!-- <script type="text/javascript">
+            $(document).ready(function() {
+        var depoData = JSON.parse('{{ depo_data_json|safe }}');
+
+        $('#factor_address').change(function() {
+            $('#sale_city_id').val($(this).find(':selected').data('city-id'));
+            $('#sale_phone').val($(this).find(':selected').data('phone'));
+            $('#sale_mobile').val($(this).find(':selected').data('mobile'));
+            $('#sale_address').val($(this).find(':selected').data('address'));
+            $('#sale_receiver').val($(this).find(':selected').data('receiver'));
+
+            var cityId = $(this).find(':selected').data('city-id').toString();
+
+            var depoInfo = depoData[cityId] || [];
+
+            $('#sale_depo').empty();  // Clear any existing options
+
+            if (depoInfo.length === 0) {
+                // Handle the case when the array is empty
+                $('#sale_depo').append('<option value="">هیچ انباری موجود نیست</option>');
+            } else {
+                depoInfo.forEach(function(item) {
+                    // Updated the text to include net_amount beside the title
+                    var optionText = item.title + ' (موجودی: ' + item.net_amount + ')';
+                    var option = $('<option></option>').val(item.obj_item_id).text(optionText);
+                    $('#sale_depo').append(option);
+                });
+            }
+        });
+
+        $('#modal-assign-depo').on('shown.bs.modal', function() {
+            $('#factor_address').trigger('change');
+        });
+    });
+
+    $('#modal-assign-depo').on('shown.bs.modal', function () {
+        $('#sale_depo').empty();
+        $('#sale_depo').append('<option value="" selected></option>');  // Add an empty option
+    });
+        </script> -->
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+    // Function to update the second select based on the selected obj_item_id
+    function updateSecondSelect(objItemId) {
+        var depoData = JSON.parse('{{ depo_data_json|safe }}');
+        var cityId = $('#factor_address').find(':selected').data('city-id').toString();
+        var depoInfo = depoData[cityId] || [];
+
+        $('#sale_city_id').val($('#factor_address').find(':selected').data('city-id'));
+        $('#sale_phone').val($('#factor_address').find(':selected').data('phone'));
+        $('#sale_mobile').val($('#factor_address').find(':selected').data('mobile'));
+        $('#sale_address').val($('#factor_address').find(':selected').data('address'));
+        $('#sale_receiver').val($('#factor_address').find(':selected').data('receiver'));
+
+        $('#sale_depo').empty(); // Clear any existing options
+
+        if (depoInfo.length === 0) {
+            $('#sale_depo').append('<option value="">هیچ انباری موجود نیست</option>');
+        } else {
+            depoInfo.forEach(function(item) {
+                // Check if the item's related_obj_item_id matches the selected obj_item_id
+                if (item.related_obj_item_id === objItemId) {
+                    var optionText = item.title + ' (موجودی: ' + item.net_amount + ')';
+                    var option = $('<option></option>').val(item.obj_item_id).text(optionText);
+                    $('#sale_depo').append(option);
+                }
+            });
+        }
+    }
+
+    // Event delegation to handle button click
+    document.addEventListener('click', function(event) {
+        // Check if the clicked element is a button with the class 'btn-asign-depo'
+        if (event.target.classList.contains('btn-asign-depo')) {
+            // Retrieve obj_item_id from the clicked button using jQuery
+            var objItemId = $(event.target).data('obid');
+            console.log('Selected obj_item_id (from button click):', objItemId);
+
+            // Update the second select
+            updateSecondSelect(objItemId);
+        }
+    });
+
+    // Trigger the change event for '#factor_address' when the modal is shown
+    var modalAssignDepo = document.getElementById('modal-assign-depo');
+    modalAssignDepo.addEventListener('shown.bs.modal', function() {
+        var factorAddress = document.getElementById('factor_address');
+        var changeEvent = new Event('change', { bubbles: true });
+        factorAddress.dispatchEvent(changeEvent);
+    });
+    
+    // Initialize the second select when the modal is shown
+    modalAssignDepo.addEventListener('shown.bs.modal', function () {
+        var saleDepo = document.getElementById('sale_depo');
+        saleDepo.innerHTML = '<option value="" selected></option>';  // Add an empty option
+    });
+});
+        </script>
+        
+        
+        
+
+
+
+
         <script>
             function showHideFields() {
             var selectedOption = document.getElementById("type").value;
@@ -1306,6 +1425,26 @@ calculateSums();
 
  
         </script>
+
+
+<script>
+    $(document).ready(function() {
+    $('#modal-assign-depo').on('show.bs.modal', function(event) {
+        var button = $(event.relatedTarget);  // Button that triggered the modal
+        var amount = parseInt(button.data('amount'));  // Extract info from data-* attributes
+        var sended = parseInt(button.data('sended'));
+        var difference = amount - sended;
+        
+        var amountSelect = $('#sale_amount');
+        amountSelect.empty();  // Clear any existing options
+        
+        for (var i = 1; i <= difference; i++) {
+            var option = $('<option></option>').val(i).text(i);
+            amountSelect.append(option);
+        }
+    });
+});
+          </script>
         <!--end::Page Scripts -->
     </body>
 
