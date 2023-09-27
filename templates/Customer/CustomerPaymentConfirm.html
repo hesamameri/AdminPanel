@@ -101,28 +101,28 @@
                                                                                 {% for item in obj_payments %}
                                                                                 <tr>
                                                                                     <td>
-                                                                                        {{item.brand_names}}
+                                                                                        {{item.brand_names.0.name}}
                                                                                     </td>
-                                                                                    <td>{{item.obj_item_id}}</td>
+                                                                                    <td>{{item.obj_payment.obj_item_id}}</td>
                                                                                     <td>
                                                                                       
                                                                                     </td>
-                                                                                    <td>{{item.type|name_to_type}}</td>
-                                                                                    <td>{{item.bank_id|id_to_bank}}</td>
-                                                                                    <td>{{item.no}}</td>
+                                                                                    <td>{{item.obj_payment.type|name_to_type}}</td>
+                                                                                    <td>{{item.obj_payment.bank_id|id_to_bank}}</td>
+                                                                                    <td>{{item.obj_payment.no}}</td>
                                                                                     {% if item.branch_name == None %}
                                                                                     <td></td>
                                                                                     {% else %}
-                                                                                    <td>{{item.branch_name}}</td>
+                                                                                    <td>{{item.obj_payment.branch_name}}</td>
                                                                                     {% endif %}
-                                                                                    {% if item.owner == None %}
+                                                                                    {% if item.obj_payment.owner == None %}
                                                                                     <td></td>
                                                                                     {% else %}
-                                                                                    <td>{{item.owner}}</td>
+                                                                                    <td>{{item.obj_payment.owner}}</td>
                                                                                     {% endif %}
-                                                                                    <td>{{item.description}}</td>
-                                                                                    <td>{{item.reg_dt|to_jalali}}</td>
-                                                                                    <td>{{item.price}}</td>
+                                                                                    <td>{{item.obj_payment.description}}</td>
+                                                                                    <td>{{item.obj_payment.reg_dt|to_jalali}}</td>
+                                                                                    <td>{{item.obj_payment.price}}</td>
                                                                                     <td>
                                                                                         <i class="fa fa-info-circle" aria-hidden="true" data-toggle="popover" title="اطلاعات رکورد" data-content=""></i>
                                                                                     </td>

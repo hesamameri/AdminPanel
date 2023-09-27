@@ -847,15 +847,16 @@ def customer_payment_confirm(request):
             obj_item_id = obj_payment.obj_item_id
             print(obj_item_id)
             # Retrieve obj_spec_city for the current obj_item_id
-            obj_spec_city = ObjItemSpec.objects.filter(obj_item_id=obj_item_id).values("val").last()
+            obj_spec_city = ObjItemSpec.objects.filter(obj_item_id=obj_item_id,obj_spec_id = 105).values("val")
             print(obj_spec_city)
             # Filter CityItemSVA objects based on obj_spec_city
-            city_items = CityItemSVA.objects.filter(brand=obj_spec_city['val']).exclude(brand__isnull=True)
-            print(city_items)
+            city_items = CityItemSVA.objects.filter(brand_id__in=obj_spec_city,brand__isnull = False).values('brand')
+            brand_name = ObjItem.objects.filter(obj_item_id__in = city_items).values('name')
+            print(brand_name)
             # Initialize a dictionary to store data for the current obj_payment
             payment_data = {
                 'obj_payment': obj_payment,
-                'brand_names': [city_item.brand_name for city_item in city_items],
+                'brand_names': brand_name,
             }
             
             # Append the dictionary to the list
