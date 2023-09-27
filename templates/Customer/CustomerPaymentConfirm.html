@@ -108,8 +108,16 @@
                                                                                       
                                                                                     </td>
                                                                                     <td>{{item.obj_payment.type|name_to_type}}</td>
+                                                                                    {% if item.obj_payment.bank_id == None %}
+                                                                                    <td></td>
+                                                                                    {% else %}
                                                                                     <td>{{item.obj_payment.bank_id|id_to_bank}}</td>
+                                                                                    {% endif %}
+                                                                                    {% if item.obj_payment.no == None %}
+                                                                                    <td></td>
+                                                                                    {% else %}
                                                                                     <td>{{item.obj_payment.no}}</td>
+                                                                                    {% endif %}
                                                                                     {% if item.branch_name == None %}
                                                                                     <td></td>
                                                                                     {% else %}
