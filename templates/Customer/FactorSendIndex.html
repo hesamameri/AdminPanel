@@ -134,44 +134,38 @@
                                                                             </tr>
                                                                         </thead>
                                                                         <tbody>
-                                                                            {% for item in sents %}
                                                                             
+                                                                            {% for item in items %}
                                                                                 <tr>
-                                                                                    <td>{{ item.buyer_id }}</td>
-                                                                                    <td>{{item.name}}</td>
-                                                                                    <td>10302/21/1427</td>
-                                                                                    <td>{{ item.factor_id }}</td>
-                                                                                    {% if item.city_id == None %}
-                                                                                    <td> 
-                                                                                        شهر مورد نظر یافت نشد 
-                                                                                    </td>
-                                                                                    {% else %}
-                                                                                    <td>
-                                                                                        {{item.city_id|id_to_city}} 
-                                                                                    </td>
-                                                                                    {% endif %}
-                                                                                    {% if item.mobile == None %}
-                                                                                    <td></td>
-                                                                                    {% else%}
-                                                                                    <td>{{item.mobile}} </td>
-                                                                                    {% endif %}
-                                                                                    {% if item.phone == None %}
-                                                                                    <td></td>
-                                                                                    {% else%}
-                                                                                    <td>{{item.phone}}</td>
-                                                                                    {% endif %}
-                                                                                    <td> 
-                                                                                        {{item.address}}
+                                                                                    <td>{{item.obj_send_id}}</td> <!-- خریدار (شناسه خریدار) -->
+                                                                                    <td></td>   <!--نام خریدار-->
+                                                                                    <td>10302/21/1427</td> <!--شناسه فاکتور-->
+                                                                                    <td></td> <!-- شماره فاکتور-->
+                                                                                    
+                                                                                   
+                                                                                    <td>    <!-- شهر -->
+                                                                                       
                                                                                     </td>
                                                                                     
-                                                                                    <td>
+                                                                                    
+                                                                                    
+                                                                                    <td></td>   <!-- موبایل -->
+                                                                                    
+                                                                                    <td></td>   <!--تلفن-->
+                                                                                    
+                                                                                    <td>    <!-- آدرس -->
+
+                                                                                    </td>
+                                                                                    
+                                                                                    <td>    <!-- کامنت-->
                                                                                         <i data-factor-id="1" data-toggle="modal" data-target="#modal-comment" class="fas fa-comment btn btn-xs  btn-flat btn-comment">&nbsp;</i></td>
                                                                                     <td>
                                                                                                 <a href="#" class="btn btn-primary btn-xs btn-class">ارسال بار</a>
                                                                                                 <a href="#" class="btn btn-success btn-xs btn-class">چاپ فاکتور</a>
                                                                                     </td>
                                                                                 </tr>
-                                                                            {% endfor %}
+                                                                                {% endfor %}
+                                                                            
                                                                         <tbody>
                                                                     </table>
                                                                 </div>

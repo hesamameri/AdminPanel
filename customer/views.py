@@ -655,12 +655,7 @@ def delete_factor_element(request,element):
 @permission_required('ROLE_PERSONEL','ROLE_ADMIN')
 def factor_index(request):
 
-    factor_sva_objects = FactorSVA.objects.all() 
-    context = {
-        'factor_sva_objects': factor_sva_objects
-        }
-
-    return render(request,'Customer/FactorList.html',context=context)
+    return render(request,'Customer/FactorList.html',context={})
 
 
 
@@ -772,21 +767,54 @@ def customer_factor_assessment(request):
     
     return render(request,'Customer/CustomerFactorAssessment.html')
 
-
-# @cache_page(10)
+############################################################## DRIVER
 @login_required(login_url='Administrator:login_view')
 @permission_required('ROLE_PERSONEL','ROLE_ADMIN')
 def factor_send_index(request):
-    sent_index = Factor.objects.all()
+    
+    items = ObjSend.objects.filter(action='DRIVE')
     
 
-    context = {
-        'sents':sent_index,
+    
+    return render(request,'Customer/FactorSendIndex.html',context={'items':items})
 
-    }
-    return render(request,'Customer/FactorSendIndex.html',context=context)
+@login_required(login_url='Administrator:login_view')
+@permission_required('ROLE_PERSONEL','ROLE_ADMIN')
+def customerfactor_sendassigndriver(request):
+    
+    return render(request,'Customer/CustomerFactorSendAssign.html')
 
+@login_required(login_url='Administrator:login_view')
+@permission_required('ROLE_PERSONEL','ROLE_ADMIN')
+def customerfactor_sendstatus(request):
+    
+    return render(request,'Customer/CustomerFactorSendStatus.html')
 
+############################################################## INSTALL
+@login_required(login_url='Administrator:login_view')
+@permission_required('ROLE_PERSONEL','ROLE_ADMIN')
+def factor_install_index(request):
+    
+    items = ObjSend.objects.filter(action='INSTALL')
+    
+    return render(request,'Customer/FactorSendIndex.html',context={'items':items})
+
+@login_required(login_url='Administrator:login_view')
+@permission_required('ROLE_PERSONEL','ROLE_ADMIN')
+def factor_install_assigninstaller(request):
+    
+    items = ObjSend.objects.filter(action='INSTALL')
+    
+    return render(request,'Customer/CustomerFactorSendAssign.html')
+
+@login_required(login_url='Administrator:login_view')
+@permission_required('ROLE_PERSONEL','ROLE_ADMIN')
+def factor_install_sendstatus(request):
+    
+    items = ObjSend.objects.filter(action='INSTALL')
+    
+    return render(request,'Customer/CustomerFactorSendStatus.html')
+###########################################################################
 # @cache_page(10)
 @login_required(login_url='Administrator:login_view')
 @permission_required('ROLE_PERSONEL','ROLE_ADMIN')
@@ -911,19 +939,7 @@ def prefroma(request):
     return render(request,'Customer/Prefroma.html')
 
 
-# @cache_page(10)
-@login_required(login_url='Administrator:login_view')
-@permission_required('ROLE_PERSONEL','ROLE_ADMIN')
-def customerfactor_sendassigndriver(request):
-    
-    return render(request,'Customer/CustomerFactorSendAssignDriver.html')
 
-# @cache_page(10)
-@login_required(login_url='Administrator:login_view')
-@permission_required('ROLE_PERSONEL','ROLE_ADMIN')
-def customerfactor_sendstatus(request):
-    
-    return render(request,'Customer/CustomerFactorSendStatus.html')
 
 # @cache_page(10)
 @login_required(login_url='Administrator:login_view')
