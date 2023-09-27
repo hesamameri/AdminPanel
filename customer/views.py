@@ -10,7 +10,7 @@ from django.db.models import F
 from django.utils import timezone
 from customer.templatetags.converter_tags import subtract
 from ticket.models import Ticket
-from .models import Contract, ContractCity, CreditSumSVA, DepoInit, DepoSend, Factor, FactorAddress, FactorPayway, ObjItem, ObjItemCity, ObjItemSpec, ObjPayment, ObjSend, ObjSpec, PreFactor, ProductSVA, VendorBuyerSVA, VendorBuyerSubSVA
+from .models import CityItemSVA, Contract, ContractCity, CreditSumSVA, DepoInit, DepoSend, Factor, FactorAddress, FactorPayway, ObjItem, ObjItemCity, ObjItemSpec, ObjPayment, ObjSend, ObjSpec, PreFactor, ProductSVA, VendorBuyerSVA, VendorBuyerSubSVA
 from .models import CustomerSubSVA, CustomerSva, FactorComment, FactorDocument, FactorItem, FactorSVA, ObjItemSVA, ShopCustomerCount
 from django.core.paginator import Paginator, EmptyPage
 from collections import defaultdict
@@ -837,11 +837,40 @@ def customer_payment_confirm(request):
         obj_payments = ObjPayment.objects.filter(
           confirmer = None  
         )
-
+        # for obj_payment in obj_payments:
+        #     obj_spec_city = ObjItemSpec.objects.filter(obj_item_id = obj_payment.obj_item_id).values("val")
+        #     brand_id = CityItemSVA.objects.filter(brand_id = obj_spec_city,brand_name__isnull = False)
+        #     brand_name = ObjItem.objects.filter(obj_item_id__in = brand_id).name
+        data_for_rendering = []
+    
+        for obj_payment in obj_payments:
+            obj_item_id = obj_payment.obj_item_id
+            print(obj_item_id)
+            # Retrieve obj_spec_city for the current obj_item_id
+            obj_spec_city = ObjItemSpec.objects.filter(obj_item_id=obj_item_id).values("val").last()
+            print(obj_spec_city)
+            # Filter CityItemSVA objects based on obj_spec_city
+            city_items = CityItemSVA.objects.filter(brand=obj_spec_city['val']).exclude(brand__isnull=True)
+            print(city_items)
+            # Initialize a dictionary to store data for the current obj_payment
+            payment_data = {
+                'obj_payment': obj_payment,
+                'brand_names': [city_item.brand_name for city_item in city_items],
+            }
+            
+            # Append the dictionary to the list
+            data_for_rendering.append(payment_data)
         
         context = {
-            'obj_payments':obj_payments,
+            'obj_payments': data_for_rendering,
         }
+        print(data_for_rendering)
+
+
+        
+        # context = {
+        #     'obj_payments':obj_payments,
+        # }
         
 
         return render(request, 'Customer/CustomerPaymentConfirm.html', context=context)

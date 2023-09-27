@@ -100,9 +100,13 @@
                                                                                 
                                                                                 {% for item in obj_payments %}
                                                                                 <tr>
-                                                                                    <td></td>
+                                                                                    <td>
+                                                                                        {{item.brand_names}}
+                                                                                    </td>
                                                                                     <td>{{item.obj_item_id}}</td>
-                                                                                    <td></td>
+                                                                                    <td>
+                                                                                      
+                                                                                    </td>
                                                                                     <td>{{item.type|name_to_type}}</td>
                                                                                     <td>{{item.bank_id|id_to_bank}}</td>
                                                                                     <td>{{item.no}}</td>
