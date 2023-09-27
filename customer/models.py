@@ -965,3 +965,22 @@ class CreditSumSVA(models.Model):
     class Meta:
         managed = False  # To indicate that this model is backed by a database view
         db_table = 'credit_sum_sva'
+        
+        
+class CityItemSVA(models.Model):
+    obj_item_id = models.IntegerField(primary_key=True)
+    brand_id = models.IntegerField()
+    name = models.CharField(max_length=255)
+    title = models.CharField(max_length=255)
+    status = models.IntegerField()
+    brand = models.CharField(max_length=255, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'city_item_sva'
+
+
+
+
+
+
