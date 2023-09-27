@@ -4,31 +4,15 @@ from django.conf import settings
 from django.conf.urls.static import static
 app_name = 'customer'
 urlpatterns = [
-    path('customers/', views.customer_index, name='customerindex'),     # DONE(testphase)
+    ########################################################### Customers
+    ### customer
+    path('customers/', views.customer_index, name='customerindex'),     
     path('customers/customer_pay/', views.customer_pay, name='CustomerPay'),  
     path('customers/customer_pay/<int:factor_id>', views.customer_pay, name='CustomerFactorPay'), 
     path('newcustomer', views.new_customer, name='NewCustomer'),
-    path('customers/all', views.customer_index_all, name='customerindexAll'),  # DONE(testphase)
-    path('newfactor', views.new_factor, name='NewFactor'),  # DONE(testphase)
-    path('factor/by_buyer/<int:obj_buyer>/', views.factor, name='FactorWithBuyerID'),
-    path('factor/by_factor/<int:factor_id>/', views.factor, name='FactorWithFactorID'),
-    path('delete_factor_element/<int:element>/', views.delete_factor_element, name='delete_payway'),
-    path('delete_factor_element/<int:element>/', views.delete_factor_element, name='delete_goods'),
-    path('delete_factor_element/<int:element>/', views.delete_factor_element, name='delete_document'),
-    path('add_goods_factor/<int:factor_id>/', views.factor_add_goods, name='add_goods_factor'),
-    path('add_address_factor/<int:factor_id>/', views.factor_add_address, name='add_address_factor'),
-    path('add_document_factor/<int:factor_id>/', views.factor_add_document, name='add_document_factor'),
-    path('add_depo_factor/', views.factor_add_depo, name='add_depo_factor'),
-
-
-    
-    path('factorlist', views.factor_index, name='FactorList'),                   # DONE(testphase)
+    path('customers/all', views.customer_index_all, name='customerindexAll'), 
     path('customerconfaccountlt', views.customer_confirm_accountlist, name='CustomerConfirmAccountList'),
-
     path('customerconfirmsalelist', views.customer_confirm_salelist, name='CustomerConfirmSaleList'),
-
-
-    
     path('customerfactorassessment', views.customer_factor_assessment, name='CustomerFactorAssessment'),
     path('customers/prefactor', views.prefactor, name='PreFactor'),
     path('customerpaymentconfirm', views.customer_payment_confirm, name='CustomerPaymentConfirm'),
@@ -40,18 +24,40 @@ urlpatterns = [
     path('creditlist', views.credit_list, name='CreditList'),
     path('receiptconfirm', views.receipt_confirm, name='ReceiptConfirm'),
     path('prefroma', views.prefroma, name='Prefroma'),
+    path('customerfactorservicedoc', views.customerfactor_servicedoc, name='CustomerFactorServiceDoc'),
+    path('customerpaymentconfirms', views.customer_payment_confirms, name='CustomerPaymentConfirms'),
+    path('indexinquiryresponse', views.index_inquiry_response, name='IndexInquiryResponse'),     
+    path('indexinquiry', views.index_inquiry, name='IndexInquiry'),                              
+    path('newcustomer', views.new_customer, name='NewCustomer'),
+    ##### Factor 
+    path('newfactor', views.new_factor, name='NewFactor'),  
+    path('factor/by_buyer/<int:obj_buyer>/', views.factor, name='FactorWithBuyerID'),
+    path('factor/by_factor/<int:factor_id>/', views.factor, name='FactorWithFactorID'),
+    path('delete_factor_element/<int:element>/', views.delete_factor_element, name='delete_payway'),
+    path('delete_factor_element/<int:element>/', views.delete_factor_element, name='delete_goods'),
+    path('delete_factor_element/<int:element>/', views.delete_factor_element, name='delete_document'),
+    path('add_goods_factor/<int:factor_id>/', views.factor_add_goods, name='add_goods_factor'),
+    path('add_address_factor/<int:factor_id>/', views.factor_add_address, name='add_address_factor'),
+    path('add_document_factor/<int:factor_id>/', views.factor_add_document, name='add_document_factor'),
+    path('add_depo_factor/', views.factor_add_depo, name='add_depo_factor'),
+    path('factorlist', views.factor_index, name='FactorList'),    
+              
+    
 
+######################################### Drive
     path('factorsendindex', views.factor_send_index, name='FactorSendIndex'),
     path('customerfactorsendassigndriver', views.customerfactor_sendassigndriver, name='CustomerFactorSendAssignDriver'),
     path('customerfactorsendstatus', views.customerfactor_sendstatus, name='CustomerFactorSendStatus'),
-    path('customerfactorservicedoc', views.customerfactor_servicedoc, name='CustomerFactorServiceDoc'),
-    path('customerpaymentconfirms', views.customer_payment_confirms, name='CustomerPaymentConfirms'),  
 
 
-    path('indexinquiryresponse', views.index_inquiry_response, name='IndexInquiryResponse'),     # DONE(testphase)
-    path('indexinquiry', views.index_inquiry, name='IndexInquiry'),                              # DONE(testphase)
-    path('newcustomer', views.new_customer, name='NewCustomer'),
-    path('factorsendinstallerprint', views.factorsend_installerprint, name='FactorSendInstallerPrint'),  # DONE(testphase)
+########################################### Install
+    path('factorinstallindex', views.factor_install_index, name='FactorInstallIndex'),
+    path('factorinstallindex', views.factor_install_assigninstaller, name='FactorInstallAssignInstaller'),
+    path('factorinstallindex', views.factor_install_sendstatus, name='FactorInstallSendStatus'),
+    path('factorsendinstallerprint', views.factorsend_installerprint, name='FactorSendInstallerPrint'),  
+    
+#############################################
+
     path('factorsendprint', views.factor_send_print, name='FactorSendPrint'),
     path('receiptprint', views.receipt_print, name='ReceiptPrint'),
 ]
