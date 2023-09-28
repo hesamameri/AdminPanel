@@ -54,14 +54,9 @@
                                     <div class="container-fluid">
                                     <div class="row mb-2">
                                         <div class="col-sm-12">
-                                            <ol class="breadcrumb float-sm-right ">
-                            
+                                            <ol class="breadcrumb float-sm-left ">
+                                                <li class="breadcrumb-item active">ارسال بار</li>
                                                 <li class="breadcrumb-item active">اختصاص راننده</li>
-                                                <li class="breadcrumb-item active">اختصاص نصاب</li>
-                                                <li class="breadcrumb-item active">اختصاص سرویس‌کار</li>
-                            
-                                                <li class="breadcrumb-item active">فاکتور</li>
-                                                <li class="breadcrumb-item">خریدار</li>
                                             </ol>
                                         </div>
                                     </div>
@@ -111,11 +106,6 @@
                                                                                                 <a class="btn btn-success btn-xs btn-assign-driver btn-class" data-factor-id="" data-toggle="modal" data-target="#modal-assign-driver">اختصاص راننده</a>
                                                                                                 <button class="btn btn-primary btn-xs btn-class" type="submit">چاپ فاکتور</button>
                                                                                             </form>
-                                                                                            <form method="get" action="" class="frm1">
-                                                                                                <a class="btn btn-success btn-xs btn-assign-driver btn-class" data-factor-id="" data-toggle="modal" data-target="#modal-assign-driver">اختصاص نصاب</a>
-                                                                                                <button class="btn btn-primary btn-xs btn-class" type="submit">چاپ برگه نصب</button>
-                                                                                            </form>
-                                                                                            <a class="btn btn-success btn-xs btn-assign-driver" data-factor-id="" data-toggle="modal" data-target="#modal-assign-driver">اختصاص سرویس‌کار</a>
                                                                                     </td>
                                                                         <tbody>
                                                                     </table>
@@ -134,8 +124,7 @@
                                     <div class="modal-content">
                                         <div class="modal-header">
                                                 <h4 class="modal-title">اختصاص راننده</h4>
-                                                <h4 class="modal-title">اختصاص نصاب xxx</h4>
-                                                <h4 class="modal-title">اختصاص سرویس‌کار</h4>
+
                                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                             <span aria-hidden="true">&times;</span>
                                             </button>
@@ -146,7 +135,7 @@
                                         <div class="modal-body">
                                                     <div class="form-group form-group-sm row">
                                                         <div class="col-sm-8">
-                                                            <select class="form-control select2bs4 rtl text-right" style="width: 100%;" name="drive_id" data-allow-clear="true">
+                                                            <select class="form-control select2bs4 rtl text-left" style="width: 100%;" name="drive_id" data-allow-clear="true">
                                                                 
                                                                         <option value="" ></option>
                                                                    
@@ -157,13 +146,13 @@
                                                                         <option value="" ></option>
                                                                     
                                                             </select>
-                                                            <select class="form-control select2bs4 rtl text-right" style="width: 100%;" name="doer1_id" data-allow-clear="true">
+                                                            <select class="form-control select2bs4 rtl text-left" style="width: 100%;" name="doer1_id" data-allow-clear="true">
                                                                     <option value="">----------</option>
                                                                         
                                                                         <option value="" ></option>
                                                                    
                                                             </select>
-                                                            <select class="form-control select2bs4 rtl text-right" style="width: 100%;" name="doer2_id" data-allow-clear="true">
+                                                            <select class="form-control select2bs4 rtl text-left" style="width: 100%;" name="doer2_id" data-allow-clear="true">
                                                                     <option value="">----------</option>
                                                                     
                                                                         <option class="rtl" value="" ></option>
@@ -172,8 +161,7 @@
                                                             
                                                         </div>
                                                         <label for="drive_id" class="col-sm-4 col-form-label">راننده</label>
-                                                        <label for="drive_id" class="col-sm-4 col-form-label">نصاب</label>
-                                                        <label for="drive_id" class="col-sm-4 col-form-label">سرویس‌کار</label>
+
                                                     </div>
                                                     <div class="form-group form-group-sm row">
                                                         <div class="col-sm-8">
