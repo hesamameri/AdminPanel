@@ -23,9 +23,10 @@ from customer import models
 from .models import  Inquiry  # Import your models
 from django.contrib.sessions.models import Session
 from django.views.decorators.cache import cache_page
+from django.db.models import Sum, Count
 from django.db.models import F, Sum
 from .models import FactorItem,FactorItemBalanceSVA
-from .forms import NewFactorAddress, NewFactorItem, NewFactorPayway, NewInquiry, NewObjItem,NewObjItemSpec, NewObjPayment, NewPreFactor
+from .forms import NewDepoSend, NewFactorAddress, NewFactorItem, NewFactorPayway, NewInquiry, NewObjItem,NewObjItemSpec, NewObjPayment, NewObjSend, NewPreFactor
 from django.core.files.storage import FileSystemStorage
 from django.db.models import Sum, F, Value, CharField, Case, When,FloatField,Subquery, OuterRef
 from django.db.models.functions import Coalesce
@@ -439,7 +440,6 @@ def factor(request,factor_id=None,obj_buyer = None):
                 factor_depo_data = DepoSend.objects.filter(source_id__in = factor_item_ids)
                 # print(factor_depo_data)
                 goods = factor_depo_data.values('goods')
-                
                 depo_ids = factor_depo_data.values('depo_id')
                 combined_depo_goods_data = ObjItem.objects.filter(obj_item_id__in = goods).values('name')
                 combined_depo_id_data = ObjItem.objects.filter(obj_item_id__in = depo_ids).values('name')
@@ -542,8 +542,77 @@ def factor(request,factor_id=None,obj_buyer = None):
 @login_required(login_url='Administrator:login_view')
 @permission_required('ROLE_PERSONEL','ROLE_ADMIN')
 def factor_add_depo(request):
-    
-    return redirect('customer:customerindex')
+    if request.method == 'POST':
+        
+        factor_item_id = request.POST.get('factor_item_id')
+        amount = int(request.POST.get('amount'))
+        factor_item = FactorItem.objects.get(factor_item_id = factor_item_id)
+        factor_item_product = factor_item.obj_item
+        
+        factor_item_amount = factor_item.amount
+        if factor_item_amount != amount :
+            print("didnt work")
+            print(request.POST)
+            print(factor_item_amount)
+
+        else:
+            depo_data = {
+                'source_type': 'FACTOR',
+                'source_id':factor_item_id,
+                'goods': factor_item_product.obj_item_id,
+                'phone':request.POST.get('phone'),
+                'mobile':request.POST.get('mobile'),
+                'address':request.POST.get('address'),
+                'city_id':request.POST.get('city_id'),
+                'receiver':request.POST.get('receiver'),
+                'depo_id':request.POST.get('depo'),
+                'reg_dt':datetime.datetime.now(),
+                'register': request.user.user_id,
+                'amount':float(amount),
+            }
+            
+            deposendform = NewDepoSend(depo_data)
+            if deposendform.is_valid():
+                deposendform.save()
+            else:
+                print("form is not valid")
+                print(deposendform.errors)
+            
+            # aggregating and checking for complete products register for creating objsend objects
+            factor_item_factor = factor_item.factor
+            relevant_factor_items = FactorItem.objects.filter(factor = factor_item_factor)
+            total_amount = relevant_factor_items.aggregate(total_amount=Sum('amount'))['total_amount']
+            all_ids = relevant_factor_items.values('factor_item_id')
+            depo_objects = DepoSend.objects.filter(source_id__in = all_ids)
+            total_depo_amount = depo_objects.aggregate(total_amount=Sum('amount'))['total_amount']
+            obj_id_115 = 115
+            obj_item_ids_with_obj_id_115 = ObjItem.objects.filter(obj_id=obj_id_115).values_list('obj_item_id', flat=True)
+
+            # Filter the relevant_factor_items based on obj_item_id
+            factor_items_with_obj_id_115 = relevant_factor_items.filter(obj_item_id__in=obj_item_ids_with_obj_id_115).first().factor_item_id
+            if total_amount == total_depo_amount :
+
+                obj_send_data = {
+                    'action': 'DRIVE',
+                    'source_type': 'FACTOR',
+                    'source_id' : factor_items_with_obj_id_115,
+                }
+                objsendform = NewObjSend(obj_send_data)
+                if objsendform.is_valid():
+                    objsendform.save()
+                else:
+                    print("something wrong with te objsend form")
+            # register = request.user.user_id
+            # city_id = request.POST.get('city_id')
+            # phone = request.POST.get('phone')
+            # mobile = request.POST.get('mobile')
+            # address = request.POST.get('address')
+            # receiver = request.POST.get('receiver')
+            # amount = request.POST.get('amount')
+            # depo = request.POST.get('depo')
+
+        
+    return redirect(reverse('customer:FactorWithFactorID', args=[factor_item_factor.factor_id]))
 
 
 
@@ -768,21 +837,76 @@ def customer_factor_assessment(request):
     return render(request,'Customer/CustomerFactorAssessment.html')
 
 ############################################################## DRIVER
+
 @login_required(login_url='Administrator:login_view')
 @permission_required('ROLE_PERSONEL','ROLE_ADMIN')
 def factor_send_index(request):
-    
-    items = ObjSend.objects.filter(action='DRIVE')
-    
+    # user_vendor = request.user.vendor_code
+    # user_city = VendorBuyerSVA.objects.filter(city_id=user_vendor)
+    # user_cart_city = user_city
+    # v_city_id = 1
+
+    # if user_cart_city:
+    #     v_city_id = ",".join(map(str, user_cart_city))
+
+    # if not v_city_id:
+    #     v_city_id = 1
 
     
-    return render(request,'Customer/FactorSendIndex.html',context={'items':items})
+    
+    objsendlist = ObjSend.objects.filter(
+    source_type='FACTOR',
+    action='DRIVE'
+    ).exclude(
+        Q(print_id__isnull=False) |
+        Q(print_dt__isnull=False) |
+        Q(print_desc__isnull=False) |
+        Q(drive_id__isnull=False) |
+        Q(doer2_id__isnull=False) |
+        Q(doer1_id__isnull=False) |
+        Q(drive_dt__isnull=False) |
+        Q(drive_desc__isnull=False) |
+        Q(drive_status__isnull=False) |
+        Q(drive_status_id__isnull=False) |
+        Q(drive_status_dt__isnull=False) |
+        Q(drive_status_desc__isnull=False) |
+        Q(drive_register__isnull=False) |
+        Q(assesmenter__isnull=False) |
+        Q(assesment_dt__isnull=False) |
+        Q(assesment_desc__isnull=False) |
+        Q(assesment_opinion__isnull=False) |
+        Q(docer__isnull=False) |
+        Q(doc_dt__isnull=False) |
+        Q(doc_desc__isnull=False) |
+        Q(price__isnull=False) |
+        Q(assesmenter_shop__isnull=False) |
+        Q(assesmenter_shop_dt__isnull=False) |
+        Q(assesment_seller__isnull=False) |
+        Q(assesment_shopper_desc__isnull=False) |
+        Q(assesment_shop__isnull=False) |
+        Q(assesment_drive_time__isnull=False) |
+        Q(assesmenter_service__isnull=False) |
+        Q(assesmenter_service_dt__isnull=False) |
+        Q(assesment_servic_action__isnull=False) |
+        Q(assesment_service_dress__isnull=False) |
+        Q(assesment_service_status__isnull=False) |
+        Q(shop_desc__isnull=False) |
+        Q(isntall_desc__isnull=False)
+    )
+    context = {
+        'items':objsendlist,
+    }
+    # factor_item_ids = objsendlist.values('source_id')
+    # factor_id = Factor.objects.filter(factor_id__in = factor_item_ids)
+    return render(request,'Customer/FactorSendIndex.html',context=context)
+
 
 @login_required(login_url='Administrator:login_view')
 @permission_required('ROLE_PERSONEL','ROLE_ADMIN')
 def customerfactor_sendassigndriver(request):
     
     return render(request,'Customer/CustomerFactorSendAssign.html')
+
 
 @login_required(login_url='Administrator:login_view')
 @permission_required('ROLE_PERSONEL','ROLE_ADMIN')
