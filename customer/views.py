@@ -893,8 +893,19 @@ def factor_send_index(request):
         Q(shop_desc__isnull=False) |
         Q(isntall_desc__isnull=False)
     )
+    objsendlist_sources = objsendlist.values('source_id')
+    factor_ids = FactorItem.objects.filter(factor_item_id__in = objsendlist_sources).values('factor')
+    factors = Factor.objects.filter(factor_id__in = factor_ids)
+    seller_factor_ids = []
+    for i in factors:
+        seller_factor_ids.append((i.factor_id,i.seller_factor_id))
+    
+    obj_customer_detail = DepoSend.objects.filter(source_id__in = objsendlist_sources)
+    combo_data  = list(zip(objsendlist,obj_customer_detail))
+    all_data = list(zip(combo_data,seller_factor_ids))
+    print(all_data)
     context = {
-        'items':objsendlist,
+        'items':all_data,
     }
     # factor_item_ids = objsendlist.values('source_id')
     # factor_id = Factor.objects.filter(factor_id__in = factor_item_ids)
