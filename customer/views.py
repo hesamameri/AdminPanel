@@ -580,14 +580,21 @@ def factor_add_depo(request):
             
             # aggregating and checking for complete products register for creating objsend objects
             factor_item_factor = factor_item.factor
+            print(factor_item_factor)
             relevant_factor_items = FactorItem.objects.filter(factor = factor_item_factor)
+            print(relevant_factor_items)
             total_amount = relevant_factor_items.aggregate(total_amount=Sum('amount'))['total_amount']
+            print(total_amount)
             all_ids = relevant_factor_items.values('factor_item_id')
+            print(all_ids)
             depo_objects = DepoSend.objects.filter(source_id__in = all_ids)
+            print(depo_objects)
             total_depo_amount = depo_objects.aggregate(total_amount=Sum('amount'))['total_amount']
-            obj_id_115 = 115
-            obj_item_ids_with_obj_id_115 = ObjItem.objects.filter(obj_id=obj_id_115).values_list('obj_item_id', flat=True)
-
+            print(total_depo_amount)
+            
+            obj_id_115 = [115,1150]
+            obj_item_ids_with_obj_id_115 = ObjItem.objects.filter(obj_id__in=obj_id_115).values_list('obj_item_id', flat=True)
+            print(obj_item_ids_with_obj_id_115)
             # Filter the relevant_factor_items based on obj_item_id
             factor_items_with_obj_id_115 = relevant_factor_items.filter(obj_item_id__in=obj_item_ids_with_obj_id_115).first().factor_item_id
             if total_amount == total_depo_amount :
@@ -840,77 +847,78 @@ def customer_factor_assessment(request):
 
 @login_required(login_url='Administrator:login_view')
 @permission_required('ROLE_PERSONEL','ROLE_ADMIN')
-def factor_send_index(request):
-    # user_vendor = request.user.vendor_code
-    # user_city = VendorBuyerSVA.objects.filter(city_id=user_vendor)
-    # user_cart_city = user_city
-    # v_city_id = 1
+def factor_send_index(request,obj_send_id=None):
+    # for when we have clicked on the send driver button ( a tag!)
+    # this section only makes change in the model to move it to the next section which is assign driver
+    if obj_send_id is not None:
+        item = get_object_or_404(ObjSend,obj_send_id=obj_send_id)
+        item.drive_register = request.user.user_id
+        item.save()
+        return redirect('customer:FactorSendIndex')
 
-    # if user_cart_city:
-    #     v_city_id = ",".join(map(str, user_cart_city))
+    else:
+        objsendlist = ObjSend.objects.filter(
+        source_type='FACTOR',
+        action='DRIVE'
+        ).exclude(
+            Q(print_id__isnull=False) |
+            Q(print_dt__isnull=False) |
+            Q(print_desc__isnull=False) |
+            Q(drive_id__isnull=False) |
+            Q(doer2_id__isnull=False) |
+            Q(doer1_id__isnull=False) |
+            Q(drive_dt__isnull=False) |
+            Q(drive_desc__isnull=False) |
+            Q(drive_status__isnull=False) |
+            Q(drive_status_id__isnull=False) |
+            Q(drive_status_dt__isnull=False) |
+            Q(drive_status_desc__isnull=False) |
+            Q(drive_register__isnull=False) |
+            Q(assesmenter__isnull=False) |
+            Q(assesment_dt__isnull=False) |
+            Q(assesment_desc__isnull=False) |
+            Q(assesment_opinion__isnull=False) |
+            Q(docer__isnull=False) |
+            Q(doc_dt__isnull=False) |
+            Q(doc_desc__isnull=False) |
+            Q(price__isnull=False) |
+            Q(assesmenter_shop__isnull=False) |
+            Q(assesmenter_shop_dt__isnull=False) |
+            Q(assesment_seller__isnull=False) |
+            Q(assesment_shopper_desc__isnull=False) |
+            Q(assesment_shop__isnull=False) |
+            Q(assesment_drive_time__isnull=False) |
+            Q(assesmenter_service__isnull=False) |
+            Q(assesmenter_service_dt__isnull=False) |
+            Q(assesment_servic_action__isnull=False) |
+            Q(assesment_service_dress__isnull=False) |
+            Q(assesment_service_status__isnull=False) |
+            Q(shop_desc__isnull=False) |
+            Q(isntall_desc__isnull=False)
+        )
+        objsendlist_sources = objsendlist.values('source_id')
+        factor_ids = FactorItem.objects.filter(factor_item_id__in = objsendlist_sources).values('factor')
+        factors = Factor.objects.filter(factor_id__in = factor_ids)
+        seller_factor_ids = []
+        for i in factors:
+            seller_factor_ids.append((i.factor_id,i.seller_factor_id))
+        
+        obj_customer_detail = DepoSend.objects.filter(source_id__in = objsendlist_sources)
+        combo_data  = list(zip(objsendlist,obj_customer_detail))
+        all_data = list(zip(combo_data,seller_factor_ids))
+        # print(all_data)
+        context = {
+            'items':all_data,
+        }
+        # factor_item_ids = objsendlist.values('source_id')
+        # factor_id = Factor.objects.filter(factor_id__in = factor_item_ids)
+        return render(request,'Customer/FactorSendIndex.html',context=context)
 
-    # if not v_city_id:
-    #     v_city_id = 1
+@login_required(login_url='Administrator:login_view')
+@permission_required('ROLE_PERSONEL','ROLE_ADMIN')
+def factor_send_print(request,obj_send_id=None):
 
-    
-    
-    objsendlist = ObjSend.objects.filter(
-    source_type='FACTOR',
-    action='DRIVE'
-    ).exclude(
-        Q(print_id__isnull=False) |
-        Q(print_dt__isnull=False) |
-        Q(print_desc__isnull=False) |
-        Q(drive_id__isnull=False) |
-        Q(doer2_id__isnull=False) |
-        Q(doer1_id__isnull=False) |
-        Q(drive_dt__isnull=False) |
-        Q(drive_desc__isnull=False) |
-        Q(drive_status__isnull=False) |
-        Q(drive_status_id__isnull=False) |
-        Q(drive_status_dt__isnull=False) |
-        Q(drive_status_desc__isnull=False) |
-        Q(drive_register__isnull=False) |
-        Q(assesmenter__isnull=False) |
-        Q(assesment_dt__isnull=False) |
-        Q(assesment_desc__isnull=False) |
-        Q(assesment_opinion__isnull=False) |
-        Q(docer__isnull=False) |
-        Q(doc_dt__isnull=False) |
-        Q(doc_desc__isnull=False) |
-        Q(price__isnull=False) |
-        Q(assesmenter_shop__isnull=False) |
-        Q(assesmenter_shop_dt__isnull=False) |
-        Q(assesment_seller__isnull=False) |
-        Q(assesment_shopper_desc__isnull=False) |
-        Q(assesment_shop__isnull=False) |
-        Q(assesment_drive_time__isnull=False) |
-        Q(assesmenter_service__isnull=False) |
-        Q(assesmenter_service_dt__isnull=False) |
-        Q(assesment_servic_action__isnull=False) |
-        Q(assesment_service_dress__isnull=False) |
-        Q(assesment_service_status__isnull=False) |
-        Q(shop_desc__isnull=False) |
-        Q(isntall_desc__isnull=False)
-    )
-    objsendlist_sources = objsendlist.values('source_id')
-    factor_ids = FactorItem.objects.filter(factor_item_id__in = objsendlist_sources).values('factor')
-    factors = Factor.objects.filter(factor_id__in = factor_ids)
-    seller_factor_ids = []
-    for i in factors:
-        seller_factor_ids.append((i.factor_id,i.seller_factor_id))
-    
-    obj_customer_detail = DepoSend.objects.filter(source_id__in = objsendlist_sources)
-    combo_data  = list(zip(objsendlist,obj_customer_detail))
-    all_data = list(zip(combo_data,seller_factor_ids))
-    print(all_data)
-    context = {
-        'items':all_data,
-    }
-    # factor_item_ids = objsendlist.values('source_id')
-    # factor_id = Factor.objects.filter(factor_id__in = factor_item_ids)
-    return render(request,'Customer/FactorSendIndex.html',context=context)
-
+    return render(request,'Customer/FactorSendPrint.html',context={})
 
 @login_required(login_url='Administrator:login_view')
 @permission_required('ROLE_PERSONEL','ROLE_ADMIN')
@@ -1191,12 +1199,7 @@ def factorsend_installerprint(request):
     
     return render(request,'Customer/FactorSendInstallerPrint.html')
 
-@cache_page(10)
-@login_required(login_url='Administrator:login_view')
-@permission_required('ROLE_PERSONEL','ROLE_ADMIN')
-def factor_send_print(request):
-    
-    return render(request,'Customer/FactorSendPrint.html')
+
 
 @cache_page(10)
 @login_required(login_url='Administrator:login_view')
