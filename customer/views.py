@@ -938,37 +938,60 @@ def customerfactor_sendassigndriver(request):
        
 
     else:
-        obj_sends = ObjSend.objects.filter(
-            Q(print_id__isnull=False) & Q(drive_id__isnull=True, drive_dt__isnull=True)
+        objsendlist = ObjSend.objects.filter(
+        source_type='FACTOR',
+        action='DRIVE',
+        drive_register__isnull=False
+        ).exclude(
+            Q(drive_id__isnull=False) |
+            Q(doer2_id__isnull=False) |
+            Q(doer1_id__isnull=False) |
+            Q(drive_dt__isnull=False) |
+            Q(drive_desc__isnull=False) |
+            Q(drive_status__isnull=False) |
+            Q(drive_status_id__isnull=False) |
+            Q(drive_status_dt__isnull=False) |
+            Q(drive_status_desc__isnull=False) |
+            Q(assesmenter__isnull=False) |
+            Q(assesment_dt__isnull=False) |
+            Q(assesment_desc__isnull=False) |
+            Q(assesment_opinion__isnull=False) |
+            Q(docer__isnull=False) |
+            Q(doc_dt__isnull=False) |
+            Q(doc_desc__isnull=False) |
+            Q(price__isnull=False) |
+            Q(assesmenter_shop__isnull=False) |
+            Q(assesmenter_shop_dt__isnull=False) |
+            Q(assesment_seller__isnull=False) |
+            Q(assesment_shopper_desc__isnull=False) |
+            Q(assesment_shop__isnull=False) |
+            Q(assesment_drive_time__isnull=False) |
+            Q(assesmenter_service__isnull=False) |
+            Q(assesmenter_service_dt__isnull=False) |
+            Q(assesment_servic_action__isnull=False) |
+            Q(assesment_service_dress__isnull=False) |
+            Q(assesment_service_status__isnull=False) |
+            Q(shop_desc__isnull=False) |
+            Q(isntall_desc__isnull=False)
         )
 
-        data_for_rendering = []
-    
-        for obj_send in obj_sends:
-            factor_item_id = obj_send.source_id
-            print(factor_item_id)
-            factor_id = FactorItem.objects.filter(factor_item_id=factor_item_id).values('factor_id')
-            print(factor_id)
-            buyer_id = Factor.objects.filter(factor_id__in=factor_id).values('buyer_id')
-            buyer_name = ObjItem.objects.filter(obj_item_id__in=buyer_id).values('name')
-            # Initialize a dictionary to store data for the current obj_payment
-            send_data = {
-                'obj_send': obj_sends,
-                'factor_id': factor_id,
-                'buyer_id': buyer_id,
-                'buyer_name': buyer_name,
-            }
-            
-            # Append the dictionary to the list
-            data_for_rendering.append(send_data)
-
+        objsendlist_sources = objsendlist.values('source_id')
+        factor_ids = FactorItem.objects.filter(factor_item_id__in = objsendlist_sources).values('factor')
+        factors = Factor.objects.filter(factor_id__in = factor_ids)
+        seller_factor_ids = []
+        for i in factors:
+            seller_factor_ids.append((i.factor_id,i.seller_factor_id))
         
+        obj_customer_detail = DepoSend.objects.filter(source_id__in = objsendlist_sources)
+        combo_data  = list(zip(objsendlist,obj_customer_detail))
+        all_data = list(zip(combo_data,seller_factor_ids))
+        # print(all_data)
         context = {
-            'obj_sends':obj_sends,
+            'items':all_data,
         }
-        
-
-        return render(request, 'Customer/CustomerFactorSendAssign.html', context=context)
+        # factor_item_ids = objsendlist.values('source_id')
+        # factor_id = Factor.objects.filter(factor_id__in = factor_item_ids)
+        return render(request,'Customer/CustomerFactorSendAssign.html',context=context)
 
 
 @login_required(login_url='Administrator:login_view')
