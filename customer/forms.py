@@ -1,5 +1,5 @@
 from django import forms
-from .models import CustomerSubSVA, Factor, FactorAddress, FactorDocument, FactorItem, FactorPayway, Inquiry,ObjItem,ObjItemSpec, ObjPayment,ObjSpec, PreFactor
+from .models import CustomerSubSVA, DepoSend, Factor, FactorAddress, FactorDocument, FactorItem, FactorPayway, Inquiry,ObjItem,ObjItemSpec, ObjPayment, ObjSend,ObjSpec, PreFactor
 
 
 
@@ -155,3 +155,28 @@ class DocumentUploadForm(forms.ModelForm):
             'reg_dt',
 
             ]
+class NewDepoSend(forms.ModelForm):
+    class Meta:
+            model = DepoSend
+            fields = [
+                    'source_type',
+                    'source_id',
+                    'goods',
+                    'phone',
+                    'mobile',
+                    'address',
+                    'receiver',
+                    'depo_id',
+                    'reg_dt',
+                    'register',
+                    'amount',
+                    ]
+
+class NewObjSend(forms.ModelForm):
+    class Meta:
+            model = ObjSend
+            fields = [
+                    'source_type',
+                    'source_id',
+                    'action',
+                    ]

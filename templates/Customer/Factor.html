@@ -184,7 +184,7 @@
                                                                                 <button class="btn btn-sm btn-success btn-asign-depo" 
                                                                                         data-toggle="modal" 
                                                                                         data-obid="{{product.obj_item_id}}"
-                                                                                        data-reminded=""
+                                                                                        data-fid="{{product.factor_item_id}}"
                                                                                         data-amount="{{product.amount}}" 
                                                                                         data-sended="{{product.sended}}"
                                                                                         data-target="#modal-assign-depo"><i class="fas fa-plus nav-icon"></i></button>
@@ -505,6 +505,7 @@
                                                                     <tbody>
                                                                     <tr>
                                                                         <th>ثبت کننده</th>
+                                                                    
                                                                         <td>{{obj.drive_register|register_user}}</td>
                             
                                                                         <th>سرویس دهنده</th>
@@ -1149,7 +1150,7 @@
                         </button>
                     </div>
                     <form method="POST" action="{% url 'customer:add_depo_factor'  %}">
-
+                        {% csrf_token %}
 
                         <input name="factor_item_id" id="sale_factor_item_id" type="hidden" value="">
                         <input name="city_id" id="sale_city_id" type="hidden" value="">
@@ -1183,6 +1184,16 @@
                                                 {% endfor %}
                                         </select>
                                     </div>
+                                    <script>
+                                        document.getElementById('factor_address').addEventListener('change', function () {
+                                            var selectedOption = this.options[this.selectedIndex];
+                                            document.getElementById('sale_city_id').value = selectedOption.getAttribute('data-city-id');
+                                            document.getElementById('sale_address').value = selectedOption.getAttribute('data-address');
+                                            document.getElementById('sale_phone').value = selectedOption.getAttribute('data-phone');
+                                            document.getElementById('sale_mobile').value = selectedOption.getAttribute('data-mobile');
+                                            document.getElementById('sale_receiver').value = selectedOption.getAttribute('data-receiver');
+                                        });
+                                    </script>
                                     <label for="factor_address" class="col-sm-3 col-form-label">آدرس</label>
                                     
                                 </div>
@@ -1206,7 +1217,7 @@
                         </div>
                 </form>
             </div>
-        </form>
+        </div>
     </div>
                        
         <!-- begin::Global Config(global config for global JS sciprts) -->
@@ -1267,7 +1278,7 @@
         $('#sale_depo').append('<option value="" selected></option>');  // Add an empty option
     });
         </script> -->
-        <script>
+        <!-- <script>
             document.addEventListener('DOMContentLoaded', function() {
     // Function to update the second select based on the selected obj_item_id
     function updateSecondSelect(objItemId) {
@@ -1324,9 +1335,72 @@
         saleDepo.innerHTML = '<option value="" selected></option>';  // Add an empty option
     });
 });
+        </script> -->
+        
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+    // Function to update the second select based on the selected obj_item_id
+    function updateSecondSelect(objItemId) {
+        var depoData = JSON.parse('{{ depo_data_json|safe }}');
+        var cityId = $('#factor_address').find(':selected').data('city-id').toString();
+        var depoInfo = depoData[cityId] || [];
+
+        $('#sale_city_id').val($('#factor_address').find(':selected').data('city-id'));
+        $('#sale_phone').val($('#factor_address').find(':selected').data('phone'));
+        $('#sale_mobile').val($('#factor_address').find(':selected').data('mobile'));
+        $('#sale_address').val($('#factor_address').find(':selected').data('address'));
+        $('#sale_receiver').val($('#factor_address').find(':selected').data('receiver'));
+
+        $('#sale_depo').empty(); // Clear any existing options
+
+        if (depoInfo.length === 0) {
+            $('#sale_depo').append('<option value="">هیچ انباری موجود نیست</option>');
+        } else {
+            depoInfo.forEach(function (item) {
+                // Check if the item's related_obj_item_id matches the selected obj_item_id
+                if (item.related_obj_item_id === objItemId) {
+                    var optionText = item.title + ' (موجودی: ' + item.net_amount + ')';
+                    var option = $('<option></option>').val(item.obj_item_id).text(optionText);
+                    $('#sale_depo').append(option);
+                }
+            });
+        }
+    }
+
+    // Event delegation to handle button click
+    document.addEventListener('click', function (event) {
+        // Check if the clicked element is a button with the class 'btn-asign-depo'
+        if (event.target.classList.contains('btn-asign-depo')) {
+            // Retrieve obj_item_id and factor_item_id from the clicked button using jQuery
+            var objItemId = $(event.target).data('obid');
+            var factorItemId = $(event.target).data('fid');
+            console.log('Selected obj_item_id (from button click):', objItemId);
+            console.log('Selected factor_item_id (from button click):', factorItemId);
+
+            // Update the 'factor_item_id' input element in the modal
+            $('#sale_factor_item_id').val(factorItemId);
+
+            // Update the second select
+            updateSecondSelect(objItemId);
+        }
+    });
+
+    // Trigger the change event for '#factor_address' when the modal is shown
+    var modalAssignDepo = document.getElementById('modal-assign-depo');
+    modalAssignDepo.addEventListener('shown.bs.modal', function () {
+        var factorAddress = document.getElementById('factor_address');
+        var changeEvent = new Event('change', { bubbles: true });
+        factorAddress.dispatchEvent(changeEvent);
+    });
+
+    // Initialize the second select when the modal is shown
+    modalAssignDepo.addEventListener('shown.bs.modal', function () {
+        var saleDepo = document.getElementById('sale_depo');
+        saleDepo.innerHTML = '<option value="" selected></option>';  // Add an empty option
+    });
+});
+
         </script>
-        
-        
         
 
 
