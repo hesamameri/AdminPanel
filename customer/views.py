@@ -579,6 +579,7 @@ def factor_add_depo(request):
                 print(deposendform.errors)
             
             # aggregating and checking for complete products register for creating objsend objects
+            print(factor_item)
             factor_item_factor = factor_item.factor
             print(factor_item_factor)
             relevant_factor_items = FactorItem.objects.filter(factor = factor_item_factor)
@@ -928,8 +929,8 @@ def customerfactor_sendassigndriver(request):
         obj_send_id = request.POST['obj_send_id']
         obj_send = get_object_or_404(ObjSend, pk = obj_send_id)
         obj_send.drive_id = request.POST['drive_id']
-        obj_send.doer2_id = request.POST['doer2_id']
-        obj_send.doer1_id = request.POST['doer1_id']
+        # obj_send.doer2_id = request.POST['doer2_id']
+        # obj_send.doer1_id = request.POST['doer1_id']
         obj_send.drive_desc = request.POST['drive_desc']
         obj_send.drive_dt = datetime.datetime.now()
         obj_send.save()
