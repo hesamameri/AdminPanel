@@ -10,7 +10,7 @@ from django.db.models import F
 from django.utils import timezone
 from customer.templatetags.converter_tags import subtract
 from ticket.models import Ticket
-from .models import CityItemSVA, Contract, ContractCity, CreditSumSVA, DepoInit, DepoSend, Factor, FactorAddress, FactorPayway, ObjItem, ObjItemCity, ObjItemSpec, ObjPayment, ObjSend, ObjSpec, PreFactor, ProductSVA, VendorBuyerSVA, VendorBuyerSubSVA
+from .models import CityItemSVA, Contract, ContractCity, CreditSumSVA, DepoInit, DepoSend, Factor, FactorAddress, FactorPayway, ObjItem, ObjItemCity, ObjItemSpec, ObjPayment, ObjSend, ObjSendSerial, ObjSpec, PreFactor, ProductSVA, VendorBuyerSVA, VendorBuyerSubSVA
 from .models import CustomerSubSVA, CustomerSva, FactorComment, FactorDocument, FactorItem, FactorSVA, ObjItemSVA, ShopCustomerCount
 from django.core.paginator import Paginator, EmptyPage
 from collections import defaultdict
@@ -26,7 +26,7 @@ from django.views.decorators.cache import cache_page
 from django.db.models import Sum, Count
 from django.db.models import F, Sum
 from .models import FactorItem,FactorItemBalanceSVA
-from .forms import NewDepoSend, NewFactorAddress, NewFactorComment, NewFactorItem, NewFactorPayway, NewInquiry, NewObjItem,NewObjItemSpec, NewObjPayment, NewObjSend, NewPreFactor
+from .forms import NewDepoSend, NewFactorAddress, NewFactorComment, NewFactorItem, NewFactorPayway, NewInquiry, NewObjItem,NewObjItemSpec, NewObjPayment, NewObjSend, NewObjSendSerial, NewPreFactor
 from django.core.files.storage import FileSystemStorage
 from django.db.models import Sum, F, Value, CharField, Case, When,FloatField,Subquery, OuterRef
 from django.db.models.functions import Coalesce
@@ -1015,7 +1015,7 @@ def customerfactor_sendassigndriver(request):
         for i in factors:
             factor_comments = FactorComment.objects.filter(factor_id = i.factor_id,level='DRIVE')
             seller_factor_ids.append((i.factor_id,i.seller_factor_id,factor_comments))
-        
+        print(seller_factor_ids)
         obj_customer_detail = DepoSend.objects.filter(source_id__in = objsendlist_sources)
         combo_data  = list(zip(objsendlist,obj_customer_detail))
         all_data = list(zip(combo_data,seller_factor_ids))
@@ -1032,7 +1032,96 @@ def customerfactor_sendassigndriver(request):
 @permission_required('ROLE_PERSONEL','ROLE_ADMIN')
 def customerfactor_sendstatus(request):
     
-    return render(request,'Customer/CustomerFactorSendStatus.html')
+    if request.method == 'POST':
+        print(request.POST)
+        objsend = get_object_or_404(ObjSend,obj_send_id=request.POST.get('obj_send_id'))
+        drive_status = request.POST['drive_status']
+        drive_status_id = request.user.user_id
+        drive_status_desc = request.POST['drive_status_desc']
+        drive_status_dt = datetime.datetime.now()
+        objsend.drive_status_id = drive_status
+        objsend.drive_status_desc = drive_status_id
+        objsend.drive_status_dt = drive_status_desc
+        objsend.drive_status = drive_status_dt
+        objsend.save()
+
+        sendserial = {
+            'obj_send_id':1,
+            'factor_id':request.POST['factor_id'],
+            'product_id':request.POST['product_id'],
+            'serial_drive':request.POST['serial_drive'],
+        }
+
+        newobjsendserial = NewObjSendSerial(sendserial)
+        if newobjsendserial.is_valid():
+            newobjsendserial.save()
+        else:
+            print(newobjsendserial.errors)
+            return redirect('customer:CustomerFactorSendStatus')
+
+        #the same thing for factor_paywayand factor
+        #do these steps:
+            # check all the input tags inthe htmlfor fields you need.make sure all are there.
+            # get all the data and put it ina dictionary like example ---> sendserial 
+            #  go to forms.py and find the form for the model and create one like :newobjsendserial = NewObjSendSerial(sendserial)
+            # use is_valid and save if okay. else: print errors
+            # redirect
+
+
+        return render(request,'Customer/CustomerFactorSendStatus.html')
+    else:
+        objsendlist = ObjSend.objects.filter(
+        source_type='FACTOR',
+        action='DRIVE',
+        drive_register__isnull=False,
+        drive_id__isnull=False,
+        drive_dt__isnull=False,
+        ).exclude(
+            Q(drive_status__isnull=False) |
+            Q(drive_status_id__isnull=False) |
+            Q(drive_status_dt__isnull=False) |
+            Q(drive_status_desc__isnull=False) |
+            Q(assesmenter__isnull=False) |
+            Q(assesment_dt__isnull=False) |
+            Q(assesment_desc__isnull=False) |
+            Q(assesment_opinion__isnull=False) |
+            Q(docer__isnull=False) |
+            Q(doc_dt__isnull=False) |
+            Q(doc_desc__isnull=False) |
+            Q(price__isnull=False) |
+            Q(assesmenter_shop__isnull=False) |
+            Q(assesmenter_shop_dt__isnull=False) |
+            Q(assesment_seller__isnull=False) |
+            Q(assesment_shopper_desc__isnull=False) |
+            Q(assesment_shop__isnull=False) |
+            Q(assesment_drive_time__isnull=False) |
+            Q(assesmenter_service__isnull=False) |
+            Q(assesmenter_service_dt__isnull=False) |
+            Q(assesment_servic_action__isnull=False) |
+            Q(assesment_service_dress__isnull=False) |
+            Q(assesment_service_status__isnull=False) |
+            Q(shop_desc__isnull=False) |
+            Q(isntall_desc__isnull=False)
+        )
+        objsendlist_sources = objsendlist.values('source_id')
+        factor_ids = FactorItem.objects.filter(factor_item_id__in = objsendlist_sources).values('factor')
+        print(factor_ids)
+        objsendserials = ObjSendSerial.objects.filter(factor_id__in = factor_ids)
+        factors = Factor.objects.filter(factor_id__in = factor_ids)
+        seller_factor_ids = []
+        for i in factors:
+            factor_comments = FactorComment.objects.filter(factor_id = i.factor_id,level='DRIVE')
+            seller_factor_ids.append((i.factor_id,i.seller_factor_id,factor_comments))
+        obj_customer_detail = DepoSend.objects.filter(source_id__in = objsendlist_sources)
+        combo_data  = list(zip(objsendlist,obj_customer_detail))
+        all_data = list(zip(combo_data,seller_factor_ids))
+
+        context = {
+            'items':all_data,
+        }
+
+
+        return render(request,'Customer/CustomerFactorSendStatus.html',context=context)
 
 ############################################################## INSTALL
 @login_required(login_url='Administrator:login_view')
