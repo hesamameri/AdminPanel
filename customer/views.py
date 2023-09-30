@@ -579,6 +579,7 @@ def factor_add_depo(request):
                 print(deposendform.errors)
             
             # aggregating and checking for complete products register for creating objsend objects
+            print(factor_item)
             factor_item_factor = factor_item.factor
             print(factor_item_factor)
             relevant_factor_items = FactorItem.objects.filter(factor = factor_item_factor)
