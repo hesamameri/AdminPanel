@@ -88,6 +88,7 @@
                                                                             </tr>
                                                                         </thead>
                                                                         <tbody>
+                                                                            {% for item in obj_sends %}
                                                                                 <tr>
                                                                                     <td></td>
                                                                                     <td></td>
@@ -107,7 +108,9 @@
                                                                                                 <button class="btn btn-primary btn-xs btn-class" type="submit">چاپ فاکتور</button>
                                                                                             </form>
                                                                                     </td>
+                                                                                    {% endfor %}
                                                                         <tbody>
+
                                                                     </table>
                                                                 </div>
                                                             </div>
@@ -136,29 +139,17 @@
                                                     <div class="form-group form-group-sm row">
                                                         <div class="col-sm-8">
                                                             <select class="form-control select2bs4 rtl text-left" style="width: 100%;" name="drive_id" data-allow-clear="true">
-                                                                
-                                                                        <option value="" ></option>
-                                                                   
-                                                                    
-                                                                        <option value=""></option>
-                                                                        <option value="" ></option>
-                                                                
-                                                                        <option value="" ></option>
-                                                                    
+                                                                        <option value="4012001" >حسن عاقلی</option>        
+                                                                        <option value="4012003">حمل با مشتری</option>
+                                                                        <option value="4012008" >شهاب محسنی</option>
+                                                                        <option value="4012009" >علی سعیدی</option>
+                                                                        <option value="4012010" >محمد نوری</option>
+                                                                        <option value="4012011" >فرهاد چنگی</option>
+                                                                        <option value="4012012" >امیر دیواندری</option>
+                                                                        <option value="4012013" >اسنپ</option>
+                                                                        <option value="4012014" >جلال علی آبادی</option>
+       
                                                             </select>
-                                                            <select class="form-control select2bs4 rtl text-left" style="width: 100%;" name="doer1_id" data-allow-clear="true">
-                                                                    <option value="">----------</option>
-                                                                        
-                                                                        <option value="" ></option>
-                                                                   
-                                                            </select>
-                                                            <select class="form-control select2bs4 rtl text-left" style="width: 100%;" name="doer2_id" data-allow-clear="true">
-                                                                    <option value="">----------</option>
-                                                                    
-                                                                        <option class="rtl" value="" ></option>
-                                                                    
-                                                            </select>
-                                                            
                                                         </div>
                                                         <label for="drive_id" class="col-sm-4 col-form-label">راننده</label>
 

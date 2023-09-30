@@ -781,8 +781,51 @@ def factor_send_index(request):
 @login_required(login_url='Administrator:login_view')
 @permission_required('ROLE_PERSONEL','ROLE_ADMIN')
 def customerfactor_sendassigndriver(request):
+    if request.method == 'POST':
+        print(request.POST)
+        obj_send_id = request.POST['obj_send_id']
+        obj_send = get_object_or_404(ObjSend, pk = obj_send_id)
+        obj_send.drive_id = request.POST['drive_id']
+        obj_send.doer2_id = request.POST['doer2_id']
+        obj_send.doer1_id = request.POST['doer1_id']
+        obj_send.drive_desc = request.POST['drive_desc']
+        obj_send.drive_dt = datetime.datetime.now()
+        obj_send.save()
+        return render(request, 'Customer/CustomerFactorSendAssign.html', context=context)
+       
+
+    else:
+        obj_sends = ObjSend.objects.filter(
+            Q(print_id__isnull=False) & Q(drive_id__isnull=True, drive_dt__isnull=True)
+        )
+
+        data_for_rendering = []
     
-    return render(request,'Customer/CustomerFactorSendAssign.html')
+        for obj_send in obj_sends:
+            factor_item_id = obj_send.source_id
+            print(factor_item_id)
+            factor_id = FactorItem.objects.filter(factor_item_id=factor_item_id).values('factor_id')
+            print(factor_id)
+            buyer_id = Factor.objects.filter(factor_id__in=factor_id).values('buyer_id')
+            buyer_name = ObjItem.objects.filter(obj_item_id__in=buyer_id).values('name')
+            # Initialize a dictionary to store data for the current obj_payment
+            send_data = {
+                'obj_send': obj_sends,
+                'factor_id': factor_id,
+                'buyer_id': buyer_id,
+                'buyer_name': buyer_name,
+            }
+            
+            # Append the dictionary to the list
+            data_for_rendering.append(send_data)
+
+        
+        context = {
+            'obj_sends':obj_sends,
+        }
+        
+
+        return render(request, 'Customer/CustomerFactorSendAssign.html', context=context)
 
 @login_required(login_url='Administrator:login_view')
 @permission_required('ROLE_PERSONEL','ROLE_ADMIN')
