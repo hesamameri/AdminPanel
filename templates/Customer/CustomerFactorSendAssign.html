@@ -113,11 +113,15 @@
                                                                                     </td>
                                                                                     <td>
                                                                                         <i class="fas fa-info-circle btn btn-xs btn-info btn-flat" data-container="body" data-toggle="popover" data-placement="top" data-content=""></i>
-                                                                                        <i data-factor-id="1" data-toggle="modal" data-target="#modal-comment" class="fas fa-comment btn btn-xs  btn-flat btn-comment">&nbsp;</i>
+                                                                                        <i data-objsend="{{item.0.0.obj_send_id}}"
+                                                                                         data-toggle="modal"
+                                                                                          data-target="#modal-comment" 
+                                                                                          data-load-comments="loadComments({{item.0.0.obj_send_id}}, '{{item.1.2}}')"
+                                                                                          class="fas fa-comment btn btn-xs  btn-flat btn-comment">&nbsp;</i>
                                                                                     </td>
                                                                                     <td>
                                                                                             <form method="get" action="" class="frm1">
-                                                                                                <a class="btn btn-success btn-xs btn-assign-driver btn-class" data-factor-id="" data-toggle="modal" data-target="#modal-assign-driver">اختصاص راننده</a>
+                                                                                                <a class="btn btn-success btn-xs btn-assign-driver btn-class" data-objsend="{{item.0.0.obj_send_id}}" data-toggle="modal" data-target="#modal-assign-driver">اختصاص راننده</a>
                                                                                             </form>
                                                                                             <a class="btn btn-primary btn-xs btn-class" href="{% url 'customer:FactorSendPrint' obj_send_id=item.0.0.obj_send_id %}">چاپ فاکتور</a>
                                                                                     </td>
@@ -145,8 +149,10 @@
                                             <span aria-hidden="true">&times;</span>
                                             </button>
                                         </div>
-                                    <form method="POST" action="" enctype="multipart/form-data" class="frm1">
-                                        <input type="hidden" name="factor_id" id="factor_id">
+                                    <form method="POST" action="{% url 'customer:CustomerFactorSendAssignDriver' %}" enctype="multipart/form-data" class="frm1">
+                                        {% csrf_token %}
+                                        <input type="hidden" name="objsend" id="objsend">
+                                        <input type="hidden" name="formtype" value="assign_driver">
                                         <div class="modal-body">
                                                     <div class="form-group form-group-sm row">
                                                         <div class="col-sm-8">
@@ -185,27 +191,35 @@
                                 <!-- /.modal-dialog -->
                             </div>
                             <div class="modal fade" id="modal-comment">
-                                <form method="post" action="">
-                                <div class="modal-dialog">
-                                    <div class="modal-content">
-                                        <div class="modal-header rtl">
-                                            <h4 class="modal-title">پیام‌ها</h4>
-                                        </div>
-                                        <div class="modal-body">
-                                            <div class="row">
-                                                <div class="col-md-12 body">
-                                                </div>
+                                <form method="post" action="{% url 'customer:CustomerFactorSendAssignDriver' %}">
+                                {% csrf_token %}
+                                    <input type="hidden" name="objsend" id="objsend-comment">
+                                    <input type="hidden" name="formtype" value="drive_comment">
+
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header rtl">
+                                                <h4 class="modal-title">پیام‌ها</h4>
                                             </div>
-                                            <input type="hidden" name="factor_id" id="factor-id-val">
-                                            <input type="hidden" name="level" value="">
-                                            <input type="text" name="comment" class="form-control rtl" placeholder="متن پیام">
-                                        </div>
-                                        <div class="modal-footer justify-content-between">
-                                            <button type="submit" class="btn btn-primary">ثبت پیام</button>
-                                            <button type="button" class="btn btn-default" data-dismiss="modal">بستن</button>
+                                            <div class="modal-body">
+                                                <div class="row">
+
+                                                    <div class="col-md-12 body">
+                                                        <div id="comments-placeholder"></div>
+                                                    </div>
+
+                                                </div>
+                                                <input type="hidden" name="factor_id" id="factor-id-val">
+                                                <input type="hidden" name="level" value="">
+                                                <input type="text" name="comment" class="form-control rtl" placeholder="متن پیام">
+                                            </div>
+
+                                            <div class="modal-footer justify-content-between">
+                                                <button type="submit" class="btn btn-primary">ثبت پیام</button>
+                                                <button type="button" class="btn btn-default" data-dismiss="modal">بستن</button>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
                                 </form>
                             </div>
                         </div>
@@ -224,62 +238,53 @@
 
             <!-- end:: Page -->
         </div>
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                // Listen to the 'show.bs.modal' event on the modal
+                $('#modal-assign-driver').on('show.bs.modal', function(event) {
+                    // Get the button (<a> tag) that triggered the modal
+                    var button = $(event.relatedTarget);
 
-        <!-- end:: Root -->
+                    // Get the 'data-buyer' attribute from the button
+                    var objValue = button.data('objsend');
 
-        <!-- begin:: Topbar Offcanvas Panels -->
+                    // Find the hidden input element by its ID and update its value
+                    $('#objsend').val(objValue);
+            });
+            });
+                    
+        </script>
 
-        <!-- begin::Offcanvas Toolbar Quick Actions -->
-        <!-- <div id="kt_offcanvas_toolbar_quick_actions" class="kt-offcanvas-panel">
-            <div class="kt-offcanvas-panel__head">
-                <h3 class="kt-offcanvas-panel__title">
-                    Quick Actions
-                </h3>
-                <a href="#" class="kt-offcanvas-panel__close" id="kt_offcanvas_toolbar_quick_actions_close"><i
-                        class="flaticon2-delete"></i></a>
-            </div>
-            <div class="kt-offcanvas-panel__body">
-                <div class="kt-grid-nav-v2">
-                    <a href="#" class="kt-grid-nav-v2__item">
-                        <div class="kt-grid-nav-v2__item-icon"><i class="flaticon2-box"></i></div>
-                        <div class="kt-grid-nav-v2__item-title">Orders</div>
-                    </a>
-                    <a href="#" class="kt-grid-nav-v2__item">
-                        <div class="kt-grid-nav-v2__item-icon"><i class="flaticon-download-1"></i></div>
-                        <div class="kt-grid-nav-v2__item-title">Uploades</div>
-                    </a>
-                    <a href="#" class="kt-grid-nav-v2__item">
-                        <div class="kt-grid-nav-v2__item-icon"><i class="flaticon2-supermarket"></i></div>
-                        <div class="kt-grid-nav-v2__item-title">Products</div>
-                    </a>
-                    <a href="#" class="kt-grid-nav-v2__item">
-                        <div class="kt-grid-nav-v2__item-icon"><i class="flaticon2-avatar"></i></div>
-                        <div class="kt-grid-nav-v2__item-title">Customers</div>
-                    </a>
-                    <a href="#" class="kt-grid-nav-v2__item">
-                        <div class="kt-grid-nav-v2__item-icon"><i class="flaticon2-list"></i></div>
-                        <div class="kt-grid-nav-v2__item-title">Blog Posts</div>
-                    </a>
-                    <a href="#" class="kt-grid-nav-v2__item">
-                        <div class="kt-grid-nav-v2__item-icon"><i class="flaticon2-settings"></i></div>
-                        <div class="kt-grid-nav-v2__item-title">Settings</div>
-                    </a>
-                </div>
-            </div>
-        </div> -->
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+    // Listen to the 'show.bs.modal' event on the comment modal
+    $('#modal-comment').on('show.bs.modal', function(event) {
+        // Get the button (<i> tag) that triggered the modal
+        var icon = $(event.relatedTarget);
 
-        <!-- end::Offcanvas Toolbar Quick Actions -->
+        // Get the 'data-objsend' attribute from the icon
+        var objValue = icon.data('objsend');
 
-        <!-- end:: Topbar Offcanvas Panels -->
+        // Find the hidden input element by its ID and update its value
+        $('#objsend-comment').val(objValue);
+    });
+});
+        </script>
+       
+<script>
+    
+    function loadComments(objSendId, comments) {
+        // Prepare the HTML content for comments using the data from the queryset
+        var commentsHTML = "<ul>";
+        comments.split(',').forEach(function(comment) {
+            commentsHTML += "<li>" + comment + "</li>";
+        });
+        commentsHTML += "</ul>";
 
-        <!-- begin:: Quick Panel -->
-        
-        <!-- end:: Scrolltop -->
-
-        <!-- begin:: Demo Toolbar -->
-
-        <!-- end:: Demo Toolbar -->
-
+        // Set the HTML content to the placeholder element
+        document.getElementById('comments-placeholder').innerHTML = commentsHTML;
+    }
+</script>
 
         <!-- begin::Global Config(global config for global JS sciprts) -->
         {% include "partials/script.html" %}

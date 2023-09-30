@@ -1,5 +1,5 @@
 from django import forms
-from .models import CustomerSubSVA, DepoSend, Factor, FactorAddress, FactorDocument, FactorItem, FactorPayway, Inquiry,ObjItem,ObjItemSpec, ObjPayment, ObjSend,ObjSpec, PreFactor
+from .models import CustomerSubSVA, DepoSend, Factor, FactorAddress, FactorComment, FactorDocument, FactorItem, FactorPayway, Inquiry,ObjItem,ObjItemSpec, ObjPayment, ObjSend,ObjSpec, PreFactor
 
 
 
@@ -180,3 +180,15 @@ class NewObjSend(forms.ModelForm):
                     'source_id',
                     'action',
                     ]
+            
+
+class NewFactorComment(forms.ModelForm):
+     class Meta:
+          model = FactorComment
+          fields = [
+               'factor_id',
+               'level',
+               'body',
+               'register',
+               'reg_dt',
+          ]

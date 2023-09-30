@@ -26,7 +26,7 @@ from django.views.decorators.cache import cache_page
 from django.db.models import Sum, Count
 from django.db.models import F, Sum
 from .models import FactorItem,FactorItemBalanceSVA
-from .forms import NewDepoSend, NewFactorAddress, NewFactorItem, NewFactorPayway, NewInquiry, NewObjItem,NewObjItemSpec, NewObjPayment, NewObjSend, NewPreFactor
+from .forms import NewDepoSend, NewFactorAddress, NewFactorComment, NewFactorItem, NewFactorPayway, NewInquiry, NewObjItem,NewObjItemSpec, NewObjPayment, NewObjSend, NewPreFactor
 from django.core.files.storage import FileSystemStorage
 from django.db.models import Sum, F, Value, CharField, Case, When,FloatField,Subquery, OuterRef
 from django.db.models.functions import Coalesce
@@ -930,16 +930,44 @@ def factor_send_print(request,obj_send_id=None):
 def customerfactor_sendassigndriver(request):
     if request.method == 'POST':
         print(request.POST)
-        obj_send_id = request.POST['obj_send_id']
-        obj_send = get_object_or_404(ObjSend, pk = obj_send_id)
-        obj_send.drive_id = request.POST['drive_id']
-        # obj_send.doer2_id = request.POST['doer2_id']
-        # obj_send.doer1_id = request.POST['doer1_id']
-        obj_send.drive_desc = request.POST['drive_desc']
-        obj_send.drive_dt = datetime.datetime.now()
-        obj_send.save()
-        return render(request, 'Customer/CustomerFactorSendAssign.html', context=context)
-       
+        if request.POST.get('formtype') == 'assign_driver' :
+            obj_send_id = request.POST['objsend']
+            obj_send = get_object_or_404(ObjSend, pk = obj_send_id)
+            obj_send.drive_id = request.POST['drive_id']
+            # obj_send.doer2_id = request.POST['doer2_id']
+            # obj_send.doer1_id = request.POST['doer1_id']
+            obj_send.drive_desc = request.POST['drive_desc']
+            obj_send.drive_dt = datetime.datetime.now()
+            obj_send.save()
+            return redirect('customer:CustomerFactorSendAssignDriver')
+        elif request.POST.get('formtype') == 'drive_comment':
+            print("SSSS")
+            source_id = get_object_or_404(ObjSend,obj_send_id = request.POST['objsend']).source_id
+            factor_item = get_object_or_404(FactorItem,factor_item_id = source_id).factor.factor_id
+            print(factor_item)
+
+            driver_data = {
+                'factor_id': factor_item,
+                'level': 'DRIVE',
+                'body' : request.POST.get('comment'),
+                'register': request.user.user_id,
+                'reg_dt': datetime.datetime.now(),
+            }
+
+            drivercommentform = NewFactorComment(driver_data)
+            if drivercommentform.is_valid():
+                drivercommentform.save()
+            else:
+                print("there is something wrong with the form")
+                print(drivercommentform.errors)
+                return redirect('customer:CustomerFactorSendAssignDriver')
+            
+
+            return redirect('customer:CustomerFactorSendAssignDriver')
+        else:
+           
+            return redirect('customer:CustomerFactorSendAssignDriver')
+
 
     else:
         objsendlist = ObjSend.objects.filter(
@@ -979,12 +1007,14 @@ def customerfactor_sendassigndriver(request):
             Q(isntall_desc__isnull=False)
         )
 
+
         objsendlist_sources = objsendlist.values('source_id')
         factor_ids = FactorItem.objects.filter(factor_item_id__in = objsendlist_sources).values('factor')
         factors = Factor.objects.filter(factor_id__in = factor_ids)
         seller_factor_ids = []
         for i in factors:
-            seller_factor_ids.append((i.factor_id,i.seller_factor_id))
+            factor_comments = FactorComment.objects.filter(factor_id = i.factor_id,level='DRIVE')
+            seller_factor_ids.append((i.factor_id,i.seller_factor_id,factor_comments))
         
         obj_customer_detail = DepoSend.objects.filter(source_id__in = objsendlist_sources)
         combo_data  = list(zip(objsendlist,obj_customer_detail))
