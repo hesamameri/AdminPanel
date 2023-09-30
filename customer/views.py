@@ -918,7 +918,11 @@ def factor_send_index(request,obj_send_id=None):
 @permission_required('ROLE_PERSONEL','ROLE_ADMIN')
 def factor_send_print(request,obj_send_id=None):
 
-    return render(request,'Customer/FactorSendPrint.html',context={})
+    obj_send = get_object_or_404(ObjSend,obj_send_id = obj_send_id)
+    obj_send.print_id = request.user.user_id
+    obj_send.print_dt = datetime.datetime.now()
+    obj_send.save()
+    return redirect("customer:CustomerFactorSendAssignDriver")
 
 @login_required(login_url='Administrator:login_view')
 @permission_required('ROLE_PERSONEL','ROLE_ADMIN')
@@ -928,8 +932,8 @@ def customerfactor_sendassigndriver(request):
         obj_send_id = request.POST['obj_send_id']
         obj_send = get_object_or_404(ObjSend, pk = obj_send_id)
         obj_send.drive_id = request.POST['drive_id']
-        obj_send.doer2_id = request.POST['doer2_id']
-        obj_send.doer1_id = request.POST['doer1_id']
+        # obj_send.doer2_id = request.POST['doer2_id']
+        # obj_send.doer1_id = request.POST['doer1_id']
         obj_send.drive_desc = request.POST['drive_desc']
         obj_send.drive_dt = datetime.datetime.now()
         obj_send.save()
