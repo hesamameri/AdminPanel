@@ -1,0 +1,289 @@
+{% load static %}
+{% load converter_tags %}
+<!DOCTYPE html>
+
+<html lang="fa">
+
+    <!-- begin::Head -->
+    
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <style>
+        button{
+            font-size: 0.5rem;
+            outline: none;
+            padding: 5px 6px;
+            border-radius: 10px;
+            background-color: rgb(0,0,0);
+            color: white;
+        }
+    </style>
+
+    {% include "partials/head.html" %}
+
+
+    <!-- end::Head -->
+
+    <!-- begin::Body -->
+
+    <body
+        class="kt-quick-panel--right kt-demo-panel--right kt-offcanvas-panel--right kt-header--fixed kt-header-mobile--fixed kt-subheader--enabled kt-subheader--transparent kt-aside--enabled kt-aside--fixed kt-page--loading">
+
+        <!-- begin:: Header Mobile -->
+
+        {% include "partials/MobileHeader.html" %}
+
+        <!-- end:: Header Mobile -->
+
+        <!-- begin:: Root -->
+        <div class="kt-grid kt-grid--hor kt-grid--root">
+
+            <!-- begin:: Page -->
+            <div class="kt-grid__item kt-grid__item--fluid kt-grid kt-grid--ver kt-page">
+
+                <!-- begin:: Aside -->
+                {% include "partials/sidebar.html" %}
+
+
+                <!-- end:: Aside -->
+
+                <!-- begin:: Wrapper -->
+                <div class="kt-grid__item kt-grid__item--fluid kt-grid kt-grid--hor kt-wrapper" id="kt_wrapper">
+
+                    <!-- begin:: Header -->
+
+                    {% include "partials/header.html" %}
+                    <!-- end:: Header -->
+                    <div class="kt-grid__item kt-grid__item--fluid kt-grid kt-grid--hor">
+
+                        <!-- begin:: Subheader -->
+                        {% include "partials/subheader.html" %}
+
+                        <!-- end:: Subheader -->
+
+                        <!-- begin:: Content -->
+
+
+                            <div class="content-wrapper">
+                                <div class="content-header">
+                                    <div class="container-fluid">
+                                    <div class="row mb-2">
+                                        <div class="col-sm-12">
+                                            <ol class="breadcrumb float-sm-left ">
+                                                    <li class="breadcrumb-item active">خدمت نصب</li>
+                                                    <li class="breadcrumb-item active">لیست منتظر نصب</li>
+                                                    
+                                                    
+
+                                            </ol>
+                                        </div>
+                                        
+                                    </div>
+                                    </div>
+                                    <!-- <div class="container text-white">
+                                        <form action="" method="get">
+                                            {% csrf_token %}
+                                            <input type="text" name="q"   placeholder="Search Blog">
+                                            <button type="submit">جستجو</button>
+                                    </div> -->
+                                </div>
+                                <div class="content">
+                                    <div class="container-fluid">
+                                        <div class="row">
+                                            <div class="col-lg-12">
+                                                <div class="card card-primary card-outline">
+                                                    <div class="card-body">
+                                                        <div class="kt-portlet__body">
+
+                                                            <!--begin: Search Form -->
+                                                            <div class="kt-form kt-fork--label-right kt-margin-t-20 kt-margin-b-10">
+                                                                <div class="row align-items-center">
+                                                                    <div class="col-xl-5 order-2 order-xl-1 ">
+                                                                        <div class="row align-items-center">
+                                                                            <div class="col-md-6 kt-margin-b-20-tablet-and-mobile">
+                                                                                <div class="kt-input-icon kt-input-icon--left" style="display: flex;
+                                                                                align-items: center;">
+                                                                                    <input type="text" class="form-control"
+                                                                                        placeholder="...جستجو" id="generalSearch">
+                                                                                    <span class="kt-input-icon__icon kt-input-icon__icon--left">
+                                                                                        <a><span><i class="la la-search"></i></span></a>
+                                                                                    </span>
+                                                                                    
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="row">
+                                                                <div class="col-lg-12">
+                                                                    <table class="table table-bordered table-striped dataTable table-hover ">
+                                                                        <thead>
+                                                                            <tr>
+                                                                                <th>خریدار</th>
+                                                                                <th>نام خریدار</th>
+                                                                                <th>شناسه فاکتور</th>
+                                                                                <th>شماره فاکتور</th>
+                            
+                                                                                <th>شهر</th>
+                                                                                <th>موبایل</th>
+                                                                                <th>تلفن</th>
+                                                                                <th>آدرس</th>
+                                                                                
+                                                                                <th></th>
+                                                                            </tr>
+                                                                        </thead>
+                                                                        <tbody>
+                                                                            
+                                                                            {% for item in items %}
+                                                                                <tr>
+                                                                                    <td>{{item.0.0.obj_send_id}}</td> <!-- خریدار (شناسه خریدار) -->
+                                                                                    <td>{{item.0.1.receiver}}</td>   <!--نام خریدار-->
+                                                                                    <td>{{item.1.1}}</td> <!--شناسه فاکتور-->
+                                                                                    <td>{{item.1.0}}</td> <!-- شماره فاکتور-->
+                                                                                    
+                                                                                   
+                                                                                    <td>    <!-- شهر -->
+                                                                                        {{item.0.1.city_id|id_to_city}}
+                                                                                    </td>
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    <td>{{item.0.1.mobile}}</td>   <!-- موبایل -->
+                                                                                    
+                                                                                    <td>{{item.0.1.phone}}</td>   <!--تلفن-->
+                                                                                    
+                                                                                    <td>    <!-- آدرس -->
+                                                                                        {{item.0.1.address}}
+                                                                                    </td>
+                                                                                    
+                                                                                   
+                                                                                    <td>
+                                                                                        <a href="{% url 'customer:FactorSendIndexSend' obj_send_id=item.0.0.obj_send_id %}" class="btn btn-primary btn-xs btn-class">
+                                                                                            <i class="fas fa-phone"></i> تماس مشتری
+                                                                                        </a>
+
+                                                                                    </td>
+                                                                                </tr>
+                                                                                {% endfor %}
+                                                                                
+                                                                            
+                                                                        <tbody>
+                                                                    </table>
+                                                                </div>
+                                                            </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            
+                            <div class="modal fade" id="modal-comment">
+                                <form method="post" action="">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header rtl">
+                                            <h4 class="modal-title">پیام‌ها</h4>
+                                        </div>
+                                        <div class="modal-body">
+                                            <div class="row">
+                                                <div class="col-md-12 body">
+                                                </div>
+                                            </div>
+                                            <input type="hidden" name="factor_id" id="factor-id-val">
+                                            <input type="hidden" name="level" value="">
+                                            <input type="text" name="comment" class="form-control rtl" placeholder="متن پیام">
+                                        </div>
+                                        <div class="modal-footer justify-content-between">
+                                            <button type="submit" class="btn btn-primary">ثبت پیام</button>
+                                            <button type="button" class="btn btn-default" data-dismiss="modal">بستن</button>
+                                        </div>
+                                    </div>
+                                </div>
+                                </form>
+                            </div>
+                        </div>
+
+                        <!-- end:: Content -->
+                    </div>
+
+                    <!-- begin:: Footer -->
+                    {% include "partials/footer.html" %}
+
+                    <!-- end:: Footer -->
+                </div>
+
+                <!-- end:: Wrapper -->
+            </div>
+
+            <!-- end:: Page -->
+        </div>
+
+        <!-- end:: Root -->
+
+        <!-- begin:: Topbar Offcanvas Panels -->
+
+        <!-- begin::Offcanvas Toolbar Quick Actions -->
+        <!-- <div id="kt_offcanvas_toolbar_quick_actions" class="kt-offcanvas-panel">
+            <div class="kt-offcanvas-panel__head">
+                <h3 class="kt-offcanvas-panel__title">
+                    Quick Actions
+                </h3>
+                <a href="#" class="kt-offcanvas-panel__close" id="kt_offcanvas_toolbar_quick_actions_close"><i
+                        class="flaticon2-delete"></i></a>
+            </div>
+            <div class="kt-offcanvas-panel__body">
+                <div class="kt-grid-nav-v2">
+                    <a href="#" class="kt-grid-nav-v2__item">
+                        <div class="kt-grid-nav-v2__item-icon"><i class="flaticon2-box"></i></div>
+                        <div class="kt-grid-nav-v2__item-title">Orders</div>
+                    </a>
+                    <a href="#" class="kt-grid-nav-v2__item">
+                        <div class="kt-grid-nav-v2__item-icon"><i class="flaticon-download-1"></i></div>
+                        <div class="kt-grid-nav-v2__item-title">Uploades</div>
+                    </a>
+                    <a href="#" class="kt-grid-nav-v2__item">
+                        <div class="kt-grid-nav-v2__item-icon"><i class="flaticon2-supermarket"></i></div>
+                        <div class="kt-grid-nav-v2__item-title">Products</div>
+                    </a>
+                    <a href="#" class="kt-grid-nav-v2__item">
+                        <div class="kt-grid-nav-v2__item-icon"><i class="flaticon2-avatar"></i></div>
+                        <div class="kt-grid-nav-v2__item-title">Customers</div>
+                    </a>
+                    <a href="#" class="kt-grid-nav-v2__item">
+                        <div class="kt-grid-nav-v2__item-icon"><i class="flaticon2-list"></i></div>
+                        <div class="kt-grid-nav-v2__item-title">Blog Posts</div>
+                    </a>
+                    <a href="#" class="kt-grid-nav-v2__item">
+                        <div class="kt-grid-nav-v2__item-icon"><i class="flaticon2-settings"></i></div>
+                        <div class="kt-grid-nav-v2__item-title">Settings</div>
+                    </a>
+                </div>
+            </div>
+        </div> -->
+
+        <!-- end::Offcanvas Toolbar Quick Actions -->
+
+        <!-- end:: Topbar Offcanvas Panels -->
+
+        <!-- begin:: Quick Panel -->
+        
+        <!-- end:: Scrolltop -->
+
+        <!-- begin:: Demo Toolbar -->
+
+        <!-- end:: Demo Toolbar -->
+
+
+        <!-- begin::Global Config(global config for global JS sciprts) -->
+        {% include "partials/script.html" %}
+
+        <!--end::Page Scripts -->
+    </body>
+
+    <!-- end::Body -->
+
+</html>
