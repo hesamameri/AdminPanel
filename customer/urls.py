@@ -57,7 +57,7 @@ urlpatterns = [
     path('factorinstallindex', views.factor_install_index, name='FactorInstallIndex'),
     path('factorinstallassign', views.factor_install_assigninstaller, name='FactorInstallAssignInstaller'),
     path('factorinstallstatus', views.factor_install_sendstatus, name='FactorInstallSendStatus'),
-    path('factorsendinstallerprint', views.factorsend_installerprint, name='FactorSendInstallerPrint'),  
+    path('factorsendinstallerprint/<int:obj_send_id>', views.factorsend_installerprint, name='FactorSendInstallerPrint'),  
     
 #############################################
 
