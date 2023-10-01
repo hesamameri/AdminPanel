@@ -1196,9 +1196,104 @@ def factor_install_index(request,obj_send_id=None):
 @permission_required('ROLE_PERSONEL','ROLE_ADMIN')
 def factor_install_assigninstaller(request):
     
-    items = ObjSend.objects.filter(action='INSTALL')
-    
-    return render(request,'Customer/CustomerFactorSendAssign.html')
+    if request.method == 'POST':
+        print(request.POST)
+        if request.POST.get('formtype') == 'assign_driver' :
+            obj_send_id = request.POST['objsend']
+            obj_send = get_object_or_404(ObjSend, pk = obj_send_id)
+            obj_send.drive_id = request.POST['drive_id']
+            # obj_send.doer2_id = request.POST['doer2_id']
+            # obj_send.doer1_id = request.POST['doer1_id']
+            obj_send.drive_desc = request.POST['drive_desc']
+            obj_send.drive_dt = datetime.datetime.now()
+            obj_send.save()
+            return redirect('customer:FactorInstallAssignInstaller')
+        elif request.POST.get('formtype') == 'drive_comment':
+            print("SSSS")
+            source_id = get_object_or_404(ObjSend,obj_send_id = request.POST['objsend']).source_id
+            factor_item = get_object_or_404(FactorItem,factor_item_id = source_id).factor.factor_id
+            print(factor_item)
+
+            installer_data = {
+                'factor_id': factor_item,
+                'level': 'INSTALL',
+                'body' : request.POST.get('comment'),
+                'register': request.user.user_id,
+                'reg_dt': datetime.datetime.now(),
+            }
+
+            installercommentform = NewFactorComment(installer_data)
+            if installercommentform.is_valid():
+                installercommentform.save()
+            else:
+                print("there is something wrong with the form")
+                print(installercommentform.errors)
+                return redirect('customer:FactorInstallAssignInstaller')
+            
+
+            return redirect('customer:FactorInstallAssignInstaller')
+        else:
+           
+            return redirect('customer:FactorInstallAssignInstaller')
+
+
+    else:
+        objsendlist = ObjSend.objects.filter(
+        source_type='FACTOR',
+        action='INSTALL',
+        drive_register__isnull=False
+        ).exclude(
+            Q(drive_id__isnull=False) |
+            Q(doer2_id__isnull=False) |
+            Q(doer1_id__isnull=False) |
+            Q(drive_dt__isnull=False) |
+            Q(drive_desc__isnull=False) |
+            Q(drive_status__isnull=False) |
+            Q(drive_status_id__isnull=False) |
+            Q(drive_status_dt__isnull=False) |
+            Q(drive_status_desc__isnull=False) |
+            Q(assesmenter__isnull=False) |
+            Q(assesment_dt__isnull=False) |
+            Q(assesment_desc__isnull=False) |
+            Q(assesment_opinion__isnull=False) |
+            Q(docer__isnull=False) |
+            Q(doc_dt__isnull=False) |
+            Q(doc_desc__isnull=False) |
+            Q(price__isnull=False) |
+            Q(assesmenter_shop__isnull=False) |
+            Q(assesmenter_shop_dt__isnull=False) |
+            Q(assesment_seller__isnull=False) |
+            Q(assesment_shopper_desc__isnull=False) |
+            Q(assesment_shop__isnull=False) |
+            Q(assesment_drive_time__isnull=False) |
+            Q(assesmenter_service__isnull=False) |
+            Q(assesmenter_service_dt__isnull=False) |
+            Q(assesment_servic_action__isnull=False) |
+            Q(assesment_service_dress__isnull=False) |
+            Q(assesment_service_status__isnull=False) |
+            Q(shop_desc__isnull=False) |
+            Q(isntall_desc__isnull=False)
+        )
+
+
+        objsendlist_sources = objsendlist.values('source_id')
+        factor_ids = FactorItem.objects.filter(factor_item_id__in = objsendlist_sources).values('factor')
+        factors = Factor.objects.filter(factor_id__in = factor_ids)
+        seller_factor_ids = []
+        for i in factors:
+            factor_comments = FactorComment.objects.filter(factor_id = i.factor_id,level='DRIVE')
+            seller_factor_ids.append((i.factor_id,i.seller_factor_id,factor_comments))
+        print(seller_factor_ids)
+        obj_customer_detail = DepoSend.objects.filter(source_id__in = objsendlist_sources)
+        combo_data  = list(zip(objsendlist,obj_customer_detail))
+        all_data = list(zip(combo_data,seller_factor_ids))
+        # print(all_data)
+        context = {
+            'items':all_data,
+        }
+        # factor_item_ids = objsendlist.values('source_id')
+        # factor_id = Factor.objects.filter(factor_id__in = factor_item_ids)
+        return render(request,'Customer/FactorInstallIndex.html',context=context)
 
 @login_required(login_url='Administrator:login_view')
 @permission_required('ROLE_PERSONEL','ROLE_ADMIN')
