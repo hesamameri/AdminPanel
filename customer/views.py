@@ -1293,7 +1293,7 @@ def factor_install_assigninstaller(request):
         }
         # factor_item_ids = objsendlist.values('source_id')
         # factor_id = Factor.objects.filter(factor_id__in = factor_item_ids)
-        return render(request,'Customer/FactorInstallIndex.html',context=context)
+        return render(request,'Customer/CustomerFactorInstallAssign.html',context=context)
 
 @login_required(login_url='Administrator:login_view')
 @permission_required('ROLE_PERSONEL','ROLE_ADMIN')
