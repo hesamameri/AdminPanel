@@ -1296,9 +1296,73 @@ def factor_install_assigninstaller(request):
 @permission_required('ROLE_PERSONEL','ROLE_ADMIN')
 def factor_install_sendstatus(request):
     
-    items = ObjSend.objects.filter(action='INSTALL')
-    
-    return render(request,'Customer/CustomerFactorSendStatus.html')
+    if request.method == 'POST':
+        print(request.POST)
+        objsend = get_object_or_404(ObjSend,obj_send_id=request.POST.get('obj_send_id'))
+        drive_status = request.POST['drive_status']
+        drive_status_id = request.user.user_id
+        drive_status_desc = request.POST['drive_status_desc']
+        drive_status_dt = datetime.datetime.now()
+        objsend.drive_status_id = drive_status
+        objsend.drive_status_desc = drive_status_id
+        objsend.drive_status_dt = drive_status_desc
+        objsend.drive_status = drive_status_dt
+        objsend.save()
+
+        return render(request,'Customer/CustomerFactorInstallStatus.html')
+    else:
+        objsendlist = ObjSend.objects.filter(
+        source_type='FACTOR',
+        action='INSTALL',
+        drive_register__isnull=False,
+        drive_id__isnull=False,
+        drive_dt__isnull=False,
+        ).exclude(
+            Q(drive_status__isnull=False) |
+            Q(drive_status_id__isnull=False) |
+            Q(drive_status_dt__isnull=False) |
+            Q(drive_status_desc__isnull=False) |
+            Q(assesmenter__isnull=False) |
+            Q(assesment_dt__isnull=False) |
+            Q(assesment_desc__isnull=False) |
+            Q(assesment_opinion__isnull=False) |
+            Q(docer__isnull=False) |
+            Q(doc_dt__isnull=False) |
+            Q(doc_desc__isnull=False) |
+            Q(price__isnull=False) |
+            Q(assesmenter_shop__isnull=False) |
+            Q(assesmenter_shop_dt__isnull=False) |
+            Q(assesment_seller__isnull=False) |
+            Q(assesment_shopper_desc__isnull=False) |
+            Q(assesment_shop__isnull=False) |
+            Q(assesment_drive_time__isnull=False) |
+            Q(assesmenter_service__isnull=False) |
+            Q(assesmenter_service_dt__isnull=False) |
+            Q(assesment_servic_action__isnull=False) |
+            Q(assesment_service_dress__isnull=False) |
+            Q(assesment_service_status__isnull=False) |
+            Q(shop_desc__isnull=False) |
+            Q(isntall_desc__isnull=False)
+        )
+        objsendlist_sources = objsendlist.values('source_id')
+        factor_ids = FactorItem.objects.filter(factor_item_id__in = objsendlist_sources).values('factor')
+        objsendserials = ObjSendSerial.objects.filter(factor_id__in = factor_ids)
+        factors = Factor.objects.filter(factor_id__in = factor_ids)
+        
+        seller_factor_ids = []
+        for i in factors:
+            factor_comments = FactorComment.objects.filter(factor_id = i.factor_id,level='DRIVE')
+            seller_factor_ids.append((i.factor_id,i.seller_factor_id,factor_comments))
+        obj_customer_detail = DepoSend.objects.filter(source_id__in = objsendlist_sources)
+        combo_data  = list(zip(objsendlist,obj_customer_detail))
+        all_data = list(zip(combo_data,seller_factor_ids))
+
+        context = {
+            'items':all_data,
+        }
+
+
+        return render(request,'Customer/CustomerFactorInstallStatus.html',context=context)
 ###########################################################################
 # @cache_page(10)
 @login_required(login_url='Administrator:login_view')

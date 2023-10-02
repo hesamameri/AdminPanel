@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+
+<html lang="fa">
+
+    <!-- begin::Head -->
+
+    {% include "partials/head.html" %}
+
+
+    <!-- end::Head -->
+
+    <!-- begin::Body -->
+
+    <body
+        class="kt-quick-panel--right kt-demo-panel--right kt-offcanvas-panel--right kt-header--fixed kt-header-mobile--fixed kt-subheader--enabled kt-subheader--transparent kt-aside--enabled kt-aside--fixed kt-page--loading">
+
+        <!-- begin:: Header Mobile -->
+
+        {% include "partials/MobileHeader.html" %}
+
+        <!-- end:: Header Mobile -->
+
+        <!-- begin:: Root -->
+        <div class="kt-grid kt-grid--hor kt-grid--root">
+
+            <!-- begin:: Page -->
+            <div class="kt-grid__item kt-grid__item--fluid kt-grid kt-grid--ver kt-page">
+
+                <!-- begin:: Aside -->
+                {% include "partials/sidebar.html" %}
+
+
+                <!-- end:: Aside -->
+
+                <!-- begin:: Wrapper -->
+                <div class="kt-grid__item kt-grid__item--fluid kt-grid kt-grid--hor kt-wrapper" id="kt_wrapper">
+
+                    <!-- begin:: Header -->
+
+                    {% include "partials/header.html" %}
+                    <!-- end:: Header -->
+                    <div class="kt-grid__item kt-grid__item--fluid kt-grid kt-grid--hor">
+
+                        <!-- begin:: Subheader -->
+                        {% include "partials/subheader.html" %}
+
+                        <!-- end:: Subheader -->
+
+                        <!-- begin:: Content -->
+                        <div class="kt-content  kt-grid__item kt-grid__item--fluid" id="kt_content">
+
+                            <div class="content-wrapper">
+                                <div class="content-header">
+                                    <div class="container-fluid">
+                                    <div class="row mb-2">
+                                        <div class="col-sm-12">
+                                            <ol class="breadcrumb float-sm-left ">
+                                                <li class="breadcrumb-item active">خدمت نصب</li>
+                                                <li class="breadcrumb-item active">اعلان وضعیت نصب</li>
+                                            </ol>
+                                        </div>
+                                    </div>
+                                    </div>
+                                </div>
+                            
+                                <div class="content">
+                                    <div class="container-fluid">
+                                        <div class="row">
+                                            <div class="col-lg-12">
+                                                <div class="card card-primary card-outline">
+                                                    <div class="card-body">
+                                                            <div class="row ">
+                                                                <div class="col-lg-12">
+                                                                    <table class="table table-bordered table-striped dataTable table-hover ">
+                                                                        <thead>
+                                                                            
+                                                                            <tr>
+                                                                                <th>موبایل</th>
+                                                                                <th>خریدار</th>
+                                                                                <th>نام خریدار</th>
+                                                                                <th>شناسه فاکتور</th>
+                                                                                <th>شماره فاکتور</th>
+                            
+                                                                                <th>شهر</th>
+                                                                                <th>موبایل</th>
+                                                                                <th>تلفن</th>
+                                                                                <th></th>
+                                                                                <th></th>
+                                                                            </tr>
+                                                                        </thead>
+                                                                        <tbody>
+                                                                         
+                                                                                <tr>
+                                                                                    <td></td>
+                                                                                    <td></td>
+                                                                                    <td></td>
+                                                                                    <td></td>                           
+                                                                                    <td> </td>
+                                                                                    <td> </td>
+                                                                                    <td><i data-factor-id="1" data-toggle="modal" data-target="#modal-comment" class="fas fa-comment btn btn-xs  btn-flat btn-comment">&nbsp;</i></td>
+                                                                                    <td>
+                                                                                        <a class="btn btn-success btn-xs btn-assign-driver" data-real-factor-id="1" data-product = "{{item.0.1.goods}}" data-factor="{{item.1.0}}"  data-obj="{{item.0.0.obj_send_id}}" data-toggle="modal" data-target="#modal-assign-driver">اعلام وضعیت</a>
+                                                                                    </td>
+                                                                                </tr>
+                                                                                
+                                                                        <tbody>
+                                                                    </table>
+                                                                </div>
+                                                            </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="modal fade" id="modal-assign-driver">
+                                <div class="modal-dialog modal-lg">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h4 class="modal-title">اعلام وضعیت</h4>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <form method="POST" action="" enctype="multipart/form-data" autocomplete="off" id="driver-status-form">
+                                        <form method="POST" action="{url 'customer:CustomerFactorSendStatus'}" enctype="multipart/form-data" class="frm1" autocomplete="off">
+                                        {% csrf_token %}
+                                        <input type="hidden" name="factor_id" id="factor_id">
+                                        <input type="hidden" name="product_id" id="product_id">
+                                        <input type="hidden" name="obj_send_id" id="obj_send_id" >
+                                        <div class="modal-body">
+                                                    <div class="form-group form-group-sm row">
+                                                        <div class="col-sm-10">
+                                                            <select class="form-control rtl text-left" style="width: 100%;" name="drive_status" id="drive_status">
+                                                                    <option value="CONFIRM">نصب شد</option>
+                                                                    <option value="REJECT">نصب نشد</option>
+                                                            </select>
+                                                        </div>
+                                                        <label for="drive_status" class="col-sm-2 col-form-label">وضعیت</label>
+                                                    </div>
+                                                    <div class="form-group form-group-sm row">
+                                                    </div>
+                                                    <div class="form-group form-group-sm row">
+                                                        <div class="col-sm-10">
+                                                            <input type="text" name="price" class="form-control numeric ltr" id="price" placeholder="مبلغ هزینه" value="">
+                                                        </div>
+                                                        <label for="price" class="col-sm-2 col-form-label">مبلغ هزینه</label>
+                                                    </div>
+                                                    <div class="form-group form-group-sm row">
+                                                        <div class="col-sm-10">
+                                                            <input type="text" name="drive_status_desc" class="form-control rtl" id="drive_status_desc" placeholder="توضیحات" value="">
+                                                        </div>
+                                                        <label for="drive_status_desc" class="col-sm-2 col-form-label">توضیحات</label>
+                                                    </div>
+                                                    <hr>
+                            
+                                                    <div class="col-lg-12">
+                                                        <div class="card card-secondary card-outlines">
+                                                            <div class="card-header row rtl">
+                                                                    <div class="col-md-6 text-right">شماره سریال</div>
+                                                            </div>
+                                                            <div class="card-body">
+                                                                <table class="table table- rtl" id="table-serial">
+                                                                    <thead>
+                                                                        <tr>
+                                                                            <td>کد محصول</td>
+                                                                            <td>نام محصول</td>
+                                                                            <td>شماره سریال
+                                                                                
+                                                                            </td>
+                                                                            
+                                                                        </tr>
+                                                                    </thead>
+                                                                    <tbody>
+                                                                        <tr>
+                                                                        <td></td>
+                                                                        <td></td>
+                                                                        <td>
+                                                                            <input type="text" name="send_serial">
+                                                                        </td>
+                                                                        </tr>
+                                                                    </table>
+                                                                </table>
+                                                            </div>
+                                                        </div> 
+                                                    </div>
+                                                    <div class="col-lg-12">
+                                                        <div class="card card-secondary card-outlines">
+                                                            <div class="card-header row rtl">
+                                                                    <div class="col-md-6 text-right">پرداختی</div>
+                                                                    <div class="col-md-6 text-left">
+                                                                        <button type="button" class="add-new-payment btn btn-success btn-sm">+</button>
+                                                                    </div>
+                                                            </div>
+                                                            <div class="card-body card-body-payment">
+                                                            </div>
+                                                        </div> 
+                                                    </div>
+                                                    <div class="col-lg-12">
+                                                        <div class="card card-secondary card-outlines">
+                                                            <div class="card-header row rtl">
+                                                                    <div class="col-md-6 text-right">مدارک</div>
+                                                                    <div class="col-md-6 text-left">
+                                                                        <button type="button" class="add-new-documrnt btn btn-success btn-sm">+</button>
+                                                                    </div>
+                                                            </div>
+                                                            <div class="card-body card-body-document">
+                                                            </div>
+                                                        </div> 
+                                                    </div>
+                                        </div>
+                                        <div class="modal-footer justify-content-between">
+                                            <button type="submit" class="btn btn-primary btn-class">اعلام وضعیت</button>
+                                            <button type="button" class="btn btn-default" data-dismiss="modal">بستن</button>
+                                        </div>
+                                        </form>
+                                    </div>
+                                    <!-- /.modal-content -->
+                                </div>
+                                <!-- /.modal-dialog -->
+                            </div>
+                            
+                            <div class="modal fade" id="modal-comment">
+                                <form method="post" action="">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header rtl">
+                                            <h4 class="modal-title">پیام‌ها</h4>
+                                        </div>
+                                        <div class="modal-body">
+                                            <div class="row">
+                                                <div class="col-md-12 body">
+                                                </div>
+                                            </div>
+                                            <input type="hidden" name="factor_id" id="factor-id-val">
+                                            <input type="hidden" name="level" value="">
+                                            <input type="text" name="comment" class="form-control rtl" placeholder="متن پیام">
+                                        </div>
+                                        <div class="modal-footer justify-content-between">
+                                            <button type="submit" class="btn btn-primary">ثبت پیام</button>
+                                            <button type="button" class="btn btn-default" data-dismiss="modal">بستن</button>
+                                        </div>
+                                    </div>
+                                </div>
+                                </form>
+                            </div>
+                            
+                            <script>
+                               
+                            </script>
+                        </div>
+
+                        <!-- end:: Content -->
+                    </div>
+
+                    <!-- begin:: Footer -->
+                    {% include "partials/footer.html" %}
+
+                    <!-- end:: Footer -->
+                </div>
+
+                <!-- end:: Wrapper -->
+            </div>
+
+            <!-- end:: Page -->
+        </div>
+
+        <!-- end:: Root -->
+
+        <!-- begin:: Topbar Offcanvas Panels -->
+
+        <!-- begin::Offcanvas Toolbar Quick Actions -->
+        <!-- <div id="kt_offcanvas_toolbar_quick_actions" class="kt-offcanvas-panel">
+            <div class="kt-offcanvas-panel__head">
+                <h3 class="kt-offcanvas-panel__title">
+                    Quick Actions
+                </h3>
+                <a href="#" class="kt-offcanvas-panel__close" id="kt_offcanvas_toolbar_quick_actions_close"><i
+                        class="flaticon2-delete"></i></a>
+            </div>
+            <div class="kt-offcanvas-panel__body">
+                <div class="kt-grid-nav-v2">
+                    <a href="#" class="kt-grid-nav-v2__item">
+                        <div class="kt-grid-nav-v2__item-icon"><i class="flaticon2-box"></i></div>
+                        <div class="kt-grid-nav-v2__item-title">Orders</div>
+                    </a>
+                    <a href="#" class="kt-grid-nav-v2__item">
+                        <div class="kt-grid-nav-v2__item-icon"><i class="flaticon-download-1"></i></div>
+                        <div class="kt-grid-nav-v2__item-title">Uploades</div>
+                    </a>
+                    <a href="#" class="kt-grid-nav-v2__item">
+                        <div class="kt-grid-nav-v2__item-icon"><i class="flaticon2-supermarket"></i></div>
+                        <div class="kt-grid-nav-v2__item-title">Products</div>
+                    </a>
+                    <a href="#" class="kt-grid-nav-v2__item">
+                        <div class="kt-grid-nav-v2__item-icon"><i class="flaticon2-avatar"></i></div>
+                        <div class="kt-grid-nav-v2__item-title">Customers</div>
+                    </a>
+                    <a href="#" class="kt-grid-nav-v2__item">
+                        <div class="kt-grid-nav-v2__item-icon"><i class="flaticon2-list"></i></div>
+                        <div class="kt-grid-nav-v2__item-title">Blog Posts</div>
+                    </a>
+                    <a href="#" class="kt-grid-nav-v2__item">
+                        <div class="kt-grid-nav-v2__item-icon"><i class="flaticon2-settings"></i></div>
+                        <div class="kt-grid-nav-v2__item-title">Settings</div>
+                    </a>
+                </div>
+            </div>
+        </div> -->
+
+        <!-- end::Offcanvas Toolbar Quick Actions -->
+
+        <!-- end:: Topbar Offcanvas Panels -->
+
+        <!-- begin:: Quick Panel -->
+        
+        <!-- end:: Scrolltop -->
+
+        <!-- begin:: Demo Toolbar -->
+
+        <!-- end:: Demo Toolbar -->
+
+
+        <!-- begin::Global Config(global config for global JS sciprts) -->
+        {% include "partials/script.html" %}
+
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                // Listen to the 'show.bs.modal' event on the modal
+                $('#modal-assign-driver').on('show.bs.modal', function(event) {
+                    // Get the button (<a> tag) that triggered the modal
+                    var button = $(event.relatedTarget);
+
+                    // Get the 'data-buyer' attribute from the button
+                    var buyerValue = button.data('obj');
+                    var factorobj = button.data('factor');
+                    var productobj = button.data('product');
+                    // Find the hidden input element by its ID and update its value
+                    $('#obj_send_id').val(buyerValue);
+                    $('#factor_id').val(factorobj);
+                    $('#product_id').val(productobj);
+            });
+            });
+                    
+        </script>
+
+        <!--end::Page Scripts -->
+    </body>
+
+    <!-- end::Body -->
+
+</html>
