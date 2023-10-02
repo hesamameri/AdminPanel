@@ -91,6 +91,7 @@
                                                                         </thead>
                                                                         <tbody>
                                                                             {% for item in items %}
+                                                                            {{item.1.2}}
                                                                                 <tr>
                                                                                     <td>{{item.0.0.obj_send_id}}</td>
                                                                                     <td>{{item.0.1.receiver}}</td>   <!--نام خریدار-->
@@ -116,7 +117,7 @@
                                                                                         <i data-objsend="{{item.0.0.obj_send_id}}"
                                                                                          data-toggle="modal"
                                                                                           data-target="#modal-comment" 
-                                                                                          data-load-comments="loadComments({{item.0.0.obj_send_id}}, '{{item.1.2}}')"
+                                                                                          data-loadcomments="{{item.1.2}}"
                                                                                           class="fas fa-comment btn btn-xs  btn-flat btn-comment">&nbsp;</i>
                                                                                     </td>
                                                                                     <td>
@@ -205,7 +206,7 @@
                                                 <div class="row">
 
                                                     <div class="col-md-12 body">
-                                                        <div id="comments-placeholder"></div>
+                                                        
                                                     </div>
 
                                                 </div>
@@ -270,21 +271,37 @@
     });
 });
         </script>
+       <script>
        
-<script>
-    
-    function loadComments(objSendId, comments) {
-        // Prepare the HTML content for comments using the data from the queryset
-        var commentsHTML = "<ul>";
-        comments.split(',').forEach(function(comment) {
-            commentsHTML += "<li>" + comment + "</li>";
-        });
-        commentsHTML += "</ul>";
+  function displayComments(button) {
+    // Extract the comments JSON string from the data-loadcomments attribute
+    var loadCommentsData = button.getAttribute('data-loadcomments');
 
-        // Set the HTML content to the placeholder element
-        document.getElementById('comments-placeholder').innerHTML = commentsHTML;
+    // Parse the JSON string into an array of JavaScript objects
+    var comments = JSON.parse(loadCommentsData);
+
+    // Create HTML content for the comments
+    var commentsHtml = '<ul>';
+
+    // Iterate through the comments and add them to the HTML content
+    for (var i = 0; i < comments.length; i++) {
+      commentsHtml += '<li>' + comments[i].fields.body + '</li>';
     }
-</script>
+
+    commentsHtml += '</ul>';
+
+    // Display the comments elsewhere in the HTML (e.g., in a div with the ID "comments-container")
+    var commentsContainer = document.getElementById('comments-container');
+    if (commentsContainer) {
+      commentsContainer.innerHTML = commentsHtml;
+    }
+  }
+
+    </script>
+    
+    
+    
+
 
         <!-- begin::Global Config(global config for global JS sciprts) -->
         {% include "partials/script.html" %}
