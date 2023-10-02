@@ -1067,8 +1067,6 @@ def customerfactor_sendstatus(request):
             #  go to forms.py and find the form for the model and create one like :newobjsendserial = NewObjSendSerial(sendserial)
             # use is_valid and save if okay. else: print errors
             # redirect
-
-
         return render(request,'Customer/CustomerFactorSendStatus.html')
     else:
         objsendlist = ObjSend.objects.filter(
@@ -1189,8 +1187,7 @@ def factor_install_index(request,obj_send_id=None):
         context = {
             'items':all_data,
         }
-        # factor_item_ids = objsendlist.values('source_id')
-        # factor_id = Factor.objects.filter(factor_id__in = factor_item_ids)
+        
         return render(request,'Customer/FactorInstallIndex.html',context=context)
 
 @login_required(login_url='Administrator:login_view')
@@ -1210,7 +1207,6 @@ def factor_install_assigninstaller(request):
             obj_send.save()
             return redirect('customer:FactorInstallAssignInstaller')
         elif request.POST.get('formtype') == 'drive_comment':
-            print("SSSS")
             source_id = get_object_or_404(ObjSend,obj_send_id = request.POST['objsend']).source_id
             factor_item = get_object_or_404(FactorItem,factor_item_id = source_id).factor.factor_id
             print(factor_item)
@@ -1554,7 +1550,7 @@ def receipt_print(request):
     
     return render(request,'Customer/ReceiptPrint.html')
 
-# @cache_page(10)
+
 @login_required(login_url='Administrator:login_view')
 @permission_required('ROLE_PERSONEL', 'ROLE_ADMIN')
 def prefactor(request):
