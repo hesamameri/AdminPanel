@@ -1,0 +1,312 @@
+{% load static %}
+{% load converter_tags %}
+<!DOCTYPE html>
+
+<html lang="fa">
+
+    <!-- begin::Head -->
+
+    {% include "partials/head.html" %}
+
+
+    <!-- end::Head -->
+
+    <!-- begin::Body -->
+
+    <body
+        class="kt-quick-panel--right kt-demo-panel--right kt-offcanvas-panel--right kt-header--fixed kt-header-mobile--fixed kt-subheader--enabled kt-subheader--transparent kt-aside--enabled kt-aside--fixed kt-page--loading">
+
+        <!-- begin:: Header Mobile -->
+
+        {% include "partials/MobileHeader.html" %}
+
+        <!-- end:: Header Mobile -->
+
+        <!-- begin:: Root -->
+        <div class="kt-grid kt-grid--hor kt-grid--root">
+
+            <!-- begin:: Page -->
+            <div class="kt-grid__item kt-grid__item--fluid kt-grid kt-grid--ver kt-page">
+
+                <!-- begin:: Aside -->
+                {% include "partials/sidebar.html" %}
+
+
+                <!-- end:: Aside -->
+
+                <!-- begin:: Wrapper -->
+                <div class="kt-grid__item kt-grid__item--fluid kt-grid kt-grid--hor kt-wrapper" id="kt_wrapper">
+
+                    <!-- begin:: Header -->
+
+                    {% include "partials/header.html" %}
+                    <!-- end:: Header -->
+                    <div class="kt-grid__item kt-grid__item--fluid kt-grid kt-grid--hor">
+
+                        <!-- begin:: Subheader -->
+                        {% include "partials/subheader.html" %}
+
+                        <!-- end:: Subheader -->
+
+                        <!-- begin:: Content -->
+                        <div class="kt-content  kt-grid__item kt-grid__item--fluid" id="kt_content">
+
+                            <div class="content-wrapper">
+                                <div class="content-header">
+                                    <div class="container-fluid">
+                                    <div class="row mb-2">
+                                        <div class="col-sm-12">
+                                            <ol class="breadcrumb float-sm-left ">
+                                                <li class="breadcrumb-item active">خدمت نصب</li>
+                                                <li class="breadcrumb-item active">اختصاص نصاب</li>
+                                            </ol>
+                                        </div>
+                                    </div>
+                                    </div>
+                                </div>
+                                
+                            
+                                <div class="content">
+                                    <div class="container-fluid">
+                                        <div class="row">
+                                            <div class="col-lg-12">
+                                                <div class="card card-primary card-outline">
+                                                    <div class="card-body">
+                                                            <div class="row ">
+                                                                <div class="col-lg-12">
+                                                                    <table class="table table-bordered table-striped dataTable table-hover ">
+                                                                        <thead>
+                                                                            <tr>
+                                                                                <th>خریدار</th>
+                                                                                <th>نام خریدار</th>
+                                                                                <th>شناسه فاکتور</th>
+                                                                                <th>شماره فاکتور</th>
+                            
+                                                                                <th>شهر</th>
+                                                                                <th>موبایل</th>
+                                                                                <th>تلفن</th>
+                                                                                <th>اطلاعات</th>
+                                                                                <th></th>
+                                                                            </tr>
+                                                                        </thead>
+                                                                        <tbody>
+                                                                            {% for item in items %}
+                                                                                <tr>
+                                                                                    <td>{{item.0.0.obj_send_id}}</td>
+                                                                                    <td>{{item.0.1.receiver}}</td>   <!--نام خریدار-->
+                                                                                    <td>{{item.1.1}}</td> <!--شناسه فاکتور-->
+                                                                                    <td>{{item.1.0}}</td> <!-- شماره فاکتور-->
+                                                                                    
+                                                                                   
+                                                                                    <td>    <!-- شهر -->
+                                                                                        {{item.0.1.city_id|id_to_city}}
+                                                                                    </td>
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    <td>{{item.0.1.mobile}}</td>   <!-- موبایل -->
+                                                                                    
+                                                                                    <td>{{item.0.1.phone}}</td>   <!--تلفن-->
+                                                                                    
+                                                                                    <td>    <!-- آدرس -->
+                                                                                        {{item.0.1.address}}
+                                                                                    </td>
+                                                                                    <td>
+                                                                                        <i class="fas fa-info-circle btn btn-xs btn-info btn-flat" data-container="body" data-toggle="popover" data-placement="top" data-content=""></i>
+                                                                                        <i data-objsend="{{item.0.0.obj_send_id}}"
+                                                                                         data-toggle="modal"
+                                                                                          data-target="#modal-comment" 
+                                                                                          data-load-comments="loadComments({{item.0.0.obj_send_id}}, '{{item.1.2}}')"
+                                                                                          class="fas fa-comment btn btn-xs  btn-flat btn-comment">&nbsp;</i>
+                                                                                    </td>
+                                                                                    <td>
+                                                                                            <form method="get" action="" class="frm1">
+                                                                                                <a class="btn btn-success btn-xs btn-assign-driver btn-class" data-objsend="{{item.0.0.obj_send_id}}" data-toggle="modal" data-target="#modal-assign-driver">اختصاص نصاب</a>
+                                                                                            </form>
+                                                                                            <a class="btn btn-primary btn-xs btn-class" href="{% url 'customer:FactorSendInstallerPrint' obj_send_id=item.0.0.obj_send_id %}">چاپ فاکتور نصب</a>
+                                                                                    </td>
+                                                                                    {% endfor %}
+                                                                        <tbody>
+
+                                                                    </table>
+                                                                </div>
+                                                            </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="modal fade" id="modal-assign-driver">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                                <h4 class="modal-title">اختصاص نصاب</h4>
+
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                    <form method="POST" action="{% url 'customer:FactorInstallAssignInstaller' %}" enctype="multipart/form-data" class="frm1">
+                                        {% csrf_token %}
+                                        <input type="hidden" name="objsend" id="objsend">
+                                        <input type="hidden" name="formtype" value="assign_driver">
+                                        <div class="modal-body">
+                                                    <div class="form-group form-group-sm row">
+                                                        <div class="col-sm-8">
+                                                            <select class="form-control select2bs4 rtl text-left" style="width: 100%;" name="drive_id" data-allow-clear="true">
+                                                                        <option value="4011001" >قاسمپور</option>        
+                                                                        <option value="4011007">عباس دولت آبادی</option>
+                                                                        <option value="4011011" >محسن شهابی</option>
+                                                                        <option value="4011013" >حسن عاقلی</option>
+                                                                        <option value="4011017" >بدون نصب</option>
+                                                                        <option value="4011019" >حسین بروغنی</option>
+                                                                        <option value="4011020" >مصطفی مهری</option>
+                                                                        <option value="4011021" >هادی رجایی </option>
+                                                                        <option value="4011022" >سید مهدی نیکپور ریوندی</option>
+                                                                        <option value="4011023" >محمد افچنگی</option>
+                                                                        <option value="4011024" >جواد میان آبادی</option>
+                                                                        <option value="4011025" >رزرو</option>
+                                                                        <option value="4011026" >مصطفی دلاوری</option>
+                                                                        <option value="4011028" >اسماعیل نورنهنگ</option>
+                                                                        <option value="4011029" >میلاد ثابت</option>
+                                                                        <option value="4011030" >علی قاسمی</option>
+                                                                        <option value="4011031" >عباس خسروجردی</option>
+                                                                        <option value="4011032" >سعید مشکانی</option>
+                                                                        <option value="4011033" >مهرداد پاکیشان</option>
+                                                                        <option value="4011034" >میلاد بینش</option>
+                                                                        <option value="4011035" >علیرضا کرمی</option>
+                                                                        <option value="4011036" >امیرحسین نقدی</option>
+                                                                        <option value="4011037" >امیر عادلی</option>
+
+       
+                                                            </select>
+                                                        </div>
+                                                        <label for="drive_id" class="col-sm-4 col-form-label">نصاب</label>
+
+                                                    </div>
+                                                    <div class="form-group form-group-sm row">
+                                                        <div class="col-sm-8">
+                                                            <input type="text" name="drive_desc" class="form-control rtl" id="drive_desc" placeholder="توضیحات" value="">
+                                                        </div>
+                                                        <label for="drive_desc" class="col-sm-4 col-form-label">توضیحات</label>
+                                                    </div>
+                            
+                                        </div>
+                                        <div class="modal-footer justify-content-between">
+                                            <button type="submit" class="btn btn-primary btn-class">اختصاص</button>
+                                            <button type="button" class="btn btn-default" data-dismiss="modal">بستن</button>
+                                        </div>
+                                    </form>
+                                </div>
+                                    <!-- /.modal-content -->
+                            </div>
+                                <!-- /.modal-dialog -->
+                            </div>
+                            <div class="modal fade" id="modal-comment">
+                                <form method="post" action="{% url 'customer:FactorInstallAssignInstaller' %}">
+                                {% csrf_token %}
+                                    <input type="hidden" name="objsend" id="objsend-comment">
+                                    <input type="hidden" name="formtype" value="drive_comment">
+
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header rtl">
+                                                <h4 class="modal-title">پیام‌ها</h4>
+                                            </div>
+                                            <div class="modal-body">
+                                                <div class="row">
+
+                                                    <div class="col-md-12 body">
+                                                        <div id="comments-placeholder"></div>
+                                                    </div>
+
+                                                </div>
+                                                <input type="hidden" name="factor_id" id="factor-id-val">
+                                                <input type="hidden" name="level" value="">
+                                                <input type="text" name="comment" class="form-control rtl" placeholder="متن پیام">
+                                            </div>
+
+                                            <div class="modal-footer justify-content-between">
+                                                <button type="submit" class="btn btn-primary">ثبت پیام</button>
+                                                <button type="button" class="btn btn-default" data-dismiss="modal">بستن</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+
+                        <!-- end:: Content -->
+                    </div>
+
+                    <!-- begin:: Footer -->
+                    {% include "partials/footer.html" %}
+
+                    <!-- end:: Footer -->
+                </div>
+
+                <!-- end:: Wrapper -->
+            </div>
+
+            <!-- end:: Page -->
+        </div>
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                // Listen to the 'show.bs.modal' event on the modal
+                $('#modal-assign-driver').on('show.bs.modal', function(event) {
+                    // Get the button (<a> tag) that triggered the modal
+                    var button = $(event.relatedTarget);
+
+                    // Get the 'data-buyer' attribute from the button
+                    var objValue = button.data('objsend');
+
+                    // Find the hidden input element by its ID and update its value
+                    $('#objsend').val(objValue);
+            });
+            });
+                    
+        </script>
+
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+    // Listen to the 'show.bs.modal' event on the comment modal
+    $('#modal-comment').on('show.bs.modal', function(event) {
+        // Get the button (<i> tag) that triggered the modal
+        var icon = $(event.relatedTarget);
+
+        // Get the 'data-objsend' attribute from the icon
+        var objValue = icon.data('objsend');
+
+        // Find the hidden input element by its ID and update its value
+        $('#objsend-comment').val(objValue);
+    });
+});
+        </script>
+       
+<script>
+    
+    function loadComments(objSendId, comments) {
+        // Prepare the HTML content for comments using the data from the queryset
+        var commentsHTML = "<ul>";
+        comments.split(',').forEach(function(comment) {
+            commentsHTML += "<li>" + comment + "</li>";
+        });
+        commentsHTML += "</ul>";
+
+        // Set the HTML content to the placeholder element
+        document.getElementById('comments-placeholder').innerHTML = commentsHTML;
+    }
+</script>
+
+        <!-- begin::Global Config(global config for global JS sciprts) -->
+        {% include "partials/script.html" %}
+
+        <!--end::Page Scripts -->
+    </body>
+
+    <!-- end::Body -->
+
+</html>

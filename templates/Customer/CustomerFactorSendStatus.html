@@ -76,6 +76,7 @@
                                                                 <div class="col-lg-12">
                                                                     <table class="table table-bordered table-striped dataTable table-hover ">
                                                                         <thead>
+                                                                            
                                                                             <tr>
                                                                                     <th>راننده</th>
                                                                                     <th>نصاب</th>
@@ -95,6 +96,8 @@
                                                                             </tr>
                                                                         </thead>
                                                                         <tbody>
+                                                                            {% for item in items %}
+                                                                                {{item.0.1.goods}}
                                                                                 <tr>
                                                                                     <td></td>
                                                                                     <td></td>
@@ -109,8 +112,10 @@
                                                                                     <td> </td>
                                                                                     <td><i data-factor-id="1" data-toggle="modal" data-target="#modal-comment" class="fas fa-comment btn btn-xs  btn-flat btn-comment">&nbsp;</i></td>
                                                                                     <td>
-                                                                                        <a class="btn btn-success btn-xs btn-assign-driver" data-real-factor-id="1" data-factor-id="2" data-toggle="modal" data-target="#modal-assign-driver">اعلام وضعیت</a>
+                                                                                        <a class="btn btn-success btn-xs btn-assign-driver" data-real-factor-id="1" data-product = "{{item.0.1.goods}}" data-factor="{{item.1.0}}"  data-obj="{{item.0.0.obj_send_id}}" data-toggle="modal" data-target="#modal-assign-driver">اعلام وضعیت</a>
                                                                                     </td>
+                                                                                </tr>
+                                                                                {% endfor %}
                                                                         <tbody>
                                                                     </table>
                                                                 </div>
@@ -133,20 +138,17 @@
                                             </button>
                                         </div>
                                         <form method="POST" action="" enctype="multipart/form-data" autocomplete="off" id="driver-status-form">
-                                        <form method="POST" action="" enctype="multipart/form-data" class="frm1" autocomplete="off">
-                                    
+                                        <form method="POST" action="{url 'customer:CustomerFactorSendStatus'}" enctype="multipart/form-data" class="frm1" autocomplete="off">
+                                        {% csrf_token %}
                                         <input type="hidden" name="factor_id" id="factor_id">
-                                        <input type="hidden" name="real_factor_id" id="real_factor_id">
+                                        <input type="hidden" name="product_id" id="product_id">
+                                        <input type="hidden" name="obj_send_id" id="obj_send_id" >
                                         <div class="modal-body">
                                                     <div class="form-group form-group-sm row">
                                                         <div class="col-sm-10">
                                                             <select class="form-control rtl text-right" style="width: 100%;" name="drive_status" id="drive_status">
                                                                     <option value="CONFIRM">بار تحویل گردید</option>
                                                                     <option value="REJECT">بار برگشت خورد</option>
-                                                                    <option value="CONFIRM">نصب شد</option>
-                                                                    <option value="REJECT">نصب نشد</option>
-                                                                    <option value="CONFIRM">سرویس انجام شد</option>
-                                                                    <option value="REJECT">سرویس انجام نشد</option>
                                                             </select>
                                                         </div>
                                                         <label for="drive_status" class="col-sm-2 col-form-label">وضعیت</label>
@@ -178,11 +180,21 @@
                                                                         <tr>
                                                                             <td>کد محصول</td>
                                                                             <td>نام محصول</td>
-                                                                            <td>شماره سریال</td>
+                                                                            <td>شماره سریال
+                                                                                
+                                                                            </td>
+                                                                            
                                                                         </tr>
                                                                     </thead>
                                                                     <tbody>
-                                                                    <tbody>
+                                                                        <tr>
+                                                                        <td></td>
+                                                                        <td></td>
+                                                                        <td>
+                                                                            <input type="text" name="send_serial">
+                                                                        </td>
+                                                                        </tr>
+                                                                    </table>
                                                                 </table>
                                                             </div>
                                                         </div> 
@@ -326,6 +338,26 @@
 
         <!-- begin::Global Config(global config for global JS sciprts) -->
         {% include "partials/script.html" %}
+
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                // Listen to the 'show.bs.modal' event on the modal
+                $('#modal-assign-driver').on('show.bs.modal', function(event) {
+                    // Get the button (<a> tag) that triggered the modal
+                    var button = $(event.relatedTarget);
+
+                    // Get the 'data-buyer' attribute from the button
+                    var buyerValue = button.data('obj');
+                    var factorobj = button.data('factor');
+                    var productobj = button.data('product');
+                    // Find the hidden input element by its ID and update its value
+                    $('#obj_send_id').val(buyerValue);
+                    $('#factor_id').val(factorobj);
+                    $('#product_id').val(productobj);
+            });
+            });
+                    
+        </script>
 
         <!--end::Page Scripts -->
     </body>

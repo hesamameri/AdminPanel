@@ -1,5 +1,5 @@
 from django import forms
-from .models import CustomerSubSVA, DepoSend, Factor, FactorAddress, FactorComment, FactorDocument, FactorItem, FactorPayway, Inquiry,ObjItem,ObjItemSpec, ObjPayment, ObjSend,ObjSpec, PreFactor
+from .models import CustomerSubSVA, DepoSend, Factor, FactorAddress, FactorComment, FactorDocument, FactorItem, FactorPayway, Inquiry,ObjItem,ObjItemSpec, ObjPayment, ObjSend, ObjSendSerial,ObjSpec, PreFactor
 
 
 
@@ -192,3 +192,17 @@ class NewFactorComment(forms.ModelForm):
                'register',
                'reg_dt',
           ]
+
+
+class NewObjSendSerial(forms.ModelForm):
+     class Meta:
+          model= ObjSendSerial
+          fields = [
+               'obj_send_id',
+               'factor_id',
+               'product_id',
+               'serial_drive',
+               
+          ]
+
+   
