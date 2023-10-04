@@ -434,6 +434,15 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 </script>
+<div id="bankData" style="display:none;" 
+     data-banks='{% for bank in banks %}{"id": "{{bank.id}}", "text": "{{bank.name}}"}{% if not forloop.last %},{% endif %}{% endfor %}'>
+</div>
+
+
+   <script>
+    var bankDataElement = document.getElementById('bankData');
+    var bankList = JSON.parse('[' + bankDataElement.getAttribute('data-banks') + ']');
+</script>
 
 
 <script>
@@ -444,11 +453,7 @@ document.querySelector('.add-new-payment').addEventListener('click', function() 
     
     // Sample object to represent data from Django's objoption.
     // NOTE: You'll need to replace this with actual data from your backend.
-    var bankList = [
-        // Example data
-        {id: 1, text: 'Bank A'},
-        {id: 2, text: 'Bank B'}
-    ];
+    
     
     var objPayment = '<div class="row rtl mt-1 p-2" style="background-color:#F3F8F9;border-right: 2px solid cornflowerblue; border-radius: 20px 0 0 20px">';
     

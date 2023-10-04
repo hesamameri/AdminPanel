@@ -1126,9 +1126,12 @@ def customerfactor_sendstatus(request):
         combo_data  = list(zip(objsendlist,obj_customer_detail))
         all_data = list(zip(combo_data,seller_factor_ids))
         print(all_data[0])
+        banks = ObjItem.objects.filter(obj_item_id__gte=999003010, obj_item_id__lte=999003019) 
+
 
         context = {
             'items':all_data,
+            'banks':banks,
         }
 
 
