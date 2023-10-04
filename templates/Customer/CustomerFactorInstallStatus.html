@@ -5,6 +5,7 @@
     <!-- begin::Head -->
 
     {% include "partials/head.html" %}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
 
 
     <!-- end::Head -->
@@ -75,7 +76,7 @@
                                                                         <thead>
                                                                             
                                                                             <tr>
-                                                                                <th>موبایل</th>
+                                                                                <th>نصاب</th>
                                                                                 <th>خریدار</th>
                                                                                 <th>نام خریدار</th>
                                                                                 <th>شناسه فاکتور</th>
@@ -89,20 +90,26 @@
                                                                             </tr>
                                                                         </thead>
                                                                         <tbody>
-                                                                         
+                                                                            {% for item in items %}
+                                                                                
                                                                                 <tr>
                                                                                     <td></td>
                                                                                     <td></td>
                                                                                     <td></td>
-                                                                                    <td></td>                           
+                                                                                    
                                                                                     <td> </td>
                                                                                     <td> </td>
+                                                                                    <td> </td>
+                                                                                    <td></td>
+                                                                                    <td></td>
                                                                                     <td><i data-factor-id="1" data-toggle="modal" data-target="#modal-comment" class="fas fa-comment btn btn-xs  btn-flat btn-comment">&nbsp;</i></td>
                                                                                     <td>
-                                                                                        <a class="btn btn-success btn-xs btn-assign-driver" data-real-factor-id="1" data-product = "{{item.0.1.goods}}" data-factor="{{item.1.0}}"  data-obj="{{item.0.0.obj_send_id}}" data-toggle="modal" data-target="#modal-assign-driver">اعلام وضعیت</a>
+                                                                                        <a class="btn btn-success btn-xs btn-assign-driver" data-real-factor-id="1" data-product="{{item.0.1.goods}}" data-factor="{{item.1.0}}" data-obj="{{item.0.0.obj_send_id}}" data-toggle="modal" data-target="#modal-assign-driver">
+                                                                                            <i class="fas fa-bell"></i> اعلام وضعیت
+                                                                                        </a>   
                                                                                     </td>
                                                                                 </tr>
-                                                                                
+                                                                                {% endfor %}
                                                                         <tbody>
                                                                     </table>
                                                                 </div>
@@ -134,8 +141,8 @@
                                                     <div class="form-group form-group-sm row">
                                                         <div class="col-sm-10">
                                                             <select class="form-control rtl text-left" style="width: 100%;" name="drive_status" id="drive_status">
-                                                                    <option value="CONFIRM">نصب شد</option>
-                                                                    <option value="REJECT">نصب نشد</option>
+                                                                    <option value="CONFIRM">بار تحویل گردید</option>
+                                                                    <option value="REJECT">بار برگشت خورد</option>
                                                             </select>
                                                         </div>
                                                         <label for="drive_status" class="col-sm-2 col-form-label">وضعیت</label>
