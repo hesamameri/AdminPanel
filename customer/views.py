@@ -2,7 +2,7 @@ from datetime import timezone
 import datetime
 import json
 from django.core import serializers
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from django.urls import reverse
 from .utilities import get_object_or_none
 from django.shortcuts import get_object_or_404, redirect, render
@@ -270,7 +270,7 @@ def new_customer(request):
         print(last_item)
         return redirect('customer:customerindex')
 
-# @cache_page(10)
+
 @login_required(login_url='Administrator:login_view')
 @permission_required('ROLE_PERSONEL','ROLE_ADMIN')
 def customer_index_all(request):
@@ -299,7 +299,6 @@ def customer_index_all(request):
         formInquiry = NewInquiry(post_data)
         if formInquiry.is_valid():
             saved_instance = formInquiry.save()
-            print("this is true")
             return redirect('customer:customerindexAll')
         else:
             return "wrong"
@@ -727,7 +726,7 @@ def delete_factor_element(request,element):
     else:
         return redirect('customer:customerindex')
 
-# @cache_page(10)
+
 @login_required(login_url='Administrator:login_view')
 @permission_required('ROLE_PERSONEL','ROLE_ADMIN')
 def factor_index(request):
@@ -736,7 +735,6 @@ def factor_index(request):
 
 
 
-# @cache_page(10)
 @login_required(login_url='Administrator:login_view')
 @permission_required('ROLE_PERSONEL','ROLE_ADMIN')
 def customer_confirm_accountlist(request):  
@@ -929,10 +927,22 @@ def factor_send_print(request,obj_send_id=None):
 @permission_required('ROLE_PERSONEL','ROLE_ADMIN')
 def customerfactor_sendassigndriver(request):
     if request.method == 'POST':
-        print(request.POST)
+        # print(request.POST)
         if request.POST.get('formtype') == 'assign_driver' :
             obj_send_id = request.POST['objsend']
             obj_send = get_object_or_404(ObjSend, pk = obj_send_id)
+            print(obj_send)
+            factoritem = get_object_or_404(FactorItem,factor_item_id = obj_send.source_id)
+            print(factoritem)
+            # factor = get_object_or_404(Factor,factor_id = factor_item.factor.factor_id)
+            Factor_items_detail = FactorItem.objects.filter(factor=factoritem.factor_id).values('factor_id', 'obj_item_id', 'amount')
+            for item in Factor_items_detail:
+                print('start')
+                # Access the 'amount' value using key-value syntax
+                for _ in range(int(item['amount'])):
+                    ObjSendSerial.objects.create(factor_id=item['factor_id'], product_id=item['obj_item_id'])
+                    print('goods')
+            
             obj_send.drive_id = request.POST['drive_id']
             # obj_send.doer2_id = request.POST['doer2_id']
             # obj_send.doer1_id = request.POST['doer1_id']
@@ -1069,6 +1079,7 @@ def customerfactor_sendstatus(request):
             # redirect
         return render(request,'Customer/CustomerFactorSendStatus.html')
     else:
+        
         objsendlist = ObjSend.objects.filter(
         source_type='FACTOR',
         action='DRIVE',
@@ -1104,8 +1115,8 @@ def customerfactor_sendstatus(request):
         )
         objsendlist_sources = objsendlist.values('source_id')
         factor_ids = FactorItem.objects.filter(factor_item_id__in = objsendlist_sources).values('factor')
-        print(factor_ids)
-        objsendserials = ObjSendSerial.objects.filter(factor_id__in = factor_ids)
+        # print(factor_ids)
+        # objsendserials = ObjSendSerial.objects.filter(factor_id__in = factor_ids)
         factors = Factor.objects.filter(factor_id__in = factor_ids)
         seller_factor_ids = []
         for i in factors:
@@ -1114,6 +1125,7 @@ def customerfactor_sendstatus(request):
         obj_customer_detail = DepoSend.objects.filter(source_id__in = objsendlist_sources)
         combo_data  = list(zip(objsendlist,obj_customer_detail))
         all_data = list(zip(combo_data,seller_factor_ids))
+        print(all_data[0])
 
         context = {
             'items':all_data,
@@ -1122,6 +1134,29 @@ def customerfactor_sendstatus(request):
 
         return render(request,'Customer/CustomerFactorSendStatus.html',context=context)
 
+def fetch_obj_send_serials(request):
+    factor_id = request.GET.get('factor_id')
+    
+    product_id = request.GET.get('product_id')
+    
+    print(product_id)
+    print(factor_id)
+    objs = ObjSendSerial.objects.filter(factor_id=factor_id)
+    print(objs)
+    data = []
+    for item in objs:
+        Obj_item_name = get_object_or_404(ObjItem, obj_item_id=item.product_id).name
+        serialized_item = {
+            "factor_id": item.factor_id,
+            "product_id": item.product_id,
+            # ... any other fields from ObjSendSerial you need
+            "name": Obj_item_name  # adding the product name
+        }
+        data.append(serialized_item)
+
+    return JsonResponse(data, safe=False)
+        
+    
 ############################################################## INSTALL
 @login_required(login_url='Administrator:login_view')
 @permission_required('ROLE_PERSONEL','ROLE_ADMIN')
@@ -1308,8 +1343,8 @@ def factor_install_sendstatus(request):
         objsend.drive_status_dt = drive_status_desc
         objsend.drive_status = drive_status_dt
         objsend.save()
-
         return render(request,'Customer/CustomerFactorInstallStatus.html')
+    
     else:
         objsendlist = ObjSend.objects.filter(
         source_type='FACTOR',
@@ -1348,11 +1383,12 @@ def factor_install_sendstatus(request):
         factor_ids = FactorItem.objects.filter(factor_item_id__in = objsendlist_sources).values('factor')
         objsendserials = ObjSendSerial.objects.filter(factor_id__in = factor_ids)
         factors = Factor.objects.filter(factor_id__in = factor_ids)
-        
+    
         seller_factor_ids = []
         for i in factors:
             factor_comments = FactorComment.objects.filter(factor_id = i.factor_id,level='DRIVE')
             seller_factor_ids.append((i.factor_id,i.seller_factor_id,factor_comments))
+
         obj_customer_detail = DepoSend.objects.filter(source_id__in = objsendlist_sources)
         combo_data  = list(zip(objsendlist,obj_customer_detail))
         all_data = list(zip(combo_data,seller_factor_ids))

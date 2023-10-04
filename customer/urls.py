@@ -47,6 +47,7 @@ urlpatterns = [
 ######################################### Drive
     path('factorsendindex', views.factor_send_index, name='FactorSendIndex'),
     path('factorsendindex/<int:obj_send_id>', views.factor_send_index, name='FactorSendIndexSend'),
+    path('fetch_objsendserials/', views.fetch_obj_send_serials, name='fetch_obj_send_serials'),
     path('factorsendprint/<int:obj_send_id>', views.factor_send_print, name='FactorSendPrint'),
 
     path('customerfactorsendassigndriver', views.customerfactor_sendassigndriver, name='CustomerFactorSendAssignDriver'),
