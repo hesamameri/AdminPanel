@@ -1,3 +1,6 @@
+
+{% load static %}
+{% load converter_tags %}
 <!DOCTYPE html>
 
 <html lang="fa">
@@ -76,16 +79,18 @@
                                                                         <thead>
                                                                             
                                                                             <tr>
-                                                                                <th>راننده</th>
+                                                                                    
+                                                                                
                                                                                 <th>خریدار</th>
                                                                                 <th>نام خریدار</th>
+                                                                                
                                                                                 <th>شناسه فاکتور</th>
                                                                                 <th>شماره فاکتور</th>
                             
                                                                                 <th>شهر</th>
                                                                                 <th>موبایل</th>
                                                                                 <th>تلفن</th>
-                                                                                <th></th>
+                                                                             
                                                                                 <th></th>
                                                                             </tr>
                                                                         </thead>
@@ -94,14 +99,23 @@
                                                                                 
                                                                                 <tr>
                                                                                     <td></td>
-                                                                                    <td></td>
-                                                                                    <td></td>
+                                                                                    <td>{{item.0.1.receiver}}</td>   <!--نام خریدار-->
+                                                                                    <td>{{item.1.1}}</td> <!--شناسه فاکتور-->
+                                                                                    <td>{{item.1.0}}</td> <!-- شماره فاکتور-->
                                                                                     
-                                                                                    <td> </td>
-                                                                                    <td> </td>
-                                                                                    <td> </td>
+                                                                                   
+                                                                                    <td>    <!-- شهر -->
+                                                                                        {{item.0.1.city_id|id_to_city}}
+                                                                                    </td>
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    <td>{{item.0.1.mobile}}</td>   <!-- موبایل -->
+                                                                                    {% if item.0.1.phone == None %}
                                                                                     <td></td>
-                                                                                    <td></td>
+                                                                                    {% else %}
+                                                                                    <td>{{item.0.1.phone}}</td> 
+                                                                                    {% endif %}
                                                                                     <td><i data-factor-id="1" data-toggle="modal" data-target="#modal-comment" class="fas fa-comment btn btn-xs  btn-flat btn-comment">&nbsp;</i></td>
                                                                                     <td>
                                                                                         <a class="btn btn-success btn-xs btn-assign-driver" data-real-factor-id="1" data-product="{{item.0.1.goods}}" data-factor="{{item.1.0}}" data-obj="{{item.0.0.obj_send_id}}" data-toggle="modal" data-target="#modal-assign-driver">
@@ -131,8 +145,8 @@
                                                 <span aria-hidden="true">&times;</span>
                                             </button>
                                         </div>
-                                        <form method="POST" action="" enctype="multipart/form-data" autocomplete="off" id="driver-status-form">
-                                        <form method="POST" action="{url 'customer:CustomerFactorSendStatus'}" enctype="multipart/form-data" class="frm1" autocomplete="off">
+                                        <!-- <form method="POST" action="" enctype="multipart/form-data" autocomplete="off" id="driver-status-form"> -->
+                                        <form method="POST" action="{% url 'customer:CustomerFactorSendStatus' %}" enctype="multipart/form-data" class="frm1" autocomplete="off">
                                         {% csrf_token %}
                                         <input type="hidden" name="factor_id" id="factor_id">
                                         <input type="hidden" name="product_id" id="product_id">
@@ -182,13 +196,13 @@
                                                                     </thead>
                                                                     <tbody>
                                                                         <tr>
-                                                                        <td></td>
+                                                                        <td> </td>
                                                                         <td></td>
                                                                         <td>
-                                                                            <input type="text" name="send_serial">
+                                                                            <input type="text" name="send_serial[]">
                                                                         </td>
                                                                         </tr>
-                                                                    </table>
+                                                                    </tbody>
                                                                 </table>
                                                             </div>
                                                         </div> 
@@ -203,6 +217,7 @@
                                                             </div>
                                                             <div class="card-body card-body-payment">
                                                             </div>
+                                                            
                                                         </div> 
                                                     </div>
                                                     <div class="col-lg-12">
@@ -276,58 +291,6 @@
 
         <!-- end:: Root -->
 
-        <!-- begin:: Topbar Offcanvas Panels -->
-
-        <!-- begin::Offcanvas Toolbar Quick Actions -->
-        <!-- <div id="kt_offcanvas_toolbar_quick_actions" class="kt-offcanvas-panel">
-            <div class="kt-offcanvas-panel__head">
-                <h3 class="kt-offcanvas-panel__title">
-                    Quick Actions
-                </h3>
-                <a href="#" class="kt-offcanvas-panel__close" id="kt_offcanvas_toolbar_quick_actions_close"><i
-                        class="flaticon2-delete"></i></a>
-            </div>
-            <div class="kt-offcanvas-panel__body">
-                <div class="kt-grid-nav-v2">
-                    <a href="#" class="kt-grid-nav-v2__item">
-                        <div class="kt-grid-nav-v2__item-icon"><i class="flaticon2-box"></i></div>
-                        <div class="kt-grid-nav-v2__item-title">Orders</div>
-                    </a>
-                    <a href="#" class="kt-grid-nav-v2__item">
-                        <div class="kt-grid-nav-v2__item-icon"><i class="flaticon-download-1"></i></div>
-                        <div class="kt-grid-nav-v2__item-title">Uploades</div>
-                    </a>
-                    <a href="#" class="kt-grid-nav-v2__item">
-                        <div class="kt-grid-nav-v2__item-icon"><i class="flaticon2-supermarket"></i></div>
-                        <div class="kt-grid-nav-v2__item-title">Products</div>
-                    </a>
-                    <a href="#" class="kt-grid-nav-v2__item">
-                        <div class="kt-grid-nav-v2__item-icon"><i class="flaticon2-avatar"></i></div>
-                        <div class="kt-grid-nav-v2__item-title">Customers</div>
-                    </a>
-                    <a href="#" class="kt-grid-nav-v2__item">
-                        <div class="kt-grid-nav-v2__item-icon"><i class="flaticon2-list"></i></div>
-                        <div class="kt-grid-nav-v2__item-title">Blog Posts</div>
-                    </a>
-                    <a href="#" class="kt-grid-nav-v2__item">
-                        <div class="kt-grid-nav-v2__item-icon"><i class="flaticon2-settings"></i></div>
-                        <div class="kt-grid-nav-v2__item-title">Settings</div>
-                    </a>
-                </div>
-            </div>
-        </div> -->
-
-        <!-- end::Offcanvas Toolbar Quick Actions -->
-
-        <!-- end:: Topbar Offcanvas Panels -->
-
-        <!-- begin:: Quick Panel -->
-        
-        <!-- end:: Scrolltop -->
-
-        <!-- begin:: Demo Toolbar -->
-
-        <!-- end:: Demo Toolbar -->
 
 
         <!-- begin::Global Config(global config for global JS sciprts) -->
@@ -335,23 +298,151 @@
 
         <script>
             document.addEventListener('DOMContentLoaded', function() {
-                // Listen to the 'show.bs.modal' event on the modal
-                $('#modal-assign-driver').on('show.bs.modal', function(event) {
-                    // Get the button (<a> tag) that triggered the modal
-                    var button = $(event.relatedTarget);
+            var buttons = document.querySelectorAll('.btn-assign-driver');
+            buttons.forEach(function(button) {
+            button.addEventListener('click', function() {
+            var factor_id = this.getAttribute('data-factor');
+            var obj_send_id = this.getAttribute('data-obj');
+            var product_id = this.getAttribute('data-product');
+            document.getElementById('factor_id').value = factor_id;
+            document.getElementById('product_id').value = product_id;
+            document.getElementById('obj_send_id').value = obj_send_id;
+            console.log("factor_id:", factor_id);
+            console.log("obj_send_id:", obj_send_id);
+            console.log("product_id:", product_id);
+            // Clear the table
+            var tableBody = document.querySelector("#table-serial tbody");
+            tableBody.innerHTML = '';
 
-                    // Get the 'data-buyer' attribute from the button
-                    var buyerValue = button.data('obj');
-                    var factorobj = button.data('factor');
-                    var productobj = button.data('product');
-                    // Find the hidden input element by its ID and update its value
-                    $('#obj_send_id').val(buyerValue);
-                    $('#factor_id').val(factorobj);
-                    $('#product_id').val(productobj);
-            });
-            });
+            // Send AJAX request to Django view to fetch matching ObjSendSerial objects
+            $.get('fetch_objsendserials/', { factor_id: factor_id, product_id: product_id }, function(data){
+                // Assuming the server returns a list of ObjSendSerial objects
+                console.log(data);
+                data.forEach(function(item) {
+                    var newRow = "<tr>";
+                    newRow += "<td>" + item.product_id + "</td>"; // Added the name field here
+                    newRow += "<td>" + item.name + "</td>"; 
+                    if (!item.serial) {
+                        newRow += "<td>" + "نامعلوم" + "</td>"; 
+                    } else {
+                        newRow += "<td>" + item.serial + "</td>"; 
+                    }
                     
+                    
+                    newRow += "<td><input type='text' name='send_serial[]'></td>";
+                    newRow += "</tr>";
+
+                    tableBody.innerHTML += newRow;
+                });
+            });
+        });
+    });
+});
+  
         </script>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Get the button element by its class name
+    let addDocumentButton = document.querySelector('.add-new-documrnt');
+
+    // Attach a click event listener to the button
+    addDocumentButton.addEventListener('click', function() {
+        // The HTML you want to append
+        let documentHTML = `
+            <div class="document-item row rtl mt-1 p-2" style="background-color:#F3F8F9;border-right: 2px solid cornflowerblue; border-radius: 20px 0 0 20px">
+                <div class="col-md-4">
+                    <select class="form-control form-control-sm" style="border-radius: 9px;" name="document_type[]"> 
+                        <option value="CART">کارت خوان</option>
+                        <option value="FORM">رسید مشتری</option>
+                        <option value="GUARANTY">گارانتی</option>
+                        <option value="CHEQUE">چک</option>
+                        <option value="OTHER">سایر موارد</option> 
+                    </select>
+                </div>
+                <div class="col-md-3">
+                    <input type="file" name="uri[]" class="form-control" placeholder="تصویر مدرک">
+                </div>
+                <div class="col-md-1">
+                    <button type="button" class="btn btn-danger btn-sm delete-document">حذف</button>
+                </div>
+            </div>
+        `;
+
+        // Get the element where you want to append the HTML (in this case the element with the class 'card-body-document')
+        let documentContainer = document.querySelector('.card-body-document');
+
+        // Append the HTML to the end of the container
+        documentContainer.insertAdjacentHTML('beforeend', documentHTML);
+    });
+
+    // Event delegation: Attach a click event listener to the container
+    document.querySelector('.card-body-document').addEventListener('click', function(e) {
+        if (e.target && e.target.classList.contains('delete-document')) {
+            // If the clicked element is a delete button, remove the associated document
+            e.target.closest('.document-item').remove();
+        }
+    });
+});
+</script>
+<div id="bankData" style="display:none;" 
+     data-banks='{% for bank in banks %}{"id": "{{bank.obj_item_id}}", "text": "{{bank.name}}"}{% if not forloop.last %},{% endif %}{% endfor %}'>
+</div>
+
+
+   <script>
+    var bankDataElement = document.getElementById('bankData');
+    var bankList = JSON.parse('[' + bankDataElement.getAttribute('data-banks') + ']');
+</script>
+
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+
+// When the 'add-new-payment' button is clicked, add the specified HTML to the 'card-body-payment' container.
+document.querySelector('.add-new-payment').addEventListener('click', function() {
+    
+    // Sample object to represent data from Django's objoption.
+    // NOTE: You'll need to replace this with actual data from your backend.
+    
+    
+    var objPayment = '<div class="row rtl mt-1 p-2" style="background-color:#F3F8F9;border-right: 2px solid cornflowerblue; border-radius: 20px 0 0 20px">';
+    
+    objPayment += '<div class="col-md-4"><select class="form-control form-control-sm pay-type" style="border-radius: 9px;" name="pay_type[]"><option value="CASH">وجه نقد</option><option value="CART">کارت خوان</option><option value="CARTOCART">کارت به کارت</option><option value="CHEQUE">چک</option><option value="REBATE">تخفیف</option><option value="CREDIT">اعتباری</option><option value="ATHOME">درب منزل</option><option value="OTHER">سایر</option></select></div>';
+    
+    objPayment += '<div class="col-md-4"><select class="form-control form-control-sm bank-list" name="bank_id[]" style="border-radius: 9px;">';
+    
+    bankList.forEach(function(bank) {
+        objPayment += '<option value="' + bank.id + '">' + bank.text + '</option>';
+    });
+    
+    objPayment += '</select></div>';
+    objPayment += '<div class="col-md-4"><div class="input-group input-group-sm mb-3"> <input style="border-radius: 9px;" name="price[]" type="text" class="form-control numeric ltr" placeholder="مبلغ" aria-label="" aria-describedby=""> </div></div>';
+    objPayment += '<div class="col-md-4"><div class="input-group input-group-sm mb-3"> <input style="border-radius: 9px;" name="no[]" type="text" class="form-control" placeholder="شماره" aria-label="" aria-describedby=""> </div></div>';
+    objPayment += '<div class="col-md-8"><div class="input-group input-group-sm mb-3"> <input style="border-radius: 9px;" name="description[]" type="text" class="form-control" placeholder="توضیحات" aria-label="" aria-describedby=""> </div></div>';
+    objPayment += '<button class="dlt btn btn-danger btn-sm">حذف</button>';
+
+    objPayment += '</div>';
+    
+    document.querySelector('.card-body-payment').insertAdjacentHTML('beforeend', objPayment);
+});
+
+// Delete functionality
+document.addEventListener('click', function(e) {
+    if(e.target && e.target.classList.contains('dlt')){
+        e.target.parentElement.remove();
+    }
+});
+
+// On change for '.pay-type' select input (for future use)
+document.addEventListener('change', function(e) {
+    if(e.target && e.target.classList.contains('pay-type')){
+        console.log(e.target.parentElement.parentElement);
+    }
+});
+});
+
+</script>
 
         <!--end::Page Scripts -->
     </body>

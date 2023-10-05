@@ -1,8 +1,11 @@
 from datetime import timezone
 import datetime
 import json
+import uuid
+from django.core.files.uploadedfile import InMemoryUploadedFile
+from django.core.files.base import ContentFile
 from django.core import serializers
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from django.urls import reverse
 from .utilities import get_object_or_none
 from django.shortcuts import get_object_or_404, redirect, render
@@ -26,7 +29,7 @@ from django.views.decorators.cache import cache_page
 from django.db.models import Sum, Count
 from django.db.models import F, Sum
 from .models import FactorItem,FactorItemBalanceSVA
-from .forms import NewDepoSend, NewFactorAddress, NewFactorComment, NewFactorItem, NewFactorPayway, NewInquiry, NewObjItem,NewObjItemSpec, NewObjPayment, NewObjSend, NewObjSendSerial, NewPreFactor
+from .forms import DocumentUploadForm, NewDepoSend, NewFactorAddress, NewFactorComment, NewFactorItem, NewFactorPayway, NewInquiry, NewObjItem,NewObjItemSpec, NewObjPayment, NewObjSend, NewObjSendSerial, NewPreFactor
 from django.core.files.storage import FileSystemStorage
 from django.db.models import Sum, F, Value, CharField, Case, When,FloatField,Subquery, OuterRef
 from django.db.models.functions import Coalesce
@@ -270,7 +273,7 @@ def new_customer(request):
         print(last_item)
         return redirect('customer:customerindex')
 
-# @cache_page(10)
+
 @login_required(login_url='Administrator:login_view')
 @permission_required('ROLE_PERSONEL','ROLE_ADMIN')
 def customer_index_all(request):
@@ -299,7 +302,6 @@ def customer_index_all(request):
         formInquiry = NewInquiry(post_data)
         if formInquiry.is_valid():
             saved_instance = formInquiry.save()
-            print("this is true")
             return redirect('customer:customerindexAll')
         else:
             return "wrong"
@@ -727,7 +729,7 @@ def delete_factor_element(request,element):
     else:
         return redirect('customer:customerindex')
 
-# @cache_page(10)
+
 @login_required(login_url='Administrator:login_view')
 @permission_required('ROLE_PERSONEL','ROLE_ADMIN')
 def factor_index(request):
@@ -736,7 +738,6 @@ def factor_index(request):
 
 
 
-# @cache_page(10)
 @login_required(login_url='Administrator:login_view')
 @permission_required('ROLE_PERSONEL','ROLE_ADMIN')
 def customer_confirm_accountlist(request):  
@@ -929,10 +930,22 @@ def factor_send_print(request,obj_send_id=None):
 @permission_required('ROLE_PERSONEL','ROLE_ADMIN')
 def customerfactor_sendassigndriver(request):
     if request.method == 'POST':
-        print(request.POST)
+        # print(request.POST)
         if request.POST.get('formtype') == 'assign_driver' :
             obj_send_id = request.POST['objsend']
             obj_send = get_object_or_404(ObjSend, pk = obj_send_id)
+            print(obj_send)
+            factoritem = get_object_or_404(FactorItem,factor_item_id = obj_send.source_id)
+            print(factoritem)
+            # factor = get_object_or_404(Factor,factor_id = factor_item.factor.factor_id)
+            Factor_items_detail = FactorItem.objects.filter(factor=factoritem.factor_id).values('factor_id', 'obj_item_id', 'amount')
+            for item in Factor_items_detail:
+                print('start')
+                # Access the 'amount' value using key-value syntax
+                for _ in range(int(item['amount'])):
+                    ObjSendSerial.objects.create(factor_id=item['factor_id'], product_id=item['obj_item_id'])
+                    print('goods')
+            
             obj_send.drive_id = request.POST['drive_id']
             # obj_send.doer2_id = request.POST['doer2_id']
             # obj_send.doer1_id = request.POST['doer1_id']
@@ -1035,40 +1048,97 @@ def customerfactor_sendstatus(request):
     
     if request.method == 'POST':
         print(request.POST)
+        print(request.FILES)
         objsend = get_object_or_404(ObjSend,obj_send_id=request.POST.get('obj_send_id'))
         drive_status = request.POST['drive_status']
         drive_status_id = request.user.user_id
         drive_status_desc = request.POST['drive_status_desc']
-        drive_status_dt = datetime.datetime.now()
-        objsend.drive_status_id = drive_status
-        objsend.drive_status_desc = drive_status_id
-        objsend.drive_status_dt = drive_status_desc
-        objsend.drive_status = drive_status_dt
+        objsend.drive_status_id = drive_status_id
+        objsend.drive_status = drive_status
+        objsend.drive_status_desc = drive_status_desc
+        objsend.drive_status_dt = datetime.datetime.now()
         objsend.save()
-
-        sendserial = {
-            'obj_send_id':1,
-            'factor_id':request.POST['factor_id'],
-            'product_id':request.POST['product_id'],
-            'serial_drive':request.POST['serial_drive'],
-        }
-
-        newobjsendserial = NewObjSendSerial(sendserial)
-        if newobjsendserial.is_valid():
-            newobjsendserial.save()
+        if drive_status == 'CONFIRM':
+            
+            ObjSend.objects.create(
+                action ='INSTALL',source_type='FACTOR',source_id = objsend.source_id
+            )
         else:
-            print(newobjsendserial.errors)
-            return redirect('customer:CustomerFactorSendStatus')
+            ObjSend.objects.create(
+                action ='DRIVE',source_type='FACTOR',source_id = objsend.source_id
+            )
+        
+        factor_id = request.POST['factor_id']
+        product_id = request.POST['product_id']
+        serials = request.POST.getlist('send_serial[]')
+        objsends = ObjSendSerial.objects.filter(factor_id = factor_id)
+        # work on it later
 
-        #the same thing for factor_paywayand factor
-        #do these steps:
-            # check all the input tags inthe htmlfor fields you need.make sure all are there.
-            # get all the data and put it ina dictionary like example ---> sendserial 
-            #  go to forms.py and find the form for the model and create one like :newobjsendserial = NewObjSendSerial(sendserial)
-            # use is_valid and save if okay. else: print errors
-            # redirect
+
+
+        pay_types = request.POST.getlist('pay_type[]')
+        bank_ids = request.POST.getlist('bank_id[]')
+        prices = request.POST.getlist('price[]')
+        nos = request.POST.getlist('no[]')
+        descriptions = request.POST.getlist('description[]')
+        merged_data_factor_payway = zip(pay_types, bank_ids, prices, nos,descriptions)
+        if merged_data_factor_payway:
+            for pay_type, bank_id, price, no,description in merged_data_factor_payway :
+                data_payway = {
+                    'factor': factor_id,
+                    'pay_level':'FACTOR',
+                    'pay_type': pay_type,
+                    'price': price,
+                    'bank' : bank_id,
+                    'no': no,
+                    'description': description,
+                    'register': request.user.user_id,
+                    'reg_dt':datetime.datetime.now(),
+                }
+                factorpayform = NewFactorPayway(data_payway)
+                if factorpayform.is_valid():
+                    factorpayform.save()
+                else:
+                    print(factorpayform.errors)
+            
+            
+        #Here we create the factor_payways
+
+        # Use getlist to fetch all uploaded files
+        uploaded_files = request.FILES.getlist('uri[]')
+        document_types = request.POST.getlist('document_type[]')
+        print(uploaded_files)
+        # Use zip to merge the lists
+        merged_data_factor_document = zip(uploaded_files, document_types)
+
+        if merged_data_factor_document:
+            for uploaded_file, doc_type in merged_data_factor_document:
+                # Since all the items in uploaded_files are InMemoryUploadedFile, 
+                # you don't need to check for its type again
+                fs = FileSystemStorage()
+                filename = fs.save(uploaded_file.name, uploaded_file)
+                file_url = fs.url(filename)
+
+                doc_data = {
+                    'factor': factor_id,
+                    'document_type': doc_type,
+                    'uri': file_url,  # store the URL in the TextField
+                    'level_type': 'DRIVE',
+                    'register': request.user.user_id,
+                    'reg_dt': datetime.datetime.now(),
+                }
+
+                uploadedform = DocumentUploadForm(doc_data)
+                if uploadedform.is_valid():
+                    uploadedform.save()
+                else:
+                    print(uploadedform.errors)
+                #Here we create the FactorDocument objects
+                
+        
         return render(request,'Customer/CustomerFactorSendStatus.html')
     else:
+        
         objsendlist = ObjSend.objects.filter(
         source_type='FACTOR',
         action='DRIVE',
@@ -1104,8 +1174,8 @@ def customerfactor_sendstatus(request):
         )
         objsendlist_sources = objsendlist.values('source_id')
         factor_ids = FactorItem.objects.filter(factor_item_id__in = objsendlist_sources).values('factor')
-        print(factor_ids)
-        objsendserials = ObjSendSerial.objects.filter(factor_id__in = factor_ids)
+        # print(factor_ids)
+        # objsendserials = ObjSendSerial.objects.filter(factor_id__in = factor_ids)
         factors = Factor.objects.filter(factor_id__in = factor_ids)
         seller_factor_ids = []
         for i in factors:
@@ -1114,14 +1184,41 @@ def customerfactor_sendstatus(request):
         obj_customer_detail = DepoSend.objects.filter(source_id__in = objsendlist_sources)
         combo_data  = list(zip(objsendlist,obj_customer_detail))
         all_data = list(zip(combo_data,seller_factor_ids))
+        print(all_data[0])
+        banks = ObjItem.objects.filter(obj_item_id__gte=999003010, obj_item_id__lte=999003019) 
+
 
         context = {
             'items':all_data,
+            'banks':banks,
         }
 
 
         return render(request,'Customer/CustomerFactorSendStatus.html',context=context)
 
+def fetch_obj_send_serials(request):
+    factor_id = request.GET.get('factor_id')
+    
+    product_id = request.GET.get('product_id')
+    
+    print(product_id)
+    print(factor_id)
+    objs = ObjSendSerial.objects.filter(factor_id=factor_id)
+    print(objs)
+    data = []
+    for item in objs:
+        Obj_item_name = get_object_or_404(ObjItem, obj_item_id=item.product_id).name
+        serialized_item = {
+            "factor_id": item.factor_id,
+            "product_id": item.product_id,
+            # ... any other fields from ObjSendSerial you need
+            "name": Obj_item_name  # adding the product name
+        }
+        data.append(serialized_item)
+
+    return JsonResponse(data, safe=False)
+        
+    
 ############################################################## INSTALL
 @login_required(login_url='Administrator:login_view')
 @permission_required('ROLE_PERSONEL','ROLE_ADMIN')
@@ -1303,13 +1400,13 @@ def factor_install_sendstatus(request):
         drive_status_id = request.user.user_id
         drive_status_desc = request.POST['drive_status_desc']
         drive_status_dt = datetime.datetime.now()
-        objsend.drive_status_id = drive_status
-        objsend.drive_status_desc = drive_status_id
-        objsend.drive_status_dt = drive_status_desc
-        objsend.drive_status = drive_status_dt
+        objsend.drive_status_id = drive_status_id
+        objsend.drive_status_desc = drive_status_desc
+        objsend.drive_status_dt = drive_status_dt
+        objsend.drive_status = drive_status
         objsend.save()
-
         return render(request,'Customer/CustomerFactorInstallStatus.html')
+    
     else:
         objsendlist = ObjSend.objects.filter(
         source_type='FACTOR',
@@ -1348,17 +1445,19 @@ def factor_install_sendstatus(request):
         factor_ids = FactorItem.objects.filter(factor_item_id__in = objsendlist_sources).values('factor')
         objsendserials = ObjSendSerial.objects.filter(factor_id__in = factor_ids)
         factors = Factor.objects.filter(factor_id__in = factor_ids)
-        
+    
         seller_factor_ids = []
         for i in factors:
             factor_comments = FactorComment.objects.filter(factor_id = i.factor_id,level='DRIVE')
             seller_factor_ids.append((i.factor_id,i.seller_factor_id,factor_comments))
+
         obj_customer_detail = DepoSend.objects.filter(source_id__in = objsendlist_sources)
         combo_data  = list(zip(objsendlist,obj_customer_detail))
         all_data = list(zip(combo_data,seller_factor_ids))
-
+        banks = ObjItem.objects.filter(obj_item_id__gte=999003010, obj_item_id__lte=999003019) 
         context = {
             'items':all_data,
+            'banks':banks,
         }
 
 
