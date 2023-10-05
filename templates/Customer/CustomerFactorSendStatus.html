@@ -188,16 +188,14 @@
                                                                         <tr>
                                                                             <td>کد محصول</td>
                                                                             <td>نام محصول</td>
-                                                                            <td>شماره سریال
-                                                                                
-                                                                            </td>
+                                                                            
                                                                             
                                                                         </tr>
                                                                     </thead>
                                                                     <tbody>
                                                                         <tr>
                                                                         <td> </td>
-                                                                        <td></td>
+                                                                        
                                                                         <td>
                                                                             <input type="text" name="send_serial[]">
                                                                         </td>
@@ -322,11 +320,7 @@
                     var newRow = "<tr>";
                     newRow += "<td>" + item.product_id + "</td>"; // Added the name field here
                     newRow += "<td>" + item.name + "</td>"; 
-                    if (!item.serial) {
-                        newRow += "<td>" + "نامعلوم" + "</td>"; 
-                    } else {
-                        newRow += "<td>" + item.serial + "</td>"; 
-                    }
+                    newRow += "<td>" + item.title + "</td>"; 
                     
                     
                     newRow += "<td><input type='text' name='send_serial[]'></td>";

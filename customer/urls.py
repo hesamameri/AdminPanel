@@ -49,13 +49,15 @@ urlpatterns = [
     path('factorsendindex/<int:obj_send_id>', views.factor_send_index, name='FactorSendIndexSend'),
     path('fetch_objsendserials/', views.fetch_obj_send_serials, name='fetch_obj_send_serials'),
     path('factorsendprint/<int:obj_send_id>', views.factor_send_print, name='FactorSendPrint'),
-
+    path('addcomments/', views.add_comment, name='addcomment'),
+    path('fetch_comments/', views.fetch_comments, name='fetch_comments'),
     path('customerfactorsendassigndriver', views.customerfactor_sendassigndriver, name='CustomerFactorSendAssignDriver'),
     path('customerfactorsendstatus', views.customerfactor_sendstatus, name='CustomerFactorSendStatus'),
 
 
 ########################################### Install
     path('factorinstallindex', views.factor_install_index, name='FactorInstallIndex'),
+    path('factorinstallindexchange/<int:obj_send_id>/', views.factor_install_index, name='FactorInstallIndexChange'),    
     path('factorinstallassign', views.factor_install_assigninstaller, name='FactorInstallAssignInstaller'),
     path('factorinstallstatus', views.factor_install_sendstatus, name='FactorInstallSendStatus'),
     path('factorsendinstallerprint/<int:obj_send_id>', views.factorsend_installerprint, name='FactorSendInstallerPrint'),  

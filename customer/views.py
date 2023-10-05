@@ -1057,16 +1057,19 @@ def customerfactor_sendstatus(request):
         objsend.drive_status = drive_status
         objsend.drive_status_desc = drive_status_desc
         objsend.drive_status_dt = datetime.datetime.now()
+        serials = request.POST.getlist('send_serial[]')
         objsend.save()
-        if drive_status == 'CONFIRM':
-            
-            ObjSend.objects.create(
-                action ='INSTALL',source_type='FACTOR',source_id = objsend.source_id
-            )
-        else:
-            ObjSend.objects.create(
-                action ='DRIVE',source_type='FACTOR',source_id = objsend.source_id
-            )
+        for obj in serials:
+
+            if drive_status == 'CONFIRM':
+                
+                ObjSend.objects.create(
+                    action ='INSTALL',source_type='FACTOR',source_id = objsend.source_id,serial_drive= obj
+                )
+            else:
+                ObjSend.objects.create(
+                    action ='DRIVE',source_type='FACTOR',source_id = objsend.source_id
+                )
         
         factor_id = request.POST['factor_id']
         product_id = request.POST['product_id']
@@ -1207,24 +1210,56 @@ def fetch_obj_send_serials(request):
     print(objs)
     data = []
     for item in objs:
-        Obj_item_name = get_object_or_404(ObjItem, obj_item_id=item.product_id).name
+        Obj_item = get_object_or_404(ObjItem, obj_item_id=item.product_id)
+        name = Obj_item.name
+        title = Obj_item.title
+
+
         serialized_item = {
             "factor_id": item.factor_id,
             "product_id": item.product_id,
             # ... any other fields from ObjSendSerial you need
-            "name": Obj_item_name  # adding the product name
+            "name": name,  # adding the product name
+            'title':title,
         }
         data.append(serialized_item)
 
     return JsonResponse(data, safe=False)
-        
-    
+
+
+def fetch_comments(request):
+    if request.method == 'GET':
+        factor_id = request.GET.get('factor_id')
+        level = request.GET.get('level', 'DRIVE')
+
+        # Fetch FactorComment objects based on factor_id and level
+        comments = FactorComment.objects.filter(factor_id=factor_id, level=level)
+
+        # Serialize the comments to JSON format
+        serialized_comments = [{'body': comment.body} for comment in comments]
+
+        return JsonResponse(serialized_comments, safe=False)
+
+    # Handle other HTTP methods if needed
+    return JsonResponse({'error': 'Invalid request method'}, status=400)  
+
+
+def add_comment(request):
+    if request.method == 'POST':
+        FactorComment.objects.create(
+            factor_id  = request.POST['factor_id'],level = 'DRIVE',body = request.POST['comment'],
+            register = request.user.user_id,reg_dt = datetime.datetime.now(),
+        )
+        return redirect('customer:CustomerFactorSendStatus') 
+
+
 ############################################################## INSTALL
 @login_required(login_url='Administrator:login_view')
 @permission_required('ROLE_PERSONEL','ROLE_ADMIN')
 def factor_install_index(request,obj_send_id=None):
     
     if obj_send_id is not None:
+        print(obj_send_id)
         item = get_object_or_404(ObjSend,obj_send_id=obj_send_id)
         item.drive_register = request.user.user_id
         item.save()
@@ -1297,12 +1332,12 @@ def factor_install_assigninstaller(request):
             obj_send_id = request.POST['objsend']
             obj_send = get_object_or_404(ObjSend, pk = obj_send_id)
             obj_send.drive_id = request.POST['drive_id']
-            # obj_send.doer2_id = request.POST['doer2_id']
-            # obj_send.doer1_id = request.POST['doer1_id']
             obj_send.drive_desc = request.POST['drive_desc']
             obj_send.drive_dt = datetime.datetime.now()
             obj_send.save()
+
             return redirect('customer:FactorInstallAssignInstaller')
+        
         elif request.POST.get('formtype') == 'drive_comment':
             source_id = get_object_or_404(ObjSend,obj_send_id = request.POST['objsend']).source_id
             factor_item = get_object_or_404(FactorItem,factor_item_id = source_id).factor.factor_id
@@ -1375,7 +1410,7 @@ def factor_install_assigninstaller(request):
         factors = Factor.objects.filter(factor_id__in = factor_ids)
         seller_factor_ids = []
         for i in factors:
-            factor_comments = FactorComment.objects.filter(factor_id = i.factor_id,level='DRIVE')
+            factor_comments = FactorComment.objects.filter(factor_id = i.factor_id,level='INSTALL')
             seller_factor_ids.append((i.factor_id,i.seller_factor_id,factor_comments))
         print(seller_factor_ids)
         obj_customer_detail = DepoSend.objects.filter(source_id__in = objsendlist_sources)
@@ -1388,6 +1423,7 @@ def factor_install_assigninstaller(request):
         # factor_item_ids = objsendlist.values('source_id')
         # factor_id = Factor.objects.filter(factor_id__in = factor_item_ids)
         return render(request,'Customer/CustomerFactorInstallAssign.html',context=context)
+
 
 @login_required(login_url='Administrator:login_view')
 @permission_required('ROLE_PERSONEL','ROLE_ADMIN')
@@ -1443,7 +1479,6 @@ def factor_install_sendstatus(request):
         )
         objsendlist_sources = objsendlist.values('source_id')
         factor_ids = FactorItem.objects.filter(factor_item_id__in = objsendlist_sources).values('factor')
-        objsendserials = ObjSendSerial.objects.filter(factor_id__in = factor_ids)
         factors = Factor.objects.filter(factor_id__in = factor_ids)
     
         seller_factor_ids = []
@@ -1459,8 +1494,6 @@ def factor_install_sendstatus(request):
             'items':all_data,
             'banks':banks,
         }
-
-
         return render(request,'Customer/CustomerFactorInstallStatus.html',context=context)
 ###########################################################################
 # @cache_page(10)

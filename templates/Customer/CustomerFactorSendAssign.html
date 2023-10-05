@@ -114,8 +114,9 @@
                                                                                     <td>
                                                                                         <i class="fas fa-info-circle btn btn-xs btn-info btn-flat" data-container="body" data-toggle="popover" data-placement="top" data-content=""></i>
                                                                                         <i data-objsend="{{item.0.0.obj_send_id}}"
-                                                                                         data-toggle="modal"
+                                                                                          data-toggle="modal"
                                                                                           data-target="#modal-comment" 
+                                                                                          data-factor = "{{item.1.0}}"
                                                                                           data-loadcomments="{{item.1.2}}"
                                                                                           class="fas fa-comment btn btn-xs  btn-flat btn-comment">&nbsp;</i>
                                                                                     </td>
@@ -191,8 +192,8 @@
                                 <!-- /.modal-dialog -->
                             </div>
                             <div class="modal fade" id="modal-comment">
-                                <form method="post" action="{% url 'customer:CustomerFactorSendAssignDriver' %}">
-                                {% csrf_token %}
+                                <form method="post" action="{% url 'customer:addcomment' %}">
+                                    {% csrf_token %}
                                     <input type="hidden" name="objsend" id="objsend-comment">
                                     <input type="hidden" name="formtype" value="drive_comment">
 
@@ -247,7 +248,7 @@
 
                     // Get the 'data-buyer' attribute from the button
                     var objValue = button.data('objsend');
-
+                    
                     // Find the hidden input element by its ID and update its value
                     $('#objsend').val(objValue);
             });
@@ -263,40 +264,52 @@
         var icon = $(event.relatedTarget);
 
         // Get the 'data-objsend' attribute from the icon
-        var objValue = icon.data('objsend');
-
+        var objValue = icon.data('factor');
+        $('#factor-id-val').val(objValue);
         // Find the hidden input element by its ID and update its value
         $('#objsend-comment').val(objValue);
     });
 });
         </script>
        <script>
-       
-  function displayComments(button) {
-    // Extract the comments JSON string from the data-loadcomments attribute
-    var loadCommentsData = button.getAttribute('data-loadcomments');
+        // Function to fetch comments using AJAX
+        function fetchComments(factorId) {
+            $.ajax({
+                url: "{% url 'customer:fetch_comments' %}",  // Update this URL to your actual URL
+                type: 'GET',
+                data: {
+                    'factor_id': factorId,
+                    'level': 'DRIVE'
+                },
+                
+                success: function (data) {
+                    // Assuming data is an array of comments
+                    console.log(data);
+                    var commentsHtml = '<ul>';
+                    data.forEach(function (comment) {
+                        commentsHtml += '<li>' + comment.body + '</li>';
+                    });
+                    commentsHtml += '</ul>';
+    
+                    // Update the comments element with the fetched comments
+                    $('#comments-body').html(commentsHtml);
+                },
+                error: function () {
+                    // Handle the error if the AJAX request fails
+                    console.log('Error fetching comments.');
+                }
+            });
+        }
+    
+        // Add an event listener to the modal when it's shown
+        $('#modal-comment').on('show.bs.modal', function (event) {
+            var button = event.relatedTarget;
+            var factorId = $(button).data('factor');
+            // Call the fetchComments function to fetch comments for the given factor_id
+            fetchComments(factorId);
 
-    // Parse the JSON string into an array of JavaScript objects
-    var comments = JSON.parse(loadCommentsData);
-
-    // Create HTML content for the comments
-    var commentsHtml = '<ul>';
-
-    // Iterate through the comments and add them to the HTML content
-    for (var i = 0; i < comments.length; i++) {
-      commentsHtml += '<li>' + comments[i].fields.body + '</li>';
-    }
-
-    commentsHtml += '</ul>';
-
-    // Display the comments elsewhere in the HTML (e.g., in a div with the ID "comments-container")
-    var commentsContainer = document.getElementById('comments-container');
-    if (commentsContainer) {
-      commentsContainer.innerHTML = commentsHtml;
-    }
-  }
-
-    </script>
+        });
+    </script>>
     
     
     
