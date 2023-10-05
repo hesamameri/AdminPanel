@@ -274,6 +274,7 @@
        <script>
         // Function to fetch comments using AJAX
         function fetchComments(factorId) {
+            
             $.ajax({
                 url: "{% url 'customer:fetch_comments' %}",  // Update this URL to your actual URL
                 type: 'GET',
@@ -281,7 +282,7 @@
                     'factor_id': factorId,
                     'level': 'DRIVE'
                 },
-                
+
                 success: function (data) {
                     // Assuming data is an array of comments
                     console.log(data);
