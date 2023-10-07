@@ -1232,16 +1232,17 @@ def fetch_comments(request):
         factor_id = request.GET.get('factor_id')
         level = request.GET.get('level', 'DRIVE')
 
-        # Fetch FactorComment objects based on factor_id and level
+        # Fetch all FactorComment objects based on factor_id and level
         comments = FactorComment.objects.filter(factor_id=factor_id, level=level)
 
         # Serialize the comments to JSON format
         serialized_comments = [{'body': comment.body} for comment in comments]
 
-        return JsonResponse(serialized_comments, safe=False)
+        return JsonResponse(serialized_comments, safe=False, json_dumps_params={'ensure_ascii': False})
 
     # Handle other HTTP methods if needed
-    return JsonResponse({'error': 'Invalid request method'}, status=400)  
+    return JsonResponse({'error': 'Invalid request method'}, status=400)
+
 
 
 def add_comment(request):
