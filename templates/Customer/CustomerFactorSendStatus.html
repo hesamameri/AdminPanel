@@ -464,8 +464,37 @@ document.addEventListener('change', function(e) {
             });
                    
         </script>
-
+        
         <script>
+        // JavaScript code to handle the comment button click event
+        $(document).on('click', '.btn-comment', function() {
+            var factorId = $(this).data('factor');
+            var fetchUrl = $(this).data('fetch-url');
+
+            // Set the factor ID in the hidden input field of the modal form
+            $('#factor-id-val').val(factorId);
+
+            // Send an AJAX request to fetch the comments
+            $.ajax({
+                url: fetchUrl,
+                type: 'GET',
+                success: function(response) {
+                    // Clear the existing comments
+                    $('#comments-body').empty();
+
+                    // Append the fetched comments to the modal body
+                    response.forEach(function(comment) {
+                        $('#comments-body').append('<div>' + comment.body + '</div>');
+                    });
+                },
+                error: function(xhr, status, error) {
+                    console.log(error);
+                }
+            });
+        });
+        </script>
+
+        <!-- <script>
             document.addEventListener('DOMContentLoaded', function() {
     // Listen to the 'show.bs.modal' event on the comment modal
     $('#modal-comment').on('show.bs.modal', function(event) {
@@ -512,47 +541,9 @@ document.addEventListener('change', function(e) {
                 }
             });
         });
-        </script>
+        </script> -->
 
-<script>
-    // Function to submit a comment using AJAX
-    function addComment(factorId, commentText) {
-        $.ajax({
-            url: "{% url 'customer:addcomment' %}",
-            type: 'POST',
-            data: {
-                'factor_id': factorId,
-                'level': 'DRIVE',
-                'comment': commentText,
-                'csrfmiddlewaretoken': '{{ csrf_token }}' // Include CSRF token
-            },
-            success: function (data) {
-                // Assuming data is a success message or status
-                console.log(data);
-                
-                // Fetch and refresh comments after successfully adding a comment
-                fetchComments(factorId);
-            },
-            error: function () {
-                // Handle the error if the AJAX request fails
-                console.log('Error adding comment.');
-            }
-        });
-    }
 
-    // Submit comment form
-    $('#modal-comment form').submit(function (e) {
-        e.preventDefault();
-        var factorId = $('#factor-id-val').val();
-        var commentText = $('#comment').val();
-
-        if (commentText.trim() !== '') {
-            // Call the addComment function to submit the comment
-            addComment(factorId, commentText);
-            $('#comment').val(''); // Clear the comment input field
-        }
-    });
-</script>
 
 
         <!--end::Page Scripts -->
