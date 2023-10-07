@@ -1,4 +1,6 @@
 from datetime import timezone
+from django.views.decorators.http import require_GET
+from django.views.decorators.http import require_POST
 import datetime
 import json
 import uuid
@@ -1227,6 +1229,7 @@ def fetch_obj_send_serials(request):
     return JsonResponse(data, safe=False)
 
 
+@require_GET
 def fetch_comments(request):
     if request.method == 'GET':
         factor_id = request.GET.get('factor_id')
@@ -1245,13 +1248,29 @@ def fetch_comments(request):
 
 
 
+
+
+@require_POST
 def add_comment(request):
     if request.method == 'POST':
-        FactorComment.objects.create(
-            factor_id  = request.POST['factor_id'],level = 'DRIVE',body = request.POST['comment'],
-            register = request.user.user_id,reg_dt = datetime.datetime.now(),
-        )
-        return redirect('customer:CustomerFactorSendStatus') 
+        factor_id = request.POST.get('factor_id')
+        comment_text = request.POST.get('comment')
+
+        if factor_id and comment_text:
+            # Create a new FactorComment
+            FactorComment.objects.create(
+                factor_id=factor_id,
+                level='DRIVE',
+                body=comment_text,
+                register=request.user.user_id,
+                reg_dt=datetime.datetime.now(),
+            )
+
+            # Redirect to the appropriate page after adding the comment
+            return redirect('customer:CustomerFactorSendStatus')
+
+    # Handle invalid or missing data
+    return JsonResponse({'error': 'Invalid comment data'}, status=400)
 
 
 ############################################################## INSTALL

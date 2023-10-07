@@ -466,32 +466,37 @@ document.addEventListener('change', function(e) {
         </script>
         
         <script>
-        // JavaScript code to handle the comment button click event
-        $(document).on('click', '.btn-comment', function() {
-            var factorId = $(this).data('factor');
-            var fetchUrl = $(this).data('fetch-url');
-
-            // Set the factor ID in the hidden input field of the modal form
-            $('#factor-id-val').val(factorId);
-
-            // Send an AJAX request to fetch the comments
-            $.ajax({
-                url: fetchUrl,
-                type: 'GET',
-                success: function(response) {
-                    // Clear the existing comments
-                    $('#comments-body').empty();
-
-                    // Append the fetched comments to the modal body
-                    response.forEach(function(comment) {
-                        $('#comments-body').append('<div>' + comment.body + '</div>');
-                    });
-                },
-                error: function(xhr, status, error) {
-                    console.log(error);
-                }
+            function fetchCommentsAndUpdateModal(factorId, fetchUrl) {
+                $.ajax({
+                    url: fetchUrl,
+                    type: 'GET',
+                    success: function (data) {
+                        $('#comments-body').empty();
+                        for (var i = 0; i < data.length; i++) {
+                            $('#comments-body').append('<div>' + data[i].body + '</div>');
+                        }
+                        $('#factor-id-val').val(factorId);
+                    }
+                });
+            }
+        
+            $(document).on('click', '.btn-comment', function () {
+                var factorId = $(this).data('factor');
+                var fetchUrl = $(this).data('fetch-url');
+        
+                // Initial fetch and update
+                fetchCommentsAndUpdateModal(factorId, fetchUrl);
+        
+                // Periodically fetch and update every second
+                var intervalId = setInterval(function () {
+                    fetchCommentsAndUpdateModal(factorId, fetchUrl);
+                }, 1000);
+        
+                // Close the modal and clear the interval when it's dismissed
+                $('#modal-comment').on('hidden.bs.modal', function () {
+                    clearInterval(intervalId);
+                });
             });
-        });
         </script>
 
         <!-- <script>
