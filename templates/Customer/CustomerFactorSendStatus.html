@@ -42,7 +42,6 @@
                     <!-- begin:: Header -->
 
                     {% include "partials/header.html" %}
-                    
                     <!-- end:: Header -->
                     <div class="kt-grid__item kt-grid__item--fluid kt-grid kt-grid--hor">
 
@@ -121,8 +120,8 @@
                                                                                     <td>
                                                                                         <i data-factor="{{item.1.0}}" data-toggle="modal" data-target="#modal-comment"
                                                                                            data-fetch-url="{% url 'customer:fetch_comments' %}?factor_id={{item.1.0}}" class="fas fa-comment btn btn-xs btn-flat btn-comment" data-row-index="{{ forloop.counter }}">&nbsp;</i>
-                                                                                    
                                                                                     </td>
+                                                                                    
                                                                                     <td>
                                                                                         <a class="btn btn-success btn-xs btn-assign-driver" data-real-factor-id="1" data-product="{{item.0.1.goods}}" data-factor="{{item.1.0}}" data-obj="{{item.0.0.obj_send_id}}" data-toggle="modal" data-target="#modal-assign-driver">
                                                                                             <i class="fas fa-bell"></i> اعلام وضعیت
@@ -259,7 +258,7 @@
                                         <div class="modal-body">
                                             <div class="row">
                                                 <div class="col-md-12 body">
-                                                    <div id="comments-body" class="list-group">
+                                                    <div id="comments-body">
                                                        
 
                                                     </div>
@@ -603,7 +602,6 @@ $('#modal-comment').on('show.bs.modal', function (event) {
 });
 
 </script>
-
 
 
 
