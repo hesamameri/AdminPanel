@@ -514,6 +514,49 @@ document.addEventListener('change', function(e) {
 
         <script>
             function fetchCommentsAndUpdateModal(factorId, fetchUrl) {
+                function fetchCommentsAndUpdateModal(factorId, fetchUrl) {
+    $.ajax({
+        url: fetchUrl,
+        type: 'GET',
+        cache: false, // Disable caching at the client side as well
+        success: function (data) {
+            var commentIds = [];
+            var $commentsBody = $('#comments-body');
+
+            // Get the IDs of existing comments
+            $commentsBody.find('.comment').each(function () {
+                commentIds.push($(this).data('comment-id'));
+            });
+
+            // Remove deleted comments from the modal
+            for (var i = 0; i < commentIds.length; i++) {
+                if (!commentExists(commentIds[i], data)) {
+                    $commentsBody.find('.comment[data-comment-id="' + commentIds[i] + '"]').remove();
+                }
+            }
+
+            // Add new comments to the modal
+            for (var j = 0; j < data.length; j++) {
+                if (!commentExists(data[j].id, commentIds)) {
+                    $commentsBody.append('<div class="comment" data-comment-id="' + data[j].id + '">' + data[j].body + '</div>');
+                }
+            }
+
+            $('#factor-id-val').val(factorId);
+        }
+    });
+}
+
+function commentExists(commentId, comments) {
+    for (var i = 0; i < comments.length; i++) {
+        if (comments[i].id === commentId) {
+            return true;
+        }
+    }
+    return false;
+}
+
+
                 $.ajax({
                     url: fetchUrl,
                     type: 'GET',

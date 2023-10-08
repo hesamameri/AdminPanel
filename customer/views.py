@@ -1,4 +1,5 @@
 from datetime import timezone
+from django.views.decorators.cache import cache_control
 from django.views.decorators.http import require_GET
 from django.views.decorators.http import require_POST
 import datetime
@@ -1229,6 +1230,7 @@ def fetch_obj_send_serials(request):
     return JsonResponse(data, safe=False)
 
 
+@cache_control(no_cache=True, must_revalidate=True, no_store=True)
 @require_GET
 def fetch_comments(request):
     if request.method == 'GET':
