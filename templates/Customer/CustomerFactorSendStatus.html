@@ -119,8 +119,12 @@
                                                                                     {% endif %}
                                                                                     <td>
                                                                                         <i data-factor="{{item.1.0}}" data-toggle="modal" data-target="#modal-comment"
-                                                                                           data-fetch-url="{% url 'customer:fetch_comments' %}?factor_id={{item.1.0}}" class="fas fa-comment btn btn-xs btn-flat btn-comment" data-row-index="{{ forloop.counter }}">&nbsp;</i>
+                                                                                            data-fetch-url="{% url 'customer:fetch_comments' %}?factor_id={{item.1.0}}"
+                                                                                            class="fas fa-comment btn btn-xs btn-flat btn-comment comment-icon"
+                                                                                            data-row-index="{{ forloop.counter }}">
+                                                                                        </i>
                                                                                     </td>
+
                                                                                     
                                                                                     <td>
                                                                                         <a class="btn btn-success btn-xs btn-assign-driver" data-real-factor-id="1" data-product="{{item.0.1.goods}}" data-factor="{{item.1.0}}" data-obj="{{item.0.0.obj_send_id}}" data-toggle="modal" data-target="#modal-assign-driver">
@@ -526,6 +530,33 @@ document.addEventListener('change', function(e) {
                 });
             });
         </script>
+
+        <script>
+            $(document).ready(function () {
+                // Loop through all comment icons and check if there are previous comments
+                $('.comment-icon').each(function () {
+                    var factorId = $(this).data('factor');
+                    var fetchUrl = $(this).data('fetch-url');
+                    var icon = $(this);
+
+                    // Fetch comments and change the icon's color based on the result
+                    $.ajax({
+                        url: fetchUrl,
+                        type: 'GET',
+                        success: function (data) {
+                            if (data.length > 0) {
+                                // If there are comments, change the icon color to red
+                                icon.css('color', 'red');
+                            } else {
+                                // If there are no comments, keep the default color
+                                // You can set the default color here if needed
+                            }
+                        }
+                    });
+                });
+            });
+        </script>
+
 
 
         <!-- <script>
