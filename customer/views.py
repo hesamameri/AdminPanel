@@ -1080,7 +1080,6 @@ def customerfactor_sendstatus(request):
         # work on it later
 
 
-
         pay_types = request.POST.getlist('pay_type[]')
         bank_ids = request.POST.getlist('bank_id[]')
         prices = request.POST.getlist('price[]')
@@ -1090,6 +1089,7 @@ def customerfactor_sendstatus(request):
         if merged_data_factor_payway:
             for pay_type, bank_id, price, no,description in merged_data_factor_payway :
                 data_payway = {
+                    
                     'factor': factor_id,
                     'pay_level':'FACTOR',
                     'pay_type': pay_type,
@@ -1185,7 +1185,7 @@ def customerfactor_sendstatus(request):
         seller_factor_ids = []
         for i in factors:
             factor_comments = FactorComment.objects.filter(factor_id = i.factor_id,level='DRIVE')
-            seller_factor_ids.append((i.factor_id,i.seller_factor_id,factor_comments))
+            seller_factor_ids.append((i.factor_id,i.seller_factor_id,factor_comments,i.buyer_id))
         obj_customer_detail = DepoSend.objects.filter(source_id__in = objsendlist_sources)
         combo_data  = list(zip(objsendlist,obj_customer_detail))
         all_data = list(zip(combo_data,seller_factor_ids))
