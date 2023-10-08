@@ -1236,7 +1236,7 @@ def fetch_comments(request):
         level = request.GET.get('level', 'DRIVE')
 
         # Fetch all FactorComment objects based on factor_id and level
-        comments = FactorComment.objects.filter(factor_id=factor_id, level=level)
+        comments = FactorComment.objects.filter(factor_id=factor_id, level=level).all()
 
         # Serialize the comments to JSON format
         serialized_comments = [{'body': comment.body} for comment in comments]

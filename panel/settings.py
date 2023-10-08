@@ -61,6 +61,7 @@ INSTALLED_APPS = [
     'django_db_views',
     # 'debug_toolbar',
     'compressor',
+    'channels',
 ]
 COMPRESS_ROOT = os.path.join(BASE_DIR, 'static', 'compressed')
 COMPRESS_ENABLED = True
@@ -198,3 +199,9 @@ MEDIA_URL = '/media/'
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+CHANNEL_LAYERS = {
+    'default': {
+        'BACKEND': 'channels.layers.InMemoryChannelLayer',
+    },
+}

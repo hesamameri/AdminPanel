@@ -248,35 +248,39 @@
                             </div>
                             
                             <div class="modal fade" id="modal-comment">
-                                <form method="post" action="{% url 'customer:addcomment' %}">
-                                {% csrf_token %}
-                                <div class="modal-dialog">
+                                <div class="modal-dialog modal-lg"> <!-- Use modal-lg for a larger modal -->
                                     <div class="modal-content">
-                                        <div class="modal-header rtl">
-                                            <h4 class="modal-title">پیام‌ها</h4>
-                                        </div>
-                                        <div class="modal-body">
-                                            <div class="row">
-                                                <div class="col-md-12 body">
-                                                    <div id="comments-body">
-                                                       
-
+                                        <form id="comment-form" method="post" action="{% url 'customer:addcomment' %}">
+                                            {% csrf_token %}
+                                            <div class="modal-header rtl">
+                                                <h4 class="modal-title">پیام‌ها</h4>
+                                            </div>
+                                            <div class="modal-body">
+                                                <div class="row">
+                                                    <div class="col-md-12">
+                                                        <div id="comments-body">
+                                                            <!-- Display comments here -->
+                                                            {% for comment in comments %}
+                                                                <div class="comment">
+                                                                    <p>{{ comment.body }}</p>
+                                                                </div>
+                                                            {% endfor %}
+                                                        </div>
                                                     </div>
                                                 </div>
+                                                <input type="hidden" name="factor_id" id="factor-id-val">
+                                                <input type="hidden" name="level" value="">
+                                                <input type="text" name="comment" class="form-control rtl" placeholder="متن پیام">
                                             </div>
-                                            <input type="hidden" name="factor_id" id="factor-id-val">
-                                            <input type="hidden" name="level" value="">
-                                            <input type="text" name="comment" class="form-control rtl" placeholder="متن پیام">
-                                        </div>
-                                        <div class="modal-footer justify-content-between">
-                                            <button type="submit" class="btn btn-primary">ثبت پیام</button>
-                                            <button type="button" class="btn btn-default" data-dismiss="modal">بستن</button>
-                                        </div>
+                                            <div class="modal-footer justify-content-between">
+                                                <button type="submit" class="btn btn-primary">ثبت پیام</button>
+                                                <button type="button" class="btn btn-default" data-dismiss="modal">بستن</button>
+                                            </div>
+                                        </form>
                                     </div>
                                 </div>
-                                </form>
                             </div>
-                            
+
                             <script>
                                
                             </script>
@@ -464,7 +468,10 @@ document.addEventListener('change', function(e) {
             });
                    
         </script>
+
         
+
+
         <script>
             function fetchCommentsAndUpdateModal(factorId, fetchUrl) {
                 $.ajax({
@@ -498,6 +505,28 @@ document.addEventListener('change', function(e) {
                 });
             });
         </script>
+
+        <script>
+            var socket = new WebSocket("ws://your-server/ws/comment_updates/");
+
+            socket.onmessage = function (event) {
+                var data = JSON.parse(event.data);
+                $('#comments-body').append('<div>' + data.body + '</div>');
+            };
+
+            $(document).on('click', '.btn-comment', function () {
+                var factorId = $(this).data('factor');
+                var fetchUrl = $(this).data('fetch-url');
+
+                // ... (Your existing code for initial fetch)
+
+                // Close the modal and WebSocket connection when it's dismissed
+                $('#modal-comment').on('hidden.bs.modal', function () {
+                    socket.close();
+                });
+            });
+        </script>
+
 
         <!-- <script>
             document.addEventListener('DOMContentLoaded', function() {
