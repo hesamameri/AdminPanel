@@ -251,40 +251,76 @@
                                 <!-- /.modal-dialog -->
                             </div>
                             
+                            <style>
+                                .message-text {
+                                    margin-bottom: 10px;
+                                }
+                            
+                                .text-box {
+                                    margin-top: 10px;
+                                }
+                            </style>
+                            
                             <div class="modal fade" id="modal-comment">
-                                <div class="modal-dialog modal-lg"> <!-- Use modal-lg for a larger modal -->
+                                <div class="modal-dialog modal-lg">
                                     <div class="modal-content">
                                         <form id="comment-form" method="post" action="{% url 'customer:addcomment' %}">
                                             {% csrf_token %}
                                             <div class="modal-header rtl">
                                                 <h4 class="modal-title">پیام‌ها</h4>
+                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
                                             </div>
                                             <div class="modal-body">
                                                 <div class="row">
                                                     <div class="col-md-12">
-                                                        <div id="comments-body">
-                                                            <!-- Display comments here -->
-                                                            {% for comment in comments %}
+                                                        <div class="comments-box">
+                                                            <div id="comments-body">
+                                                                <!-- Display comments here -->
+                                                                {% for comment in comments %}
                                                                 <div class="comment">
-                                                                    <p>{{ comment.body }}</p>
+                                                                    <p class="message-text">{{ comment.body }} </p>
                                                                 </div>
-                                                            {% endfor %}
+                                                                {% endfor %}
+                                                            </div>
                                                         </div>
                                                     </div>
                                                 </div>
+                                                <style>
+                                                    .comments-box {
+                                                        border: 2px solid #ddd;
+                                                        background-color: #f7f7f7;
+                                                        border-radius: 10px;
+                                                        padding: 20px;
+                                                        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+                                                        font-family: "IRANSans", Arial, sans-serif;
+                                                        color: #333;
+                                                        line-height: 1.5;
+                                                    }
+                                                
+                                                    .comments-box p {
+                                                        margin: 0;
+                                                        padding: 0;
+                                                        font-size: 40px;
+                                                    }
+                                                
+                                                    .comments-box .comment {
+                                                        margin-bottom: 15px;
+                                                    }
+                                                </style>
                                                 <input type="hidden" name="factor_id" id="factor-id-val">
                                                 <input type="hidden" name="level" value="">
-                                                <input type="text" name="comment" class="form-control rtl" placeholder="متن پیام">
+                                                <input type="text" name="comment" class="form-control rtl text-box" placeholder="متن پیام">
                                             </div>
                                             <div class="modal-footer justify-content-between">
                                                 <button type="submit" class="btn btn-primary">ثبت پیام</button>
-                                                <button type="button" class="btn btn-default" data-dismiss="modal">بستن</button>
+                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">بستن</button>
                                             </div>
                                         </form>
                                     </div>
                                 </div>
                             </div>
-
                             <script>
                                
                             </script>
@@ -405,7 +441,7 @@ document.addEventListener('DOMContentLoaded', function() {
    <script>
     var bankDataElement = document.getElementById('bankData');
     var bankList = JSON.parse('[' + bankDataElement.getAttribute('data-banks') + ']');
-</script>
+    </script>
 
 
 <script>
