@@ -334,7 +334,7 @@ def customer_index_all(request):
         
         # Initialize the Paginator object with the data and the number of records per page
         paginator = Paginator(customers, records_per_page)
-
+        
         # Get the current page number from the request's GET parameters. If not provided, default to 1.
         page_number = request.GET.get('page', 1)
 
