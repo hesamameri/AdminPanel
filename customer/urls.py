@@ -11,6 +11,7 @@ urlpatterns = [
     path('customers/customer_pay/<int:factor_id>', views.customer_pay, name='CustomerFactorPay'), 
     path('newcustomer', views.new_customer, name='NewCustomer'),
     path('customers/all', views.customer_index_all, name='customerindexAll'), 
+    path('customers/all/<int:shop_id>', views.customer_index_all, name='customerindexAllShop'), 
     path('customerconfaccountlt', views.customer_confirm_accountlist, name='CustomerConfirmAccountList'),
     path('customerconfirmsalelist', views.customer_confirm_salelist, name='CustomerConfirmSaleList'),
     path('customerfactorassessment', views.customer_factor_assessment, name='CustomerFactorAssessment'),

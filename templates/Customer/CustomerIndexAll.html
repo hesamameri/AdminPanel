@@ -100,7 +100,7 @@
                                                                      
                                                                     <a class="btn btn-success" href="#">همه فروشگاه‌ها</a>
                                                                     {% for shop in shops %}
-                                                                    <a class="btn btn-primary" href="{% url 'customer:customerindexAll' %}" >{{ shop.name }}</a>
+                                                                    <a class="btn btn-primary" href="{% url 'customer:customerindexAllShop' shop_id=shop.obj_item_id %}" >{{ shop.name }}</a>
                                                                     {% endfor %}
                                                                 </div>
                                                             </div>

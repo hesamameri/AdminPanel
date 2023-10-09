@@ -280,7 +280,7 @@ def new_customer(request):
 
 @login_required(login_url='Administrator:login_view')
 @permission_required('ROLE_PERSONEL','ROLE_ADMIN')
-def customer_index_all(request):
+def customer_index_all(request,shop_id = None):
     if request.method == 'POST':
         post_data = {
             'buyer': request.POST.get('buyer'),
@@ -310,57 +310,106 @@ def customer_index_all(request):
         else:
             return "wrong"
     else:
+        if shop_id is None: 
+            # Get distinct obj_item_ids with maximum values for each field
+            # distinct_records = CustomerSva.objects.all()
+            customers = CustomerSva.objects.filter(obj_item_id__gt = 1030200027).order_by('-obj_item_id')
+            page = customers
+            customer_ids = customers.values_list('obj_item_id', flat=True)
+            # Retrieve related objects based on customer_ids
+            obj_payments = ObjPayment.objects.filter(obj_item_id__in=customer_ids)
+            print(obj_payments)
+            tickets = Ticket.objects.filter(obj_source_id__in=customer_ids) # assuming obj_source_id is the relevant field in Ticket model
+            print(tickets)
+            pre_factors = PreFactor.objects.filter(buyer_id__in=customer_ids)
+            print(pre_factors)
+            factors = Factor.objects.filter(buyer_id__in=customer_ids, reg_status='CONFIRM')
+            # customer_ids = distinct_records.values_list('obj_item_id', flat=True)
+            # obj_payments = ObjPayment.objects.filter(obj_item_id__in=customer_ids)
+            # tickets = Ticket.objects.filter(obj_source_id__in=customer_ids) # assuming obj_source_id is the relevant field in Ticket model
+            # pre_factors = PreFactor.objects.filter(buyer_id__in=customer_ids)
+            # factors = Factor.objects.filter(buyer_id__in=customer_ids, reg_status='CONFIRM')
 
-        # Get distinct obj_item_ids with maximum values for each field
-        # distinct_records = CustomerSva.objects.all()
-        customers = CustomerSva.objects.filter(obj_item_id__gt = 1030200027).order_by('-obj_item_id')
-        page = customers
-        customer_ids = customers.values_list('obj_item_id', flat=True)
-        # Retrieve related objects based on customer_ids
-        obj_payments = ObjPayment.objects.filter(obj_item_id__in=customer_ids)
-        print(obj_payments)
-        tickets = Ticket.objects.filter(obj_source_id__in=customer_ids) # assuming obj_source_id is the relevant field in Ticket model
-        print(tickets)
-        pre_factors = PreFactor.objects.filter(buyer_id__in=customer_ids)
-        print(pre_factors)
-        factors = Factor.objects.filter(buyer_id__in=customer_ids, reg_status='CONFIRM')
-        # customer_ids = distinct_records.values_list('obj_item_id', flat=True)
-        # obj_payments = ObjPayment.objects.filter(obj_item_id__in=customer_ids)
-        # tickets = Ticket.objects.filter(obj_source_id__in=customer_ids) # assuming obj_source_id is the relevant field in Ticket model
-        # pre_factors = PreFactor.objects.filter(buyer_id__in=customer_ids)
-        # factors = Factor.objects.filter(buyer_id__in=customer_ids, reg_status='CONFIRM')
+            banks = ObjItem.objects.filter(obj_item_id__gte=999003010, obj_item_id__lte=999003019) 
+            records_per_page = 100
+            
+            # Initialize the Paginator object with the data and the number of records per page
+            paginator = Paginator(customers, records_per_page)
+            
+            # Get the current page number from the request's GET parameters. If not provided, default to 1.
+            page_number = request.GET.get('page', 1)
+            shops = ShopCustomerCount.objects.all().values('obj_item_id')
+            shop_name = ObjItem.objects.filter(obj_item_id__in = shops)
+            try:
+                # Get the Page object for the requested page number
+                page = paginator.page(page_number)
 
-        banks = ObjItem.objects.filter(obj_item_id__gte=999003010, obj_item_id__lte=999003019) 
-        records_per_page = 100
+            except EmptyPage:
+                # If the requested page number is out of range, display the last page
+                page = paginator.page(paginator.num_pages)
+
+            context = {
+                'page': page,
+                'banks':banks,
+                'paginator': paginator,
+                'obj_payments': obj_payments,
+                'tickets': tickets,
+                'pre_factors': pre_factors,
+                'factors': factors,
+                'shops' : shop_name,
+            }
         
-        # Initialize the Paginator object with the data and the number of records per page
-        paginator = Paginator(customers, records_per_page)
+            return render(request, 'Customer/CustomerIndexAll.html', context=context)
+        else:
+            # Get distinct obj_item_ids with maximum values for each field
+            # distinct_records = CustomerSva.objects.all()
+            customers = CustomerSva.objects.filter(obj_item_id__gt = 1030200027,reagent = shop_id).order_by('-obj_item_id')
+            page = customers
+            customer_ids = customers.values_list('obj_item_id', flat=True)
+            # Retrieve related objects based on customer_ids
+            obj_payments = ObjPayment.objects.filter(obj_item_id__in=customer_ids)
+            print(obj_payments)
+            tickets = Ticket.objects.filter(obj_source_id__in=customer_ids) # assuming obj_source_id is the relevant field in Ticket model
+            print(tickets)
+            pre_factors = PreFactor.objects.filter(buyer_id__in=customer_ids)
+            print(pre_factors)
+            factors = Factor.objects.filter(buyer_id__in=customer_ids, reg_status='CONFIRM')
+            # customer_ids = distinct_records.values_list('obj_item_id', flat=True)
+            # obj_payments = ObjPayment.objects.filter(obj_item_id__in=customer_ids)
+            # tickets = Ticket.objects.filter(obj_source_id__in=customer_ids) # assuming obj_source_id is the relevant field in Ticket model
+            # pre_factors = PreFactor.objects.filter(buyer_id__in=customer_ids)
+            # factors = Factor.objects.filter(buyer_id__in=customer_ids, reg_status='CONFIRM')
+
+            banks = ObjItem.objects.filter(obj_item_id__gte=999003010, obj_item_id__lte=999003019) 
+            records_per_page = 100
+            
+            # Initialize the Paginator object with the data and the number of records per page
+            paginator = Paginator(customers, records_per_page)
+            
+            # Get the current page number from the request's GET parameters. If not provided, default to 1.
+            page_number = request.GET.get('page', 1)
+            shops = ShopCustomerCount.objects.all().values('obj_item_id')
+            shop_name = ObjItem.objects.filter(obj_item_id__in = shops)
+            try:
+                # Get the Page object for the requested page number
+                page = paginator.page(page_number)
+
+            except EmptyPage:
+                # If the requested page number is out of range, display the last page
+                page = paginator.page(paginator.num_pages)
+
+            context = {
+                'page': page,
+                'banks':banks,
+                'paginator': paginator,
+                'obj_payments': obj_payments,
+                'tickets': tickets,
+                'pre_factors': pre_factors,
+                'factors': factors,
+                'shops' : shop_name,
+            }
         
-        # Get the current page number from the request's GET parameters. If not provided, default to 1.
-        page_number = request.GET.get('page', 1)
-        shops = ShopCustomerCount.objects.all().values('obj_item_id')
-        shop_name = ObjItem.objects.filter(obj_item_id__in = shops)
-        try:
-            # Get the Page object for the requested page number
-            page = paginator.page(page_number)
-
-        except EmptyPage:
-            # If the requested page number is out of range, display the last page
-            page = paginator.page(paginator.num_pages)
-
-        context = {
-            'page': page,
-            'banks':banks,
-            'paginator': paginator,
-            'obj_payments': obj_payments,
-            'tickets': tickets,
-            'pre_factors': pre_factors,
-            'factors': factors,
-            'shops' : shop_name,
-        }
-       
-        return render(request, 'Customer/CustomerIndexAll.html', context=context)
-
+            return render(request, 'Customer/CustomerIndexAll.html', context=context)
 
 
 @login_required(login_url='Administrator:login_view')
