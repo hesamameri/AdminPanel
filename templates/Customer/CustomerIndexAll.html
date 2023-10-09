@@ -65,8 +65,8 @@
                                         <div class="row mb-2">
                                             <div class="col-sm-12 rtl">
                                                 <ol class="breadcrumb float-sm">
-                                                    <li class="breadcrumb-item active">لیست مشتریان</li>
-                                                    <li class="breadcrumb-item">مشتریان</li>
+                                                    <li class="breadcrumb-item active">مشتریان</li>
+                                                    <li class="breadcrumb-item">مشتریان فروشگاه ها </li>
                                                 </ol>
                                             </div>
                                         </div>
@@ -98,10 +98,17 @@
                                                                 <div class="col-lg-12">
                                                                     <h5 style="font-size: xx-large;font-weight: bold;">لیست فروشگاه ها </h5>
                                                                      
-                                                                    <a class="btn btn-primary" href="#">همه فروشگاه‌ها</a>
-                                                                        {% for item in shops %}
-                                                                        <a class="btn btn-success" href="#">{{item.name}}</a>
-                                                                        {% endfor %}
+                                                                    <a class="btn btn-success" href="#">همه فروشگاه‌ها</a>
+                                                                        <a class="btn btn-primary" href="#">بیهق دوام 1399</a>
+                                                                        <a class="btn btn-primary" href="#">بیهق دوام 1400</a>
+                                                                        <a class="btn btn-primary" href="#">حیدری</a>
+                                                                        <a class="btn btn-primary" href="#">شرکت تعاونی روستایی طالقانی</a>
+                                                                        <a class="btn btn-primary" href="#">شعبه شهریار 1399</a>
+                                                                        <a class="btn btn-primary" href="#">شهریار 1400</a>
+                                                                        <a class="btn btn-primary" href="#">فروشگاه اعتماد</a>
+                                                                        <a class="btn btn-primary" href="#">فروشگاه فرهنگیان</a>
+                                                                        <a class="btn btn-primary" href="#">ماهان تجهیز</a>
+                                                                        <a class="btn btn-primary" href="#">مصلح</a>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -183,7 +190,7 @@
                                                                                     {% endif %}
                                                                                     
                                                                                     <td>
-                                                                                        <a class="inquiry-link" style="border: 0.5px solid rgb(186, 183, 183);" data-buyer="{{ item.obj_item_id }}" data-toggle="modal" data-target="#modal-inquiry">استعلام حساب</a>                                                                                            <button id="btnGroupDropX" type="button" class="btn-xs btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                                                        <a class="inquiry-link" class="btn btn-success" style="border: 0.5px solid rgb(14, 4, 4);" data-buyer="{{ item.obj_item_id }}" data-toggle="modal" data-target="#modal-inquiry">استعلام حساب</a>                                                                                            <button id="btnGroupDropX" type="button" class="btn-xs btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                                                                             گزارشات
                                                                                             </button>
                                                                                             <div class="dropdown-menu" aria-labelledby="btnGroupDropX">

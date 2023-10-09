@@ -1,0 +1,30 @@
+/* استایل برای کامنت‌ها */
+#comments-body ul {
+    list-style-type: none;
+    padding-left: 0;
+}
+
+#comments-body li {
+    background-color: #f7f7f7;
+    border: 1px solid #dc3131;
+    margin-bottom: 10px;
+    padding: 10px;
+}
+
+/* استایل برای فرم ارسال پیام */
+.modal-body form {
+    margin-top: 20px;
+}
+
+.modal-body form .form-group {
+    margin-bottom: 20px;
+}
+
+/* استایل برای دکمه‌ها */
+.modal-footer .btn-primary {
+    margin-right: 10px;
+}
+
+.modal-footer .btn-default {
+    margin-right: 10px;
+}

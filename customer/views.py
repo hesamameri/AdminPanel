@@ -1,4 +1,7 @@
 from datetime import timezone
+from django.views.decorators.cache import cache_control
+from django.views.decorators.http import require_GET
+from django.views.decorators.http import require_POST
 import datetime
 import json
 import uuid
@@ -1078,7 +1081,6 @@ def customerfactor_sendstatus(request):
         # work on it later
 
 
-
         pay_types = request.POST.getlist('pay_type[]')
         bank_ids = request.POST.getlist('bank_id[]')
         prices = request.POST.getlist('price[]')
@@ -1088,6 +1090,7 @@ def customerfactor_sendstatus(request):
         if merged_data_factor_payway:
             for pay_type, bank_id, price, no,description in merged_data_factor_payway :
                 data_payway = {
+                    
                     'factor': factor_id,
                     'pay_level':'FACTOR',
                     'pay_type': pay_type,
@@ -1183,7 +1186,7 @@ def customerfactor_sendstatus(request):
         seller_factor_ids = []
         for i in factors:
             factor_comments = FactorComment.objects.filter(factor_id = i.factor_id,level='DRIVE')
-            seller_factor_ids.append((i.factor_id,i.seller_factor_id,factor_comments))
+            seller_factor_ids.append((i.factor_id,i.seller_factor_id,factor_comments,i.buyer_id))
         obj_customer_detail = DepoSend.objects.filter(source_id__in = objsendlist_sources)
         combo_data  = list(zip(objsendlist,obj_customer_detail))
         all_data = list(zip(combo_data,seller_factor_ids))
@@ -1227,30 +1230,49 @@ def fetch_obj_send_serials(request):
     return JsonResponse(data, safe=False)
 
 
+@cache_control(no_cache=True, must_revalidate=True, no_store=True)
+@require_GET
 def fetch_comments(request):
     if request.method == 'GET':
         factor_id = request.GET.get('factor_id')
         level = request.GET.get('level', 'DRIVE')
 
-        # Fetch FactorComment objects based on factor_id and level
-        comments = FactorComment.objects.filter(factor_id=factor_id, level=level)
+        # Fetch all FactorComment objects based on factor_id and level
+        comments = FactorComment.objects.filter(factor_id=factor_id, level=level).all()
 
         # Serialize the comments to JSON format
         serialized_comments = [{'body': comment.body} for comment in comments]
 
-        return JsonResponse(serialized_comments, safe=False)
+        return JsonResponse(serialized_comments, safe=False, json_dumps_params={'ensure_ascii': False})
 
     # Handle other HTTP methods if needed
-    return JsonResponse({'error': 'Invalid request method'}, status=400)  
+    return JsonResponse({'error': 'Invalid request method'}, status=400)
 
 
+
+
+
+@require_POST
 def add_comment(request):
     if request.method == 'POST':
-        FactorComment.objects.create(
-            factor_id  = request.POST['factor_id'],level = 'DRIVE',body = request.POST['comment'],
-            register = request.user.user_id,reg_dt = datetime.datetime.now(),
-        )
-        return redirect('customer:CustomerFactorSendStatus') 
+        factor_id = request.POST.get('factor_id')
+        comment_text = request.POST.get('comment')
+
+        if factor_id and comment_text:
+            # Create a new FactorComment
+            FactorComment.objects.create(
+                factor_id=factor_id,
+                level='DRIVE',
+                body=comment_text,
+                register=request.user.user_id,
+                reg_dt=datetime.datetime.now(),
+            )
+
+            # Redirect to the appropriate page after adding the comment
+            return redirect('customer:CustomerFactorSendStatus')
+
+    # Handle invalid or missing data
+    return JsonResponse({'error': 'Invalid comment data'}, status=400)
 
 
 ############################################################## INSTALL
