@@ -840,6 +840,17 @@ class ObjSend(models.Model):
         db_table = 'obj_send'
 
 
+class ShopCustomerCount(models.Model):
+    obj_item_id = models.IntegerField(primary_key=True)  # Assuming obj_item_id is an integer.
+    name = models.CharField(max_length=255)
+    count = models.IntegerField()
+
+    class Meta:
+        managed = False
+        db_table = 'shop_customer_count'  # Replace 'fb_shop_customer_count' with your actual view name.
+
+
+
 class ObjSendSerial(models.Model):
     obj_send_serial_id = models.AutoField(primary_key=True)
     obj_send_id = models.IntegerField(blank=True, null=True)

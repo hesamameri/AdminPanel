@@ -31,11 +31,12 @@ from django.contrib.sessions.models import Session
 from django.views.decorators.cache import cache_page
 from django.db.models import Sum, Count
 from django.db.models import F, Sum
-from .models import FactorItem,FactorItemBalanceSVA
+from .models import FactorItem,FactorItemBalanceSVA,ShopCustomerCount
 from .forms import DocumentUploadForm, NewDepoSend, NewFactorAddress, NewFactorComment, NewFactorItem, NewFactorPayway, NewInquiry, NewObjItem,NewObjItemSpec, NewObjPayment, NewObjSend, NewObjSendSerial, NewPreFactor
 from django.core.files.storage import FileSystemStorage
 from django.db.models import Sum, F, Value, CharField, Case, When,FloatField,Subquery, OuterRef
 from django.db.models.functions import Coalesce
+
 # @cache_page(10)
 @login_required(login_url='Administrator:login_view')
 @permission_required('ROLE_PERSONEL', 'ROLE_ADMIN')
@@ -337,7 +338,8 @@ def customer_index_all(request):
 
         # Get the current page number from the request's GET parameters. If not provided, default to 1.
         page_number = request.GET.get('page', 1)
-
+        shops = ShopCustomerCount.objects.all().values('obj_item_id')
+        shop_name = ObjItem.objects.filter(obj_item_id__in = shops)
         try:
             # Get the Page object for the requested page number
             page = paginator.page(page_number)
@@ -354,7 +356,7 @@ def customer_index_all(request):
             'tickets': tickets,
             'pre_factors': pre_factors,
             'factors': factors,
-
+            'shops' : shop_name,
         }
        
         return render(request, 'Customer/CustomerIndexAll.html', context=context)

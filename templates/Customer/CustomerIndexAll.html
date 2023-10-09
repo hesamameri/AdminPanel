@@ -99,16 +99,9 @@
                                                                     <h5 style="font-size: xx-large;font-weight: bold;">لیست فروشگاه ها </h5>
                                                                      
                                                                     <a class="btn btn-success" href="#">همه فروشگاه‌ها</a>
-                                                                        <a class="btn btn-primary" href="#">بیهق دوام 1399</a>
-                                                                        <a class="btn btn-primary" href="#">بیهق دوام 1400</a>
-                                                                        <a class="btn btn-primary" href="#">حیدری</a>
-                                                                        <a class="btn btn-primary" href="#">شرکت تعاونی روستایی طالقانی</a>
-                                                                        <a class="btn btn-primary" href="#">شعبه شهریار 1399</a>
-                                                                        <a class="btn btn-primary" href="#">شهریار 1400</a>
-                                                                        <a class="btn btn-primary" href="#">فروشگاه اعتماد</a>
-                                                                        <a class="btn btn-primary" href="#">فروشگاه فرهنگیان</a>
-                                                                        <a class="btn btn-primary" href="#">ماهان تجهیز</a>
-                                                                        <a class="btn btn-primary" href="#">مصلح</a>
+                                                                    {% for shop in shops %}
+                                                                    <a class="btn btn-primary" href="{% url 'customer:customerindexAll' %}" >{{ shop.name }}</a>
+                                                                    {% endfor %}
                                                                 </div>
                                                             </div>
                                                         </div>
