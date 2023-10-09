@@ -258,23 +258,23 @@
 
         <script>
             document.addEventListener('DOMContentLoaded', function() {
-    // Listen to the 'show.bs.modal' event on the comment modal
-    $('#modal-comment').on('show.bs.modal', function(event) {
-        // Get the button (<i> tag) that triggered the modal
-        var icon = $(event.relatedTarget);
+            // Listen to the 'show.bs.modal' event on the comment modal
+            $('#modal-comment').on('show.bs.modal', function(event) {
+                // Get the button (<i> tag) that triggered the modal
+                var icon = $(event.relatedTarget);
 
-        // Get the 'data-objsend' attribute from the icon
-        var objValue = icon.data('factor');
-        $('#factor-id-val').val(objValue);
-        // Find the hidden input element by its ID and update its value
-        $('#objsend-comment').val(objValue);
-    });
-});
+                // Get the 'data-objsend' attribute from the icon
+                var objValue = icon.data('factor');
+                $('#factor-id-val').val(objValue);
+                // Find the hidden input element by its ID and update its value
+                $('#objsend-comment').val(objValue);
+            });
+        });
         </script>
        <script>
         // Function to fetch comments using AJAX
         function fetchComments(factorId) {
-            
+
             $.ajax({
                 url: "{% url 'customer:fetch_comments' %}",  // Update this URL to your actual URL
                 type: 'GET',
@@ -310,7 +310,7 @@
             fetchComments(factorId);
 
         });
-    </script>>
+    </script>
     
     
     
