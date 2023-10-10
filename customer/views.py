@@ -978,7 +978,7 @@ def factor_send_print(request,obj_send_id=None):
     obj_send.print_id = request.user.user_id
     obj_send.print_dt = datetime.datetime.now()
     obj_send.save()
-    return redirect("customer:CustomerFactorSendAssignDriver")
+    return redirect("customer:CustomerFactor    signDriver")
 
 @login_required(login_url='Administrator:login_view')
 @permission_required('ROLE_PERSONEL','ROLE_ADMIN')
@@ -1229,6 +1229,7 @@ def customerfactor_sendstatus(request):
             Q(shop_desc__isnull=False) |
             Q(isntall_desc__isnull=False)
         )
+        
         objsendlist_sources = objsendlist.values('source_id')
         factor_ids = FactorItem.objects.filter(factor_item_id__in = objsendlist_sources).values('factor')
         # print(factor_ids)
@@ -1238,6 +1239,8 @@ def customerfactor_sendstatus(request):
         for i in factors:
             factor_comments = FactorComment.objects.filter(factor_id = i.factor_id,level='DRIVE')
             seller_factor_ids.append((i.factor_id,i.seller_factor_id,factor_comments,i.buyer_id))
+        
+        # name = FactorSVA.objects.filter(factor_id__in = factor_ids).values('buyer_name , city_name')
         obj_customer_detail = DepoSend.objects.filter(source_id__in = objsendlist_sources)
         combo_data  = list(zip(objsendlist,obj_customer_detail))
         all_data = list(zip(combo_data,seller_factor_ids))
@@ -1557,7 +1560,7 @@ def factor_install_sendstatus(request):
         seller_factor_ids = []
         for i in factors:
             factor_comments = FactorComment.objects.filter(factor_id = i.factor_id,level='DRIVE')
-            seller_factor_ids.append((i.factor_id,i.seller_factor_id,factor_comments))
+            seller_factor_ids.append((i.factor_id,i.seller_factor_id,factor_comments,i.buyer_id))
 
         obj_customer_detail = DepoSend.objects.filter(source_id__in = objsendlist_sources)
         combo_data  = list(zip(objsendlist,obj_customer_detail))
@@ -1568,6 +1571,51 @@ def factor_install_sendstatus(request):
             'banks':banks,
         }
         return render(request,'Customer/CustomerFactorInstallStatus.html',context=context)
+    
+@cache_control(no_cache=True, must_revalidate=True, no_store=True)
+@require_GET
+def fetch_commentsinstall(request):
+    if request.method == 'GET':
+        factor_id = request.GET.get('factor_id')
+        level = request.GET.get('level', 'INSTALL')
+
+        # Fetch all FactorComment objects based on factor_id and level
+        comments = FactorComment.objects.filter(factor_id=factor_id, level=level).all()
+
+        # Serialize the comments to JSON format
+        serialized_comments = [{'body': comment.body} for comment in comments]
+
+        return JsonResponse(serialized_comments, safe=False, json_dumps_params={'ensure_ascii': False})
+
+    # Handle other HTTP methods if needed
+    return JsonResponse({'error': 'Invalid request method'}, status=400)
+
+
+
+
+
+@require_POST
+def add_commentinstall(request):
+    if request.method == 'POST':
+        factor_id = request.POST.get('factor_id')
+        comment_text = request.POST.get('comment')
+
+        if factor_id and comment_text:
+            # Create a new FactorComment
+            FactorComment.objects.create(
+                factor_id=factor_id,
+                level='INSTALL',
+                body=comment_text,
+                register=request.user.user_id,
+                reg_dt=datetime.datetime.now(),
+            )
+
+            # Redirect to the appropriate page after adding the comment
+            return redirect('customer:FactorInstallSendStatus')
+
+    # Handle invalid or missing data
+    return JsonResponse({'error': 'Invalid comment data'}, status=400)
+
 ###########################################################################
 # @cache_page(10)
 @login_required(login_url='Administrator:login_view')
