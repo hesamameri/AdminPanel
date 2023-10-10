@@ -112,12 +112,11 @@
                                                                                         {{item.0.1.address}}
                                                                                     </td>
                                                                                     <td>
-                                                                                        <i class="fas fa-info-circle btn btn-xs btn-info btn-flat" data-container="body" data-toggle="popover" data-placement="top" data-content=""></i>
-                                                                                        <i data-objsend="{{item.0.0.obj_send_id}}"
-                                                                                         data-toggle="modal"
-                                                                                          data-target="#modal-comment" 
-                                                                                          data-load-comments="loadComments({{item.0.0.obj_send_id}}, '{{item.1.2}}')"
-                                                                                          class="fas fa-comment btn btn-xs  btn-flat btn-comment">&nbsp;</i>
+                                                                                        <i data-factor="{{item.1.0}}" data-toggle="modal" data-target="#modal-comment"
+                                                                                            data-fetch-url="{% url 'customer:fetch_commentsinstall' %}?factor_id={{item.1.0}}"
+                                                                                            class="fas fa-comment btn btn-xs btn-flat btn-comment comment-icon"
+                                                                                            data-row-index="{{ forloop.counter }}">
+                                                                                        </i>
                                                                                     </td>
                                                                                     <td>
                                                                                             <form method="get" action="" class="frm1">
@@ -206,38 +205,66 @@
                                 <!-- /.modal-dialog -->
                             </div>
                             <div class="modal fade" id="modal-comment">
-                                <form method="post" action="{% url 'customer:FactorInstallAssignInstaller' %}">
-                                {% csrf_token %}
-                                    <input type="hidden" name="objsend" id="objsend-comment">
-                                    <input type="hidden" name="formtype" value="drive_comment">
-
-                                    <div class="modal-dialog">
-                                        <div class="modal-content">
+                                <div class="modal-dialog modal-lg">
+                                    <div class="modal-content">
+                                        <form id="comment-form" method="post" action="{% url 'customer:addcommentinstall' %}">
+                                            {% csrf_token %}
                                             <div class="modal-header rtl">
                                                 <h4 class="modal-title">پیام‌ها</h4>
+                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
                                             </div>
                                             <div class="modal-body">
                                                 <div class="row">
-
-                                                    <div class="col-md-12 body">
-                                                        <div id="comments-placeholder"></div>
+                                                    <div class="col-md-12">
+                                                        <div class="comments-box">
+                                                            <div id="comments-body">
+                                                                <!-- Display comments here -->
+                                                                {% for comment in comments %}
+                                                                <div class="comment">
+                                                                    <p class="message-text">{{ comment.body }} </p>
+                                                                </div>
+                                                                {% endfor %}
+                                                            </div>
+                                                        </div>
                                                     </div>
-
                                                 </div>
+                                                <style>
+                                                    .comments-box {
+                                                        border: 2px solid #ddd;
+                                                        background-color: #f7f7f7;
+                                                        border-radius: 10px;
+                                                        padding: 20px;
+                                                        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+                                                        font-family: "IRANSans", Arial, sans-serif;
+                                                        color: #333;
+                                                        line-height: 1.5;
+                                                    }
+                                                
+                                                    .comments-box p {
+                                                        margin: 0;
+                                                        padding: 0;
+                                                        font-size: 40px;
+                                                    }
+                                                
+                                                    .comments-box .comment {
+                                                        margin-bottom: 15px;
+                                                    }
+                                                </style>
                                                 <input type="hidden" name="factor_id" id="factor-id-val">
                                                 <input type="hidden" name="level" value="">
-                                                <input type="text" name="comment" class="form-control rtl" placeholder="متن پیام">
+                                                <input type="text" name="comment" class="form-control rtl text-box" placeholder="متن پیام">
                                             </div>
-
                                             <div class="modal-footer justify-content-between">
                                                 <button type="submit" class="btn btn-primary">ثبت پیام</button>
-                                                <button type="button" class="btn btn-default" data-dismiss="modal">بستن</button>
+                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">بستن</button>
                                             </div>
-                                        </div>
+                                        </form>
                                     </div>
-                                </form>
+                                </div>
                             </div>
-                        </div>
+                            
 
                         <!-- end:: Content -->
                     </div>
@@ -299,6 +326,129 @@
         // Set the HTML content to the placeholder element
         document.getElementById('comments-placeholder').innerHTML = commentsHTML;
     }
+</script>
+<script>
+    function fetchCommentsAndUpdateModal(factorId, fetchUrl) {
+        function fetchCommentsAndUpdateModal(factorId, fetchUrl) {
+$.ajax({
+url: fetchUrl,
+type: 'GET',
+cache: false, // Disable caching at the client side as well
+success: function (data) {
+    var commentIds = [];
+    var $commentsBody = $('#comments-body');
+
+    // Get the IDs of existing comments
+    $commentsBody.find('.comment').each(function () {
+        commentIds.push($(this).data('comment-id'));
+    });
+
+    // Remove deleted comments from the modal
+    for (var i = 0; i < commentIds.length; i++) {
+        if (!commentExists(commentIds[i], data)) {
+            $commentsBody.find('.comment[data-comment-id="' + commentIds[i] + '"]').remove();
+        }
+    }
+
+    // Add new comments to the modal
+    for (var j = 0; j < data.length; j++) {
+        if (!commentExists(data[j].id, commentIds)) {
+            $commentsBody.append('<div class="comment" data-comment-id="' + data[j].id + '">' + data[j].body + '</div>');
+        }
+    }
+
+    $('#factor-id-val').val(factorId);
+}
+});
+}
+
+function commentExists(commentId, comments) {
+for (var i = 0; i < comments.length; i++) {
+if (comments[i].id === commentId) {
+    return true;
+}
+}
+return false;
+}
+
+
+        $.ajax({
+            url: fetchUrl,
+            type: 'GET',
+            success: function (data) {
+                $('#comments-body').empty();
+                for (var i = 0; i < data.length; i++) {
+                    $('#comments-body').append('<div>' + data[i].body + '</div>');
+                }
+                $('#factor-id-val').val(factorId);
+            }
+        });
+    }
+
+    $(document).on('click', '.btn-comment', function () {
+        var factorId = $(this).data('factor');
+        var fetchUrl = $(this).data('fetch-url');
+
+        // Initial fetch and update
+        fetchCommentsAndUpdateModal(factorId, fetchUrl);
+
+        // Periodically fetch and update every second
+        var intervalId = setInterval(function () {
+            fetchCommentsAndUpdateModal(factorId, fetchUrl);
+        }, 1000);
+
+        // Close the modal and clear the interval when it's dismissed
+        $('#modal-comment').on('hidden.bs.modal', function () {
+            clearInterval(intervalId);
+        });
+    });
+</script>
+
+<script>
+    var socket = new WebSocket("ws://your-server/ws/comment_updates/");
+
+    socket.onmessage = function (event) {
+        var data = JSON.parse(event.data);
+        $('#comments-body').append('<div>' + data.body + '</div>');
+    };
+
+    $(document).on('click', '.btn-comment', function () {
+        var factorId = $(this).data('factor');
+        var fetchUrl = $(this).data('fetch-url');
+
+        // ... (Your existing code for initial fetch)
+
+        // Close the modal and WebSocket connection when it's dismissed
+        $('#modal-comment').on('hidden.bs.modal', function () {
+            socket.close();
+        });
+    });
+</script>
+
+<script>
+    $(document).ready(function () {
+        // Loop through all comment icons and check if there are previous comments
+        $('.comment-icon').each(function () {
+            var factorId = $(this).data('factor');
+            var fetchUrl = $(this).data('fetch-url');
+            var icon = $(this);
+
+            // Fetch comments and change the icon's color based on the result
+            $.ajax({
+                url: fetchUrl,
+                type: 'GET',
+                success: function (data) {
+                    if (data.length > 0) {
+                        // If there are comments, change the icon color to red
+                        icon.css('color', 'red');
+                    } else {
+                        // If there are no comments, keep the default color
+                        // You can set the default color here if needed
+                    }
+                }
+            });
+        });
+    });
 </script>
 
         <!-- begin::Global Config(global config for global JS sciprts) -->
