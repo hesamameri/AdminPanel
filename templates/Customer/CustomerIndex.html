@@ -882,29 +882,33 @@
                             var text = $(this).text();
                             $(this).replaceWith(text);
                         });
-                        
-                        // Filter and highlight matched text in table rows based on the input.
-                        $("tbody tr").filter(function() {
-                            var matched = false;
-                            var row = $(this);
-                            
-                            // Check each cell in the row.
-                            $(this).find('td').each(function() {
-                                var cellText = $(this).text();
-                                if (cellText.toLowerCase().indexOf(value) > -1) {
-                                    // Highlight matched text.
-                                    var regex = new RegExp('(' + value + ')', 'gi');
-                                    $(this).html(cellText.replace(regex, '<span class="highlighted">$1</span>'));
-                                    matched = true;
-                                }
+
+                        if (value === "") {
+                            // If the search input is empty, show all rows without any highlights.
+                            $("tbody tr").toggle(true);
+                        } else {
+                            // Filter and highlight matched text in table rows based on the input.
+                            $("tbody tr").filter(function() {
+                                var matched = false;
+                                var row = $(this);
+                                
+                                // Check each cell in the row.
+                                $(this).find('td').each(function() {
+                                    var cellText = $(this).text();
+                                    if (cellText.toLowerCase().indexOf(value) > -1) {
+                                        // Highlight matched text.
+                                        var regex = new RegExp('(' + value + ')', 'gi');
+                                        $(this).html(cellText.replace(regex, '<span class="highlighted">$1</span>'));
+                                        matched = true;
+                                    }
+                                });
+                                
+                                row.toggle(matched);
                             });
-                            
-                            row.toggle(matched);
-                        });
+                        }
                     }
                 });
             });
- 
         </script>
 
 
