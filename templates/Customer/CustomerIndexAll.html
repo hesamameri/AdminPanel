@@ -182,45 +182,43 @@
                                                                                     <td>{{item.mobile}} </td>
                                                                                     {% endif %}
                                                                                     
+
                                                                                     <td>
-                                                                                        <a class="inquiry-link" class="btn btn-success" style="border: 0.5px solid rgb(14, 4, 4);" data-buyer="{{ item.obj_item_id }}" data-toggle="modal" data-target="#modal-inquiry">استعلام حساب</a>                                                                                            <button id="btnGroupDropX" type="button" class="btn-xs btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                                                        <a class="inquiry-link" class="btn btn-success" style="border: 0.5px solid rgb(14, 4, 4);" data-buyer="{{ item.obj_item_id }}" data-toggle="modal" data-target="#modal-inquiry">استعلام حساب</a>                                       
+                                                                                        <button id="btnGroupDropX" type="button" class="btn-xs btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                                                                             گزارشات
                                                                                             </button>
                                                                                             <div class="dropdown-menu" aria-labelledby="btnGroupDropX">
                                                                                                 
-                                                                                                {% for factor in factors %}
-                                                                                                    {% if factor.buyer_id == item.obj_item_id %}
-                                                                                                    <a href="#" class="dropdown-item text-right rtl">فاکتور </a>
-                                                                                                    {% endif %}
-                                                                                                {% endfor %}
-                                                                                                {% for ticket in tickets %}
-                                                                                                    {% if ticket.obj_source_id == item.obj_item_id %}
-                                                                                                    <a href=""  class="dropdown-item text-right rtl">تیکت </a>
-                                                                                                    {% endif %}
-                                                                                                {% endfor %}
-                                                                                                    <hr>
-                                                                                                    {% for payment in obj_payments %}
-                                                                                                      {% if payment.obj_item_id == item.obj_item_id %}
-                                                                                                        <a href="#" class="dropdown-item text-right rtl">پرداختی‌ها</a>
-                                                                                                        {% endif %}
-                                                                                                    {% endfor %}
+                                                                                                {% for payment in obj_payments %}
+                                                                                                {% if payment.obj_item_id == item.obj_item_id %}
+                                                                                                <a class="dropdown-item kt-font-dark" href="#"><i class="fa fa-plus-square text-warning kt-font-bold"></i>1</a>
+                                                                                                {% endif %}
+                                                                                            {% endfor %}
+                                                                                            {% for factor in factors %}
+                                                                                                {% if factor.buyer_id == item.obj_item_id %}
+                                                                                                <a class="dropdown-item kt-font-dark" href="{% url 'customer:FactorWithFactorID' factor_id=factor.factor_id %}"><i class="fa fa-bookmark kt-font-bold text-warning"></i>فاکتور {{factor.reg_dt|to_jalali}}</a>
+                                                                                                {% endif %}
+                                                                                            {% endfor %}
+                                                                                            {% for ticket in tickets %}
+                                                                                                {% if ticket.obj_source_id == item.obj_item_id %}
+                                                                                                <a class="dropdown-item kt-font-dark" href="#"><i class="fa fa-bookmark kt-font-bold text-warning"></i> تیکت {{ticket.reg_dt|to_jalali}}</a>
+                                                                                                {% endif %}
+                                                                                            {% endfor %}
+                                
+                                                                                            {% for prefactor in pre_factors %}
+                                                                                                {% if prefactor.obj_item_id == item.obj_item_id %}
+                                                                                                <a class="dropdown-item kt-font-dark" href="#"><i class="fa fa-bookmark kt-font-bold text-warning"></i>  پیش فاکتور</a>
+                                                                                                {% endif %}
+                                                                                            {% endfor %}
                                                                                                
                                                                                             </div>
                                                                                         </div>
                                                                                         
-                                                                                         <!-- <a class="btn btn-default btn-customer" data-customer-id="" data-toggle="modal" data-target="#modal-debit-return">برگشت بستانکاری</a> 
-                                                                                         <a class="btn btn-default btn-customer" data-customer-id="" data-toggle="modal" data-target="#modal-cheque-return">عودت چک</a>  -->
                                                                                          
                                                                                     </td>
 
-                                                                                    <!-- <td>
-                                                                                         <div class="btn-group">
-                                                                                                <a class="dropdown-item" href="#">دریافت از مشتری</a>
-                                                                                                <a class="dropdown-item" href="#">برگشت از فروش</a>
-                                                                                                <a class="dropdown-item" href="#">خدمات پس از فروش</a>
-                                                                                                <a class="dropdown-item" href="#">ویرایش مشخصات</a>
-                                                                                        </div> 
-                                                                                    </td> -->
+
 
                                                                                 </tr>
                                                                                 {% endfor %}
