@@ -200,7 +200,7 @@ def id_to_bank(item):
     if item in id_dic.keys():
             return id_dic[item]
     else:
-        return "بانک مورد نظر یافت نشد ."
+        return ""
 
 
 @register.filter
