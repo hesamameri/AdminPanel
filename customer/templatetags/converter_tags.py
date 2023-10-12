@@ -253,3 +253,22 @@ def name_to_type(item):
             return id_dic[item]
     else:
         return ""
+    
+@register.filter
+def driveid_to_drivename(item):
+    item=str(item) 
+    id_dic = {
+        '4012001':'حسن عاقلی',
+        '4012003':'حمل با مشتری',
+        '4012008':'شهاب محسنی',
+        '4012009':'علی سعیدی',
+        '4012010':'محمد نوری',
+        '4012011':'فرهاد چنگی',
+        '4012012':'امیر دیواندری',
+        '4012013':'اسنپ',
+        '4012014':'جلال علی آبادی',
+        }
+    if item in id_dic.keys():
+            return id_dic[item]
+    else:
+        return ""
