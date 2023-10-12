@@ -997,13 +997,13 @@ def customerfactor_sendassigndriver(request):
         if request.POST.get('formtype') == 'assign_driver' :
             obj_send_id = request.POST['objsend']
             obj_send = get_object_or_404(ObjSend, pk = obj_send_id)
-            print(obj_send)
+            
             factoritem = get_object_or_404(FactorItem,factor_item_id = obj_send.source_id)
-            print(factoritem)
+            print(request.POST)
             # factor = get_object_or_404(Factor,factor_id = factor_item.factor.factor_id)
             Factor_items_detail = FactorItem.objects.filter(factor=factoritem.factor_id).values('factor_id', 'obj_item_id', 'amount')
             for item in Factor_items_detail:
-                print('start')
+                
                 # Access the 'amount' value using key-value syntax
                 for _ in range(int(item['amount'])):
                     ObjSendSerial.objects.create(factor_id=item['factor_id'], product_id=item['obj_item_id'])
@@ -1138,9 +1138,12 @@ def customerfactor_sendstatus(request):
         factor_id = request.POST['factor_id']
         product_id = request.POST['product_id']
         serials = request.POST.getlist('send_serial[]')
+        print(serials)
         objsends = ObjSendSerial.objects.filter(factor_id = factor_id)
-        # work on it later
         
+
+        
+
 
         pay_types = request.POST.getlist('pay_type[]')
         bank_ids = request.POST.getlist('bank_id[]')
@@ -1255,7 +1258,7 @@ def customerfactor_sendstatus(request):
         obj_customer_detail = DepoSend.objects.filter(source_id__in = objsendlist_sources)
         combo_data  = list(zip(objsendlist,obj_customer_detail,drive_id))
         all_data = list(zip(combo_data,seller_factor_ids))
-        print(all_data[0])
+        
         banks = ObjItem.objects.filter(obj_item_id__gte=999003010, obj_item_id__lte=999003019) 
 
 
@@ -1272,10 +1275,10 @@ def fetch_obj_send_serials(request):
     
     product_id = request.GET.get('product_id')
     
-    print(product_id)
-    print(factor_id)
+    # print(product_id)
+    # print(factor_id)
     objs = ObjSendSerial.objects.filter(factor_id=factor_id)
-    print(objs)
+    # print(objs)
     data = []
     for item in objs:
         Obj_item = get_object_or_404(ObjItem, obj_item_id=item.product_id)
@@ -1564,23 +1567,28 @@ def factor_install_sendstatus(request):
             Q(shop_desc__isnull=False) |
             Q(isntall_desc__isnull=False)
         )
-        objsendlist_sources = objsendlist.values('source_id')
+        objsendlist_sources = objsendlist.values('source_id')   
+        print(objsendlist_sources)
         factor_ids = FactorItem.objects.filter(factor_item_id__in = objsendlist_sources).values('factor')
+        print(factor_ids)
         factors = Factor.objects.filter(factor_id__in = factor_ids)
-    
+        print(factors)
         seller_factor_ids = []
         for i in factors:
             factor_comments = FactorComment.objects.filter(factor_id = i.factor_id,level='DRIVE')
             seller_factor_ids.append((i.factor_id,i.seller_factor_id,factor_comments,i.buyer_id))
 
         obj_customer_detail = DepoSend.objects.filter(source_id__in = objsendlist_sources)
+        print(obj_customer_detail.count())
         combo_data  = list(zip(objsendlist,obj_customer_detail))
         all_data = list(zip(combo_data,seller_factor_ids))
         banks = ObjItem.objects.filter(obj_item_id__gte=999003010, obj_item_id__lte=999003019) 
+
         context = {
             'items':all_data,
             'banks':banks,
         }
+
         return render(request,'Customer/CustomerFactorInstallStatus.html',context=context)
     
 @cache_control(no_cache=True, must_revalidate=True, no_store=True)
