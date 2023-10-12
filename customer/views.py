@@ -1121,6 +1121,8 @@ def customerfactor_sendstatus(request):
         objsend.drive_status_desc = drive_status_desc
         objsend.drive_status_dt = datetime.datetime.now()
         serials = request.POST.getlist('send_serial[]')
+       
+       
         objsend.save()
         for obj in serials:
 
@@ -1137,10 +1139,15 @@ def customerfactor_sendstatus(request):
         
         factor_id = request.POST['factor_id']
         product_id = request.POST['product_id']
+        product_serials = request.POST.getlist('product_serial[]')
         serials = request.POST.getlist('send_serial[]')
-        print(serials)
-        objsends = ObjSendSerial.objects.filter(factor_id = factor_id)
+        serial_data = list(zip(product_serials,serials))
+        print(serial_data)
         
+        for (product,serial_drive) in serial_data:
+            objsends = ObjSendSerial.objects.filter(factor_id = factor_id,product_id =product)
+            objsends.serial_drive = serial_drive
+            objsends.save()
 
         
 
