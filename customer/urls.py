@@ -62,6 +62,8 @@ urlpatterns = [
     path('factorinstallassign', views.factor_install_assigninstaller, name='FactorInstallAssignInstaller'),
     path('factorinstallstatus', views.factor_install_sendstatus, name='FactorInstallSendStatus'),
     path('factorsendinstallerprint/<int:obj_send_id>', views.factorsend_installerprint, name='FactorSendInstallerPrint'),  
+    path('addcommentsinstall/', views.add_commentinstall, name='addcommentinstall'),
+    path('fetch_commentsinstall/', views.fetch_commentsinstall, name='fetch_commentsinstall'),
     
 #############################################
 
