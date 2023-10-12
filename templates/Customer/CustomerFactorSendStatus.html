@@ -375,14 +375,13 @@
                     newRow += "<td>" + item.product_id + "</td>"; // Added the name field here
                     newRow += "<td>" + item.name + "</td>"; 
                     newRow += "<td>" + item.title + "</td>"; 
-                    
-                    
-                    
+
+                    newRow += "<td><input type='hidden' name='product_serial[]' value='" + item.product_id + "'></td>";
                     newRow += "<td><input type='text' name='send_serial[]'></td>";
                     newRow += "</tr>";
 
                     tableBody.innerHTML += newRow;
-                });
+                    });
             });
         });
     });
