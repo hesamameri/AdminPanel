@@ -205,7 +205,7 @@
                                                     <div class="col-lg-4 form-group-sub">
                                                         <label class="form-control-label kt-font-dark kt-font-boldest">کد معرف</label>
                                                         <select class="form-control" name="reagent">
-                                                            <option disabled selected>انتخاب کنید</option>
+                                                            
                                                             <option value="1030200002">شعبه شهریار 1399</option>
                                                             <option value="1030200001">بیهق دوام 1399</option>
                                                             <option value="1030200017">فروشگاه فرهنگیان</option>
@@ -855,6 +855,22 @@
 
                     // Find the hidden input element by its ID and update its value
                     $('#hiddenInput3').val(buyerValue);
+            });
+            });
+                    
+        </script>
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                // Listen to the 'show.bs.modal' event on the modal
+                $('#modal-inquiry1').on('show.bs.modal', function(event) {
+                    // Get the button (<a> tag) that triggered the modal
+                    var button = $(event.relatedTarget);
+
+                    // Get the 'data-buyer' attribute from the button
+                    var buyerValue = button.data('payer');
+                    console.log(buyerValue)
+                    // Find the hidden input element by its ID and update its value
+                    $('#hiddenInput2').val(buyerValue);
             });
             });
                     

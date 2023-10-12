@@ -131,13 +131,13 @@
                                                                                     <td>{{item.obj_payment.description}}</td>
                                                                                     <td>{{item.obj_payment.reg_dt|to_jalali}}</td>
                                                                                     <td>{{item.obj_payment.price}}</td>
-                                                                                    <td>
+                                                                                    <td>{{item.obj_payment_id}}
                                                                                         <i class="fa fa-info-circle" aria-hidden="true" data-toggle="popover" title="اطلاعات رکورد" data-content=""></i>
                                                                                     </td>
                                                                                     <td><img class="img img-rectangle img-popup-img-src" style="width: 30px;" src=""></td>
                                                                                     <td>
                                                                                         
-                                                                                        <a class="btn btn-success btn-xs btn-acc-confirm" data-payment="{{item.obj_payment_id}}" data-price="" data-toggle="modal" data-target="#modal-payment" style="padding: 5px 10px; font-size: 14px;">
+                                                                                        <a class="btn btn-success btn-xs btn-acc-confirm" data-payment="{{item.obj_payment.obj_payment_id}}"  data-toggle="modal" data-target="#modal-payment" style="padding: 5px 10px; font-size: 14px;">
                                                                                             <i class="fas fa-check"></i> تایید مالی
                                                                                         </a>
                                                                                         
@@ -172,7 +172,7 @@
                                         </div>
                                         <form method="POST" action="{% url 'customer:CustomerPaymentConfirm' %}">
                                             {% csrf_token %}
-                                            <input type="hidden" name="obj_payment_id" class="obj_payment_id">
+                                            <input type="hidden" id="obj_payment" name="obj_payment">
                                             <div class="modal-body">
                                                         <div class="form-group form-group-sm row">
                                                             <div class="col-sm-8">
@@ -283,7 +283,7 @@
         <!-- begin::Global Config(global config for global JS sciprts) -->
         {% include "partials/script.html" %}
 
-        <!-- <script>
+        <script>
             document.addEventListener('DOMContentLoaded', function() {
                 // Listen to the 'show.bs.modal' event on the modal
                 $('#modal-payment').on('show.bs.modal', function(event) {
@@ -292,26 +292,32 @@
 
                     // Get the 'data-buyer' attribute from the button
                     var buyerValue = button.data('payment');
+                    console.log(buyerValue)
+                    // Find the hidden input element by its ID and update its value
+                    $('#obj_payment').val(buyerValue);
+            });
+            });
+                    
+        </script>
 
+        <!-- <script>
+           
+            document.addEventListener('DOMContentLoaded', function() {
+                // Listen to the 'show.bs.modal' event on the modal
+                $('#modal-payment').on('show.bs.modal', function(event) {
+                    // Get the button (<a> tag) that triggered the modal
+                    var button = $(event.relatedTarget);
+
+                    // Get the 'data-buyer' attribute from the button
+                    var buyerValue = button.data('payment');
+                    console.log(buerValue)
                     // Find the hidden input element by its ID and update its value
                     $('#obj_payment_id').val(buyerValue);
             });
             });
                     
+       
         </script> -->
-
-        <script>
-            $(document).ready(function() {
-                // Listen for the button click event
-                $('.btn-acc-confirm').click(function() {
-                    // Get the value of 'data-payment' attribute from the clicked button
-                    var objPaymentId = $(this).data('payment');
-                    
-                    // Set the 'obj_payment_id' field in the modal form
-                    $('#modal-payment input[name="obj_payment_id"]').val(objPaymentId);
-                });
-            });
-        </script>
 
         <!--end::Page Scripts -->
     </body>

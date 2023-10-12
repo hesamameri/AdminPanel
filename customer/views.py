@@ -847,23 +847,36 @@ def customer_confirm_accountlist(request):
 @permission_required('ROLE_PERSONEL','ROLE_ADMIN')
 def customer_confirm_salelist(request):
 
-    factor_items = FactorItemBalanceSVA.objects.filter(sended__lt=F('amount'))
-    # Getting the related Factor objects
+    # Get the distinct factor_ids with the maximum factor_item_id
+    distinct_factor_ids = FactorItemBalanceSVA.objects.filter(
+        sended__lt=F('amount')
+    ).values('factor_id').annotate(max_factor_item_id=Max('factor_item_id'))
+
+    # Subquery to filter the factor items based on the maximum factor_item_id
+    subquery = Subquery(
+        distinct_factor_ids.filter(factor_id=OuterRef('factor_id')).values('max_factor_item_id')
+    )
+
+    # Get the unique factor items
+    factor_items = FactorItemBalanceSVA.objects.filter(factor_item_id=subquery)
+    
+    print(factor_items)
+    # Get related Factor objects
     factor_ids = factor_items.values_list('factor_id', flat=True)
     factors = Factor.objects.filter(factor_id__in=factor_ids).values('factor_id', 'acc_confirm_dt', 'contract_id')
 
-    # Creating a dictionary to easily look up the acc_confirm_dt and contract_id by factor_id
+    # Create a dictionary to easily look up the acc_confirm_dt and contract_id by factor_id
     factor_dict = {factor['factor_id']: {'acc_confirm_dt': factor['acc_confirm_dt'], 'contract_id': factor['contract_id']} for factor in factors}
 
-    # Getting the related Contract objects
+    # Get related Contract objects
     contract_ids = [factor['contract_id'] for factor in factors]
     contract_cities = ContractCity.objects.filter(contract_id__in=contract_ids).values('contract_id', 'obj_item_id')
 
-    # Getting the related ObjItem objects
+    # Get related ObjItem objects
     obj_item_ids = contract_cities.values_list('obj_item_id', flat=True)
     obj_items = ObjItem.objects.filter(obj_item_id__in=obj_item_ids).values('obj_item_id', 'name')
 
-    # Creating a dictionary to easily look up the name by obj_item_id
+    # Create a dictionary to easily look up the name by obj_item_id
     obj_item_name_dict = {obj_item['obj_item_id']: obj_item['name'] for obj_item in obj_items}
 
     template_data = []
@@ -878,7 +891,7 @@ def customer_confirm_salelist(request):
             'acc_confirm_dt': factor_data.get('acc_confirm_dt'),
             'city_name': city_name,
         })
-    # print(template_data)
+
     context = {
         'factor_items': template_data,
     }
@@ -1116,10 +1129,11 @@ def customerfactor_sendstatus(request):
         for obj in serials:
 
             if drive_status == 'CONFIRM':
-                
+
                 ObjSend.objects.create(
-                    action ='INSTALL',source_type='FACTOR',source_id = objsend.source_id,serial_drive= obj
+                    action ='INSTALL',source_type='FACTOR',source_id = objsend.source_id
                 )
+            
             else:
                 ObjSend.objects.create(
                     action ='DRIVE',source_type='FACTOR',source_id = objsend.source_id
@@ -1576,7 +1590,7 @@ def customer_payment_confirm(request):
     
     if request.method == 'POST':
         print(request.POST)
-        obj_payment_id = request.POST['obj_payment_id']
+        obj_payment_id = request.POST['obj_payment']
         obj_payment = get_object_or_404(ObjPayment, pk = obj_payment_id)
         obj_payment.price = request.POST['price']
         obj_payment.confirmer = request.user.user_id
@@ -1584,7 +1598,8 @@ def customer_payment_confirm(request):
         obj_payment.confirm_status = request.POST['confirm_status']
         obj_payment.confirm_dt = datetime.datetime.now()
         obj_payment.save()
-        return render(request, 'Customer/CustomerPaymentConfirm.html', context=context)
+
+        return redirect('customer:CustomerPaymentConfirm')
        
 
     else:
@@ -1696,14 +1711,13 @@ def prefroma(request):
 
 
 
-# @cache_page(10)
 @login_required(login_url='Administrator:login_view')
 @permission_required('ROLE_PERSONEL','ROLE_ADMIN')
 def customerfactor_servicedoc(request):
     
     return render(request,'Customer/CustomerFactorServiceDoc.html')
 
-# @cache_page(10)
+
 @login_required(login_url='Administrator:login_view')
 @permission_required('ROLE_PERSONEL','ROLE_ADMIN')
 def customer_payment_confirms(request):
@@ -1733,7 +1747,7 @@ def customer_payment_confirms(request):
         return render(request, 'Customer/CustomerPaymentConfirms.html', context=context)
     
 
-# @cache_page(10)
+
 @login_required(login_url='Administrator:login_view')
 @permission_required('ROLE_PERSONEL','ROLE_ADMIN')
 def index_inquiry_response(request):
