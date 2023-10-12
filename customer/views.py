@@ -1252,10 +1252,11 @@ def customerfactor_sendstatus(request):
         for i in factors:
             factor_comments = FactorComment.objects.filter(factor_id = i.factor_id,level='DRIVE')
             seller_factor_ids.append((i.factor_id,i.seller_factor_id,factor_comments,i.buyer_id))
-        
+
+        drive_id = ObjSend.objects.filter(source_id__in = objsendlist_sources).values('drive_id')
         # name = FactorSVA.objects.filter(factor_id__in = factor_ids).values('buyer_name , city_name')
         obj_customer_detail = DepoSend.objects.filter(source_id__in = objsendlist_sources)
-        combo_data  = list(zip(objsendlist,obj_customer_detail))
+        combo_data  = list(zip(objsendlist,obj_customer_detail,drive_id))
         all_data = list(zip(combo_data,seller_factor_ids))
         
         banks = ObjItem.objects.filter(obj_item_id__gte=999003010, obj_item_id__lte=999003019) 
