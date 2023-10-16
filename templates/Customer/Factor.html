@@ -760,8 +760,10 @@
                                                                                         <td>شهر</td>
                                                                                         <td colspan="20">
                                                                                             <select class="form-control select2bs4 rtl" style="width: 100%;" name="city_id" data-placeholder="" data-allow-clear="true" id="new-city">
-                                                                                                <option value="" selected></option>
-                                                                                                    <option value="{{ opt.id }}"></option>
+                                                                                            
+                                                                                                {% for city in cities %}
+                                                                                                    <option value="{{ city.obj_item_id }}"> {{ city.obj_item_id|id_to_city}}</option>
+                                                                                                {% endfor %}
                                                                                             </select>
                                                                                         </td>
                                                                                     </tr>

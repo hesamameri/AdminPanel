@@ -559,6 +559,8 @@ def factor(request,factor_id=None,obj_buyer = None):
                 # Convert the dictionary to JSON
                 depo_data_json = json.dumps(depo_data_dict)
                 print(depo_data_json)
+
+                cities = CityItemSVA.objects.all().values('obj_item_id').distinct()
                 #--------------------------------------------------------------------
                 context = {
                     'factor_main':factor_main,
@@ -579,6 +581,7 @@ def factor(request,factor_id=None,obj_buyer = None):
                     'depo_itemcity':depo_itemcity,
                     'depos':depos,
                     'depo_data_json': depo_data_json,
+                    'cities':cities,
                 }  
                
                 

@@ -122,7 +122,7 @@
                                                                                             <form method="get" action="" class="frm1">
                                                                                                 <a class="btn btn-success btn-xs btn-assign-driver btn-class" data-objsend="{{item.0.0.obj_send_id}}" data-toggle="modal" data-target="#modal-assign-driver">اختصاص راننده</a>
                                                                                             </form>
-                                                                                            <a class="btn btn-primary btn-xs btn-class" href="{% url 'customer:FactorSendPrint' obj_send_id=item.0.0.obj_send_id %}">چاپ فاکتور</a>
+                                                                                            <a class="btn btn-primary btn-xs btn-class" href="{% url 'customer:FactorSendPrint' obj_send_id=item.0.obj_send_id %}">چاپ فاکتور</a>
                                                                                     </td>
                                                                                     {% endfor %}
                                                                         <tbody>
@@ -294,6 +294,7 @@
                 $('#objsend-comment').val(objValue);
             });
         });
+        
         </script>
        <script>
         function fetchCommentsAndUpdateModal(factorId, fetchUrl) {
