@@ -1152,18 +1152,17 @@ def customerfactor_sendstatus(request):
        
        
         objsend.save()
-        for obj in serials:
 
-            if drive_status == 'CONFIRM':
+        if drive_status == 'CONFIRM':
 
-                ObjSend.objects.create(
-                    action ='INSTALL',source_type='FACTOR',source_id = objsend.source_id
-                )
-            
-            else:
-                ObjSend.objects.create(
-                    action ='DRIVE',source_type='FACTOR',source_id = objsend.source_id
-                )
+            ObjSend.objects.create(
+                action ='INSTALL',source_type='FACTOR',source_id = objsend.source_id
+            )
+        
+        else:
+            ObjSend.objects.create(
+                action ='DRIVE',source_type='FACTOR',source_id = objsend.source_id
+            )
         
         factor_id = request.POST['factor_id']
         product_id = request.POST['product_id']
