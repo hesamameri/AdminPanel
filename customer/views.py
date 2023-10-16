@@ -37,7 +37,7 @@ from django.core.files.storage import FileSystemStorage
 from django.db.models import Sum, F, Value, CharField, Case, When,FloatField,Subquery, OuterRef
 from django.db.models.functions import Coalesce
 
-# @cache_page(10)
+
 @login_required(login_url='Administrator:login_view')
 @permission_required('ROLE_PERSONEL', 'ROLE_ADMIN')
 def customer_index(request):
@@ -1145,7 +1145,7 @@ def customerfactor_sendstatus(request):
         print(serial_data)
         
         for (product,serial_drive) in serial_data:
-            objsends = ObjSendSerial.objects.filter(factor_id = factor_id,product_id =product)
+            objsends = get_object_or_404(ObjSendSerial,factor_id = factor_id,product_id =product)
             objsends.serial_drive = serial_drive
             objsends.save()
 
@@ -1514,9 +1514,11 @@ def factor_install_assigninstaller(request):
         combo_data  = list(zip(objsendlist,obj_customer_detail))
         all_data = list(zip(combo_data,seller_factor_ids))
         # print(all_data)
+
         context = {
             'items':all_data,
         }
+
         # factor_item_ids = objsendlist.values('source_id')
         # factor_id = Factor.objects.filter(factor_id__in = factor_item_ids)
         return render(request,'Customer/CustomerFactorInstallAssign.html',context=context)
@@ -1574,6 +1576,7 @@ def factor_install_sendstatus(request):
             Q(shop_desc__isnull=False) |
             Q(isntall_desc__isnull=False)
         )
+        
         objsendlist_sources = objsendlist.values('source_id')   
         print(objsendlist_sources)
         factor_ids = FactorItem.objects.filter(factor_item_id__in = objsendlist_sources).values('factor')
@@ -1705,24 +1708,22 @@ def customer_payment_confirm(request):
 
         return render(request, 'Customer/CustomerPaymentConfirm.html', context=context)
     
-    
 
 
-# @cache_page(10)
 @login_required(login_url='Administrator:login_view')
 @permission_required('ROLE_PERSONEL','ROLE_ADMIN')
 def receipt_index(request):
     
     return render(request,'Customer/ReceiptIndex.html')
 
-# @cache_page(10)
+
 @login_required(login_url='Administrator:login_view')
 @permission_required('ROLE_PERSONEL','ROLE_ADMIN')
 def receipt_list(request):
     
     return render(request,'Customer/ReceiptList.html')
 
-# @cache_page(10)
+
 @login_required(login_url='Administrator:login_view')
 @permission_required('ROLE_PERSONEL','ROLE_ADMIN')
 def receipt_receive(request):
@@ -1730,14 +1731,13 @@ def receipt_receive(request):
     return render(request,'Customer/ReceiptReceive.html')
 
 
-# @cache_page(10)
 @login_required(login_url='Administrator:login_view')
 @permission_required('ROLE_PERSONEL','ROLE_ADMIN')
 def receipt_send(request):
     
     return render(request,'Customer/ReceiptSend.html')
 
-# @cache_page(10)
+
 @login_required(login_url='Administrator:login_view')
 @permission_required('ROLE_PERSONEL','ROLE_ADMIN')
 def credit_index(request):
@@ -1745,7 +1745,7 @@ def credit_index(request):
     return render(request,'Customer/CreditIndex.html')
 
 
-# @cache_page(10)
+
 @login_required(login_url='Administrator:login_view')
 @permission_required('ROLE_PERSONEL','ROLE_ADMIN')
 def credit_list(request):
@@ -1753,7 +1753,6 @@ def credit_list(request):
     return render(request,'Customer/CreditList.html')
 
 
-# @cache_page(10)
 @login_required(login_url='Administrator:login_view')
 @permission_required('ROLE_PERSONEL','ROLE_ADMIN')
 def receipt_confirm(request):
@@ -1761,7 +1760,7 @@ def receipt_confirm(request):
     return render(request,'Customer/receiptconfirm.html')
 
 
-# @cache_page(10)
+
 @login_required(login_url='Administrator:login_view')
 @permission_required('ROLE_PERSONEL','ROLE_ADMIN')
 def prefroma(request):
@@ -1776,6 +1775,7 @@ def prefroma(request):
 def customerfactor_servicedoc(request):
     
     return render(request,'Customer/CustomerFactorServiceDoc.html')
+
 
 
 @login_required(login_url='Administrator:login_view')

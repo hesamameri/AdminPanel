@@ -134,12 +134,12 @@
                                                                                             {% csrf_token %}
                                                                                             <input type="hidden" name="inquiry_id" value="{{ inquiry.0.inquiry_id }}">
                                                                                             <button class="btn btn-success btn-sm btn-disabled btn-customer" disabled>ثبت فاکتور</button>
-                
                                                                                             <input class="btn btn-danger btn-xs" type="submit" name="markAsViewed" value="مشاهده شد">
                                                                                         </form>
                                                                                     </td>
                                                                                     {% else %}
                                                                                     <td>
+
                                                                                         <form action="{% url 'customer:IndexInquiryResponse' %}" method="post">
                                                                                             {% csrf_token %}
                                                                                             <!-- <a class="btn btn-success btn-xs" href="#">ثبت فاکتور</a> -->
@@ -149,6 +149,8 @@
                                                                                             <input class="btn btn-danger btn-xs" type="submit" name="markAsViewed" value="مشاهده شد">
                                                                                             <!-- <a class="btn btn-danger btn-xs" href="#">مشاهده شد</a> -->
                                                                                         </form>
+
+                                                                                        
                                                                                     </td>
                                                                                     {% endif %}
                                                                                 </tr>
