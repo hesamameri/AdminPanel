@@ -137,29 +137,29 @@
                                                                             
                                                                             {% for item in items %}
                                                                                 <tr>
-                                                                                    <td>{{item.0.0.obj_send_id}}</td> <!-- خریدار (شناسه خریدار) -->
-                                                                                    <td>{{item.0.1.receiver}}</td>   <!--نام خریدار-->
+                                                                                    <td>{{item.3.obj_item_id}}</td> <!-- خریدار (شناسه خریدار) -->
+                                                                                    <td>{{item.3.name}}</td>   <!--نام خریدار-->
                                                                                     <td>{{item.1.1}}</td> <!--شناسه فاکتور-->
                                                                                     <td>{{item.1.0}}</td> <!-- شماره فاکتور-->
                                                                                     
                                                                                    
                                                                                     <td>    <!-- شهر -->
-                                                                                        {{item.0.1.city_id|id_to_city}}
+                                                                                        {{item.2.city_id|id_to_city}}
                                                                                     </td>
                                                                                     
                                                                                     
                                                                                     
-                                                                                    <td>{{item.0.1.mobile}}</td>   <!-- موبایل -->
+                                                                                    <td>{{item.2.mobile}}</td>   <!-- موبایل -->
                                                                                     
-                                                                                    <td>{{item.0.1.phone}}</td>   <!--تلفن-->
+                                                                                    <td>{{item.2.phone}}</td>   <!--تلفن-->
                                                                                     
                                                                                     <td>    <!-- آدرس -->
-                                                                                        {{item.0.1.address}}
+                                                                                        {{item.2.address}}
                                                                                     </td>
                                                                                     
                                                                                    
                                                                                     <td>
-                                                                                                <a href="{% url 'customer:FactorSendIndexSend' obj_send_id=item.0.0.obj_send_id %}" class="btn btn-primary btn-xs btn-class">ارسال بار</a>
+                                                                                                <a href="{% url 'customer:FactorSendIndexSend' obj_send_id=item.0.obj_send_id %}" class="btn btn-primary btn-xs btn-class">ارسال بار</a>
                                                                                                 <a href="{% url 'customer:FactorSendPrint' %}" class="btn btn-success btn-xs btn-class">چاپ فاکتور</a>
                                                                                     </td>
                                                                                 </tr>

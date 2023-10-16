@@ -587,15 +587,19 @@
                                                             {% if factor_main.reg_status == None %}
                                                             <div class="card  card-outline">
                                                                 <div class="card-body">
-                                                                    <form method="POST"  action="" id="saveForm" name="saveForm">
+                                                                    <form method="POST"  action="{% url 'customer:FactorFinalRegister' factor_id=factor_main.factor_id %}" id="saveForm" name="saveForm">
+                                                                    {% csrf_token %}
+                                                                        <input type="hidden" name="formtype" value="final_register">
+                                                                        <input type="hidden" name="reg_status" value="CONFIRM">
                                                                         <div class="form-group form-group-sm row" style="width: 100%;">
                                                                             <div class="col-sm-10">
                                                                                 <input type="text" name="factore_desc" class="form-control rtl" id="factore_desc" placeholder="توضیحات" >
                                                                             </div>
                                                                             <label for="factore_desc" class="col-sm-2 col-form-label">توضیحات</label>
                                                                         </div>
+
                                                                         <button class="btn btn-primary" type="submit" form="saveForm">ثبت نهایی فاکتور</button>
-                                                                        <a href="" class="btn btn-danger" >حذف فاکتور</a>
+                                                                        <a href="{% url 'customer:FactorRejectStatus' factor_id=factor_main.factor_id %}" class="btn btn-danger" >حذف فاکتور</a>
                                                                         <a href="" class="btn btn-secondary float-right" >برگشت</a>
                                                                     </form>
                                                                 </div>

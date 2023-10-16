@@ -590,6 +590,23 @@ def factor(request,factor_id=None,obj_buyer = None):
                 new_factor = Factor.objects.create(buyer = objinstance,register = request.user.user_id,reg_dt = datetime.datetime.now())
                 return redirect('customer:FactorWithFactorID', factor_id=new_factor.factor_id)
 
+@login_required(login_url='Administrator:login_view')
+@permission_required('ROLE_PERSONEL','ROLE_ADMIN')
+def factor_final_register(request,factor_id):
+    if request.method == 'POST':
+        factor = get_object_or_404(Factor,factor_id=factor_id)
+        factor.reg_status = 'CONFIRM'
+        factor.save()
+    
+
+@login_required(login_url='Administrator:login_view')
+@permission_required('ROLE_PERSONEL','ROLE_ADMIN')
+def factor_reject_status(request,factor_id):
+    if request.method == 'POST':
+        factor = get_object_or_404(Factor,factor_id=factor_id)
+        factor.reg_status = 'REJECT'
+        factor.save()
+    
 
 @login_required(login_url='Administrator:login_view')
 @permission_required('ROLE_PERSONEL','ROLE_ADMIN')
@@ -961,16 +978,23 @@ def factor_send_index(request,obj_send_id=None):
             Q(shop_desc__isnull=False) |
             Q(isntall_desc__isnull=False)
         )
+        ################################### The following code should be  modified
         objsendlist_sources = objsendlist.values('source_id')
         factor_ids = FactorItem.objects.filter(factor_item_id__in = objsendlist_sources).values('factor')
+        
         factors = Factor.objects.filter(factor_id__in = factor_ids)
+        buyers = factors.values('buyer_id')
+        buyers_name = ObjItem.objects.filter(obj_item_id__in = buyers).values('obj_item_id','name')
         seller_factor_ids = []
         for i in factors:
-            seller_factor_ids.append((i.factor_id,i.seller_factor_id))
+            seller_factor_ids.append((i.factor_id,i.seller_factor_id,i))
         
-        obj_customer_detail = DepoSend.objects.filter(source_id__in = objsendlist_sources)
-        combo_data  = list(zip(objsendlist,obj_customer_detail))
-        all_data = list(zip(combo_data,seller_factor_ids))
+        factor_addresses = FactorAddress.objects.filter(factor_id__in = factor_ids).values('mobile','city_id','receiver','phone','address')
+        all_data = list(zip(objsendlist,seller_factor_ids,factor_addresses,buyers_name))
+        print(all_data)
+
+
+        #####################################
         # print(all_data)
         context = {
             'items':all_data,
@@ -1083,19 +1107,21 @@ def customerfactor_sendassigndriver(request):
             Q(isntall_desc__isnull=False)
         )
 
-
+        ######################################### The following code should be modified
         objsendlist_sources = objsendlist.values('source_id')
         factor_ids = FactorItem.objects.filter(factor_item_id__in = objsendlist_sources).values('factor')
+        
         factors = Factor.objects.filter(factor_id__in = factor_ids)
+        buyers = factors.values('buyer_id')
+        buyers_name = ObjItem.objects.filter(obj_item_id__in = buyers).values('obj_item_id','name')
         seller_factor_ids = []
         for i in factors:
-            factor_comments = FactorComment.objects.filter(factor_id = i.factor_id,level='DRIVE')
-            print(factor_comments)
-            seller_factor_ids.append((i.factor_id,i.seller_factor_id,factor_comments))
-        print(seller_factor_ids)
-        obj_customer_detail = DepoSend.objects.filter(source_id__in = objsendlist_sources)
-        combo_data  = list(zip(objsendlist,obj_customer_detail))
-        all_data = list(zip(combo_data,seller_factor_ids))
+            seller_factor_ids.append((i.factor_id,i.seller_factor_id,i))
+        
+        factor_addresses = FactorAddress.objects.filter(factor_id__in = factor_ids).values('mobile','city_id','receiver','phone','address')
+        all_data = list(zip(objsendlist,seller_factor_ids,factor_addresses,buyers_name))
+        print(all_data)
+        ##########################################
         # print(all_data)
         context = {
             'items':all_data,
@@ -1250,22 +1276,24 @@ def customerfactor_sendstatus(request):
             Q(isntall_desc__isnull=False)
         )
         
+        ##################################################### The following code should be modified
         objsendlist_sources = objsendlist.values('source_id')
         factor_ids = FactorItem.objects.filter(factor_item_id__in = objsendlist_sources).values('factor')
-        # print(factor_ids)
-        # objsendserials = ObjSendSerial.objects.filter(factor_id__in = factor_ids)
+        
         factors = Factor.objects.filter(factor_id__in = factor_ids)
+        buyers = factors.values('buyer_id')
+        buyers_name = ObjItem.objects.filter(obj_item_id__in = buyers).values('obj_item_id','name')
         seller_factor_ids = []
         for i in factors:
             factor_comments = FactorComment.objects.filter(factor_id = i.factor_id,level='DRIVE')
-            seller_factor_ids.append((i.factor_id,i.seller_factor_id,factor_comments,i.buyer_id))
-
-        drive_id = ObjSend.objects.filter(source_id__in = objsendlist_sources)
-        # name = FactorSVA.objects.filter(factor_id__in = factor_ids).values('buyer_name , city_name')
-        obj_customer_detail = DepoSend.objects.filter(source_id__in = objsendlist_sources)
-        combo_data  = list(zip(objsendlist,obj_customer_detail,drive_id))
-        all_data = list(zip(combo_data,seller_factor_ids))
+            seller_factor_ids.append((i.factor_id,i.seller_factor_id,factor_comments))
         
+        factor_addresses = FactorAddress.objects.filter(factor_id__in = factor_ids).values('mobile','city_id','receiver','phone','address')
+        all_data = list(zip(objsendlist,seller_factor_ids,factor_addresses,buyers_name))
+        print(all_data)
+
+        ###################################################
+
         banks = ObjItem.objects.filter(obj_item_id__gte=999003010, obj_item_id__lte=999003019) 
 
 
@@ -1402,16 +1430,21 @@ def factor_install_index(request,obj_send_id=None):
             Q(shop_desc__isnull=False) |
             Q(isntall_desc__isnull=False)
         )
+        #######################################3 The following code should be modified
         objsendlist_sources = objsendlist.values('source_id')
         factor_ids = FactorItem.objects.filter(factor_item_id__in = objsendlist_sources).values('factor')
+        
         factors = Factor.objects.filter(factor_id__in = factor_ids)
+        buyers = factors.values('buyer_id')
+        buyers_name = ObjItem.objects.filter(obj_item_id__in = buyers).values('obj_item_id','name')
         seller_factor_ids = []
         for i in factors:
-            seller_factor_ids.append((i.factor_id,i.seller_factor_id))
+            seller_factor_ids.append((i.factor_id,i.seller_factor_id,i))
         
-        obj_customer_detail = DepoSend.objects.filter(source_id__in = objsendlist_sources)
-        combo_data  = list(zip(objsendlist,obj_customer_detail))
-        all_data = list(zip(combo_data,seller_factor_ids))
+        factor_addresses = FactorAddress.objects.filter(factor_id__in = factor_ids).values('mobile','city_id','receiver','phone','address')
+        all_data = list(zip(objsendlist,seller_factor_ids,factor_addresses,buyers_name))
+        print(all_data)
+        #############################################
         # print(all_data)
         context = {
             'items':all_data,
@@ -1501,18 +1534,21 @@ def factor_install_assigninstaller(request):
             Q(isntall_desc__isnull=False)
         )
 
-
+        ################################## THe following code should be modified
         objsendlist_sources = objsendlist.values('source_id')
         factor_ids = FactorItem.objects.filter(factor_item_id__in = objsendlist_sources).values('factor')
+        
         factors = Factor.objects.filter(factor_id__in = factor_ids)
+        buyers = factors.values('buyer_id')
+        buyers_name = ObjItem.objects.filter(obj_item_id__in = buyers).values('obj_item_id','name')
         seller_factor_ids = []
         for i in factors:
-            factor_comments = FactorComment.objects.filter(factor_id = i.factor_id,level='INSTALL')
-            seller_factor_ids.append((i.factor_id,i.seller_factor_id,factor_comments))
-        print(seller_factor_ids)
-        obj_customer_detail = DepoSend.objects.filter(source_id__in = objsendlist_sources)
-        combo_data  = list(zip(objsendlist,obj_customer_detail))
-        all_data = list(zip(combo_data,seller_factor_ids))
+            seller_factor_ids.append((i.factor_id,i.seller_factor_id,i))
+        
+        factor_addresses = FactorAddress.objects.filter(factor_id__in = factor_ids).values('mobile','city_id','receiver','phone','address')
+        all_data = list(zip(objsendlist,seller_factor_ids,factor_addresses,buyers_name))
+        print(all_data)
+        ##################################
         # print(all_data)
 
         context = {
@@ -1576,22 +1612,24 @@ def factor_install_sendstatus(request):
             Q(shop_desc__isnull=False) |
             Q(isntall_desc__isnull=False)
         )
-        
-        objsendlist_sources = objsendlist.values('source_id')   
-        print(objsendlist_sources)
+        ################################## The following code should be modified
+        objsendlist_sources = objsendlist.values('source_id')
         factor_ids = FactorItem.objects.filter(factor_item_id__in = objsendlist_sources).values('factor')
-        print(factor_ids)
+        
         factors = Factor.objects.filter(factor_id__in = factor_ids)
-        print(factors)
+        buyers = factors.values('buyer_id')
+        buyers_name = ObjItem.objects.filter(obj_item_id__in = buyers).values('obj_item_id','name')
         seller_factor_ids = []
         for i in factors:
             factor_comments = FactorComment.objects.filter(factor_id = i.factor_id,level='DRIVE')
-            seller_factor_ids.append((i.factor_id,i.seller_factor_id,factor_comments,i.buyer_id))
+            seller_factor_ids.append((i.factor_id,i.seller_factor_id,factor_comments))
+        
+        factor_addresses = FactorAddress.objects.filter(factor_id__in = factor_ids).values('mobile','city_id','receiver','phone','address')
+        all_data = list(zip(objsendlist,seller_factor_ids,factor_addresses,buyers_name))
+        print(all_data)
 
-        obj_customer_detail = DepoSend.objects.filter(source_id__in = objsendlist_sources)
-        print(obj_customer_detail.count())
-        combo_data  = list(zip(objsendlist,obj_customer_detail))
-        all_data = list(zip(combo_data,seller_factor_ids))
+        
+        ##################################
         banks = ObjItem.objects.filter(obj_item_id__gte=999003010, obj_item_id__lte=999003019) 
 
         context = {
