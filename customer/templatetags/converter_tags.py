@@ -272,3 +272,16 @@ def driveid_to_drivename(item):
             return id_dic[item]
     else:
         return ""
+    
+
+@register.filter
+def installid_to_drivename(item):
+    item=str(item) 
+    id_dic = {
+        '4012001':'حسن عاقلی',
+        
+        }
+    if item in id_dic.keys():
+            return id_dic[item]
+    else:
+        return ""

@@ -413,9 +413,6 @@ def customer_index_all(request,shop_id = None):
 def new_factor(request):
     pass
 
-
-
-
 @login_required(login_url='Administrator:login_view')
 @permission_required('ROLE_PERSONEL','ROLE_ADMIN')
 def factor(request,factor_id=None,obj_buyer = None):
@@ -423,7 +420,7 @@ def factor(request,factor_id=None,obj_buyer = None):
     if request.method == 'POST':
         print(request.POST)
         form_type = request.POST.get('form_type')
-        
+
         if form_type == 'paywayform':
             payway_data = {
                 'factor': request.POST.get('factor_id'),
@@ -581,9 +578,7 @@ def factor(request,factor_id=None,obj_buyer = None):
                     'depos':depos,
                     'depo_data_json': depo_data_json,
                     'cities':cities,
-                }  
-               
-                
+                } 
                 return render(request,'Customer/Factor.html',context=context)
             else:
                 print(obj_buyer)
@@ -646,7 +641,7 @@ def factor_add_depo(request):
             if deposendform.is_valid():
                 deposendform.save()
             else:
-                print("form is not valid")
+                
                 print(deposendform.errors)
             
             # aggregating and checking for complete products register for creating objsend objects
@@ -691,7 +686,7 @@ def factor_add_depo(request):
             # depo = request.POST.get('depo')
 
         
-    return redirect(reverse('customer:FactorWithFactorID', args=[factor_item_factor.factor_id]))
+    return redirect(reverse('customer:FactorWithFactorID', args=[ factor_item_factor.factor_id ]))
 
 
 
@@ -705,6 +700,8 @@ def factor_add_goods(request,factor_id):
         obj = get_object_or_404(ObjItem, obj_item_id=obj_item_id)
         factor = get_object_or_404(Factor,factor_id=factor_id)
         unit_price = get_object_or_404(ProductSVA,product_id = obj.obj_item_id).unit_price
+
+
         goods_data = {
             'factor':factor,
             'obj_item':obj,
@@ -713,6 +710,8 @@ def factor_add_goods(request,factor_id):
             'discount_price': 1,
             'register':request.POST.get('amount'),
         }
+
+
         goodsform = NewFactorItem(goods_data)
         if goodsform.is_valid():
             goodsform.save()
@@ -724,10 +723,13 @@ def factor_add_goods(request,factor_id):
         
     else:
         return redirect('customer:customerindex')
+
+
 @login_required(login_url='Administrator:login_view')
 @permission_required('ROLE_PERSONEL','ROLE_ADMIN')
 def factor_add_document(request,factor_id):
     
+
     if request.method == 'POST' and request.FILES['uri']:
         uploaded_file = request.FILES['uri']
         fs = FileSystemStorage()
@@ -752,7 +754,9 @@ def factor_add_document(request,factor_id):
         return redirect(reverse('customer:FactorWithFactorID', args=[factor_id]))   # Assuming you have a document_detail view
 
     else:
+
         return redirect(reverse('customer:FactorWithFactorID', args=[factor_id])) 
+
 
 @login_required(login_url='Administrator:login_view')
 @permission_required('ROLE_PERSONEL','ROLE_ADMIN')
@@ -799,6 +803,7 @@ def delete_factor_element(request,element):
         return redirect('customer:customerindex')
 
 
+
 @login_required(login_url='Administrator:login_view')
 @permission_required('ROLE_PERSONEL','ROLE_ADMIN')
 def factor_index(request):
@@ -819,7 +824,6 @@ def customer_confirm_accountlist(request):
     vendor_ids = contract_objs.values_list('vendor', flat=True)
     vendor_objs = ObjItem.objects.filter(obj_item_id__in=vendor_ids)
     vendor_details = ObjItemSpec.objects.filter(obj_item_id__in=vendor_objs, obj_spec_id=113).values('val', 'obj_item_id')
-
     # Create a dictionary to map contract_id to vendor data
     vendor_data_dict = {}
     for contract, vendor, detail in zip(contract_objs, vendor_objs, vendor_details):
@@ -1028,8 +1032,9 @@ def customerfactor_sendassigndriver(request):
             print(request.POST)
             # factor = get_object_or_404(Factor,factor_id = factor_item.factor.factor_id)
             Factor_items_detail = FactorItem.objects.filter(factor=factoritem.factor_id).values('factor_id', 'obj_item_id', 'amount')
+            print(Factor_items_detail)
             for item in Factor_items_detail:
-                
+                print(item)
                 # Access the 'amount' value using key-value syntax
                 for _ in range(int(item['amount'])):
                     ObjSendSerial.objects.create(factor_id=item['factor_id'], product_id=item['obj_item_id'])
@@ -1149,30 +1154,29 @@ def customerfactor_sendstatus(request):
         objsend.drive_status_desc = drive_status_desc
         objsend.drive_status_dt = datetime.datetime.now()
         serials = request.POST.getlist('send_serial[]')
-       
-       
         objsend.save()
-        for obj in serials:
+       
 
-            if drive_status == 'CONFIRM':
+        if objsend.drive_status == 'CONFIRM':
 
-                ObjSend.objects.create(
-                    action ='INSTALL',source_type='FACTOR',source_id = objsend.source_id
-                )
-            
-            else:
-                ObjSend.objects.create(
-                    action ='DRIVE',source_type='FACTOR',source_id = objsend.source_id
-                )
+            ObjSend.objects.create(
+                action ='INSTALL',source_type='FACTOR',source_id = objsend.source_id
+            )
+        
+        else:
+            ObjSend.objects.create(
+                action ='DRIVE',source_type='FACTOR',source_id = objsend.source_id
+            )
         
         factor_id = request.POST['factor_id']
         product_id = request.POST['product_id']
         product_serials = request.POST.getlist('product_serial[]')
         serials = request.POST.getlist('send_serial[]')
         serial_data = list(zip(product_serials,serials))
-        print(serial_data)
+        # print(serial_data)
         
         for (product,serial_drive) in serial_data:
+            print((product,serial_drive))
             objsends = get_object_or_404(ObjSendSerial,factor_id = factor_id,product_id =product)
             objsends.serial_drive = serial_drive
             objsends.save()
