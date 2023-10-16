@@ -420,11 +420,10 @@ def new_factor(request):
 @permission_required('ROLE_PERSONEL','ROLE_ADMIN')
 def factor(request,factor_id=None,obj_buyer = None):
     print("factor_id: ", factor_id) 
-    # print("buyer_id: ", obj_buyer)
-    
     if request.method == 'POST':
         print(request.POST)
         form_type = request.POST.get('form_type')
+        
         if form_type == 'paywayform':
             payway_data = {
                 'factor': request.POST.get('factor_id'),
