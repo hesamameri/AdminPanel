@@ -118,9 +118,9 @@
                                                                                     </td>
                                                                                     <td>
                                                                                             <form method="get" action="" class="frm1">
-                                                                                                <a class="btn btn-success btn-xs btn-assign-driver btn-class" data-objsend="{{item.0.0.obj_send_id}}" data-toggle="modal" data-target="#modal-assign-driver">اختصاص نصاب</a>
+                                                                                                <a class="btn btn-success btn-xs btn-assign-driver btn-class" data-objsend="{{item.0.obj_send_id}}" data-toggle="modal" data-target="#modal-assign-driver">اختصاص نصاب</a>
                                                                                             </form>
-                                                                                            <a class="btn btn-primary btn-xs btn-class" href="{% url 'customer:FactorSendInstallerPrint' obj_send_id=item.0.0.obj_send_id %}">چاپ فاکتور نصب</a>
+                                                                                            <a class="btn btn-primary btn-xs btn-class" href="{% url 'customer:FactorSendInstallerPrint' obj_send_id=item.0.obj_send_id %}">چاپ فاکتور نصب</a>
                                                                                     </td>
                                                                                     {% endfor %}
                                                                         <tbody>
