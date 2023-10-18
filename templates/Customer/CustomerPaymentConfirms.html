@@ -95,10 +95,14 @@
                                                                                 {% for item in obj_payments %}
                                                                                 <tr>
                                                                                     <td></td>
-                                                                                    <td>>{{item.obj_item_id}}</td>
+                                                                                    <td>{{item.obj_item_id}}</td>
                                                                                     <td></td>
                                                                                     <td>{{item.type|name_to_type}}</td>
+                                                                                    {% if item.bank_id == None %}
+                                                                                    <td></td>
+                                                                                    {% else %}
                                                                                     <td>{{item.bank_id|id_to_bank}}</td>
+                                                                                    {% endif %}
                                                                                     <td>{{item.no}}</td>
                                                                                     {% if branch_name == None %}
                                                                                     <td></td>
@@ -110,7 +114,11 @@
                                                                                     {% else %}
                                                                                     <td>{{item.owner}}</td>
                                                                                     {% endif %}
+                                                                                    {% if item.description == None %}
+                                                                                    <td></td>
+                                                                                    {% else %}
                                                                                     <td>{{item.description}}</td>
+                                                                                    {% endif %}
                                                                                     <td>{{item.reg_dt|to_jalali}}</td>
                                                                                     <td>{{item.price}}</td>
                                                                                     <td><img class="img img-rectangle img-popup-img-src" style="width: 30px;" src=""></td>

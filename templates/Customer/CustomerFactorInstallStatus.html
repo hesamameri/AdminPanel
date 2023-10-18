@@ -95,7 +95,7 @@
                                                                             {% for item in items %}
                                                                                 
                                                                                 <tr>
-                                                                                    <td>{{ item.0.drive_id }}</td> <!--installid_to_drivename-->
+                                                                                    <td>{{ item.0.drive_id|installid_to_drivename }}</td> <!--installid_to_drivename-->
                                                                                     <td>{{item.3.obj_item_id}}</td> <!-- خریدار (شناسه خریدار) -->
                                                                                     <td>{{item.3.name}}</td>   <!--نام خریدار-->
                                                                                     <td>{{item.1.1}}</td> <!--شناسه فاکتور-->
