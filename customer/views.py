@@ -608,6 +608,7 @@ def factor_reject_status(request,factor_id):
 @login_required(login_url='Administrator:login_view')
 @permission_required('ROLE_PERSONEL','ROLE_ADMIN')
 def factor_add_depo(request):
+
     if request.method == 'POST':
         
         factor_item_id = request.POST.get('factor_item_id')
@@ -647,6 +648,7 @@ def factor_add_depo(request):
             # aggregating and checking for complete products register for creating objsend objects
             print(factor_item)
             factor_item_factor = factor_item.factor
+
             print(factor_item_factor)
             relevant_factor_items = FactorItem.objects.filter(factor = factor_item_factor)
             print(relevant_factor_items)
@@ -658,7 +660,6 @@ def factor_add_depo(request):
             print(depo_objects)
             total_depo_amount = depo_objects.aggregate(total_amount=Sum('amount'))['total_amount']
             print(total_depo_amount)
-            
             obj_id_115 = [115,1150]
             obj_item_ids_with_obj_id_115 = ObjItem.objects.filter(obj_id__in=obj_id_115).values_list('obj_item_id', flat=True)
             print(obj_item_ids_with_obj_id_115)
@@ -686,7 +687,7 @@ def factor_add_depo(request):
             # depo = request.POST.get('depo')
 
         
-    return redirect(reverse('customer:FactorWithFactorID', args=[ factor_item_factor.factor_id ]))
+        return redirect(reverse('customer:FactorWithFactorID', args=[ factor_item_factor.factor_id ]))
 
 
 
@@ -1153,7 +1154,6 @@ def customerfactor_sendstatus(request):
         objsend.drive_status = drive_status
         objsend.drive_status_desc = drive_status_desc
         objsend.drive_status_dt = datetime.datetime.now()
-        serials = request.POST.getlist('send_serial[]')
         objsend.save()
        
 
@@ -1177,13 +1177,10 @@ def customerfactor_sendstatus(request):
         
         for (product,serial_drive) in serial_data:
             print((product,serial_drive))
-            objsends = get_object_or_404(ObjSendSerial,factor_id = factor_id,product_id =product)
-            objsends.serial_drive = serial_drive
-            objsends.save()
-
-        
-
-
+            objsends = ObjSendSerial.objects.filter(factor_id = factor_id,product_id =product)
+            for item in objsends:
+                item.serial_drive = serial_drive
+                item.save()
         pay_types = request.POST.getlist('pay_type[]')
         bank_ids = request.POST.getlist('bank_id[]')
         prices = request.POST.getlist('price[]')
@@ -1313,19 +1310,16 @@ def customerfactor_sendstatus(request):
 
 def fetch_obj_send_serials(request):
     factor_id = request.GET.get('factor_id')
-    
-    product_id = request.GET.get('product_id')
-    
-    # print(product_id)
-    # print(factor_id)
     objs = ObjSendSerial.objects.filter(factor_id=factor_id)
+    print(objs.values('product_id'))
     # print(objs)
     data = []
     for item in objs:
         Obj_item = get_object_or_404(ObjItem, obj_item_id=item.product_id)
         name = Obj_item.name
         title = Obj_item.title
-
+        serial = item.serial_drive
+        print(serial)
 
         serialized_item = {
             "factor_id": item.factor_id,
@@ -1333,6 +1327,7 @@ def fetch_obj_send_serials(request):
             # ... any other fields from ObjSendSerial you need
             "name": name,  # adding the product name
             'title':title,
+            "serial":serial
         }
         data.append(serialized_item)
 
@@ -1436,7 +1431,7 @@ def factor_install_index(request,obj_send_id=None):
             Q(shop_desc__isnull=False) |
             Q(isntall_desc__isnull=False)
         )
-        #######################################3 The following code should be modified
+        #######################################3 
         objsendlist_sources = objsendlist.values('source_id')
         factor_ids = FactorItem.objects.filter(factor_item_id__in = objsendlist_sources).values('factor')
         
@@ -1467,6 +1462,7 @@ def factor_install_assigninstaller(request):
         if request.POST.get('formtype') == 'assign_driver' :
             obj_send_id = request.POST['objsend']
             obj_send = get_object_or_404(ObjSend, pk = obj_send_id)
+            
             obj_send.drive_id = request.POST['drive_id']
             obj_send.drive_desc = request.POST['drive_desc']
             obj_send.drive_dt = datetime.datetime.now()
@@ -1582,7 +1578,7 @@ def factor_install_sendstatus(request):
         objsend.drive_status_dt = drive_status_dt
         objsend.drive_status = drive_status
         objsend.save()
-        return render(request,'Customer/CustomerFactorInstallStatus.html')
+        return redirect('customer:FactorInstallSendStatus')
     
     else:
         objsendlist = ObjSend.objects.filter(
@@ -1620,15 +1616,21 @@ def factor_install_sendstatus(request):
         )
         #####################################################
         objsendlist_sources = objsendlist.values('source_id')
-        factor_ids = FactorItem.objects.filter(factor_item_id__in = objsendlist_sources).values('factor')
-        
+        factor_items = FactorItem.objects.filter(factor_item_id__in = objsendlist_sources)
+        # goods = factor_items.values('obj_item_id')
+        factor_ids = factor_items.values('factor')
         factors = Factor.objects.filter(factor_id__in = factor_ids)
         buyers = factors.values('buyer_id')
         buyers_name = ObjItem.objects.filter(obj_item_id__in = buyers).values('obj_item_id','name')
         seller_factor_ids = []
         for i in factors:
             factor_comments = FactorComment.objects.filter(factor_id = i.factor_id,level='DRIVE')
-            seller_factor_ids.append((i.factor_id,i.seller_factor_id,factor_comments))
+            seller_factor_ids.append((
+                i.factor_id,
+                i.seller_factor_id,
+                factor_comments,
+
+                ))
         
         factor_addresses = FactorAddress.objects.filter(factor_id__in = factor_ids).values('mobile','city_id','receiver','phone','address')
         all_data = list(zip(objsendlist,seller_factor_ids,factor_addresses,buyers_name))
