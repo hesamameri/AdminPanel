@@ -1715,44 +1715,25 @@ def customer_payment_confirm(request):
         obj_payments = ObjPayment.objects.filter(
           confirmer = None  
         )
-        # for obj_payment in obj_payments:
-        #     obj_spec_city = ObjItemSpec.objects.filter(obj_item_id = obj_payment.obj_item_id).values("val")
-        #     brand_id = CityItemSVA.objects.filter(brand_id = obj_spec_city,brand_name__isnull = False)
-        #     brand_name = ObjItem.objects.filter(obj_item_id__in = brand_id).name
-        data_for_rendering = []
-    
-        for obj_payment in obj_payments:
-            obj_item_id = obj_payment.obj_item_id
-            print(obj_item_id)
-            # Retrieve obj_spec_city for the current obj_item_id
-            obj_spec_city = ObjItemSpec.objects.filter(obj_item_id=obj_item_id,obj_spec_id = 105).values("val")
-            print(obj_spec_city)
-            # Filter CityItemSVA objects based on obj_spec_city
-            city_items = CityItemSVA.objects.filter(brand_id__in=obj_spec_city,brand__isnull = False).values('brand')
-            brand_name = ObjItem.objects.filter(obj_item_id__in = city_items).values('name')
-            print(brand_name)
-            # Initialize a dictionary to store data for the current obj_payment
-            payment_data = {
-                'obj_payment': obj_payment,
-                'brand_names': brand_name,
-            }
-            
-            # Append the dictionary to the list
-            data_for_rendering.append(payment_data)
+
+        source_id = obj_payments.values('source_id')
+        obj = ObjItem.objects.filter(obj_item_id__in = source_id).values('name')
+        obj_spec_city = ObjItemSpec.objects.filter(obj_item_id__in=source_id,obj_spec_id = 105).values("val")
+        city_items = CityItemSVA.objects.filter(brand_id__in=obj_spec_city,brand__isnull = False).values('brand')
+        brand_name = ObjItem.objects.filter(obj_item_id__in = city_items)
+
+        all_data = list(zip(obj_payments,obj,brand_name))
+
+        
         
         context = {
-            'obj_payments': data_for_rendering,
+            'obj_payments':all_data,
         }
-        print(data_for_rendering)
 
-
-        
-        # context = {
-        #     'obj_payments':obj_payments,
-        # }
         
 
         return render(request, 'Customer/CustomerPaymentConfirm.html', context=context)
+    
     
 
 
@@ -1836,7 +1817,7 @@ def customer_payment_confirms(request):
         obj_payment.doc_no = request.POST['doc_no']
         obj_payment.doc_register_dt = datetime.datetime.now()
         obj_payment.save()
-        return render(request, 'Customer/CustomerPaymentConfirm.html', context=context)
+        return render(request, 'Customer/CustomerPaymentConfirms.html', context=context)
        
 
     else:
