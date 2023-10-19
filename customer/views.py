@@ -1618,7 +1618,7 @@ def factor_install_sendstatus(request):
             Q(shop_desc__isnull=False) |
             Q(isntall_desc__isnull=False)
         )
-        ################################## The following code should be modified
+        #####################################################
         objsendlist_sources = objsendlist.values('source_id')
         factor_ids = FactorItem.objects.filter(factor_item_id__in = objsendlist_sources).values('factor')
         
@@ -1635,7 +1635,7 @@ def factor_install_sendstatus(request):
         print(all_data)
 
         
-        ##################################
+        #######################################################
         banks = ObjItem.objects.filter(obj_item_id__gte=999003010, obj_item_id__lte=999003019) 
 
         context = {
