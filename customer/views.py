@@ -1718,6 +1718,7 @@ def customer_payment_confirm(request):
 
         source_id = obj_payments.values('source_id')
         obj = ObjItem.objects.filter(obj_item_id__in = source_id).values('name')
+        # register = obj_payment.values('register')
         # obj_spec_city = ObjItemSpec.objects.filter(obj_item_id__in=source_id,obj_spec_id = 105).values("val")
         # city_items = CityItemSVA.objects.filter(brand_id__in=obj_spec_city,brand__isnull = False).values('brand')
         # brand_name = ObjItem.objects.filter(obj_item_id__in = city_items)
@@ -1816,8 +1817,8 @@ def customer_payment_confirms(request):
         obj_payment.roc_register_desc = request.POST['roc_register_desc']
         obj_payment.doc_no = request.POST['doc_no']
         obj_payment.doc_register_dt = datetime.datetime.now()
-        obj_payment.save()
-        return render(request, 'Customer/CustomerPaymentConfirms.html', context=context)
+        obj_payment.save()  
+        return redirect('customer:CustomerPaymentConfirms')
        
 
     else:
@@ -1826,11 +1827,11 @@ def customer_payment_confirms(request):
         )
         source_id = obj_payments.values('obj_item_id')
         obj = ObjItem.objects.filter(obj_item_id__in = source_id).values('name')
-        obj_spec_city = ObjItemSpec.objects.filter(obj_item_id__in=source_id,obj_spec_id = 105).values("val")
-        city_items = CityItemSVA.objects.filter(brand_id__in=obj_spec_city,brand__isnull = False).values('brand')
-        brand_name = ObjItem.objects.filter(obj_item_id__in = city_items)
+        # obj_spec_city = ObjItemSpec.objects.filter(obj_item_id__in=source_id,obj_spec_id = 105).values("val")
+        # city_items = CityItemSVA.objects.filter(brand_id__in=obj_spec_city,brand__isnull = False).values('brand')
+        # brand_name = ObjItem.objects.filter(obj_item_id__in = city_items)
 
-        all_data = list(zip(obj_payments,obj,brand_name))
+        all_data = list(zip(obj_payments,obj))
 
         
         
