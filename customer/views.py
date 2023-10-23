@@ -923,10 +923,6 @@ def customer_confirm_salelist(request):
 
 
 
-
-
-
-# @cache_page(10)
 @login_required(login_url='Administrator:login_view')
 @permission_required('ROLE_PERSONEL','ROLE_ADMIN')
 def customer_factor_assessment(request):
@@ -1241,8 +1237,6 @@ def customerfactor_sendstatus(request):
                 else:
                     print(uploadedform.errors)
                 #Here we create the FactorDocument objects
-                
-        
         return render(request,'Customer/CustomerFactorSendStatus.html')
     else:
         
@@ -1693,7 +1687,7 @@ def add_commentinstall(request):
     return JsonResponse({'error': 'Invalid comment data'}, status=400)
 
 ###########################################################################
-# @cache_page(10)
+
 @login_required(login_url='Administrator:login_view')
 @permission_required('ROLE_PERSONEL','ROLE_ADMIN')
 def customer_payment_confirm(request):
@@ -1844,6 +1838,7 @@ def customer_payment_confirms(request):
 
         return render(request, 'Customer/CustomerPaymentConfirms.html', context=context)
     
+    
 
 
 @login_required(login_url='Administrator:login_view')
@@ -1915,7 +1910,7 @@ def index_inquiry(request):
 
 
 
-@cache_page(10)
+
 @login_required(login_url='Administrator:login_view')
 @permission_required('ROLE_PERSONEL','ROLE_ADMIN')
 def factorsend_installerprint(request):
@@ -1923,8 +1918,6 @@ def factorsend_installerprint(request):
     return render(request,'Customer/FactorSendInstallerPrint.html')
 
 
-
-@cache_page(10)
 @login_required(login_url='Administrator:login_view')
 @permission_required('ROLE_PERSONEL','ROLE_ADMIN')
 def receipt_print(request):

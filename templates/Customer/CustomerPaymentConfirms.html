@@ -94,6 +94,7 @@
                                                                         <tbody>
                                                                                 {% for item in obj_payments %}
                                                                                 <tr>
+                                                                                   
                                                                                     <td>
                                                                                         {{item.2.name}}
                                                                                     </td>
@@ -131,7 +132,11 @@
                                                                                     <td>{{item.0.price}}</td>
                                                                                     <td><img class="img img-rectangle img-popup-img-src" style="width: 30px;" src=""></td>
                                                                                     <td>   
+<<<<<<< HEAD
+                                                                                        <a class="btn btn-success btn-xs btn-acc-confirm" data-payment="{{item.0.obj_payment_id}}" data-price="" data-toggle="modal" data-target="#modal-payment">
+=======
                                                                                         <a class="btn btn-success btn-xs btn-acc-confirm" data-payment="{{ item.0.obj_payment_id }}"  data-toggle="modal" data-target="#modal-payment">
+>>>>>>> 7b452b934e1b00424882ffc1d303bac4c834d4c0
                                                                                             <i class="far fa-file-alt"></i> ثبت سند
                                                                                         </a>
                                                                                     </td>
@@ -167,7 +172,7 @@
                                         </div>
                                         <form method="POST" action="{% url 'customer:CustomerPaymentConfirms' %}">
                                             {% csrf_token %}
-                                            <input type="hidden" name="obj_payment_id" class="obj_payment_id">
+                                            <input type="hidden" id="obj_payment_id" name="obj_payment_id" >
                                             <div class="modal-body">
                                                         <div class="form-group form-group-sm row">
                                                             <div class="col-sm-8">
@@ -263,23 +268,45 @@
 
         <!-- begin::Global Config(global config for global JS sciprts) -->
         {% include "partials/script.html" %}
-
         <script>
             document.addEventListener('DOMContentLoaded', function() {
                 // Listen to the 'show.bs.modal' event on the modal
                 $('#modal-payment').on('show.bs.modal', function(event) {
                     // Get the button (<a> tag) that triggered the modal
                     var button = $(event.relatedTarget);
+<<<<<<< HEAD
+
+                    // Get the 'data-buyer' attribute from the button
+                    var buyerValue = button.data('payment');
+
+                    // Find the hidden input element by its ID and update its value
+                    $('#obj_payment_id').val(buyerValue);
+            });
+            });
+                    
+        </script>
+        <!-- <script>
+            $(document).ready(function() {
+                // Listen for the button click event
+                $('.btn-acc-confirm').click(function() {
+                    // Get the value of 'data-payment' attribute from the clicked button
+                    var objPaymentId = $(this).data('payment');
+=======
         
                     // Get the 'data-payment' attribute from the button
                     var paymentValue = button.data('payment');
+>>>>>>> 7b452b934e1b00424882ffc1d303bac4c834d4c0
                     
                     // Find the input element by its class and update its value
                     $('.obj_payment_id').val(paymentValue);
                 });
             });
+<<<<<<< HEAD
+        </script>    -->
+=======
         </script>
         
+>>>>>>> 7b452b934e1b00424882ffc1d303bac4c834d4c0
 
         <!--end::Page Scripts -->
     </body>
