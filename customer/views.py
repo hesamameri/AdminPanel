@@ -1311,8 +1311,11 @@ def customerfactor_sendstatus(request):
 
         return render(request,'Customer/CustomerFactorSendStatus.html',context=context)
 
+
+
 def fetch_obj_send_serials(request):
     factor_id = request.GET.get('factor_id')
+    print(factor_id)
     objs = ObjSendSerial.objects.filter(factor_id=factor_id)
     print(objs.values('product_id'))
     # print(objs)
