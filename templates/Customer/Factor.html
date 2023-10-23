@@ -505,8 +505,11 @@
                                                                     <tbody>
                                                                     <tr>
                                                                         <th>ثبت کننده</th>
-                                                                    
+                                                                        {% if obj.drive_register == None %}
+                                                                        <td></td>
+                                                                        {% else %}
                                                                         <td>{{obj.drive_register|register_user}}</td>
+                                                                        {% endif %}
                             
                                                                         <th>سرویس دهنده</th>
                                                                         <td>{{obj.drive_id}}</td>
@@ -519,13 +522,21 @@
                                                                     </tr>  
                                                                     <tr>  
                                                                         <th>ارسال کننده</th>
+                                                                        {% if obj.drive_register == None %}
+                                                                        <td></td>
+                                                                        {% else %}
                                                                         <td>{{obj.drive_register|register_user}}</td>
+                                                                        {% endif %}
                             
                                                                         <th></th>
                                                                         <td></td>
                             
                                                                         <th>وضعیت سرویس</th>
+                                                                        {% if obj.drive_status == None %}
+                                                                        <td></td>
+                                                                        {% else %}
                                                                         <td>{{obj.drive_status|inquiry_translate}}</td>
+                                                                        {% endif %}
                             
                                                                         <th>ارزیابی</th>
                                                                         <td>{{obj.assesment_opinion}}</td>
