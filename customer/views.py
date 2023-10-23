@@ -10,6 +10,8 @@ from django.core.files.base import ContentFile
 from django.core import serializers
 from django.http import HttpResponse, JsonResponse
 from django.urls import reverse
+
+from Administrator.models import User
 from .utilities import get_object_or_none
 from django.shortcuts import get_object_or_404, redirect, render
 from django.db.models import F
@@ -1706,25 +1708,33 @@ def customer_payment_confirm(request):
        
 
     else:
-        obj_payments = ObjPayment.objects.filter(
-          confirmer = None  
-        )
+        obj_payments = ObjPayment.objects.filter(confirmer=None)
+        print(obj_payments)
+        source_ids = obj_payments.values_list('source_id', flat=True)
+        obj = ObjItem.objects.filter(obj_item_id__in=source_ids).values('name')
+        register = obj_payments.values_list('register', flat=True)
+        print(register)
+        vendor_codes = []
+        for i in register :
+            vendor_code = get_object_or_404(User,user_id=i).vendor_code
+            vendor_codes.append(vendor_code)
+        # vendor_codes = User.objects.filter(user_id__in=register).values('vendor_code')
+        print(vendor_codes)
+        brands = []
+        for i in vendor_codes :
+            brand = get_object_or_404(ObjItem,obj_item_id=i).name
+            brands.append(brand)
+        # brands = ObjItem.objects.filter(obj_item_id__in=vendor_codes)
+        print(brands)
 
-        source_id = obj_payments.values('source_id')
-        obj = ObjItem.objects.filter(obj_item_id__in = source_id).values('name')
-        # register = obj_payment.values('register')
-        # obj_spec_city = ObjItemSpec.objects.filter(obj_item_id__in=source_id,obj_spec_id = 105).values("val")
-        # city_items = CityItemSVA.objects.filter(brand_id__in=obj_spec_city,brand__isnull = False).values('brand')
-        # brand_name = ObjItem.objects.filter(obj_item_id__in = city_items)
-
-        all_data = list(zip(obj_payments,obj))
+        all_data = list(zip(obj_payments,obj,brands))
 
         
         
         context = {
             'obj_payments':all_data,
         }
-
+        print(all_data)
         
 
         return render(request, 'Customer/CustomerPaymentConfirm.html', context=context)
