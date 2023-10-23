@@ -148,10 +148,17 @@
                                                                                     </td>
                                                                                     
                                                                                     
-                                                                                    
+                                                                                    {% if item.2.mobile == None %}
+                                                                                    <td></td>
+                                                                                    {% else %}
                                                                                     <td>{{item.2.mobile}}</td>   <!-- موبایل -->
+                                                                                    {% endif %}
                                                                                     
+                                                                                    {% if item.2.phone == None %}
+                                                                                    <td></td>
+                                                                                    {% else %}
                                                                                     <td>{{item.2.phone}}</td>   <!--تلفن-->
+                                                                                    {% endif %}
                                                                                     
                                                                                     <td>    <!-- آدرس -->
                                                                                         {{item.2.address}}
