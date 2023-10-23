@@ -270,7 +270,6 @@
                 $('#modal-payment').on('show.bs.modal', function(event) {
                     // Get the button (<a> tag) that triggered the modal
                     var button = $(event.relatedTarget);
-<<<<<<< HEAD
 
                     // Get the 'data-buyer' attribute from the button
                     var buyerValue = button.data('payment');
@@ -287,11 +286,6 @@
                 $('.btn-acc-confirm').click(function() {
                     // Get the value of 'data-payment' attribute from the clicked button
                     var objPaymentId = $(this).data('payment');
-=======
-        
-                    // Get the 'data-payment' attribute from the button
-                    var paymentValue = button.data('payment');
->>>>>>> 7b452b934e1b00424882ffc1d303bac4c834d4c0
                     
                     // Find the input element by its class and update its value
                     $('.obj_payment_id').val(paymentValue);
