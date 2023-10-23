@@ -322,11 +322,7 @@ def customer_index_all(request,shop_id = None):
             tickets = Ticket.objects.filter(obj_source_id__in=customer_ids) # assuming obj_source_id is the relevant field in Ticket model
             pre_factors = PreFactor.objects.filter(buyer_id__in=customer_ids)
             factors = Factor.objects.filter(buyer_id__in=customer_ids)
-            # customer_ids = distinct_records.values_list('obj_item_id', flat=True)
-            # obj_payments = ObjPayment.objects.filter(obj_item_id__in=customer_ids)
-            # tickets = Ticket.objects.filter(obj_source_id__in=customer_ids) # assuming obj_source_id is the relevant field in Ticket model
-            # pre_factors = PreFactor.objects.filter(buyer_id__in=customer_ids)
-            # factors = Factor.objects.filter(buyer_id__in=customer_ids, reg_status='CONFIRM')
+            
 
             banks = ObjItem.objects.filter(obj_item_id__gte=999003010, obj_item_id__lte=999003019) 
             records_per_page = 100
@@ -361,7 +357,7 @@ def customer_index_all(request,shop_id = None):
         else:
             # Get distinct obj_item_ids with maximum values for each field
             # distinct_records = CustomerSva.objects.all()
-            customers = CustomerSva.objects.filter(obj_item_id__gt = 1030200027).order_by('obj_item_id')
+            customers = CustomerSva.objects.filter(obj_item_id__gt = 1030200027,reagent = shop_id).order_by('obj_item_id')
             page = customers
             customer_ids = customers.values_list('obj_item_id', flat=True)
             # Retrieve related objects based on customer_ids
