@@ -1703,15 +1703,23 @@ def customer_payment_confirm(request):
     if request.method == 'POST':
         print(request.POST)
         obj_payment_id = request.POST['obj_payment']
-        obj_payment = get_object_or_404(ObjPayment, pk = obj_payment_id)
-        obj_payment.price = request.POST['price']
-        obj_payment.confirmer = request.user.user_id
-        obj_payment.confirm_desc = request.POST['confirm_desc']
-        obj_payment.confirm_status = request.POST['confirm_status']
-        obj_payment.confirm_dt = datetime.datetime.now()
-        obj_payment.save()
-
-        return redirect('customer:CustomerPaymentConfirm')
+        if request.POST['confirm_status'] == 'REJECT' :
+            obj_payment = get_object_or_404(ObjPayment, pk = obj_payment_id)
+            obj_payment.confirmer = request.user.user_id
+            obj_payment.confirm_desc = request.POST['confirm_desc']
+            obj_payment.confirm_status = request.POST['confirm_status']
+            obj_payment.save()
+            return redirect('customer:CustomerPaymentConfirm')
+            
+        else:
+            obj_payment = get_object_or_404(ObjPayment, pk = obj_payment_id)
+            obj_payment.price = request.POST['price']
+            obj_payment.confirmer = request.user.user_id
+            obj_payment.confirm_desc = request.POST['confirm_desc']
+            obj_payment.confirm_status = request.POST['confirm_status']
+            obj_payment.confirm_dt = datetime.datetime.now()
+            obj_payment.save()
+            return redirect('customer:CustomerPaymentConfirm')
        
 
     else:
