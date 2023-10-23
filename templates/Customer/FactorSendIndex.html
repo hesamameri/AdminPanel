@@ -211,7 +211,28 @@
                                 </form>
                             </div>
                         </div>
+                        
 
+                        <script>
+                            document.addEventListener("DOMContentLoaded", function () {
+                                const generalSearchInput = document.getElementById("generalSearch");
+                                const tableRows = document.querySelectorAll(".dataTable tbody tr");
+                            
+                                generalSearchInput.addEventListener("input", function () {
+                                    const searchValue = generalSearchInput.value.toLowerCase();
+                            
+                                    tableRows.forEach((row) => {
+                                        const rowText = row.textContent.toLowerCase();
+                                        if (rowText.includes(searchValue)) {
+                                            row.style.display = "";
+                                        } else {
+                                            row.style.display = "none";
+                                        }
+                                    });
+                                });
+                            });
+                        </script>
+                            
                         <!-- end:: Content -->
                     </div>
 
