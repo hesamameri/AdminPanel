@@ -922,10 +922,6 @@ def customer_confirm_salelist(request):
 
 
 
-
-
-
-# @cache_page(10)
 @login_required(login_url='Administrator:login_view')
 @permission_required('ROLE_PERSONEL','ROLE_ADMIN')
 def customer_factor_assessment(request):
@@ -1240,8 +1236,6 @@ def customerfactor_sendstatus(request):
                 else:
                     print(uploadedform.errors)
                 #Here we create the FactorDocument objects
-                
-        
         return render(request,'Customer/CustomerFactorSendStatus.html')
     else:
         
@@ -1721,10 +1715,9 @@ def customer_payment_confirm(request):
         obj_spec_city = ObjItemSpec.objects.filter(obj_item_id__in=source_id,obj_spec_id = 105).values("val")
         city_items = CityItemSVA.objects.filter(brand_id__in=obj_spec_city,brand__isnull = False).values('brand')
         brand_name = ObjItem.objects.filter(obj_item_id__in = city_items)
-
         all_data = list(zip(obj_payments,obj,brand_name))
 
-        
+        print(all_data)
         
         context = {
             'obj_payments':all_data,
@@ -1817,7 +1810,7 @@ def customer_payment_confirms(request):
         obj_payment.doc_no = request.POST['doc_no']
         obj_payment.doc_register_dt = datetime.datetime.now()
         obj_payment.save()
-        return render(request, 'Customer/CustomerPaymentConfirms.html', context=context)
+        return redirect('customer:CustomerPaymentConfirms')
        
 
     else:
@@ -1913,7 +1906,7 @@ def index_inquiry(request):
 
 
 
-@cache_page(10)
+
 @login_required(login_url='Administrator:login_view')
 @permission_required('ROLE_PERSONEL','ROLE_ADMIN')
 def factorsend_installerprint(request):
@@ -1921,8 +1914,6 @@ def factorsend_installerprint(request):
     return render(request,'Customer/FactorSendInstallerPrint.html')
 
 
-
-@cache_page(10)
 @login_required(login_url='Administrator:login_view')
 @permission_required('ROLE_PERSONEL','ROLE_ADMIN')
 def receipt_print(request):
