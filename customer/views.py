@@ -749,6 +749,7 @@ def factor_add_document(request,factor_id):
             register=register,  # assuming your user model has an id field
             reg_dt=timezone.now()
         )
+        print(document)
         document.save()
 
         return redirect(reverse('customer:FactorWithFactorID', args=[factor_id]))   # Assuming you have a document_detail view
@@ -1933,7 +1934,7 @@ def factorsend_installerprint(request):
 
 
 
-@cache_page(10)
+
 @login_required(login_url='Administrator:login_view')
 @permission_required('ROLE_PERSONEL','ROLE_ADMIN')
 def receipt_print(request):
