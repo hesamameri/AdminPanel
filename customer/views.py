@@ -1686,7 +1686,7 @@ def add_commentinstall(request):
     return JsonResponse({'error': 'Invalid comment data'}, status=400)
 
 ###########################################################################
-# @cache_page(10)
+
 @login_required(login_url='Administrator:login_view')
 @permission_required('ROLE_PERSONEL','ROLE_ADMIN')
 def customer_payment_confirm(request):
@@ -1712,12 +1712,14 @@ def customer_payment_confirm(request):
 
         source_id = obj_payments.values('source_id')
         obj = ObjItem.objects.filter(obj_item_id__in = source_id).values('name')
-        obj_spec_city = ObjItemSpec.objects.filter(obj_item_id__in=source_id,obj_spec_id = 105).values("val")
-        city_items = CityItemSVA.objects.filter(brand_id__in=obj_spec_city,brand__isnull = False).values('brand')
-        brand_name = ObjItem.objects.filter(obj_item_id__in = city_items)
-        all_data = list(zip(obj_payments,obj,brand_name))
+        # register = obj_payment.values('register')
+        # obj_spec_city = ObjItemSpec.objects.filter(obj_item_id__in=source_id,obj_spec_id = 105).values("val")
+        # city_items = CityItemSVA.objects.filter(brand_id__in=obj_spec_city,brand__isnull = False).values('brand')
+        # brand_name = ObjItem.objects.filter(obj_item_id__in = city_items)
 
-        print(all_data)
+        all_data = list(zip(obj_payments,obj))
+
+        
         
         context = {
             'obj_payments':all_data,
@@ -1809,7 +1811,7 @@ def customer_payment_confirms(request):
         obj_payment.roc_register_desc = request.POST['roc_register_desc']
         obj_payment.doc_no = request.POST['doc_no']
         obj_payment.doc_register_dt = datetime.datetime.now()
-        obj_payment.save()
+        obj_payment.save()  
         return redirect('customer:CustomerPaymentConfirms')
        
 
@@ -1817,13 +1819,13 @@ def customer_payment_confirms(request):
         obj_payments = ObjPayment.objects.filter(
             Q(confirmer__isnull=False) & (Q(doc_register_id__isnull=True) | Q(doc_register_dt__isnull=True))
         )
-        source_id = obj_payments.values('source_id')
+        source_id = obj_payments.values('obj_item_id')
         obj = ObjItem.objects.filter(obj_item_id__in = source_id).values('name')
-        obj_spec_city = ObjItemSpec.objects.filter(obj_item_id__in=source_id,obj_spec_id = 105).values("val")
-        city_items = CityItemSVA.objects.filter(brand_id__in=obj_spec_city,brand__isnull = False).values('brand')
-        brand_name = ObjItem.objects.filter(obj_item_id__in = city_items)
+        # obj_spec_city = ObjItemSpec.objects.filter(obj_item_id__in=source_id,obj_spec_id = 105).values("val")
+        # city_items = CityItemSVA.objects.filter(brand_id__in=obj_spec_city,brand__isnull = False).values('brand')
+        # brand_name = ObjItem.objects.filter(obj_item_id__in = city_items)
 
-        all_data = list(zip(obj_payments,obj,brand_name))
+        all_data = list(zip(obj_payments,obj))
 
         
         
@@ -1834,6 +1836,7 @@ def customer_payment_confirms(request):
         
 
         return render(request, 'Customer/CustomerPaymentConfirms.html', context=context)
+    
     
 
 

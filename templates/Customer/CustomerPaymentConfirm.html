@@ -113,7 +113,11 @@
                                                                                 {% else %}
                                                                                 <td>{{item.0.bank_id|id_to_bank}}</td>
                                                                                 {% endif %}
+                                                                                {% if item.0.no == None %}
+                                                                                <td></td>
+                                                                                {% else %}
                                                                                 <td>{{item.0.no}}</td>
+                                                                                {% endif %}
                                                                                 {% if item.0.branch_name == None %}
                                                                                 <td></td>
                                                                                 {% else %}
@@ -131,12 +135,17 @@
                                                                                 {% endif %}
                                                                                 <td>{{item.0.reg_dt|to_jalali}}</td>
                                                                                 <td>{{item.0.price}}</td>
+                                                                                    <td>
                                                                                         <i class="fa fa-info-circle" aria-hidden="true" data-toggle="popover" title="اطلاعات رکورد" data-content=""></i>
                                                                                     </td>
                                                                                     <td><img class="img img-rectangle img-popup-img-src" style="width: 30px;" src=""></td>
                                                                                     <td>
                                                                                         
+<<<<<<< HEAD
                                                                                         <a class="btn btn-success btn-xs btn-acc-confirm" data-payment="{{item.0.obj_payment_id}}"  data-toggle="modal" data-target="#modal-payment" style="padding: 5px 10px; font-size: 14px;">
+=======
+                                                                                        <a class="btn btn-success btn-xs btn-acc-confirm" data-payment="{{ item.0.obj_payment_id }}" data-toggle="modal" data-target="#modal-payment" style="padding: 5px 10px; font-size: 14px;">
+>>>>>>> 7b452b934e1b00424882ffc1d303bac4c834d4c0
                                                                                             <i class="fas fa-check"></i> تایید مالی
                                                                                         </a>
                                                                                         
