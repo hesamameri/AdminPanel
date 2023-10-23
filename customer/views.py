@@ -38,6 +38,7 @@ from django.db.models import Sum, F, Value, CharField, Case, When,FloatField,Sub
 from django.db.models.functions import Coalesce
 
 
+
 @login_required(login_url='Administrator:login_view')
 @permission_required('ROLE_PERSONEL', 'ROLE_ADMIN')
 def customer_index(request):
