@@ -357,7 +357,7 @@
             tableBody.innerHTML = '';
 
             // Send AJAX request to Django view to fetch matching ObjSendSerial objects
-            $.get('fetch_objsendserials/', { factor_id: factor_id}, function(data){
+            $.get('fetch_objsendserials', { factor_id: factor_id}, function(data){
                 // Assuming the server returns a list of ObjSendSerial objects
                 console.log(data);
                 data.forEach(function(item) {
