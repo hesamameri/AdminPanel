@@ -97,7 +97,7 @@ def id_to_city(item):
     if item in id_dic.keys():
             return id_dic[item]
     else:
-        return "شهر مورد نظر یافت نشد ."
+        return ""
     
 @register.filter(name='get_attribute')
 def get_attribute(obj, attribute_name):
@@ -136,7 +136,7 @@ def pay_to_way(value):
     if items[value] != None:
         return items[value]
     else:
-        return " تعریف نشده"
+        return ""
 
 @register.filter
 def depo_location(item):
