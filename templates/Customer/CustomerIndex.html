@@ -11,6 +11,10 @@
     <!-- begin::Head -->
 
     {% include "partials/head.html" %}
+    
+
+
+
 
 
     <!-- end::Head -->
@@ -23,6 +27,8 @@
         <!-- begin:: Header Mobile -->
 
         {% include "partials/MobileHeader.html" %}
+
+
 
         <!-- end:: Header Mobile -->
 
@@ -258,7 +264,9 @@
                                                 <th title="Field #4">کد ملی</th>
                                                 <th title="Field #5">موبایل</th>
                                                 <th title="Field #6">ثبت فاکتور</th>
-                                                <th title="Field #7">عملیات مشتری</th>
+                                                <th title="Field #7">گزارشات</th>
+                                                <th title="Field #8">عملیات مشتری</th>
+                                                
 
                                             </tr>
                                         </thead>
@@ -286,54 +294,48 @@
                                                 {% with my_arg=item.obj_item_id %}
                                                 <a class="badge badge-success text-white" href="{% url 'customer:FactorWithBuyerID' obj_buyer=my_arg %}">ثبت فاکتور مشتری</a>
                                                 {% endwith %}
-                                                        
                                                 </td>
                                                 <td>
-
-                                                    <div class="dropdown dropdown-inline">
-														<button id="dropdownButton"  type="button" class="btn btn-hover-brand btn-elevate-hover chngeColor1 btn-icon btn-sm btn-icon-md btn-circle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-															<i class="flaticon-more-1"></i>
-														</button>
-														<div class="dropdown-menu dropdown-menu" id="dropdownMenu" >
-                                                            
-                                                            {% for payment in obj_payments %}
-                                                                {% if payment.obj_item_id == item.obj_item_id %}
-                                                                <a class="dropdown-item kt-font-dark" href="#"><i class="fa fa-plus-square text-warning kt-font-bold"></i>1</a>
-                                                                {% endif %}
-                                                            {% endfor %}
-                                                            {% for factor in factors %}
-                                                                {% if factor.buyer_id == item.obj_item_id %}
-                                                                <a class="dropdown-item kt-font-dark" href="{% url 'customer:FactorWithFactorID' factor_id=factor.factor_id %}"><i class="fa fa-bookmark kt-font-bold text-warning"></i>فاکتور {{factor.reg_dt|to_jalali}}</a>
-                                                                {% endif %}
-                                                            {% endfor %}
-                                                            {% for ticket in tickets %}
-                                                                {% if ticket.obj_source_id == item.obj_item_id %}
-                                                                <a class="dropdown-item kt-font-dark" href="#"><i class="fa fa-bookmark kt-font-bold text-warning"></i> تیکت {{ticket.reg_dt|to_jalali}}</a>
-                                                                {% endif %}
-                                                            {% endfor %}
-
-                                                            {% for prefactor in pre_factors %}
-                                                                {% if prefactor.obj_item_id == item.obj_item_id %}
-                                                                <a class="dropdown-item kt-font-dark" href="#"><i class="fa fa-bookmark kt-font-bold text-warning"></i>  پیش فاکتور</a>
-                                                                {% endif %}
-                                                            {% endfor %}
-														</div>
-													</div>
-                                                   
-                         
-                                                 
-                                              
-                                                    <a id="myBtn" class="badge badge-primary text-white badge-sm" data-payer="{{ item.obj_item_id }}" data-toggle="modal" data-target="#modal-inquiry1">دریافت از مشتری</a>
-                
-                                                    <a class="badge badge-primary text-white badge-sm" data-customer="{{ item.obj_item_id }}"  data-toggle="modal" data-target="#modal-pre-factor"> 
-
-                                                        پیش خرید
-                                                    </a>
-
-                                                    <a class="badge badge-danger text-white badge-sm"  data-buyer="{{ item.obj_item_id }}" data-toggle="modal" data-target="#modal-inquiry">استعلام حساب</a>
-
+                                                    
+                                                    <div class="btn-group">
+                                                        <button id="btnGroupDropX" type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                          گزارشات
+                                                        </button>
+                                                        <div class="dropdown-menu" aria-labelledby="btnGroupDropX">
+                                                          {% for payment in obj_payments %}
+                                                            {% if payment.obj_item_id == item.obj_item_id %}
+                                                              <a class="dropdown-item" href="#"><i class="fa fa-plus-square text-warning kt-font-bold"></i> پرداختی‌ها</a>
+                                                            {% endif %}
+                                                          {% endfor %}
+                                                          {% for factor in factors %}
+                                                            {% if factor.buyer_id == item.obj_item_id %}
+                                                              <a class="dropdown-item" href="{% url 'customer:FactorWithFactorID' factor_id=factor.factor_id %}"><i class="fa fa-bookmark kt-font-bold text-warning"></i> فاکتور {{factor.reg_dt|to_jalali}}</a>
+                                                            {% endif %}
+                                                          {% endfor %}
+                                                          {% for ticket in tickets %}
+                                                            {% if ticket.obj_source_id == item.obj_item_id %}
+                                                              <a class="dropdown-item" href="#"><i class="fa fa-bookmark kt-font-bold text-warning"></i> تیکت {{ticket.reg_dt|to_jalali}}</a>
+                                                            {% endif %}
+                                                          {% endfor %}
+                                                          {% for prefactor in pre_factors %}
+                                                            {% if prefactor.obj_item_id == item.obj_item_id %}
+                                                              <a class="dropdown-item" href="#"><i class="fa fa-bookmark kt-font-bold text-warning"></i> پیش فاکتور</a>
+                                                            {% endif %}
+                                                          {% endfor %}
+                                                          <button class="dropdown-item close-dropdown">
+                                                            <a class="badge badge-success text-white" href="{% url 'customer:customerindex' %}">بستن</a>
+                                                          </button>
+                                                        </div>
+                                                      </div>
                                                 </td>
-
+                                                <td>
+                                                    <a id="myBtn" class="badge badge-primary text-white badge-sm" data-payer="{{ item.obj_item_id }}" data-toggle="modal" data-target="#modal-inquiry1">دریافت از مشتری</a>
+                                                    
+                                                    <a class="badge badge-primary text-white badge-sm" data-customer="{{ item.obj_item_id }}" data-toggle="modal" data-target="#modal-pre-factor">پیش خرید</a>
+                                                
+                                                    <a class="badge badge-danger text-white badge-sm" data-buyer="{{ item.obj_item_id }}" data-toggle="modal" data-target="#modal-inquiry">استعلام حساب</a>
+                                                </td>
+                                                
                                             </tr>
                                             {% endfor %}
                                             
@@ -885,6 +887,7 @@
               });
         </script>
 
+        
         <script>
             $(document).ready(function() {
                 // Event listener for the "Enter" key press on the search box.
@@ -929,21 +932,22 @@
 
 
 
-        <script>
-            document.addEventListener("DOMContentLoaded", function() {
-            const dropdownButton = document.getElementById('dropdownButton');
-            const dropdownMenu = document.getElementById('dropdownMenu');
 
-            dropdownButton.addEventListener('click', function() {
-                if (dropdownMenu.classList.contains('show')) {
-                    dropdownMenu.classList.remove('show');
-                } else {
-                    dropdownMenu.classList.add('show');
-                }
-            });
-        });
 
-        </script>
+        
+
+
+
+
+ 
+
+
+
+
+
+
+
+
 
         <script>
             document.addEventListener("DOMContentLoaded", function() {
