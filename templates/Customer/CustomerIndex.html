@@ -323,8 +323,12 @@
                                                             {% endif %}
                                                           {% endfor %}
                                                           <button class="dropdown-item close-dropdown">
-                                                            <a class="badge badge-success text-white" href="{% url 'customer:customerindex' %}">بستن</a>
+                                                            <a class="badge badge-success text-white" href="{% url 'customer:customerindex' %}">
+                                                              <span class="red-text">*</span> بستن
+                                                            </a>
                                                           </button>
+                                                                                                                  
+                                                          
                                                         </div>
                                                       </div>
                                                 </td>
