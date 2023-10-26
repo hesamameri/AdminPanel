@@ -37,9 +37,9 @@ def to_jalalii(value):
             # If the input is a datetime object, include the time in the Jalali date string
             # {time_str}
             time_str = value_tehran.strftime("%H:%M:%S")
-            return f"فاکتور {jalali_date.day}-{jalali_date.month}-{jalali_date.year} "
+            return f" {jalali_date.day}-{jalali_date.month}-{jalali_date.year} "
         else:
-            return f"فاکتور {jalali_date.day}-{jalali_date.month}-{jalali_date.year}"
+            return f" {jalali_date.day}-{jalali_date.month}-{jalali_date.year}"
 
     return value
 
