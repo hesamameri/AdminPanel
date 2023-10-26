@@ -810,7 +810,8 @@ def factor_index(request):
 def customer_confirm_accountlist(request):  
     
     customer_obj_id = 10301
-    factors = Factor.objects.filter(acc_confirmer=None)
+    status = ['CONFIRM',None]
+    factors = Factor.objects.filter(acc_confirmer=None,reg_status__in = status)
 
     contract_ids = factors.values_list('contract', flat=True)
     contract_objs = Contract.objects.filter(contract_id__in=contract_ids)
@@ -843,7 +844,7 @@ def customer_confirm_accountlist(request):
         }
         for factor in factors
     ]
-
+    
     context = {
         'combined_data': combined_data,
     }
