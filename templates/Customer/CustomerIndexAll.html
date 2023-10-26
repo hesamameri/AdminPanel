@@ -192,7 +192,7 @@
                                                                                             <div class="dropdown-menu" aria-labelledby="btnGroupDropX">
                                                                                                 {% for payment in obj_payments %}
                                                                                                     {% if payment.obj_item_id == item.obj_item_id %}
-                                                                                                    <a class="dropdown-item" href="#"><i class="fa fa-plus-square text-warning kt-font-bold"></i> پرداختی‌ها</a>
+                                                                                                    <a class="dropdown-item" href="#"><i class="fa fa-plus-square text-warning kt-font-bold"></i> پرداختی‌ {{payment.reg_dt|to_jalalii}}</a>
                                                                                                     {% endif %}
                                                                                                 {% endfor %}
                                                                                                 {% for factor in factors %}
@@ -202,7 +202,7 @@
                                                                                                 {% endfor %}
                                                                                                 {% for ticket in tickets %}
                                                                                                     {% if ticket.obj_source_id == item.obj_item_id %}
-                                                                                                    <a class="dropdown-item" href="#"><i class="fa fa-bookmark kt-font-bold text-warning"></i> تیکت {{ticket.reg_dt|to_jalali}}</a>
+                                                                                                    <a class="dropdown-item" href="#"><i class="fa fa-bookmark kt-font-bold text-warning"></i> تیکت {{ticket.reg_dt|to_jalalii}}</a>
                                                                                                     {% endif %}
                                                                                                 {% endfor %}
                                                                                                 {% for prefactor in pre_factors %}
