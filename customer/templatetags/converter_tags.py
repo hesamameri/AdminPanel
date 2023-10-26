@@ -232,7 +232,6 @@ def sales_register_access(id):
 
 @register.filter
 def goods_register_access(id):
-    
     final_register_access = [4, 9]
     if id in final_register_access:
         return True
