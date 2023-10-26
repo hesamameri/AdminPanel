@@ -25,6 +25,25 @@ def to_jalali(value):
 
     return value
 
+@register.filter
+def to_jalalii(value):
+    if isinstance(value, (date, datetime)):
+        tz = pytz.timezone('Asia/Tehran')  # Set the timezone to Iran/Tehran
+        value_tehran = value.astimezone(tz)
+
+        jalali_date = JalaliDate(value_tehran)
+
+        if isinstance(value, datetime):
+            # If the input is a datetime object, include the time in the Jalali date string
+            # {time_str}
+            time_str = value_tehran.strftime("%H:%M:%S")
+            return f" {jalali_date.day}-{jalali_date.month}-{jalali_date.year} "
+        else:
+            return f" {jalali_date.day}-{jalali_date.month}-{jalali_date.year}"
+
+    return value
+
+
 
 @register.filter
 def extract_time(value):
