@@ -620,7 +620,7 @@
                                                         {% else %}
                                                         {% endif %}
                                                             {% if request.user.user_id|financial_approval_access %}
-                                                                {% if inquiry_test.confirm_status == None %}
+                                                                {% if factor_main.acc_confirmer == None %}
                                                                 <div class="card card- card-outline">
                                                                     <div class="card-header rtl">
                                                                         <h3 class="card-title rtl block  bold">اعلام وضعیت مالی</h3>

@@ -225,7 +225,7 @@ def id_to_bank(item):
 @register.filter
 def financial_approval_access(id):
     finance_approval_access = [5,4]
-    if id == finance_approval_access:
+    if id in finance_approval_access:
         return True
     else:
         return False
