@@ -643,23 +643,15 @@ def factor_add_depo(request):
                 print(deposendform.errors)
             
             # aggregating and checking for complete products register for creating objsend objects
-            print(factor_item)
             factor_item_factor = factor_item.factor
 
-            print(factor_item_factor)
             relevant_factor_items = FactorItem.objects.filter(factor = factor_item_factor)
-            print(relevant_factor_items)
             total_amount = relevant_factor_items.aggregate(total_amount=Sum('amount'))['total_amount']
-            print(total_amount)
             all_ids = relevant_factor_items.values('factor_item_id')
-            print(all_ids)
             depo_objects = DepoSend.objects.filter(source_id__in = all_ids)
-            print(depo_objects)
             total_depo_amount = depo_objects.aggregate(total_amount=Sum('amount'))['total_amount']
-            print(total_depo_amount)
             obj_id_115 = [115,1150]
             obj_item_ids_with_obj_id_115 = ObjItem.objects.filter(obj_id__in=obj_id_115).values_list('obj_item_id', flat=True)
-            print(obj_item_ids_with_obj_id_115)
             # Filter the relevant_factor_items based on obj_item_id
             factor_items_with_obj_id_115 = relevant_factor_items.filter(obj_item_id__in=obj_item_ids_with_obj_id_115).first().factor_item_id
             if total_amount == total_depo_amount :
@@ -880,7 +872,6 @@ def customer_confirm_salelist(request):
     # Get the unique factor items
     factor_items = FactorItemBalanceSVA.objects.filter(factor_item_id=subquery)
     
-    print(factor_items)
     # Get related Factor objects
     factor_ids = factor_items.values_list('factor_id', flat=True)
     factors = Factor.objects.filter(factor_id__in=factor_ids).values('factor_id', 'acc_confirm_dt', 'contract_id')
@@ -998,11 +989,8 @@ def factor_send_index(request,obj_send_id=None):
         
         factor_addresses = FactorAddress.objects.filter(factor_id__in = factor_ids).values('mobile','city_id','receiver','phone','address')
         all_data = list(zip(objsendlist,seller_factor_ids,factor_addresses,buyers_name))
-        print(all_data)
 
 
-        #####################################
-        # print(all_data)
         context = {
             'items':all_data,
         }
@@ -1024,18 +1012,14 @@ def factor_send_print(request,obj_send_id=None):
 @permission_required('ROLE_PERSONEL','ROLE_ADMIN')
 def customerfactor_sendassigndriver(request):
     if request.method == 'POST':
-        # print(request.POST)
         if request.POST.get('formtype') == 'assign_driver' :
             obj_send_id = request.POST['objsend']
             obj_send = get_object_or_404(ObjSend, pk = obj_send_id)
             
             factoritem = get_object_or_404(FactorItem,factor_item_id = obj_send.source_id)
-            print(request.POST)
             # factor = get_object_or_404(Factor,factor_id = factor_item.factor.factor_id)
             Factor_items_detail = FactorItem.objects.filter(factor=factoritem.factor_id).values('factor_id', 'obj_item_id', 'amount')
-            print(Factor_items_detail)
             for item in Factor_items_detail:
-                print(item)
                 # Access the 'amount' value using key-value syntax
                 for _ in range(int(item['amount'])):
                     ObjSendSerial.objects.create(factor_id=item['factor_id'], product_id=item['obj_item_id'])
@@ -1052,7 +1036,6 @@ def customerfactor_sendassigndriver(request):
             print("SSSS")
             source_id = get_object_or_404(ObjSend,obj_send_id = request.POST['objsend']).source_id
             factor_item = get_object_or_404(FactorItem,factor_item_id = source_id).factor.factor_id
-            print(factor_item)
 
             driver_data = {
                 'factor_id': factor_item,
@@ -1066,7 +1049,6 @@ def customerfactor_sendassigndriver(request):
             if drivercommentform.is_valid():
                 drivercommentform.save()
             else:
-                print("there is something wrong with the form")
                 print(drivercommentform.errors)
                 return redirect('customer:CustomerFactorSendAssignDriver')
             
@@ -1128,9 +1110,6 @@ def customerfactor_sendassigndriver(request):
         
         factor_addresses = FactorAddress.objects.filter(factor_id__in = factor_ids).values('mobile','city_id','receiver','phone','address')
         all_data = list(zip(objsendlist,seller_factor_ids,factor_addresses,buyers_name))
-        print(all_data)
-        ##########################################
-        # print(all_data)
         context = {
             'items':all_data,
         }
@@ -1144,8 +1123,6 @@ def customerfactor_sendassigndriver(request):
 def customerfactor_sendstatus(request):
     
     if request.method == 'POST':
-        print(request.POST)
-        print(request.FILES)
         objsend = get_object_or_404(ObjSend,obj_send_id=request.POST.get('obj_send_id'))
         drive_status = request.POST['drive_status']
         drive_status_id = request.user.user_id
@@ -1173,10 +1150,8 @@ def customerfactor_sendstatus(request):
         product_serials = request.POST.getlist('product_serial[]')
         serials = request.POST.getlist('send_serial[]')
         serial_data = list(zip(product_serials,serials))
-        # print(serial_data)
         
         for (product,serial_drive) in serial_data:
-            print((product,serial_drive))
             objsends = ObjSendSerial.objects.filter(factor_id = factor_id,product_id =product)
             for item in objsends:
                 item.serial_drive = serial_drive
@@ -1213,7 +1188,6 @@ def customerfactor_sendstatus(request):
         # Use getlist to fetch all uploaded files
         uploaded_files = request.FILES.getlist('uri[]')
         document_types = request.POST.getlist('document_type[]')
-        print(uploaded_files)
         # Use zip to merge the lists
         merged_data_factor_document = zip(uploaded_files, document_types)
 
@@ -1293,7 +1267,6 @@ def customerfactor_sendstatus(request):
         
         factor_addresses = FactorAddress.objects.filter(factor_id__in = factor_ids).values('mobile','city_id','receiver','phone','address')
         all_data = list(zip(objsendlist,seller_factor_ids,factor_addresses,buyers_name))
-        print(all_data)
 
         ###################################################
 
@@ -1312,17 +1285,13 @@ def customerfactor_sendstatus(request):
 
 def fetch_obj_send_serials(request):
     factor_id = request.GET.get('factor_id')
-    print(factor_id)
     objs = ObjSendSerial.objects.filter(factor_id=factor_id)
-    print(objs.values('product_id'))
-    # print(objs)
     data = []
     for item in objs:
         Obj_item = get_object_or_404(ObjItem, obj_item_id=item.product_id)
         name = Obj_item.name
         title = Obj_item.title
         serial = item.serial_drive
-        print(serial)
 
         serialized_item = {
             "factor_id": item.factor_id,
@@ -1388,7 +1357,6 @@ def add_comment(request):
 def factor_install_index(request,obj_send_id=None):
     
     if obj_send_id is not None:
-        print(obj_send_id)
         item = get_object_or_404(ObjSend,obj_send_id=obj_send_id)
         item.drive_register = request.user.user_id
         item.save()
@@ -1447,9 +1415,6 @@ def factor_install_index(request,obj_send_id=None):
         
         factor_addresses = FactorAddress.objects.filter(factor_id__in = factor_ids).values('mobile','city_id','receiver','phone','address')
         all_data = list(zip(objsendlist,seller_factor_ids,factor_addresses,buyers_name))
-        print(all_data)
-        #############################################
-        # print(all_data)
         context = {
             'items':all_data,
         }
@@ -1461,7 +1426,6 @@ def factor_install_index(request,obj_send_id=None):
 def factor_install_assigninstaller(request):
     
     if request.method == 'POST':
-        print(request.POST)
         if request.POST.get('formtype') == 'assign_driver' :
             obj_send_id = request.POST['objsend']
             obj_send = get_object_or_404(ObjSend, pk = obj_send_id)
@@ -1476,7 +1440,6 @@ def factor_install_assigninstaller(request):
         elif request.POST.get('formtype') == 'drive_comment':
             source_id = get_object_or_404(ObjSend,obj_send_id = request.POST['objsend']).source_id
             factor_item = get_object_or_404(FactorItem,factor_item_id = source_id).factor.factor_id
-            print(factor_item)
 
             installer_data = {
                 'factor_id': factor_item,
@@ -1490,7 +1453,6 @@ def factor_install_assigninstaller(request):
             if installercommentform.is_valid():
                 installercommentform.save()
             else:
-                print("there is something wrong with the form")
                 print(installercommentform.errors)
                 return redirect('customer:FactorInstallAssignInstaller')
             
@@ -1552,9 +1514,7 @@ def factor_install_assigninstaller(request):
         
         factor_addresses = FactorAddress.objects.filter(factor_id__in = factor_ids).values('mobile','city_id','receiver','phone','address')
         all_data = list(zip(objsendlist,seller_factor_ids,factor_addresses,buyers_name))
-        print(all_data)
-        ##################################
-        # print(all_data)
+        
 
         context = {
             'items':all_data,
@@ -1570,7 +1530,6 @@ def factor_install_assigninstaller(request):
 def factor_install_sendstatus(request):
     
     if request.method == 'POST':
-        print(request.POST)
         objsend = get_object_or_404(ObjSend,obj_send_id=request.POST.get('obj_send_id'))
         drive_status = request.POST['drive_status']
         drive_status_id = request.user.user_id
@@ -1637,7 +1596,6 @@ def factor_install_sendstatus(request):
         
         factor_addresses = FactorAddress.objects.filter(factor_id__in = factor_ids).values('mobile','city_id','receiver','phone','address')
         all_data = list(zip(objsendlist,seller_factor_ids,factor_addresses,buyers_name))
-        print(all_data)
 
         
         #######################################################
@@ -1701,7 +1659,6 @@ def add_commentinstall(request):
 def customer_payment_confirm(request):
     
     if request.method == 'POST':
-        print(request.POST)
         obj_payment_id = request.POST['obj_payment']
         if request.POST['confirm_status'] == 'REJECT' :
             obj_payment = get_object_or_404(ObjPayment, pk = obj_payment_id)
@@ -1821,7 +1778,6 @@ def customerfactor_servicedoc(request):
 @permission_required('ROLE_PERSONEL','ROLE_ADMIN')
 def customer_payment_confirms(request):
     if request.method == 'POST':
-        print(request.POST)
         obj_payment_id = request.POST['obj_payment_id']
         obj_payment = get_object_or_404(ObjPayment, pk = obj_payment_id)
         obj_payment.doc_register_id = request.user.user_id
