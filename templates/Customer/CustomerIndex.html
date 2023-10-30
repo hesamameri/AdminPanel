@@ -111,7 +111,7 @@
 																</div>
 																<div class="modal-body">
 																	<!--begin::Form-->
-										<form class="kt-form kt-form--label-right" method="POST" action="{% url 'customer:NewCustomer' %}">
+										<form class="kt-form kt-form--label-right" method="POST" action="{% url 'customer:NewCustomer' %}" >
                                             {% csrf_token %}
 											<div class="kt-portlet__body">
 
@@ -585,7 +585,7 @@
                                             </div>
                                             <label for="description" class="col-sm-4 col-form-label">توضیحات</label>
                                         </div>
-                                        <div class="form-group form-group-sm row" id="div_image">
+                                        <!-- <div class="form-group form-group-sm row" id="div_image">
                                             <div class="col-sm-8">
                                                 <div class="custom-file">
                                                     <input type="file" name="image" id="image" class="rtl custom-file-input" placeholder="تصویر" >
@@ -593,6 +593,15 @@
                                                 </div>
                                             </div>
                                             <label for="cheque_image" class="col-sm-4 col-form-label">تصویر</label>
+                                        </div> -->
+                                        </div>
+                                        <div class="form-group form-group-sm row">
+                                            <div class="col-sm-8">
+                                                <div class="custom-file">
+                                                    <input type="file" name="uri" id="uri">
+                                                </div>
+                                            </div>
+                                            <label for="uri" class="col-sm-4 col-form-label">تصویر مدرک</label>
                                         </div>
                                     </div>
                                     

@@ -32,7 +32,7 @@ from django.views.decorators.cache import cache_page
 from django.db.models import Sum, Count
 from django.db.models import F, Sum
 from .models import FactorItem,FactorItemBalanceSVA,ShopCustomerCount
-from .forms import DocumentUploadForm, NewDepoSend, NewFactorAddress, NewFactorComment, NewFactorItem, NewFactorPayway, NewInquiry, NewObjItem,NewObjItemSpec, NewObjPayment, NewObjSend, NewObjSendSerial, NewPreFactor
+from .forms import DocumentObjUploadForm, DocumentUploadForm, NewDepoSend, NewFactorAddress, NewFactorComment, NewFactorItem, NewFactorPayway, NewInquiry, NewObjItem,NewObjItemSpec, NewObjPayment, NewObjSend, NewObjSendSerial, NewPreFactor
 from django.core.files.storage import FileSystemStorage
 from django.db.models import Sum, F, Value, CharField, Case, When,FloatField,Subquery, OuterRef
 from django.db.models.functions import Coalesce
@@ -71,6 +71,10 @@ def customer_index(request):
             return redirect('customer:customerindex')
         else:
             return " wrong"
+        
+        
+        
+        
     else:
         customers = CustomerSva.objects.filter(obj_item_id__gt = 1030200027).order_by('obj_item_id')
         page = customers
@@ -143,6 +147,25 @@ def customer_pay(request,factor_id=None):
                 payment_form = NewObjPayment(pay_data)
                 if payment_form.is_valid():
                     payment_form.save()  # Save the payment object to the database
+                    uploaded_file = request.FILES['uri']
+                    fs = FileSystemStorage()
+                    filename = fs.save(uploaded_file.name, uploaded_file)
+                    file_url = fs.url(filename)
+                    payment = get_object_or_404(ObjPayment,obj_payment_id=payment_form.obj_payment_id)
+                    document_type = "PAYMENT"
+                    description = "-"
+                    source_type = "CUSTOMER_PAYMENT"
+
+                    
+                    document = DocumentObjUploadForm(
+                        payment = payment,
+                        source_type = source_type,
+                        document_type=document_type,
+                        uri=file_url,  # save the relative path to the TextField
+                        description=description,
+                    )
+                    print(document)
+                    document.save()
                     return redirect('customer:customerindex')
                 else:
                     print('didnt work')
@@ -750,6 +773,12 @@ def factor_add_document(request,factor_id):
 
         return redirect(reverse('customer:FactorWithFactorID', args=[factor_id])) 
 
+
+
+
+
+
+    
 
 @login_required(login_url='Administrator:login_view')
 @permission_required('ROLE_PERSONEL','ROLE_ADMIN')
