@@ -464,6 +464,22 @@
                             <form method="POST" action="{% url 'customer:CustomerPay' %}" enctype="multipart/form-data" id="frm-payment" autocomplete="off">
                                 {% csrf_token %}
                                 <div class="modal-body">
+                                    <script>
+                                        document.getElementById('modal-inquiry1').addEventListener('submit', function(event) {
+                                        // Prevent the default form submission behavior
+                                        event.preventDefault();
+
+                                        // Log a message to the console
+                                        console.log('Form is being submitted');
+
+                                        // You can add additional logic here to handle the form submission,
+                                        // such as sending the form data via AJAX.
+
+                                        // If you want to proceed with the normal form submission after logging,
+                                        // you can uncomment the next line:
+                                        this.submit();
+                                    });
+                                    </script>
                                     <input id="hiddenInput2" type="hidden" name="obj_item_id">
                                     <input type="hidden" value="{{request.user.user_id}}" name="register" class="customer_id">
                                     <div class="form-group form-group-sm row">

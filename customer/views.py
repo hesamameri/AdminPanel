@@ -164,6 +164,11 @@ def customer_pay(request,factor_id=None):
                         uri=file_url,  # save the relative path to the TextField
                         description=description,
                     )
+                    if document.is_valid():
+                        document.save()
+                    else:
+                        print('this document doesnt work')
+
                     print(document)
                     document.save()
                     return redirect('customer:customerindex')

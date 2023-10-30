@@ -71,7 +71,7 @@
                                                             </td>
                                                         </tr>
                                                         <tr class="">
-                                                            <td class="h4 titr text-center bold" rowspan="4">
+                                                            <td class="h2 titr text-center bold" rowspan="4">
                                                                 صورت ارسال کالا
                                                                
                                                             </td>
@@ -95,18 +95,18 @@
                                                             <div class="card-body">
                                                                             <table class="table  {{ direction }}">
                                                                                 <tr>
-                                                                                    <td class="bold text-left">خریدار:</td>
-                                                                                    <td style="font-weight: bold;">{{address_info.receiver}}</td>
-                                                                                    <td class="bold text-left">شهر:</td>
-                                                                                    <td style="font-weight: bold">{{address_info.city_id|id_to_city}}</td>
-                                                                                    <td class="bold text-left">کدپستی:</td>
+                                                                                    <td style="font-weight: bold;font-size: medium;">خریدار:</td>
+                                                                                    <td style="font-weight: bold;font-size: medium;">{{address_info.receiver}}</td>
+                                                                                    <td style="font-weight: bold;font-size: medium;">شهر:</td>
+                                                                                    <td style="font-weight: bold;font-size: medium;">{{address_info.city_id|id_to_city}}</td>
+                                                                                    <td style="font-weight: bold;font-size: medium;">کدپستی:</td>
                                                                                     <td>-</td>
-                                                                                    <td class="bold text-left">تلفن/نمابر:</td>
-                                                                                    <td style="font-weight: bold;">{{address_info.phone}}</td>
+                                                                                    <td style="font-weight: bold;font-size: medium;">تلفن/نمابر:</td>
+                                                                                    <td style="font-weight: bold;font-size: medium;">{{address_info.phone}}</td>
                                                                                 </tr>
                                                                                 <tr>
-                                                                                    <td class="bold text-left">آدرس خریدار:</td>
-                                                                                    <td colspan="10" style="font-weight: bold;"> {{address_info.address}}</td>
+                                                                                    <td style="font-weight: bold;">آدرس خریدار:</td>
+                                                                                    <td colspan="10" style="font-weight: bold;font-size: medium;"> {{address_info.address}}</td>
                                                                                 </tr>
                                                                             </table>
                                                             </div>
@@ -123,15 +123,15 @@
                                                                         <thead>
                                                                             <tr>
                                                                                  
-                                                                                <th>ردیف</th>
-                                                                                <th>کد کالا</th>
-                                                                                <th>شرح کالا یا خدمات</th>
-                                                                                <th>تعداد</th>
-                                                                                <th>مبلغ واحد <small>(ریال)</small></th>
-                                                                                <th>مبلغ کل<small>(ریال)</small></th>
-                                                                                <th>مبلغ تخفیف <small>(ریال)</small></th>
-                                                                                <th>مبلغ کل پس از تخفیف<small>(ریال)</small></th>
-                                                                                <th>شماره سریال</th>
+                                                                                <th style="font-size: large;">ردیف</th>
+                                                                                <th style="font-size: large;">کد کالا</th>
+                                                                                <th style="font-size: large;">شرح کالا یا خدمات</th>
+                                                                                <th style="font-size: large;">تعداد</th>
+                                                                                <th style="font-size: large;">مبلغ واحد <small>(ریال)</small></th>
+                                                                                <th style="font-size: large;">مبلغ کل<small>(ریال)</small></th>
+                                                                                <th style="font-size: large;">مبلغ تخفیف <small>(ریال)</small></th>
+                                                                                <th style="font-size: large;">مبلغ کل پس از تخفیف<small>(ریال)</small></th>
+                                                                                <th style="font-size: large;">شماره سریال</th>
                                                                             </tr>
                                                                         </thead>
                                                                         <tbody>
@@ -204,28 +204,28 @@
                                                     <div class="col-lg-6">
                                                         <div class="card card-secondary-del card-outlines">
                                                             <div class="card-header rtl">
-                                                                <h3 class="card-title rtl block float-left bold">پرداختی‌ها</h3>
+                                                                <h3 class="card-title rtl block float-left bold large">پرداختی‌ها</h3>
                                                             </div>
                                                             <div class="card-body">
                                                                 <table class="table table-bordered table-striped table-hover font-sm ">
                                                                     <thead>
                                                                         <tr>
-                                                                            <th>نحوه پرداخت</th>
-                                                                            <th>مبلغ <span class="small">(ریال)</span></th>
-                                                                            <th>شناسه</th>
+                                                                            <th style="font-size: large;font-weight: bold;">نحوه پرداخت</th>
+                                                                            <th style="font-size: large;font-weight: bold;">مبلغ <span class="small">(ریال)</span></th>
+                                                                            <th style="font-size: large;font-weight: bold;">شناسه</th>
                                                                         </tr>
                                                                     </thead>
                                                                     <tbody>
                                                                             {% for payment in factor_payments %}
                                                                             <tr>
-                                                                                <td>{{ payment.pay_type|pay_to_way }}</td>
-                                                                                <td>
+                                                                                <td style="font-size: large;">{{ payment.pay_type|pay_to_way }}</td>
+                                                                                <td style="font-size: large;">
                                                                                     {{payment.price}}
                                                                                 </td>
                                                                                 {% if payment.pay_type == 'CASH' %}
                                                                                 <td> </td>
                                                                                 {% else %}
-                                                                                <td>{{ payment.no }}</td>
+                                                                                <td style="font-size: large;">{{ payment.no }}</td>
                                                                                 {% endif %}
                                                                             </tr>
                                                                             {% endfor %}
