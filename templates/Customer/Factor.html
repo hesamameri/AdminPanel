@@ -9,7 +9,23 @@
 
     <!-- begin::Head -->
 
-    {% include "partials/head.html" %}
+    {% include "partials/head.html" %} 
+    <head>
+        <style>
+            /* Style for the zoom buttons */
+            .zoom-buttons {
+                position: absolute;
+                top: 10px;
+                right: 10px;
+            }
+    
+            /* Style for the zoomed image */
+            .zoomed-image {
+                max-width: 100%;
+                max-height: 100%;
+            }
+        </style>
+    </head>
 
 
     <!-- end::Head -->
@@ -341,7 +357,46 @@
                                                                     <tbody>
                                                                         {% for doc in factor_document %}
                                                                         <tr> 
-                                                                            <td><img class="img img-rectangle img-popup-img-srces" height="60px" src="{{ doc.uri }}"></td>
+                                                                            <td>
+                                                                                <a href="{{ doc.uri }}" target="_blank" onclick="openImageWindow(event)">
+                                                                                    <img class="img img-rectangle img-popup-img-srces" height="60px" src="{{ doc.uri }}">
+                                                                                </a>
+                                                                            </td>
+                                                                        
+                                                                            <script>
+                                                                                // Function to open a new window with the image and zoom controls
+                                                                                function openImageWindow(event) {
+                                                                                    event.preventDefault();
+                                                                                    const imageUrl = event.target.getAttribute('src');
+                                                                        
+                                                                                    // Open a new window
+                                                                                    const newWindow = window.open(imageUrl, 'Image', 'width=800, height=600');
+                                                                        
+                                                                                    // Create zoom-in button
+                                                                                    const zoomInButton = document.createElement('button');
+                                                                                    zoomInButton.textContent = 'Zoom In';
+                                                                                    zoomInButton.onclick = function () {
+                                                                                        newWindow.document.querySelector('img').style.transform = 'scale(1.5)';
+                                                                                    };
+                                                                        
+                                                                                    // Create zoom-out button
+                                                                                    const zoomOutButton = document.createElement('button');
+                                                                                    zoomOutButton.textContent = 'Zoom Out';
+                                                                                    zoomOutButton.onclick = function () {
+                                                                                        newWindow.document.querySelector('img').style.transform = 'scale(1)';
+                                                                                    };
+                                                                        
+                                                                                    // Create a div for the zoom buttons
+                                                                                    const zoomButtonsDiv = document.createElement('div');
+                                                                                    zoomButtonsDiv.className = 'zoom-buttons';
+                                                                                    zoomButtonsDiv.appendChild(zoomInButton);
+                                                                                    zoomButtonsDiv.appendChild(zoomOutButton);
+                                                                        
+                                                                                    // Append the zoom buttons to the new window
+                                                                                    newWindow.document.body.appendChild(zoomButtonsDiv);
+                                                                                }
+                                                                            </script>
+
                                                                         {% if doc.level_type == None %}
                                                                             <td>
                                                                                 {{doc.level_type}}
