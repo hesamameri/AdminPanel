@@ -1004,10 +1004,29 @@ def factor_send_index(request,obj_send_id=None):
 def factor_send_print(request,obj_send_id=None):
 
     obj_send = get_object_or_404(ObjSend,obj_send_id = obj_send_id)
+    factor_item_id = obj_send.source_id 
+    factor_item = get_object_or_404(FactorItem,factor_item_id = factor_item_id)
+    factor = factor_item.factor
+    # print(factor)
+    factor_items = FactorItem.objects.filter(factor= factor)
+    goods = factor_items.values('obj_item_id')
+    goods_name = ObjItem.objects.filter(obj_item_id__in = goods)
+    print(goods_name)
+    factor_items = list(zip(factor_items,goods_name))
+    address_info = get_object_or_404(FactorAddress,factor_id = factor.factor_id)
+    factor_payments = FactorPayway.objects.filter(factor_id = factor)
     obj_send.print_id = request.user.user_id
     obj_send.print_dt = datetime.datetime.now()
     obj_send.save()
-    return redirect("customer:CustomerFactor    signDriver")
+
+    context = {
+        'factor':factor,
+        'address_info':address_info,
+        'factor_payments':factor_payments,
+        'factor_items':factor_items,
+        'date':datetime.datetime.now(),
+    }
+    return render(request,'Customer/FactorSendPrint.html',context=context)
 
 @login_required(login_url='Administrator:login_view')
 @permission_required('ROLE_PERSONEL','ROLE_ADMIN')

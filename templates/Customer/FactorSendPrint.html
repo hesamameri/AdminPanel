@@ -1,3 +1,5 @@
+{% load static %}
+{% load converter_tags %}
 <!DOCTYPE html>
 <!-- 
     - The sections that are in the printed version do not have borders fix that
@@ -58,7 +60,7 @@
                                     <div class="container-fluid">
                                                 <div class="card-fixed-left no-print">
                                                     <button onclick="javascript:window.print();" class="btn btn-success" data-toggle="modal"><i class="fas fa-print"></i></button>
-                                                    <a href="" class="btn btn-success btn-sm">برگشت</a>
+                                                    <a href="" class="btn btn-success btn-sm no-print">برگشت</a>
                                                 </div>
                                                 <div class="text-center">
                                                     <table class="table rtl">
@@ -76,11 +78,11 @@
                                                         </tr>
                                                         <tr>
                                                             <td class="text-left strong">تاریخ:</td>
-                                                            <td></td>
+                                                            <td style="font-size: large; font-weight: bold;">{{ date|to_jalali }}</td>
                                                         </tr>
                                                         <tr>
                                                             <td  class="text-left strong">شماره سریال:</td>
-                                                            <td> # </td>
+                                                            <td>  </td>
                                                         </tr>
                                                     </table>
                                                 </div>
@@ -88,23 +90,23 @@
                                                     <div class="col-lg-12">
                                                         <div class="card card-secondary-del card-outlines">
                                                             <div class="card-header rtl">
-                                                                <h3 class="card-title rtl block float-right bold">مشخصات خریدار</h3>
+                                                                <h3 class="card-title rtl block float-left bold">مشخصات خریدار</h3>
                                                             </div>
                                                             <div class="card-body">
                                                                             <table class="table  {{ direction }}">
                                                                                 <tr>
                                                                                     <td class="bold text-left">خریدار:</td>
-                                                                                    <td> </td>
+                                                                                    <td style="font-weight: bold;">{{address_info.receiver}}</td>
                                                                                     <td class="bold text-left">شهر:</td>
-                                                                                    <td></td>
+                                                                                    <td style="font-weight: bold">{{address_info.city_id|id_to_city}}</td>
                                                                                     <td class="bold text-left">کدپستی:</td>
                                                                                     <td>-</td>
                                                                                     <td class="bold text-left">تلفن/نمابر:</td>
-                                                                                    <td></td>
+                                                                                    <td style="font-weight: bold;">{{address_info.phone}}</td>
                                                                                 </tr>
                                                                                 <tr>
                                                                                     <td class="bold text-left">آدرس خریدار:</td>
-                                                                                    <td colspan="10"> -  - /  () </td>
+                                                                                    <td colspan="10" style="font-weight: bold;"> {{address_info.address}}</td>
                                                                                 </tr>
                                                                             </table>
                                                             </div>
@@ -114,13 +116,13 @@
                             
                                                 <div class="card card-secondary-del card-outlines">
                                                     <div class="card-header rtl">
-                                                        <h3 class="card-title rtl block float-right bold">مشخصات کالا</h3>
+                                                        <h3 class="card-title rtl block float-left bold">مشخصات کالا</h3>
                                                     </div>
                                                     <div class="card-body">
                                                                     <table class="table table-bordered table-striped ">
                                                                         <thead>
                                                                             <tr>
-                                                                                 <th>فاکتور</th> 
+                                                                                 
                                                                                 <th>ردیف</th>
                                                                                 <th>کد کالا</th>
                                                                                 <th>شرح کالا یا خدمات</th>
@@ -133,46 +135,66 @@
                                                                             </tr>
                                                                         </thead>
                                                                         <tbody>
-                                                                            
+                                                                                {% for product in factor_items %}
                                                                                 <tr>
-                                                                                    <td></td>
-                                                                                    <td></td>
-                                                                                    <td><br><small></small>
+                                                                                    
+                                                                                    <td style="font-weight: bold;">
+                                                                                    {{ forloop.counter }}
                                                                                     </td>
-                                                                                    <td></td>
-                                                                                    <td></td>
-                                                                                    <td></td>
-                                                                                    <td></td>
-                                                                                    <td></td>
+                                                                                    <td style="font-size: large;"><strong>
+                                                                                        {{ product.0.obj_item_id }}
+                                                                                        </strong>
+                                                                                    
+                                                                                    </td>
+                                                                                    <td style="font-weight: bold;">
+                                                                                    {{ product.1.name }} {{product.1.title}}
+                                                                                    </td>
+                                                                                    <td class="amount" style="font-weight: bold;">
+                                                                                    {{ product.0.amount|inter }}
+                                                                                    </td>
+                                                                                    <td class="total-price" style="font-weight: bold;">
+                                                                                        {{product.0.unit_price|inter}}
+                                                                                    </td>
+                                                                                    <td class="price" style="font-weight: bold;">
+                                                                                        {{product.0.price|inter}}  
+                                                                                    </td>
+                                                                                    <td class="total-discount" style="font-weight: bold;">
+                                                                                        {{product.0.discount_price|inter}}
+                                                                                    </td>
                                                                                     <td>
                                                                                         <table class="table">
                                                                                             <tr>
                                                                                                 <td>سریال:</td>
-                                                                                                <td></td>
+                                                                                                <td class="row-total" style="font-weight: bold;">
+                                                                                                {% with num1=product.0.unit_price num2=product.0.amount subtract_value=product.0.discount_price %}
+                                                                                                  {% multiply_and_subtract num1=num1 num2=num2 subtract_value=subtract_value %}
+                                                                                               {% endwith %}
+                                                                                            </td>
                                                                                             </tr>
                                                                                         </table>
                                                                                     </td>
                                                                                 </tr>
+                                                                                {% endfor %}
                                                                             
-                                                                            <tr>
+                                                                            <tr class="row-small">
                                                                                 <th colspan="6"></th>
                                                                                 <th class="text-left">جمع <small>(ریال)</small></th>
-                                                                                <td colspan="2"></td>
+                                                                                <td colspan="2" class="grand-total-price"></td>
                                                                             </tr>
-                                                                            <tr>
+                                                                            <tr class="row-small"> 
                                                                                 <th colspan="6"></th>
                                                                                 <th class="text-left">تخفیف <small>(ریال)</small></th>
-                                                                                <td colspan="2"></td>
+                                                                                <td colspan="2" class="grand-total-discount"></td>
                                                                             </tr>
-                                                                             <tr>
+                                                                             <tr class="row-small">
                                                                                 <th colspan="6"></th>
                                                                                 <th class="text-left">مالیت ارزش افزوده <small>(ریال)</small></th>
                                                                                 <td colspan="2"></td>
                                                                             </tr> 
-                                                                            <tr>
+                                                                            <tr class="row-small">
                                                                                 <th colspan="6"></th>
                                                                                 <th class="text-left">جمع کل <small>(ریال)</small></th>
-                                                                                <td colspan="2"></td>
+                                                                                <td colspan="2" class="grand-row-total"></td>
                                                                             </tr>
                                                                         </tbody>
                                                                     </table>
@@ -182,7 +204,7 @@
                                                     <div class="col-lg-6">
                                                         <div class="card card-secondary-del card-outlines">
                                                             <div class="card-header rtl">
-                                                                <h3 class="card-title rtl block float-right bold">پرداختی‌ها</h3>
+                                                                <h3 class="card-title rtl block float-left bold">پرداختی‌ها</h3>
                                                             </div>
                                                             <div class="card-body">
                                                                 <table class="table table-bordered table-striped table-hover font-sm ">
@@ -194,16 +216,21 @@
                                                                         </tr>
                                                                     </thead>
                                                                     <tbody>
-                                                                        
+                                                                            {% for payment in factor_payments %}
                                                                             <tr>
-                                                                                <td></td>
+                                                                                <td>{{ payment.pay_type|pay_to_way }}</td>
                                                                                 <td>
-                                                                               
-                                                                                    ------
+                                                                                    {{payment.price}}
                                                                                 </td>
-                                                                                <td></td>
+                                                                                {% if payment.pay_type == 'CASH' %}
+                                                                                <td> </td>
+                                                                                {% else %}
+                                                                                <td>{{ payment.no }}</td>
+                                                                                {% endif %}
                                                                             </tr>
+                                                                            {% endfor %}
                                                                     </tbody>
+                                                                    <!-- 'CART','CREDIT','OTHER','CARTOCART','REBATE','ATHOME','WITHACC' -->
                                                                 </table>
                             
                                                             </div>
@@ -212,11 +239,10 @@
                                                     <div class="col-lg-6">
                                                         <div class="card card-secondary-del card-outlines">
                                                             <div class="card-header rtl">
-                                                                <h3 class="card-title rtl block float-right bold">توضیحات</h3>
+                                                                <h3 class="card-title rtl block float-left bold">توضیحات</h3>
                                                             </div>
-                                                            <div class="card-body">
-                                                                
-                                                                    مبلغ ریال درب منزل دریافت گردد.
+                                                            <div class="card-body" style="font-size: medium;font-weight: bold;">
+                                                                {{factor.factore_desc}}
                                                                     <hr>
                                                                 
                                                             </div>
@@ -330,7 +356,64 @@
 
         <!-- begin::Global Config(global config for global JS sciprts) -->
         {% include "partials/script.html" %}
-
+        <script>
+            // Function to calculate the sum of all row-total, price, and total-discount values
+    function calculateSums() {
+        // Initialize sums to 0
+        let rowTotalSum = 0;
+        let priceSum = 0;
+        let discountSum = 0;
+    
+        // Find all td elements with class "row-total" and sum their contents
+        const rowTotalElements = document.querySelectorAll('.row-total');
+        rowTotalElements.forEach(function(element) {
+            const value = parseFloat(element.textContent);
+            if (!isNaN(value)) {
+                rowTotalSum += value;
+            }
+        });
+    
+        // Find all td elements with class "price" and sum their contents
+        const priceElements = document.querySelectorAll('.price');
+        priceElements.forEach(function(element) {
+            const value = parseFloat(element.textContent);
+            if (!isNaN(value)) {
+                priceSum += value;
+            }
+        });
+    
+        // Find all td elements with class "total-discount" and sum their contents
+        const discountElements = document.querySelectorAll('.total-discount');
+        discountElements.forEach(function(element) {
+            const value = parseFloat(element.textContent);
+            if (!isNaN(value)) {
+                discountSum += value;
+            }
+        });
+    
+        // Update the content of the td elements for the sums
+        const grandRowTotalElement = document.querySelector('.grand-row-total');
+        if (grandRowTotalElement) {
+            grandRowTotalElement.innerHTML = rowTotalSum + " <small>ریال</small>";
+        }
+    
+        const grandTotalPriceElement = document.querySelector('.grand-total-price');
+        if (grandTotalPriceElement) {
+            grandTotalPriceElement.innerHTML = priceSum + " <small>ریال</small>";
+        }
+    
+        const grandTotalDiscountElement = document.querySelector('.grand-total-discount');
+        if (grandTotalDiscountElement) {
+            grandTotalDiscountElement.innerHTML = discountSum + " <small>ریال</small>";
+        }
+    }
+    
+    // Execute the function to calculate and display the sums
+    calculateSums();
+    
+    
+     
+            </script>
         <!--end::Page Scripts -->
     </body>
 
