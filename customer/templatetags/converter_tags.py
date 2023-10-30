@@ -324,3 +324,25 @@ def installid_to_drivename(item):
             return id_dic[item]
     else:
         return ""
+    
+@register.filter
+def comma_num_seperator(number):
+    number_str = str(number)
+    result = ""
+
+    # Handling negative numbers
+    if number_str[0] == "-":
+        result += "-"
+        number_str = number_str[1:]
+
+    # Adding commas
+    digits_count = 0
+    for digit in reversed(number_str):
+        result = digit + result
+        digits_count += 1
+
+        if digits_count % 3 == 0:
+            result = "," + result
+
+    return result
+
