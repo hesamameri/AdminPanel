@@ -341,7 +341,7 @@ def comma_num_seperator(number):
         result = digit + result
         digits_count += 1
 
-        if digits_count % 3 == 0:
+        if digits_count % 3 == 0 and digits_count != len(number_str):
             result = "," + result
 
     return result

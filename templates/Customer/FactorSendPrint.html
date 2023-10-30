@@ -153,13 +153,13 @@
                                                                                     {{ product.0.amount|inter }}
                                                                                     </td>
                                                                                     <td class="total-price" style="font-weight: bold;">
-                                                                                        {{product.0.unit_price|inter}}
+                                                                                        {{product.0.unit_price|inter|comma_num_seperator}}
                                                                                     </td>
                                                                                     <td class="price" style="font-weight: bold;">
-                                                                                        {{product.0.price|inter}}  
+                                                                                        {{product.0.price|inter|comma_num_seperator}}  
                                                                                     </td>
                                                                                     <td class="total-discount" style="font-weight: bold;">
-                                                                                        {{product.0.discount_price|inter}}
+                                                                                        {{product.0.discount_price|inter|comma_num_seperator}}
                                                                                     </td>
                                                                                     <td>
                                                                                         <table class="table">
@@ -220,7 +220,7 @@
                                                                             <tr>
                                                                                 <td style="font-size: large;">{{ payment.pay_type|pay_to_way }}</td>
                                                                                 <td style="font-size: large;">
-                                                                                    {{payment.price}}
+                                                                                    {{payment.price|comma_num_seperator}}
                                                                                 </td>
                                                                                 {% if payment.pay_type == 'CASH' %}
                                                                                 <td> </td>
