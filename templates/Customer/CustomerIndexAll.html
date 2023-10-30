@@ -185,10 +185,14 @@
 
                                                                                     <td>
                                                                                         <div class="btn-group">
-                                                                                            <a class="inquiry-link btn btn-success" style="border: 0.5px solid rgb(14, 4, 4);" data-buyer="{{ item.obj_item_id }}" data-toggle="modal" data-target="#modal-inquiry">استعلام حساب</a>
-                                                                                            <button id="btnGroupDropX" type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                                                                گزارشات
-                                                                                            </button>
+                                                                                            <div class="d-flex justify-content-between align-items-center mb-3">
+                                                                                                <a class="btn btn-success inquiry-link" data-buyer="{{ item.obj_item_id }}" data-toggle="modal" data-target="#modal-inquiry">
+                                                                                                    استعلام حساب
+                                                                                                </a>
+                                                                                                <div class="dropdown">
+                                                                                                    <button id="btnGroupDropX" type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                                                                        گزارشات
+                                                                                                    </button>
                                                                                             <div class="dropdown-menu" aria-labelledby="btnGroupDropX">
                                                                                                 {% for payment in obj_payments %}
                                                                                                     {% if payment.obj_item_id == item.obj_item_id %}
