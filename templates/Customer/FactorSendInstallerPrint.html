@@ -99,13 +99,18 @@
                                                                                     <td style="font-weight: bold;font-size: medium;">شهر:</td>
                                                                                     <td style="font-weight: bold;font-size: medium;">{{address_info.city_id|id_to_city}}</td>
                                                                                     <td style="font-weight: bold;font-size: medium;">کدپستی:</td>
-                                                                                    <td>-</td>
+                                                                                    <td>----</td>
                                                                                     <td style="font-weight: bold;font-size: medium;">تلفن/نمابر:</td>
-                                                                                    <td style="font-weight: bold;font-size: medium;">{{address_info.phone}}</td>
+                                                                                    <td style="font-weight: bold;font-size: medium;">{{address_info.mobile}}</td>
                                                                                 </tr>
                                                                                 <tr>
                                                                                     <td style="font-weight: bold;">آدرس خریدار:</td>
                                                                                     <td colspan="10" style="font-weight: bold;font-size: medium;"> {{address_info.address}}</td>
+                                                                                    {% if address_info.phone == None %}
+                                                                                    <td></td>
+                                                                                    {% else %}
+                                                                                    <td>{{address_info.phone}}</td>
+                                                                                    {% endif %}
                                                                                 </tr>
                                                                             </table>
                                                             </div>
