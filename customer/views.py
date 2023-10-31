@@ -1938,9 +1938,30 @@ def index_inquiry(request):
 @cache_page(10)
 @login_required(login_url='Administrator:login_view')
 @permission_required('ROLE_PERSONEL','ROLE_ADMIN')
-def factorsend_installerprint(request):
-    
-    return render(request,'Customer/FactorSendInstallerPrint.html')
+def factorsend_installerprint(request,obj_send_id=None):
+    obj_send = get_object_or_404(ObjSend,obj_send_id = obj_send_id)
+    factor_item_id = obj_send.source_id 
+    factor_item = get_object_or_404(FactorItem,factor_item_id = factor_item_id)
+    factor = factor_item.factor
+    # print(factor)
+    factor_items = FactorItem.objects.filter(factor= factor)
+    goods = factor_items.values('obj_item_id')
+    goods_name = ObjItem.objects.filter(obj_item_id__in = goods)
+    print(goods_name)
+    factor_items = list(zip(factor_items,goods_name))
+    address_info = get_object_or_404(FactorAddress,factor_id = factor.factor_id)
+    obj_send.print_id = request.user.user_id
+    obj_send.print_dt = datetime.datetime.now()
+    obj_send.save()
+
+    context = {
+        'factor':factor,
+        'address_info':address_info,
+        'factor_items':factor_items,
+        'date':datetime.datetime.now(),
+    }
+    return render(request,'Customer/FactorSendInstallerPrint.html',context=context)
+
 
 
 

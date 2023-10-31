@@ -84,7 +84,6 @@ class NewObjPayment(forms.ModelForm):
     class Meta:
         model = ObjPayment
         fields = [
-                
                 'obj_item_id',
                 'type',
                 'source_type',
