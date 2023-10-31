@@ -81,7 +81,7 @@
                                                         </tr>
                                                         <tr>
                                                             <td  class="text-left strong">شماره سریال:</td>
-                                                            <td> # </td>
+                                                            <td style="font-size: large; font-weight: bold;"> {{ factor.factor_id }} </td>
                                                         </tr>
                                                     </table>
                                                 </div>
@@ -109,9 +109,11 @@
                                                                                     {% if address_info.phone == None %}
                                                                                     <td></td>
                                                                                     {% else %}
+                                                                                    <td>/</td>
                                                                                     <td>{{address_info.phone}}</td>
                                                                                     {% endif %}
-                                                                                </tr>
+
+                                                                                </tr>                                                                                    
                                                                             </table>
                                                             </div>
                                                         </div><!-- end.card -->
