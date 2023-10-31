@@ -170,12 +170,19 @@
                                                                                     <td>
                                                                                         <table class="table">
                                                                                             <tr>
-                                                                                                <td>سریال:</td>
                                                                                                 <td class="row-total" style="font-weight: bold;">
                                                                                                 {% with num1=product.0.unit_price num2=product.0.amount subtract_value=product.0.discount_price %}
                                                                                                   {% multiply_and_subtract num1=num1 num2=num2 subtract_value=subtract_value %}
                                                                                                {% endwith %}
                                                                                             </td>
+                                                                                            </tr>
+                                                                                        </table>
+                                                                                    </td>
+                                                                                    <td>
+                                                                                        <table class="table">
+                                                                                            <tr>
+                                                                                                <td>سریال:</td>
+                                                                                                <td></td>
                                                                                             </tr>
                                                                                         </table>
                                                                                     </td>
