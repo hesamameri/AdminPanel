@@ -1408,7 +1408,49 @@
     });
 });
         </script> -->
-        
+        <script>
+
+            document.getElementById('factor_address').addEventListener('change', function () {
+            // Handle the change event when an address is selected
+            var selectedOption = this.options[this.selectedIndex];
+            var cityId = selectedOption.getAttribute('data-city-id');
+
+            // Populate 'انبار' options based on the selected address's city
+            populateDepoOptions(cityId);
+        });
+
+        function populateDepoOptions(cityId) {
+            // Clear existing 'انبار' options
+            var saleDepo = document.getElementById('sale_depo');
+            saleDepo.innerHTML = '';
+
+            // Retrieve and populate 'انبار' options based on the selected city (cityId)
+            var depoData = JSON.parse('{{ depo_data_json|safe }}');
+            var depoInfo = depoData[cityId] || [];
+
+            if (depoInfo.length === 0) {
+                var emptyOption = new Option('هیچ انباری موجود نیست', '', true, true);
+                saleDepo.appendChild(emptyOption);
+            } else {
+                depoInfo.forEach(function (item) {
+                    var optionText = item.title + ' (موجودی: ' + item.net_amount + ')';
+                    var option = new Option(optionText, item.obj_item_id);
+                    saleDepo.appendChild(option);
+                });
+            }
+        }
+
+        // Function to open the modal
+        function openAssignDepoModal() {
+            // Clear the selected address and depo when opening the modal
+            document.getElementById('factor_address').value = '';
+            document.getElementById('sale_depo').value = '';
+
+            // Open the modal
+            $('#modal-assign-depo').modal('show');
+        }
+
+        </script>
         <script>
             document.addEventListener('DOMContentLoaded', function () {
     // Function to update the second select based on the selected obj_item_id
