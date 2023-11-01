@@ -123,8 +123,11 @@
                                                                                     
                                                                                     
                                                                                     <td>{{item.2.mobile}}</td>   <!-- موبایل -->
-                                                                                    
+                                                                                    {% if item.2.phone == None %}
+                                                                                    <td></td>
+                                                                                    {% else %}
                                                                                     <td>{{item.2.phone}}</td>   <!--تلفن-->
+                                                                                    {% endif %}
                                                                                     
                                                                                     <td>
                                                                                         <i data-factor="{{item.1.0}}" data-toggle="modal" data-target="#modal-comment"
