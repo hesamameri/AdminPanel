@@ -237,7 +237,7 @@
                                                                                 <td style="font-size: large;">
                                                                                     {{payment.price|comma_num_seperator}}
                                                                                 </td>
-                                                                                {% if payment.pay_type == 'CASH' %}
+                                                                                {% if payment.no == None %}
                                                                                 <td> </td>
                                                                                 {% else %}
                                                                                 <td style="font-size: large;">{{ payment.no }}</td>
