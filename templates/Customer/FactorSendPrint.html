@@ -221,26 +221,26 @@
                                                             <div class="card-header rtl">
                                                                 <h3 class="card-title rtl block float-left bold large">پرداختی‌ها</h3>
                                                             </div>
-                                                            <div class="card-body">
+                                                            <div class="card-body" style="max-height: 50vh; overflow-y: auto;">
                                                                 <table class="table table-bordered table-striped table-hover font-sm ">
                                                                     <thead>
                                                                         <tr>
-                                                                            <th style="font-size: large;font-weight: bold;">نحوه پرداخت</th>
-                                                                            <th style="font-size: large;font-weight: bold;">مبلغ <span class="small">(ریال)</span></th>
-                                                                            <th style="font-size: large;font-weight: bold;">شناسه</th>
+                                                                            <th style="font-size: smaller;font-weight: bold;">نحوه پرداخت</th>
+                                                                            <th style="font-size: smaller;font-weight: bold;">مبلغ <span class="small">(ریال)</span></th>
+                                                                            <th style="font-size: smaller;font-weight: bold;">شناسه</th>
                                                                         </tr>
                                                                     </thead>
                                                                     <tbody>
                                                                             {% for payment in factor_payments %}
                                                                             <tr>
-                                                                                <td style="font-size: large;">{{ payment.pay_type|pay_to_way }}</td>
-                                                                                <td style="font-size: large;">
+                                                                                <td style="font-size: smaller;">{{ payment.pay_type|pay_to_way }}</td>
+                                                                                <td style="font-size: smaller;">
                                                                                     {{payment.price|comma_num_seperator}}
                                                                                 </td>
                                                                                 {% if payment.no == None %}
                                                                                 <td> </td>
                                                                                 {% else %}
-                                                                                <td style="font-size: large;">{{ payment.no }}</td>
+                                                                                <td style="font-size: smaller;">{{ payment.no }}</td>
                                                                                 {% endif %}
                                                                             </tr>
                                                                             {% endfor %}
@@ -256,7 +256,7 @@
                                                             <div class="card-header rtl">
                                                                 <h3 class="card-title rtl block float-left bold">توضیحات</h3>
                                                             </div>
-                                                            <div class="card-body" style="font-size: medium;font-weight: bold;">
+                                                            <div class="card-body" style="font-size: larger;font-weight: bold;">
                                                                 {{factor.factore_desc}}
                                                                     <hr>
                                                                 
@@ -266,12 +266,12 @@
                                                 </div>
                             
                                                 <ul class="row rtl h8">
-                                                    <li class="col-lg-12">
+                                                    <li style="font-size: larger;font-weight: bold;">
                                                     اجناس فوق تا تسویه حساب کامل و وصول چک‌های مربوطه نزد خریدار به صورت امانت بوده که در صورت عدم اقدام در این زمینه می‌بایست اجناس را به صورت
                                                     صحیح و سالم به شرکت عودت نماید و در صورت استفاده از کالای خریداری شده خسارت وارده را جبران نماید،
                                                     در غیر این صورت خریدار مصداق دقیق خیانت در امانت مورد پیگرد قانونی قرار خواهد گرفت.
                                                     </li>
-                                                    <li>
+                                                    <li style="font-size: larger;font-weight: bold;">
                                                     تحویل گیرنده کالا موظف است به منظور جلوگیری از هرگونه اختلاف حساب به محض تحویل کالا هر گونه
                                                     کم و کاست، شکستنی و یا خسارت احتمالی را به شرکت اعلام نماید تا جبران خسارت گردد، در غیر این صورت شرکت هیچگونه تعهدی نسبت به
                                                     موضوع فوق الذکر ندارد.
@@ -283,9 +283,9 @@
                                                         <div class="card card-secondary-del card-outlines">
                                                             <table class="">
                                                                 <tr class="text-center" style="height: 150px;">
-                                                                    <td>نام و امضاء تحویل گیرنده:</td>
-                                                                    <td>نام و امضاء تحویل دهنده:</td>
-                                                                    <td>نام و امضاء انباردار:</td>
+                                                                    <td style="font-size: 16px;">نام و امضاء تحویل گیرنده:</td>
+                                                                    <td style="font-size: 16px;">نام و امضاء تحویل دهنده:</td>
+                                                                    <td style="font-size: 16px;">نام و امضاء انباردار:</td>
                                                                 </tr>
                                                             </table>
                                                         </div>
