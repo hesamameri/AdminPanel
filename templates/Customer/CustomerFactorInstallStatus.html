@@ -288,7 +288,7 @@
                                                                 <!-- Display comments here -->
                                                                 {% for comment in comments %}
                                                                 <div class="comment">
-                                                                    <p class="message-text">{{ comment.body }} </p>
+                                                                    <p class="message-text"> {{ comment.body }} </p>
                                                                 </div>
                                                                 {% endfor %}
                                                             </div>
@@ -297,26 +297,49 @@
                                                 </div>
                                                 <style>
                                                     .comments-box {
-                                                        border: 2px solid #ddd;
-                                                        background-color: #f7f7f7;
-                                                        border-radius: 10px;
-                                                        padding: 20px;
-                                                        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-                                                        font-family: "IRANSans", Arial, sans-serif;
-                                                        color: #333;
-                                                        line-height: 1.5;
+                                                      border: 1px solid #e9e9e9;
+                                                      border-radius: 8px;
+                                                      background-color: #f9f9f9;
+                                                      padding: 15px;
                                                     }
-                                                
-                                                    .comments-box p {
-                                                        margin: 0;
-                                                        padding: 0;
-                                                        font-size: 40px;
-                                                    }
-                                                
+                                                    
                                                     .comments-box .comment {
-                                                        margin-bottom: 15px;
+                                                      margin-bottom: 15px;
                                                     }
-                                                </style>
+                                                    
+                                                    .comments-box .message-text {
+                                                      font-size: 16px;
+                                                      line-height: 1.4;
+                                                      color: #333;
+                                                      margin: 0;
+                                                      padding: 10px;
+                                                      background-color: #ffffff;
+                                                      border-radius: 4px;
+                                                      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+                                                    }
+                                                    
+                                                    .comments-box .message-text::before {
+                                                      content: "\201C";
+                                                      font-size: 20px;
+                                                      margin-right: 5px;
+                                                      vertical-align: middle;
+                                                    }
+                                                    
+                                                    .comments-box .message-text::after {
+                                                      content: "\201D";
+                                                      font-size: 20px;
+                                                      margin-left: 5px;
+                                                      vertical-align: middle;
+                                                    }
+                                                    
+                                                    .comments-box .comment:first-child .message-text::before {
+                                                      content: none;
+                                                    }
+                                                    
+                                                    .comments-box .comment:last-child .message-text::after {
+                                                      content: none;
+                                                    }
+                                                    </style>
                                                 <input type="hidden" name="factor_id" id="factor-id-val">
                                                 <input type="hidden" name="level" value="">
                                                 <input type="text" name="comment" class="form-control rtl text-box" placeholder="متن پیام">
@@ -527,47 +550,47 @@ document.addEventListener('change', function(e) {
 <script>
     function fetchCommentsAndUpdateModal(factorId, fetchUrl) {
         function fetchCommentsAndUpdateModal(factorId, fetchUrl) {
-$.ajax({
-url: fetchUrl,
-type: 'GET',
-cache: false, // Disable caching at the client side as well
-success: function (data) {
-    var commentIds = [];
-    var $commentsBody = $('#comments-body');
+            $.ajax({
+                url: fetchUrl,
+                type: 'GET',
+                cache: false, // Disable caching at the client side as well
+                success: function (data) {
+                    var commentIds = [];
+                    var $commentsBody = $('#comments-body');
 
-    // Get the IDs of existing comments
-    $commentsBody.find('.comment').each(function () {
-        commentIds.push($(this).data('comment-id'));
-    });
+                    
+                    // Get the IDs of existing comments
+                    $commentsBody.find('.comment').each(function () {
+                        commentIds.push($(this).data('comment-id'));
+                    });
 
-    // Remove deleted comments from the modal
-    for (var i = 0; i < commentIds.length; i++) {
-        if (!commentExists(commentIds[i], data)) {
-            $commentsBody.find('.comment[data-comment-id="' + commentIds[i] + '"]').remove();
+                    // Remove deleted comments from the modal
+                    for (var i = 0; i < commentIds.length; i++) {
+                        if (!commentExists(commentIds[i], data)) {
+                            $commentsBody.find('.comment[data-comment-id="' + commentIds[i] + '"]').remove();
+                        }
+                    }
+
+                    // Add new comments to the modal
+                    for (var j = 0; j < data.length; j++) {
+                        if (!commentExists(data[j].id, commentIds)) {
+                            $commentsBody.append('<div class="comment" data-comment-id="' + data[j].id + '">' + data[j].body + '</div>');
+                        }
+                    }
+
+                    $('#factor-id-val').val(factorId);
+                }
+            });
         }
-    }
 
-    // Add new comments to the modal
-    for (var j = 0; j < data.length; j++) {
-        if (!commentExists(data[j].id, commentIds)) {
-            $commentsBody.append('<div class="comment" data-comment-id="' + data[j].id + '">' + data[j].body + '</div>');
+        function commentExists(commentId, comments) {
+            for (var i = 0; i < comments.length; i++) {
+                if (comments[i].id === commentId) {
+                    return true;
+                }
+            }
+            return false;
         }
-    }
-
-    $('#factor-id-val').val(factorId);
-}
-});
-}
-
-function commentExists(commentId, comments) {
-for (var i = 0; i < comments.length; i++) {
-if (comments[i].id === commentId) {
-    return true;
-}
-}
-return false;
-}
-
 
         $.ajax({
             url: fetchUrl,
@@ -575,7 +598,13 @@ return false;
             success: function (data) {
                 $('#comments-body').empty();
                 for (var i = 0; i < data.length; i++) {
-                    $('#comments-body').append('<div>' + data[i].body + '</div>');
+                    var comment = data[i];
+                    var commentDetails = '<div class="comment" data-comment-id="' + comment.id + '">' +
+                        '<div>متن پیام :' + comment.body + '</div>' +
+                        '<div>زمان ثبت :' + comment.reg_dt + '</div>' +
+                        '<div>ثبت کننده : ' + comment.register + '</div>' +
+                        '</div>';
+                    $('#comments-body').append(commentDetails);
                 }
                 $('#factor-id-val').val(factorId);
             }
@@ -597,27 +626,6 @@ return false;
         // Close the modal and clear the interval when it's dismissed
         $('#modal-comment').on('hidden.bs.modal', function () {
             clearInterval(intervalId);
-        });
-    });
-</script>
-
-<script>
-    var socket = new WebSocket("ws://your-server/ws/comment_updates/");
-
-    socket.onmessage = function (event) {
-        var data = JSON.parse(event.data);
-        $('#comments-body').append('<div>' + data.body + '</div>');
-    };
-
-    $(document).on('click', '.btn-comment', function () {
-        var factorId = $(this).data('factor');
-        var fetchUrl = $(this).data('fetch-url');
-
-        // ... (Your existing code for initial fetch)
-
-        // Close the modal and WebSocket connection when it's dismissed
-        $('#modal-comment').on('hidden.bs.modal', function () {
-            socket.close();
         });
     });
 </script>
