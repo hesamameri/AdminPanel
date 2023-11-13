@@ -599,10 +599,11 @@ document.addEventListener('change', function(e) {
                 $('#comments-body').empty();
                 for (var i = 0; i < data.length; i++) {
                     var comment = data[i];
+                    console.log(comment.reg_dt)
                     var commentDetails = '<div class="comment" data-comment-id="' + comment.id + '">' +
                         '<div><strong>متن پیام : ' + comment.body + '</strong></div>' +
-                        '<div>زمان ثبت :' + (comment.reg_dt || '') + '</div>' +
-                        '<div>ثبت کننده : ' + (comment.register || '') + '</div>' +
+                        '<div>زمان ثبت :' + (comment.reg_dt ) + '</div>' +
+                        '<div>ثبت کننده : ' + (comment.register ) + '</div>' +
                         '</div>';
                     $('#comments-body').append(commentDetails);
                 }

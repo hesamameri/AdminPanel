@@ -14,7 +14,7 @@ from .utilities import get_object_or_none
 from django.shortcuts import get_object_or_404, redirect, render
 from django.db.models import F
 from django.utils import timezone
-from customer.templatetags.converter_tags import subtract
+from customer.templatetags.converter_tags import register_user, subtract, to_jalalii
 from ticket.models import Ticket
 from .models import CityItemSVA, Contract, ContractCity, CreditSumSVA, DepoInit, DepoSend, Factor, FactorAddress, FactorPayway, ObjItem, ObjItemCity, ObjItemSpec, ObjPayment, ObjSend, ObjSendSerial, ObjSpec, PreFactor, ProductSVA, VendorBuyerSVA, VendorBuyerSubSVA
 from .models import CustomerSubSVA, CustomerSva, FactorComment, FactorDocument, FactorItem, FactorSVA, ObjItemSVA, ShopCustomerCount
@@ -1673,7 +1673,9 @@ def fetch_commentsinstall(request):
         comments = FactorComment.objects.filter(factor_id=factor_id, level=level).all()
 
         # Serialize the comments to JSON format
-        serialized_comments = [{'body': comment.body} for comment in comments]
+        serialized_comments = [{'body': comment.body,"reg_dt":to_jalalii(comment.reg_dt),"register":register_user(comment.register)} for comment in comments]
+        print(serialized_comments)
+        print(comments)
 
         return JsonResponse(serialized_comments, safe=False, json_dumps_params={'ensure_ascii': False})
 
