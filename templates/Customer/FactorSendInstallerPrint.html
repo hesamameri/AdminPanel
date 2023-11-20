@@ -14,6 +14,8 @@
 
     
 
+    
+
     <!-- end::Head -->
 
     <!-- begin::Body -->
@@ -59,6 +61,35 @@
 
                         <div class="bbcnasim" id="fixed_div" style="font-size: 14px;">
                             <div class="content" >
+                                <style>
+                                    /* Add this style block to your existing styles or in your CSS file */
+                                
+                                    /* Increase the height of the header section */
+                                    .card-fixed-left {
+                                        height: 100px; /* Adjust the height as needed */
+                                    }
+                                
+                                    /* Increase the top margin of the container-fluid */
+                                    .container-fluid {
+                                        margin-top: 60px; /* Adjust the margin as needed */
+                                    }
+                                
+                                    /* Increase the height of the text-center section */
+                                    .text-center table {
+                                        height: 150px; /* Adjust the height as needed */
+                                    }
+                                
+                                    /* Increase the height of the card-body in the second card */
+                                    .card-body {
+                                        min-height: 200px; /* Adjust the height as needed */
+                                    }
+                                
+                                    /* Increase the height of the row with class "text-center" in the last card */
+                                    .row.rtl {
+                                        height: 400px; /* Adjust the height as needed */
+                                    }
+                                </style>
+                                
                                     <div class="container-fluid" style="position: absolute; top: 30px;">
                                                 <div class="card-fixed-left no-print">
                                                     <button onclick="javascript:window.print();" class="btn btn-success" data-toggle="modal"><i class="fas fa-print"></i></button>
@@ -96,24 +127,27 @@
                                                             <div class="card-body">
                                                                             <table class="table  {{ direction }}">
                                                                                 <tr>
-                                                                                    <td style="font-weight: bold;font-size: larger;">خریدار:</td>
-                                                                                    <td style="font-weight: bold;font-size: larger;">{{address_info.receiver}}</td>
-                                                                                    <td style="font-weight: bold;font-size: larger;">شهر:</td>
-                                                                                    <td style="font-weight: bold;font-size: larger;">{{address_info.city_id|id_to_city}}</td>
-                                                                                    <td style="font-weight: bold;font-size: larger;">کدپستی:</td>
-                                                                                    <td>----</td>
-                                                                                    <td style="font-weight: bold;font-size: larger;">تلفن/نمابر:</td>
-                                                                                    <td style="font-weight: bold;font-size: larger;">{{address_info.mobile}}</td>
-                                                                                </tr>
-                                                                                <tr>
-                                                                                    <td style="font-weight: bold;font-size: larger;">آدرس خریدار:</td>
-                                                                                    <td colspan="10" style="font-weight: bold;font-size: larger;"> {{address_info.address}}</td>
-                                                                                    {% if address_info.phone == None %}
-                                                                                    <td></td>
-                                                                                    {% else %}
-                                                                                    <td>/</td>
-                                                                                    <td>{{address_info.phone}}</td>
-                                                                                    {% endif %}
+                                                                                    <tr>
+                                                                                        <td style="font-weight: bold; font-size: larger;">خریدار:</td>
+                                                                                        <td style="font-weight: bold; font-size: larger;">{{address_info.receiver}}</td>
+                                                                                        <td style="font-weight: bold; font-size: larger;">شهر:</td>
+                                                                                        <td style="font-weight: bold; font-size: larger;">{{address_info.city_id|id_to_city}}</td>
+                                                                                        <td style="font-weight: bold; font-size: larger;">کدپستی:</td>
+                                                                                        <td style="font-weight: bold; font-size: larger;">----</td>
+                                                                                        <td style="font-weight: bold; font-size: larger;">تلفن/نمابر:</td>
+                                                                                        <td style="font-weight: bold; font-size: larger;">{{address_info.mobile}}</td>
+                                                                                    </tr>
+                                                                                    <tr>
+                                                                                        <td style="font-weight: bold; font-size: larger;">آدرس خریدار:</td>
+                                                                                        <td colspan="10" style="font-weight: bold; font-size: larger;">{{address_info.address}}</td>
+                                                                                        {% if address_info.phone == None %}
+                                                                                            <td></td>
+                                                                                        {% else %}
+                                                                                            <td style="font-weight: bold; font-size: larger;">/</td>
+                                                                                            <td style="font-weight: bold; font-size: larger;">{{address_info.phone}}</td>
+                                                                                        {% endif %}
+                                                                                    </tr>
+                                                                                    
 
                                                                                 </tr>                                                                                    
                                                                             </table>
